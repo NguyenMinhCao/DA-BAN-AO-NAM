@@ -1,0 +1,126 @@
+/* Đảm bảo container có vị trí tương đối */
+.swiper-container {
+    position: relative;
+}
+
+/* Định vị nút "next" ở bên phải */
+.swiper-button-next {
+    position: absolute;
+    top: 40%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+/* Định vị nút "prev" ở bên trái */
+.swiper-button-prev {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+/* Tùy chỉnh kích thước và kiểu dáng của các nút nếu cần */
+.swiper-button-next,
+.swiper-button-prev {
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Màu nền nút */
+    border-radius: 50%;
+    /* Bo tròn nút */
+}
+
+/* Tùy chỉnh biểu tượng mũi tên */
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 20px;
+    color: #fff;
+}
+
+.cart-badge {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.container-place .line-top {
+    background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
+    background-position-x: -30px;
+    background-size: 116px 3px;
+    height: 3px;
+    width: 100%;
+}
+
+.container-place .place {
+    padding: 28px 30px 24px;
+}
+
+.place-title {
+    align-items: center;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.place-detail {
+    align-items: center;
+    display: flex;
+}
+
+.place-detail-one {
+    align-items: center;
+    display: flex;
+    font-size: 1rem;
+    word-break: break-word;
+}
+
+.dIzOca {
+    border: .5px solid;
+    border-radius: 1px;
+    color: #ee4d2d;
+    flex-shrink: 0;
+    font-size: 10px;
+    margin-left: 1.5em;
+    padding: 2px 5px;
+    text-transform: capitalize;
+}
+
+.VNkBIJ {
+    color: #4080ee;
+    cursor: pointer;
+    margin-left: 2.5rem;
+    text-transform: capitalize;
+    border: none;
+    background: none;
+}
+
+.PzGLCh {
+    color: #222;
+    font-weight: 700;
+}
+
+.location-icon {
+    font-size: 17px;
+    margin-bottom: 6px;
+    margin-right: 5px;
+    color: #71cd14;
+}
+
+.cE_Tbx {
+    border-left: .0625rem solid #71cd14;
+    color: #71cd14;
+    font-size: 1.25rem;
+    height: 1.875rem;
+    line-height: 2.3rem;
+    margin-bottom: 0rem;
+    margin-left: 1.9375rem;
+    padding-left: 1.9375rem;
+    text-transform: capitalize;
+}
