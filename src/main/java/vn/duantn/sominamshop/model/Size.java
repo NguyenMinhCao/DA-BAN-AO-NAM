@@ -22,6 +22,6 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "size_name")
+    @Column(name = "size_name", columnDefinition = "NVARCHAR(200)")
     private String sizeName;
 }

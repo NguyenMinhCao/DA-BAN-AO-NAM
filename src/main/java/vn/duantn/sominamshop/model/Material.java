@@ -22,6 +22,6 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "material_name")
+    @Column(name = "material_name",columnDefinition = "NVARCHAR(255)")
     private String materialName;
 }

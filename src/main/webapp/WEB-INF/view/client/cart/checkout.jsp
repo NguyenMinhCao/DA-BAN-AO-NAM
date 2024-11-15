@@ -146,7 +146,7 @@
                                                         <div class="media">
                                                             <div class="d-flex">
                                                                 <img style="height: 98px; width: 106px; border: none;"
-                                                                    src="images/product/${cartDetail.product.image}"
+                                                                    src="images/product/${cartDetail.product.images[0].imageUrl}"
                                                                     alt="" />
                                                             </div>
                                                             <div class="media-body">
@@ -223,9 +223,9 @@
                                             <tr class="out_button_area">
                                                 <td colspan="1"></td>
                                                 <td colspan="3">
-                                                    <div class="checkout_btn_inner">
-                                                        <a class="gray_btn" href="/product">Tiếp tục mua sắm</a>
-                                                        <a class="main_btn" href="/order">Đi đến thanh toán</a>
+                                                    <div class="checkout_btn_inner" style="margin-left: 107px">
+                                                        <a class="gray_btn" href="/cart">Giỏ hàng</a>
+                                                        <a class="main_btn" href="/order">Đặt hàng</a>
                                                     </div>
                                                 </td>
                                             </tr>

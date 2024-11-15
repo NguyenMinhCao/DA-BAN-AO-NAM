@@ -32,7 +32,7 @@ public class User {
 
     private String password;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", columnDefinition = "NVARCHAR(255)")
     private String fullName;
 
     @Column(name = "phone_number")

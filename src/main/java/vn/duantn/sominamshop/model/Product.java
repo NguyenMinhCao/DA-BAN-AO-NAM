@@ -36,12 +36,10 @@ public class Product {
 
     private double price;
 
-    private String image;
-
-    @Column(name = "short_desc")
+    @Column(name = "short_desc", columnDefinition = "NVARCHAR(2000)")
     private String shortDesc;
 
-    @Column(name = "detail_desc")
+    @Column(name = "detail_desc", columnDefinition = "NVARCHAR(3000)")
     private String detailDesc;
 
     @ManyToOne

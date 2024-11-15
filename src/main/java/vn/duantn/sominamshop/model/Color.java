@@ -22,6 +22,6 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "color_name")
+    @Column(name = "color_name", columnDefinition = "NVARCHAR(255)")
     private String colorName;
 }

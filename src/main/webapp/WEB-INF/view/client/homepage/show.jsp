@@ -121,8 +121,8 @@
                                         <div class="col-lg-4 col-md-6 swiper-slide">
                                             <div class="single-product">
                                                 <div class="product-img">
-                                                    <img class="img-fluid w-100" src="images/product/${product.image}"
-                                                        alt="" />
+                                                    <img class="img-fluid w-100"
+                                                        src="images/product/${product.images[0].imageUrl}" alt="" />
                                                     <div class="p_icon">
                                                         <a href="/product/${product.id}">
                                                             <i class="ti-eye"></i>
@@ -208,16 +208,16 @@
                                             <div class="single-product">
                                                 <div class="product-img">
                                                     <img class="img-fluid w-100"
-                                                        src="images/product/1729850578849-id-009084a_b5bd638e17a24b84bcf1fe127f2acacc_master.jpg"
+                                                        src="images/product/1731672478985-ao-polo-nam-theu-typo-dream-and-achieve-form-regular__7__6bedc865b3284db7907c5d1d721d19a8_master.jpg"
                                                         alt="" />
                                                     <div class="p_icon">
-                                                        <a href="#">
+                                                        <a href="/product/${product.id}">
                                                             <i class="ti-eye"></i>
                                                         </a>
                                                         <a href="#">
                                                             <i class="ti-heart"></i>
                                                         </a>
-                                                        <a href="#">
+                                                        <a href="/add-product-to-cart/${product.id}">
                                                             <i class="ti-shopping-cart"></i>
                                                         </a>
                                                     </div>
@@ -238,16 +238,16 @@
                                             <div class="single-product">
                                                 <div class="product-img">
                                                     <img class="img-fluid w-100"
-                                                        src="images/product/1729850689478-ao-so-mi-cotton-nam-tay-dai-comfortable-stripe-form-regular__9__4bd88ca8e5624de9b8ae5c454a14e73f_master.jpg"
+                                                        src="images/product/1731672992394-ao-polo-nam-tron-co-v-orgnls-basic-form-regular__8__b05f4e00a5614a90b14d3fe3f51c2071_master.jpg"
                                                         alt="" />
                                                     <div class="p_icon">
-                                                        <a href="#">
+                                                        <a href="/product/${product.id}">
                                                             <i class="ti-eye"></i>
                                                         </a>
                                                         <a href="#">
                                                             <i class="ti-heart"></i>
                                                         </a>
-                                                        <a href="#">
+                                                        <a href="/add-product-to-cart/${product.id}">
                                                             <i class="ti-shopping-cart"></i>
                                                         </a>
                                                     </div>
@@ -268,10 +268,10 @@
                                             <div class="single-product">
                                                 <div class="product-img">
                                                     <img class="img-fluid w-100"
-                                                        src="images/product/1729851143516-id-008369a__1__1d171257d5e0460abe44f28996bb516d_master.jpg"
+                                                        src="images/product/1731672478985-ao-polo-nam-theu-typo-dream-and-achieve-form-regular__7__6bedc865b3284db7907c5d1d721d19a8_master.jpg"
                                                         alt="" />
                                                     <div class="p_icon">
-                                                        <a href="#">
+                                                        <a href="/product/${product.id}">
                                                             <i class="ti-eye"></i>
                                                         </a>
                                                         <a href="#">
@@ -298,10 +298,10 @@
                                             <div class="single-product">
                                                 <div class="product-img">
                                                     <img class="img-fluid w-100"
-                                                        src="images/product/1729850653180-ao-so-mi-cu-ban-vai-xop-nam-tay-ngan-modern-vibe-form-relaxed__6__bdf4002b21574530b055c4b20ab81008_master.jpg"
+                                                        src="images/product/1731673176594-id-008734a__1__08e5c852013245f28ba0154d9212afb8_master.jpg"
                                                         alt="" />
                                                     <div class="p_icon">
-                                                        <a href="#">
+                                                        <a href="/product/${product.id}">
                                                             <i class="ti-eye"></i>
                                                         </a>
                                                         <a href="#">
@@ -347,16 +347,16 @@
                                     <div class="col-lg-3 col-md-6">
                                         <div class="single-product">
                                             <div class="product-img">
-                                                <img class="img-fluid w-100" src="images/product/${product.image}"
-                                                    alt="" />
+                                                <img class="img-fluid w-100"
+                                                    src="images/product/${product.images[0].imageUrl}" alt="" />
                                                 <div class="p_icon">
-                                                    <a href="#">
+                                                    <a href="/product/${product.id}">
                                                         <i class="ti-eye"></i>
                                                     </a>
                                                     <a href="#">
                                                         <i class="ti-heart"></i>
                                                     </a>
-                                                    <a href="#">
+                                                    <a href="/add-product-to-cart/${product.id}">
                                                         <i class="ti-shopping-cart"></i>
                                                     </a>
                                                 </div>

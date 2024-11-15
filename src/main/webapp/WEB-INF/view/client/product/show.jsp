@@ -78,7 +78,8 @@
                                                 <div class="col-lg-4 col-md-6">
                                                     <div class="single-product">
                                                         <div class="product-img">
-                                                            <img class="card-img" src="images/product/${product.image}"
+                                                            <img class="card-img"
+                                                                src="images/product/${product.images[0].imageUrl}"
                                                                 alt="" />
                                                             <div class="p_icon">
                                                                 <a href="#">

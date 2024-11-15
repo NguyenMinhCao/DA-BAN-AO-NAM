@@ -88,8 +88,21 @@
                                                 <div class="col-md-12">
                                                     <label for="formFile" class="form-label">Avatar:</label>
                                                     <input class="form-control" type="file" id="avatarFile"
-                                                        accept=".png , .jpg, .jpeg" name="getImgFile" multiple>
+                                                        name="getImgFiles" accept=".png, .jpg, .jpeg" multiple>
                                                 </div>
+
+                                                <div class="col-md-12">
+                                                    <label for="formFile" class="form-label">Avatar:</label>
+                                                    <input class="form-control" type="file" id="avatarFile"
+                                                        name="getImgFiles" accept=".png, .jpg, .jpeg" multiple>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <label for="formFile" class="form-label">Avatar:</label>
+                                                    <input class="form-control" type="file" id="avatarFile"
+                                                        name="getImgFiles" accept=".png, .jpg, .jpeg" multiple>
+                                                </div>
+
                                                 <div class="col-12 mb-3">
                                                     <img style="max-height: 250px; display: none;" alt="avatar preview"
                                                         id="avatarPreview">

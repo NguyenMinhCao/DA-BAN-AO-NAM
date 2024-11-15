@@ -78,7 +78,7 @@
                                                             <div class="media">
                                                                 <div class="d-flex">
                                                                     <img style="height: 98px; width: 106px; border: none;"
-                                                                        src="images/product/${cartDetail.product.image}"
+                                                                        src="images/product/${cartDetail.product.images[0].imageUrl}"
                                                                         alt="" />
                                                                 </div>
                                                                 <div class="media-body">

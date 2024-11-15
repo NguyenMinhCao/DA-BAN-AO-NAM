@@ -18,10 +18,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pattern {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-      @Column(name = "pattern_name")
-    private String patternName;
+  @Column(name = "pattern_name", columnDefinition = "NVARCHAR(255)")
+  private String patternName;
 }
