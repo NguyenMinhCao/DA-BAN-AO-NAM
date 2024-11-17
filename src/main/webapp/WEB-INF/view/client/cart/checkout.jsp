@@ -39,18 +39,31 @@
                                             <p>email: info@eiser.com</p>
                                         </div>
                                     </div>
+
                                     <div class="col-lg-5">
                                         <div class="float-right">
                                             <ul class="right_side">
                                                 <li>
-                                                    <a href="cart.html">
-                                                        gift card
+                                                    <a href="#">
+                                                        ${pageContext.request.userPrincipal.name}
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="tracking.html">
-                                                        track order
-                                                    </a>
+                                                    <c:if test="${empty pageContext.request.userPrincipal}">
+                                                        <a href="/login">
+                                                            Đăng nhập
+                                                        </a>
+                                                    </c:if>
+                                                    <c:if test="${not empty pageContext.request.userPrincipal}">
+                                                        <a href="#" onclick="submitLogoutForm(); return false;">
+                                                            Đăng xuất
+                                                        </a>
+                                                    </c:if>
+                                                    <form id="logoutForm" action="/logout" method="post"
+                                                        style="display:none;">
+                                                        <input type="hidden" name="${_csrf.parameterName}"
+                                                            value="${_csrf.token}" />
+                                                    </form>
                                                 </li>
                                                 <li>
                                                     <a href="contact.html">
@@ -274,6 +287,7 @@
                     <script src="vendors/counter-up/jquery.waypoints.min.js"></script>
                     <script src="vendors/counter-up/jquery.counterup.js"></script>
                     <script src="js/theme.js"></script>
+                    <script src="/js/myjs.js"></script>
                 </body>
 
                 </html>

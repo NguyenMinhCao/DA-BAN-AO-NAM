@@ -53,7 +53,17 @@
 
                     <!--================Cart Area =================-->
                     <c:if test="${sessionScope.sum == 0}">
-                        <div style="margin: 217px 444px;">Không có sản phẩm trong giỏ hàng</div>
+                        <div class="cart-container">
+                            <div class="cart-sub">
+                                <div class="cart-icon">
+                                    <img src="img/logo-cart-null.png" style="width: 108px; height: 100px;"
+                                        alt="Empty Cart" />
+                                </div>
+                                <p class="cart-text">Giỏ hàng của bạn còn trống</p>
+                                <button class="cart-button"><a href="/products" style="color: #fff;">MUA
+                                        NGAY</a></button>
+                            </div>
+                        </div>
                     </c:if>
                     <c:if test="${sessionScope.sum > 0}">
                         <section class="cart_area">
@@ -215,6 +225,7 @@
                     <script src="vendors/counter-up/jquery.waypoints.min.js"></script>
                     <script src="vendors/counter-up/jquery.counterup.js"></script>
                     <script src="js/theme.js"></script>
+                    <script src="/js/myjs.js"></script>
                 </body>
 
                 </html>

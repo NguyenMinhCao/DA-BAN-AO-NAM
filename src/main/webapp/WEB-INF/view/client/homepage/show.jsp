@@ -502,6 +502,7 @@
                     <script src="vendors/counter-up/jquery.counterup.js"></script>
                     <script src="js/mail-script.js"></script>
                     <script src="js/theme.js"></script>
+                    <script src="/js/myjs.js"></script>
                     <!-- Swiper JS -->
                     <script src="https://cdn.jsdelivr.net/npm/swiper@7/swiper-bundle.min.js"></script>
                     <!-- Optional: Include jQuery if you need it for other scripts -->

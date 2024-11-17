@@ -40,6 +40,8 @@ public class User {
 
     private String avatar;
 
+    private Boolean gender;
+
     @OneToOne(mappedBy = "user")
     private Cart cart;
 

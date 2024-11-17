@@ -395,6 +395,7 @@
     <script src="js/mail-script.js"></script>
     <script src="vendors/jquery-ui/jquery-ui.js"></script>
     <script src="js/theme.js"></script>
+    <script src="/js/myjs.js"></script>
 </body>
 
 </html>

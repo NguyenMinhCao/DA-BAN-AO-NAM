@@ -14,14 +14,24 @@
                             <div class="float-right">
                                 <ul class="right_side">
                                     <li>
-                                        <a href="cart.html">
-                                            gift card
+                                        <a href="#">
+                                            ${pageContext.request.userPrincipal.name}
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="tracking.html">
-                                            track order
-                                        </a>
+                                        <c:if test="${empty pageContext.request.userPrincipal}">
+                                            <a href="/login">
+                                                Đăng nhập
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${not empty pageContext.request.userPrincipal}">
+                                            <a href="#" onclick="submitLogoutForm(); return false;">
+                                                Đăng xuất
+                                            </a>
+                                        </c:if>
+                                        <form id="logoutForm" action="/logout" method="post" style="display:none;">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        </form>
                                     </li>
                                     <li>
                                         <a href="contact.html">
@@ -38,7 +48,7 @@
                 <div class="container">
                     <nav class="navbar navbar-expand-lg navbar-light w-100">
                         <!-- Brand and toggle get grouped for better mobile display -->
-                        <a class="navbar-brand logo_h" href="index.html">
+                        <a class="navbar-brand logo_h" href="/">
                             <img src="/img/logo.png" alt="" />
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -103,44 +113,12 @@
                                             </a>
                                         </li>
 
+                                        <li class="nav-item">
+                                            <a href="/user/account" class="icons">
+                                                <i class="ti-user" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
 
-
-                                        <c:if test="${empty pageContext.request.userPrincipal}">
-                                            <li class="nav-item submenu dropdown">
-                                                <a href="#" class="icons" data-toggle="dropdown" role="button"
-                                                    aria-haspopup="true" aria-expanded="false"><i class="ti-user"
-                                                        aria-hidden="true"></i></a>
-                                                <ul class="dropdown-menu">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="/login">Đăng nhập</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="/register">Đăng ký</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </c:if>
-
-                                        <c:if test="${not empty pageContext.request.userPrincipal}">
-                                            <li class="nav-item submenu dropdown">
-                                                <a href="#" class="nav-link dropdown-toggle icons"
-                                                    data-toggle="dropdown" role="button" aria-haspopup="true"
-                                                    aria-expanded="false"><i class="ti-user" aria-hidden="true"></i></a>
-                                                <ul class="dropdown-menu">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="/login">Tài khoản</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <form action="/logout" method="post">
-                                                            <input type="hidden" name="${_csrf.parameterName}"
-                                                                value="${_csrf.token}" />
-                                                            <button class="dropdown-item nav-link" href="#">Đăng
-                                                                xuất</button>
-                                                        </form>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </c:if>
                                         <li class="nav-item">
                                             <a href="#" class="icons">
                                                 <i class="ti-heart" aria-hidden="true"></i>
