@@ -28,3 +28,4 @@ document.getElementById('file-input').addEventListener('change', function (event
 document.getElementById('choose-file-btn').addEventListener('click', function () {
     document.getElementById('file-input').click(); // Kích hoạt input file ẩn
 });
+

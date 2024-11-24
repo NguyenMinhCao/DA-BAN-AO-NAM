@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import vn.duantn.sominamshop.service.validator.RegisterChecked;
-import vn.duantn.sominamshop.service.validator.StrongPassword;
+import vn.duantn.sominamshop.util.validator.RegisterChecked;
+import vn.duantn.sominamshop.util.validator.StrongPassword;
 
 @Getter
 @Setter

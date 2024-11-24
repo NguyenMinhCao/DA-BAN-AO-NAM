@@ -164,3 +164,142 @@
 .cart-button:hover {
     background-color: #e64a19;
 }
+
+
+/* Định dạng nền mờ */
+.modal-overlay-add-voucher {
+    display: none;
+    /* Ẩn modal theo mặc định */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Làm mờ phần xung quanh */
+    z-index: 1000;
+    /* Đảm bảo modal nằm trên các thành phần khác */
+}
+
+/* Định dạng hộp nội dung ở giữa màn hình */
+.modal-content-add-voucher {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    /* Đảm bảo nội dung nổi trên nền mờ */
+    width: 470px;
+}
+
+/* Nút đóng */
+.OK-btn-add-voucher,
+.close-btn-add-voucher {
+    padding: 8px 20px;
+    cursor: pointer;
+    width: 140px;
+}
+
+.modal-content-add-voucher .footer-voucher {
+    margin-top: 20px;
+    float: right;
+}
+
+.OK-btn-add-voucher {
+    background-color: #ff5e57;
+    color: white;
+    border: none;
+}
+
+.close-btn-add-voucher {
+    margin-right: 4px;
+    background: none;
+    border: .0625rem solid rgba(0, 0, 0, .26);
+}
+
+.OK-btn-add-voucher:hover {
+    background-color: #ff3b2f;
+}
+
+.close-btn-add-voucher:hover {
+    background-color: #ccc
+}
+
+/* Nút mở modal */
+.open-btn-add-voucher {
+    color: blue;
+    cursor: pointer;
+    border: none;
+    background-color: #fff;
+    margin-left: 35px;
+}
+
+.td-voucher-add p {
+    display: inline-block;
+}
+
+.body-voucher .voucher-list {
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.voucher-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.voucher-item img {
+    width: 80px;
+    height: 80px;
+    border: 1px dashed #ccc;
+    background-color: #fff;
+}
+
+.voucher-details {
+    margin-left: 15px;
+    flex: 1;
+}
+
+.voucher-checkbox {
+    margin-left: auto;
+}
+
+.search-voucher .input-with-validator {
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .14);
+    border-radius: 2px;
+    box-shadow: inset 0 2px 0 0 rgba(0, 0, 0, .02);
+    box-sizing: border-box;
+    color: #222;
+    display: flex;
+    height: 40px;
+    padding: 10px;
+    transition: border-color .1s ease;
+}
+
+
+.modal-content-add-voucher .button-add-voucher {
+    border: none;
+    height: 40px;
+    margin-right: 9px;
+    padding: 5px 9px;
+    color: #000;
+}
+
+.modal-content-add-voucher .button-add-voucher:hover {
+    background-color: #ff5e57;
+    color: #fff;
+}

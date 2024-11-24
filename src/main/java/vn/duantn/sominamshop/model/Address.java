@@ -1,7 +1,6 @@
 package vn.duantn.sominamshop.model;
 
-import org.hibernate.annotations.ManyToAny;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +24,16 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "full_name", columnDefinition = "NVARCHAR(255)")
+    private String fullName;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(columnDefinition = "NVARCHAR(2500)")
     private String address;
+
+    private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
