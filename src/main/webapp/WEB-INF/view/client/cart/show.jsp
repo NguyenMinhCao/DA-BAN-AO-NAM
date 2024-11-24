@@ -318,29 +318,6 @@
                     <script src="/vendors/counter-up/jquery.counterup.js"></script>
                     <script src="/js/theme.js"></script>
                     <script src="/js/myjs.js"></script>
-                    <!-- <script>
-                        // Lấy các phần tử
-                        const modalOverlayAddVoucher = document.getElementById('modalOverlayAddVoucher');
-                        const openModalBtnAddVoucher = document.getElementById('openModalBtnAddVoucher');
-                        const closeModalBtnAddVouCher = document.getElementById('closeModalBtnAddVouCher');
-
-                        // Sự kiện mở modal
-                        openModalBtnAddVoucher.addEventListener('click', () => {
-                            modalOverlayAddVoucher.style.display = 'block'; // Hiển thị modal
-                        });
-
-                        // Sự kiện đóng modal
-                        closeModalBtnAddVouCher.addEventListener('click', () => {
-                            modalOverlayAddVoucher.style.display = 'none'; // Ẩn modal
-                        });
-
-                        // Đóng modal khi click ra ngoài nội dung
-                        modalOverlayAddVoucher.addEventListener('click', (e) => {
-                            if (e.target === modalOverlayAddVoucher) {
-                                modalOverlayAddVoucher.style.display = 'none'; // Ẩn modal
-                            }
-                        });
-                    </script> -->
                 </body>
 
                 </html>
