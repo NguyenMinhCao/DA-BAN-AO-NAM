@@ -13,7 +13,7 @@ import vn.duantn.sominamshop.util.validator.StrongPassword;
 public class RegisterDTO {
     // các trường ứng với form đăng ký tài khoản
 
-    @Size(min = 10, message = "Name tối thiểu 8 ký tự")
+    @Size(min = 5, message = "Name tối thiểu 8 ký tự")
     private String fullName;
 
     private String email;
