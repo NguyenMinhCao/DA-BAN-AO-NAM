@@ -4,7 +4,6 @@
             <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
                 <!DOCTYPE html>
                 <html lang="en">
-
                 <head>
                     <!-- Required meta tags -->
                     <meta charset="utf-8" />
@@ -84,10 +83,10 @@
                             <div class="col-md-9" style="height: 450px;">
                                 <div class="card">
                                     <div class="card-body" style="height: 450px;">
-                                        <h4 class="" style="margin: 0; padding: 0">Hồ Sơ Của Tôi</h4>
-                                        <span class="">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
+                                        <h4 class="" style="margin: 0; padding: 0">Địa chỉ của tôi</h4>
+                                        <button style="float: right;">Thêm địa chỉ mới</button>
                                         <hr>
-                                        <form:form class="d-flex" method="post" action="/user/account-update"
+                                        <form:form class=" d-flex" method="post" action="/user/account-update"
                                             modelAttribute="userByEmail" enctype="multipart/form-data">
                                             <div class="">
                                                 <div class="mb-3" style="display: none;">

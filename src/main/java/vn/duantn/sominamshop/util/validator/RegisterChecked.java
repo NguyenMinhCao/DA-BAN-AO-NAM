@@ -1,4 +1,4 @@
-package vn.duantn.sominamshop.service.validator;
+package vn.duantn.sominamshop.util.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-@Constraint(validatedBy = StrongPasswordValidator.class)
-@Target({ ElementType.METHOD, ElementType.FIELD })
+@Constraint(validatedBy = RegisterValidator.class)
+@Target({ ElementType.TYPE }) // Adjusted to apply to the class level
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface StrongPassword {
-    String message() default "Password không đúng định dạng";
+public @interface RegisterChecked {
+      String message() default "User register validation failed";
 
     Class<?>[] groups() default {};
 

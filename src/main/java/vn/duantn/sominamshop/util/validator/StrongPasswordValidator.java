@@ -1,4 +1,4 @@
-package vn.duantn.sominamshop.service.validator;
+package vn.duantn.sominamshop.util.validator;
 
 import org.springframework.stereotype.Service;
 

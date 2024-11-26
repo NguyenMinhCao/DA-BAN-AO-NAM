@@ -128,10 +128,9 @@
                                     <div class="place-detail">
                                         <div>
                                             <div class="place-detail-one">
-                                                <div class="PzGLCh">Minh Cao (+84) 348357684</div>
-                                                <div class="a9c4OR">Số Nhà 12, Ngõ 80/66 Đường Xuân Phương, Làng
-                                                    Tu
-                                                    Hoàng, Phường Phương Canh, Quận Nam Từ Liêm, Hà Nội</div>
+                                                <div class="PzGLCh">${address.fullName} ${address.phoneNumber}</div>
+                                                <div class="a9c4OR" style="margin-left: 20px;">${address.address}
+                                                </div>
                                                 <div class="dIzOca">Mặc định</div>
                                             </div>
                                         </div>

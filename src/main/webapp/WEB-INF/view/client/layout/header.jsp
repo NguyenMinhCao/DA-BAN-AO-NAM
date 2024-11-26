@@ -114,7 +114,7 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="/user/account" class="icons">
+                                            <a href="/user/profile" class="icons">
                                                 <i class="ti-user" aria-hidden="true"></i>
                                             </a>
                                         </li>

@@ -50,5 +50,8 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    private List<Address> Address;
+    private List<Address> address;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 }

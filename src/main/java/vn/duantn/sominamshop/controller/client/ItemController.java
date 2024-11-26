@@ -7,11 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Image;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.ProductService;
 import vn.duantn.sominamshop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,10 +24,12 @@ public class ItemController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final AddressService addressService;
 
-    public ItemController(ProductService productService, UserService userService) {
+    public ItemController(ProductService productService, UserService userService, AddressService addressService) {
         this.productService = productService;
         this.userService = userService;
+        this.addressService = addressService;
     }
 
     @GetMapping("/cart")
@@ -76,11 +80,23 @@ public class ItemController {
     public String getOrder(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String emailUser = (String) session.getAttribute("email");
+
+        //
         List<CartDetail> lstCartDetail = this.productService.getAllProductByUser(emailUser);
         double totalPrice = 0;
         for (CartDetail cartDetail : lstCartDetail) {
             totalPrice += cartDetail.getPrice();
         }
+
+        //
+        User user = this.userService.findUserByEmail(emailUser);
+        List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
+        for (Address address : arrAddressByUser) {
+            if (address.isStatus() == true) {
+                model.addAttribute("address", address);
+            }
+        }
+
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("lstCartDetail", lstCartDetail);
         return "client/cart/checkout";

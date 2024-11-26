@@ -30,7 +30,7 @@ public class Promotion {
     @Column(name = "promotion_code")
     private String promotionCode;
 
-    @Column(name = "discount_type")
+    @Column(name = "discount_type", columnDefinition = "NVARCHAR(50)")
     private String discountType;
 
     @Column(name = "discount_value")
@@ -42,7 +42,7 @@ public class Promotion {
     @Column(name = "end_date")
     private String endDate;
 
-    private String status;
+    private boolean status;
 
     @ManyToMany(mappedBy = "promotions")
     private List<Product> products;
