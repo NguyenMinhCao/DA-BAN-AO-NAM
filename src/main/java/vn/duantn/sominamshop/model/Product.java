@@ -1,5 +1,6 @@
 package vn.duantn.sominamshop.model;
 
+import java.time.Instant;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -13,6 +14,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,6 +45,8 @@ public class Product {
     @Column(name = "detail_desc", columnDefinition = "NVARCHAR(3000)")
     private String detailDesc;
 
+    private String createBy;
+
     @ManyToOne
     @JoinColumn(name = "material_id")
     private Material material;
@@ -69,4 +73,5 @@ public class Product {
     @ManyToMany
     @JoinTable(name = "Product_Promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
     private List<Promotion> promotions;
+
 }
