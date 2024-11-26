@@ -30,6 +30,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
 
     private long quantity;
