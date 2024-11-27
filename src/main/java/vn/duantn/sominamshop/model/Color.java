@@ -47,4 +47,5 @@ public class Color {
 
     private String abcd;
 
+    private String xyz;
 }
