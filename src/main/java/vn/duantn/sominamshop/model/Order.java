@@ -1,7 +1,9 @@
 package vn.duantn.sominamshop.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +32,11 @@ public class Order {
     private long id;
 
     private String status;
+
+    @Column(name = "total_amount", precision = 10, scale = 2)
+    private BigDecimal totalAmount;
+
+    
 
     @ManyToOne
     @JoinColumn(name = "user_id")
