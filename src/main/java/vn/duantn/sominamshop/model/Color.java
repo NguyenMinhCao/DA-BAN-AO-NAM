@@ -44,4 +44,5 @@ public class Color {
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
+
 }
