@@ -8,4 +8,8 @@ public class DiscountController {
     public void khuyenMai(){
 
     }
+    @GetMapping("/khuyenmai")
+    public void giamGia(){
+
+    }
 }
