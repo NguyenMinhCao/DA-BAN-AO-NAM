@@ -1,5 +1,6 @@
 package vn.duantn.sominamshop.model;
 
+import java.time.Instant;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -13,11 +14,14 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
 @Table(name = "products")
@@ -30,6 +34,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
 
     private long quantity;
@@ -41,6 +46,9 @@ public class Product {
 
     @Column(name = "detail_desc", columnDefinition = "NVARCHAR(3000)")
     private String detailDesc;
+
+    private String createBy;
+    private String updateBy;
 
     @ManyToOne
     @JoinColumn(name = "material_id")
@@ -68,4 +76,18 @@ public class Product {
     @ManyToMany
     @JoinTable(name = "Product_Promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
     private List<Promotion> promotions;
+
+    @PrePersist
+    public void handleBeforeCreate() {
+        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
 }
