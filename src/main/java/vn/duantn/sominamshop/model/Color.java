@@ -24,4 +24,6 @@ public class Color {
 
     @Column(name = "color_name", columnDefinition = "NVARCHAR(255)")
     private String colorName;
+
+    private String abcdd;
 }
