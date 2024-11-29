@@ -139,9 +139,9 @@
                                 </div>
                             </div>
 
-                            <div class="cart_inner" style="background-color: #fff;">
+                            <div class="cart_inner">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" style="background-color: #fff;">
                                         <thead>
                                             <tr>
                                                 <th scope="col">Sản phẩm</th>
@@ -231,8 +231,7 @@
                                                     </h5>
                                                 </td>
                                             </tr>
-
-                                            <tr class="out_button_area">
+                                            <!-- <tr class="out_button_area">
                                                 <td colspan="1"></td>
                                                 <td colspan="3">
                                                     <div class="checkout_btn_inner" style="margin-left: 107px">
@@ -240,7 +239,7 @@
                                                         <a class="main_btn" href="/order">Đặt hàng</a>
                                                     </div>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
 
                                             <!-- <tr class="bottom_button">
                                                 <td>
@@ -257,6 +256,65 @@
                                             </tr> -->
 
 
+                                        </tbody>
+                                    </table>
+                                    <table class="table" style="margin-top: 20px; background-color: #fff;">
+                                        <!-- <thead>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                        </thead> -->
+                                        <tbody>
+                                            <tr class="out_button_area">
+                                                <td style="display: block;">
+                                                    <h4
+                                                        style="margin-bottom: 0px; margin-right: 10px; display: inline-block;">
+                                                        Phương thức
+                                                        thanh toán</h4>
+                                                    <button role="radio">Thanh toán khi
+                                                        nhận hàng</button>
+                                                    <button role="radio">VN PAY</button>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr class="out_button_area">
+                                                <td></td>
+                                                <td>
+                                                    <div
+                                                        style="margin-left: 184px; display: inline-block; width: 300px;">
+                                                        <div
+                                                            style="display: flex; justify-content: space-between; height: 27px;">
+                                                            <span>Tổng tiền hàng :</span>
+                                                            <p>34443</p>
+                                                        </div>
+                                                        <div
+                                                            style="display: flex; justify-content: space-between; height: 27px;">
+                                                            <span>Tổng tiền phí vận chuyển :</span>
+                                                            <p>343443</p>
+                                                        </div>
+                                                        <div
+                                                            style="display: flex; justify-content: space-between; height: 27px;">
+                                                            <span>Tổng tiền hàng :</span>
+                                                            <p>343443</p>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                            <tr class="out_button_area">
+                                                <td>
+                                                    <div class="" style="margin-left: 0px; ">
+                                                        Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo Điều
+                                                        khoản Shopee
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="checkout_btn_inner"
+                                                        style="margin-left: 187px; display: inline-block;">
+                                                        <a class="gray_btn" href="/cart">Giỏ hàng</a>
+                                                        <a class="main_btn" href="/order">Đặt hàng</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

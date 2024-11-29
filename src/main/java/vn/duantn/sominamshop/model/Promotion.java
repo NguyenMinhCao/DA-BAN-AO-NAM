@@ -10,11 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
 @Table(name = "promotions")
@@ -46,4 +49,21 @@ public class Promotion {
 
     @ManyToMany(mappedBy = "promotions")
     private List<Product> products;
+
+    private String createBy;
+    private String updateBy;
+
+    @PrePersist
+    public void handleBeforeCreate() {
+        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
 }

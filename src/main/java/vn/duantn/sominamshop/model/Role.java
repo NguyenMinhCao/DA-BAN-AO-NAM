@@ -7,11 +7,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
 @Table(name = "roles")
@@ -28,4 +31,21 @@ public class Role {
 
     @OneToMany(mappedBy = "role")
     private List<User> user;
+
+    private String createBy;
+    private String updateBy;
+
+    @PrePersist
+    public void handleBeforeCreate() {
+        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
 }

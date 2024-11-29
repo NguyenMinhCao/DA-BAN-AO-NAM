@@ -18,11 +18,11 @@ public class RegisterDTO {
 
     private String email;
 
-    @StrongPassword
+//    @StrongPassword
     @NotBlank(message = "Không để trống password")
     private String password;
 
-    @StrongPassword
+//    @StrongPassword
     @Size(min = 3, message = "Confirm ít nhất 3 ký tự")
     private String confirmPassword;
 }

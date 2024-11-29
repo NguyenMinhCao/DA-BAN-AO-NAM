@@ -1,0 +1,146 @@
+/* Cơ bản cho body và bảng */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background-color: #007bff;
+    color: white;
+}
+
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Loại bỏ hiệu ứng hover cho các hàng trong bảng */
+.table tr:hover {
+    background-color: transparent;  /* Tắt hiệu ứng hover */
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #333;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: #575757;
+}
+
+/* Responsive sidebar */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .sidebar a {
+        float: left;
+    }
+}
+
+/* Avatar style */
+.rounded-circle {
+    border-radius: 50%;
+}
+
+/* Các button */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/*add*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.content-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 260px;
+    padding: 20px;
+    width: calc(100% - 260px); /* Đảm bảo nội dung không bị dính vào sidebar */
+}
+
+.add-user-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.form-section {
+    width: 48%;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button.btn-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.sidebar {
+    width: 250px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #333;
+    padding-top: 20px;
+}
+

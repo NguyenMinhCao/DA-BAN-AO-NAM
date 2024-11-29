@@ -8,16 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import vn.duantn.sominamshop.model.Address;
-import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
-import vn.duantn.sominamshop.model.Image;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.ProductService;
-import vn.duantn.sominamshop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import vn.duantn.sominamshop.service.UserService;
 
 @Controller
 public class ItemController {

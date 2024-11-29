@@ -2,10 +2,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function submitLogoutForm
     const logoutForm = document.getElementById('logoutForm');
     if (logoutForm) {
-        logoutForm.addEventListener('submit', () => {
-            logoutForm.submit();
+        logoutForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Ngăn chặn form gửi lại mặc định
+            logoutForm.submit(); // Gửi form
         });
     }
+
+    // Định nghĩa hàm submitLogoutForm
+    window.submitLogoutForm = function () {
+        const logoutForm = document.getElementById('logoutForm');
+        if (logoutForm) {
+            logoutForm.submit(); // Gửi form
+        }
+    };
 
     // File input handling
     const fileInput = document.getElementById('file-input');

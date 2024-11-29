@@ -9,11 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
 @Table(name = "carts")
@@ -28,11 +31,28 @@ public class Cart {
 
     private int sum;
 
+    private String createBy;
+    private String updateBy;
+
     @OneToMany(mappedBy = "cart")
     private List<CartDetail> cartDetail;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+   @PrePersist
+    public void handleBeforeCreate() {
+        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
 
 }
