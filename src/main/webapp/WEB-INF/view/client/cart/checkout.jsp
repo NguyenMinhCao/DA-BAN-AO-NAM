@@ -24,6 +24,11 @@
                     <!-- main css -->
                     <link rel="stylesheet" href="css/style.css" />
                     <link rel="stylesheet" href="css/responsive.css" />
+                    <style>
+                        .out_button_area .checkout_btn_inner .main_btn a {
+                            color: #fff;
+                        }
+                    </style>
                     <link rel="stylesheet" href="css/style1.css" />
                 </head>
 
@@ -194,7 +199,7 @@
                                                         </h5>
                                                     </td>
                                                 </tr>
-                                                <c:set var="sumInCart" value="${cartDetail.cart.sum}" />
+                                                <c:set var="sumInCart" value="${cartDetail.cart.totalProducts}" />
                                             </c:forEach>
 
                                             <tr class="shipping_area">
@@ -219,9 +224,19 @@
                                             </tr>
 
                                             <tr>
-                                                <td colspan="2"></td>
+                                                <td class="td-voucher-add" colspan="2">
+                                                    <p style="margin-left: 9px;"><i
+                                                            style="color: orange; font-size: 11px;"
+                                                            class="ti-layout-width-default"></i></p>
+                                                    <p style="margin-left: 5px;">Voucher</p>
+                                                    <p style="font-weight: bold;">
+                                                        <button class="open-btn-add-voucher" id="openModalBtnAddVoucher"
+                                                            style="font-weight: 400;">Chọn hoặc nhập mã
+                                                        </button>
+                                                    </p>
+                                                </td>
                                                 <td colspan="2">
-                                                    <h5 style="display: inline-block;">Tổng thanh toán (
+                                                    <h5 style="display: inline-block;">Tổng số tiền (
                                                         <%=pageContext.getAttribute("sumInCart")%> sản
                                                             phẩm):
                                                     </h5>
@@ -229,6 +244,86 @@
                                                         <fmt:formatNumber type="number" value="${totalPrice}" />
                                                         đ
                                                     </h5>
+                                                    <div class="modal-overlay-add-voucher" id="modalOverlayAddVoucher">
+                                                        <!-- Nội dung modal -->
+                                                        <div class="modal-content-add-voucher">
+                                                            <div class="header-voucher">
+                                                                <h3>Chọn voucher</h3>
+                                                                <hr>
+                                                            </div>
+
+                                                            <div class="body-voucher">
+                                                                <div class="search-voucher"
+                                                                    style="display: flex;align-items: center; background: #f8f8f8; padding: 8px;justify-content: space-between;">
+                                                                    <label
+                                                                        style="margin-bottom: 0px; margin-left: 9px;">Mã
+                                                                        voucher</label>
+                                                                    <div class="input-with-validator">
+                                                                        <input
+                                                                            style="border:none; width: 200px; padding: 0px; outline: none;"
+                                                                            type="text" value=""
+                                                                            placeholder="Mã Shopee Voucher"
+                                                                            maxlength="255">
+                                                                    </div>
+                                                                    <button class="button-add-voucher">ÁP
+                                                                        DỤNG</button>
+                                                                </div>
+                                                                <div class="voucher-list">
+                                                                    <div style="margin: 10px 0;">
+                                                                        <p
+                                                                            style="margin-bottom: 0px; font-weight: bold;">
+                                                                            Danh Sách Mã</p>
+                                                                        <small>Có thể chọn một voucher</small>
+                                                                    </div>
+
+                                                                    <div class="voucher-item">
+                                                                        <img src="https://go-korea.com/wp-content/themes/kadence-child/img/icon-su-kien.png"
+                                                                            alt="Placeholder for Image">
+                                                                        <div class="voucher-details">
+                                                                            <div class="voucher-exp">Giảm tối đa
+                                                                                300k | Đơn tối thiểu 0₫<br>HSD:
+                                                                                27.11.2024</div>
+                                                                        </div>
+                                                                        <div class="voucher-checkbox">
+                                                                            <input type="radio" name="voucher" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="voucher-item">
+                                                                        <img src="" alt="Placeholder for Image">
+                                                                        <div class="voucher-details">
+                                                                            <div class="voucher-exp">Giảm tối đa
+                                                                                300k | Đơn tối thiểu 0₫<br>HSD:
+                                                                                27.11.2024</div>
+                                                                        </div>
+                                                                        <div class="voucher-checkbox">
+                                                                            <input type="radio" name="voucher" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="voucher-item">
+                                                                        <img src="" alt="Placeholder for Image">
+                                                                        <div class="voucher-details">
+                                                                            <div class="voucher-exp">Giảm tối đa 37k
+                                                                                | Đơn tối thiểu 0₫<br>HSD:
+                                                                                27.11.2024</div>
+                                                                        </div>
+                                                                        <div class="voucher-checkbox">
+                                                                            <input type="radio" name="voucher" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Thêm nhiều class="voucher-item" để kiểm tra cuộn -->
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="footer-voucher">
+                                                                <button class="close-btn-add-voucher"
+                                                                    id="closeModalBtnAddVouCher">TRỞ LẠI</button>
+                                                                <button class="OK-btn-add-voucher"
+                                                                    id="closeModalBtnAddVouCher">OK</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <!-- <tr class="out_button_area">
@@ -267,7 +362,7 @@
                                             <tr class="out_button_area">
                                                 <td style="display: block;">
                                                     <h4
-                                                        style="margin-bottom: 0px; margin-right: 10px; display: inline-block;">
+                                                        style="margin-bottom: 0px; margin-right: 10px;  margin-left: 10px;display: inline-block;">
                                                         Phương thức
                                                         thanh toán</h4>
                                                     <button role="radio">Thanh toán khi
@@ -284,7 +379,10 @@
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng tiền hàng :</span>
-                                                            <p>34443</p>
+                                                            <p>
+                                                                <fmt:formatNumber type="number" value="${totalPrice}" />
+                                                                đ
+                                                            </p>
                                                         </div>
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
@@ -293,7 +391,7 @@
                                                         </div>
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
-                                                            <span>Tổng tiền hàng :</span>
+                                                            <span>Tổng thanh toán :</span>
                                                             <p>343443</p>
                                                         </div>
                                                     </div>
@@ -302,7 +400,7 @@
                                             </tr>
                                             <tr class="out_button_area">
                                                 <td>
-                                                    <div class="" style="margin-left: 0px; ">
+                                                    <div class="" style="margin-left: 10px; ">
                                                         Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo Điều
                                                         khoản Shopee
                                                     </div>
@@ -311,7 +409,21 @@
                                                     <div class="checkout_btn_inner"
                                                         style="margin-left: 187px; display: inline-block;">
                                                         <a class="gray_btn" href="/cart">Giỏ hàng</a>
-                                                        <a class="main_btn" href="/order">Đặt hàng</a>
+                                                        <div class="main_btn">
+                                                            <a style="font-size: 12px;font-weight: 500;" class="btn"
+                                                                onclick="document.getElementById('myForm').submit();">Đặt
+                                                                hàng</a>
+
+                                                            <form:form id="myForm" action="/order-checkout"
+                                                                method="post" modelAttribute="orderCheckout"
+                                                                style="display: none;">
+                                                                <form:input path="address"
+                                                                    value="${orderCheckout.address != null ? orderCheckout.address : address.address}" />
+
+                                                                <form:input path="totalAmount"
+                                                                    value="${orderCheckout.totalAmount != null ? orderCheckout.totalAmount : totalPrice}" />
+                                                            </form:form>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>

@@ -2,6 +2,7 @@ package vn.duantn.sominamshop.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private int sum;
+    @Column(name = "total_products")
+    private Integer totalProducts;
 
     private String createBy;
     private String updateBy;
@@ -41,7 +43,7 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-   @PrePersist
+    @PrePersist
     public void handleBeforeCreate() {
         this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()

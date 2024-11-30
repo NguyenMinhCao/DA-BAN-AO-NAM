@@ -82,13 +82,13 @@
                                                                 src="images/product/${product.images[0].imageUrl}"
                                                                 alt="" />
                                                             <div class="p_icon">
-                                                                <a href="#">
+                                                                <a href="/product/${product.id}">
                                                                     <i class="ti-eye"></i>
                                                                 </a>
                                                                 <a href="#">
                                                                     <i class="ti-heart"></i>
                                                                 </a>
-                                                                <a href="/add-product-to-cart/{product.id}">
+                                                                <a href="/add-product-to-cart/${product.id}">
                                                                     <i class="ti-shopping-cart"></i>
                                                                 </a>
                                                             </div>

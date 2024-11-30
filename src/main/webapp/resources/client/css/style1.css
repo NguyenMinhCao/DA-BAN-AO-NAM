@@ -303,3 +303,8 @@
     background-color: #ff5e57;
     color: #fff;
 }
+
+.out_button_area .checkout_btn_inner .main_btn:hover a {
+    background: transparent;
+    color: #71cd14;
+}

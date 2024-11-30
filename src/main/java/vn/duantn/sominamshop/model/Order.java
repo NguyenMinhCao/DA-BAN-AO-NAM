@@ -33,10 +33,11 @@ public class Order {
 
     private String status;
 
+    @Column(name = "total_products")
+    private Integer totalProducts;
+
     @Column(name = "total_amount", precision = 10, scale = 2)
     private BigDecimal totalAmount;
-
-    
 
     @ManyToOne
     @JoinColumn(name = "user_id")

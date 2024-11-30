@@ -131,7 +131,7 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <c:set var="sumInCart" value="${cartDetail.cart.sum}" />
+                                                    <c:set var="sumInCart" value="${cartDetail.cart.totalProducts}" />
                                                 </c:forEach>
 
                                                 <tr class="shipping_area">
