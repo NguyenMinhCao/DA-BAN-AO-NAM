@@ -4,6 +4,7 @@
             <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
                 <!DOCTYPE html>
                 <html lang="en">
+
                 <head>
                     <!-- Required meta tags -->
                     <meta charset="utf-8" />
@@ -67,7 +68,7 @@
                                             <li class="nav-item">
                                                 <i style="font-size: 17px;color: #0044ad;" class="ti-receipt"></i>
                                                 <a style="display: inline-block;padding-left: 9px;" class="nav-link"
-                                                    href="#">Đơn mua</a>
+                                                    href="/user/orders">Đơn mua</a>
                                             </li>
                                             <li class="nav-item">
                                                 <i style="font-size: 17px;color: #0044ad;" class="ti-package"></i>

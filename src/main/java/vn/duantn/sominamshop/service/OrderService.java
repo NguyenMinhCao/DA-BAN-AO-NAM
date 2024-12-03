@@ -11,6 +11,7 @@ import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.dto.OrderCheckoutDTO;
 import vn.duantn.sominamshop.repository.CartRepository;
 import vn.duantn.sominamshop.repository.OrderDetailRepository;
@@ -33,6 +34,10 @@ public class OrderService {
         this.orderDetailRepository = orderDetailRepository;
     }
 
+    public List<Order> findOrderByUser(User user) {
+        return this.orderRepository.findOrderByUser(user);
+    }
+
     public void orderCheckout(HttpSession session, OrderCheckoutDTO dto) {
         String emailUser = (String) session.getAttribute("email");
         User userByEmail = this.userService.findUserByEmail(emailUser);
@@ -42,7 +47,7 @@ public class OrderService {
                 List<OrderDetail> lstOrderDetails = new ArrayList<>();
                 Order order = new Order();
                 // create order
-                order.setStatus("PENDING");
+                order.setStatus(OrderStatus.PENDING);
                 order.setTotalAmount(dto.getTotalAmount());
                 order.setUser(userByEmail);
                 order.setTotalProducts(cartByUser.getTotalProducts());
@@ -54,7 +59,7 @@ public class OrderService {
                 for (CartDetail cartDetail : lstCartDetail) {
                     OrderDetail orderDetail = new OrderDetail();
                     orderDetail.setOrder(order);
-                    orderDetail.setPrice(cartDetail.getPrice());
+                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProduct().getPrice());
                     orderDetail.setProduct(cartDetail.getProduct());
                     orderDetail.setQuantity(cartDetail.getQuantity());
                     // save order detail
