@@ -91,8 +91,7 @@
                                 <div class="card">
                                     <div class="tabs">
                                         <button class="tab-button" onclick="openTab('tab1')">Tất cả</button>
-                                        <button class="tab-button" onclick="openTab('tab2')">Chờ thanh
-                                            toán</button>
+                                        <button class="tab-button" onclick="openTab('tab2')">Chờ xác nhận</button>
                                         <button class="tab-button" onclick="openTab('tab3')">Vận chuyển</button>
                                         <button class="tab-button" onclick="openTab('tab4')">Chờ giao
                                             hàng</button>

@@ -33,8 +33,8 @@ public class Cart {
     @Column(name = "total_products")
     private Integer totalProducts;
 
-    private String createBy;
-    private String updateBy;
+    private String createdBy;
+    private String updatedBy;
 
     @OneToMany(mappedBy = "cart")
     private List<CartDetail> cartDetail;
@@ -45,14 +45,14 @@ public class Cart {
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }

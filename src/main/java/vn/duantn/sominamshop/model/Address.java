@@ -38,8 +38,8 @@ public class Address {
 
     private boolean status;
 
-    private String createBy;
-    private String updateBy;
+    private String createdBy;
+    private String updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -47,14 +47,14 @@ public class Address {
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
