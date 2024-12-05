@@ -52,6 +52,7 @@ public class Order {
     @Column(name = "payment_method")
     private String paymentMethod;
 
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
