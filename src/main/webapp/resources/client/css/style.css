@@ -4574,13 +4574,25 @@ h6 {
 }
 
 .cart_inner .table tbody tr.shipping_area .shipping_box input {
-    height: 40px;
+    /* height: 40px;
     outline: none;
     border: 1px solid #eeeeee;
     background: #f6f6f6;
     width: 100%;
     padding: 0px 15px;
-    margin-bottom: 20px
+    margin-bottom: 20px */
+    display: inline-block;
+    height: 19px;
+    width: 19px;
+    margin-right: 46px;
+    /* background: #71cd14; */
+    /* border: 1px solid #cdcdcd; */
+    /* display: inline-block; */
+    /* border-radius: 50%; */
+    /* position: absolute; */
+    /* right: 0px; */
+    /* top: 50%; */
+    transform: translateY(13%);
 }
 
 .cart_inner .table tbody tr.out_button_area .checkout_btn_inner {

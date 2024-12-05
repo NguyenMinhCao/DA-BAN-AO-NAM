@@ -64,7 +64,6 @@ public class ProductController {
                 img.setProduct(product);
                 lstImage.add(img);
                 this.imageService.handleSaveImage(img);
-
             }
         }
 

@@ -28,20 +28,20 @@ public class Pattern {
   @Column(name = "pattern_name", columnDefinition = "NVARCHAR(255)")
   private String patternName;
 
-  private String createBy;
-  private String updateBy;
+  private String createdBy;
+  private String updatedBy;
 
   @PrePersist
-    public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
+  public void handleBeforeCreate() {
+    this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        ? SecurityUtil.getCurrentUserLogin().get()
+        : "";
+  }
 
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
+  @PreUpdate
+  public void handleBeforeUpdate() {
+    this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        ? SecurityUtil.getCurrentUserLogin().get()
+        : "";
+  }
 }

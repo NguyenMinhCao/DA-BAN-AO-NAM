@@ -6,14 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
 @Table(name = "order_details")
@@ -30,9 +27,6 @@ public class OrderDetail {
 
     private long quantity;
 
-    private String createBy;
-    private String updateBy;
-
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -41,17 +35,4 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-@PrePersist
-    public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
-
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
 }

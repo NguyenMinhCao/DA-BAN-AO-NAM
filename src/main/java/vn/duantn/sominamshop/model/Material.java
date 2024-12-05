@@ -25,22 +25,22 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "material_name",columnDefinition = "NVARCHAR(255)")
+    @Column(name = "material_name", columnDefinition = "NVARCHAR(255)")
     private String materialName;
 
-    private String createBy;
-    private String updateBy;
+    private String createdBy;
+    private String updatedBy;
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }

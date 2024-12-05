@@ -12,6 +12,13 @@
                             </a>
                             <div class="sb-sidenav-menu-heading">Quản lý</div>
 
+                            <!-- Order -->
+                            <a class="nav-link collapsed" href="/admin/order" data-bs-target="#collapseLayoutsProduct"
+                                aria-expanded="false" aria-controls="collapseLayoutsProduct">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Bán hàng tại quầy
+                            </a>
+
                             <!-- Sản phẩm -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                 data-bs-target="#collapseLayoutsProduct" aria-expanded="false"
@@ -23,8 +30,8 @@
                             <div class="collapse" id="collapseLayoutsProduct" aria-labelledby="headingOne"
                                 data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Danh sách</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Thêm sản phẩm</a>
+                                    <a class="nav-link" href="/admin/product">Danh sách</a>
+                                    <a class="nav-link" href="/admin/product/create">Thêm sản phẩm</a>
                                 </nav>
                             </div>
 

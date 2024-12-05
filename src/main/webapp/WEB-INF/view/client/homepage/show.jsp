@@ -63,7 +63,7 @@
                                     <div class="single-feature">
                                         <a href="#" class="title">
                                             <i class="flaticon-money"></i>
-                                            <h3>Money back gurantee</h3>
+                                            <h3>Đảm bảo hoàn tiền</h3>
                                         </a>
                                         <p>Shall open divide a one</p>
                                     </div>
@@ -73,7 +73,7 @@
                                     <div class="single-feature">
                                         <a href="#" class="title">
                                             <i class="flaticon-truck"></i>
-                                            <h3>Free Delivery</h3>
+                                            <h3>Giao hàng miễn phí</h3>
                                         </a>
                                         <p>Shall open divide a one</p>
                                     </div>
@@ -83,7 +83,7 @@
                                     <div class="single-feature">
                                         <a href="#" class="title">
                                             <i class="flaticon-support"></i>
-                                            <h3>Alway support</h3>
+                                            <h3>Luôn luôn hỗ trợ</h3>
                                         </a>
                                         <p>Shall open divide a one</p>
                                     </div>
@@ -93,7 +93,7 @@
                                     <div class="single-feature">
                                         <a href="#" class="title">
                                             <i class="flaticon-blockchain"></i>
-                                            <h3>Secure payment</h3>
+                                            <h3>Thanh toán an toán</h3>
                                         </a>
                                         <p>Shall open divide a one</p>
                                     </div>
