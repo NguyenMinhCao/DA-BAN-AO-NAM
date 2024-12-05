@@ -33,11 +33,6 @@ public class Order {
 
     private String status;
 
-    @Column(name = "total_amount", precision = 10, scale = 2)
-    private BigDecimal totalAmount;
-
-    
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -48,20 +43,27 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
-
-    private String createBy;
-    private String updateBy;
+    @Column(name = "created_by")
+    private String createdBy;
+    @Column(name = "note", columnDefinition = "NVARCHAR(MAX)")
+    private String note;
+    @Column(name = "total_amount", precision = 10, scale = 2)
+    private BigDecimal totalAmount;
+    @Column(name = "payment_method")
+    private Integer paymentMethod;
+    @Column(name = "updated_by")
+    private String updatedBy;
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
