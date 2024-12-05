@@ -160,30 +160,159 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="yyqgYp">
-                                                    <div class="iwUeSD">
-                                                        <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã hủy
-                                                                bởi
-                                                                bạn</span></div>
+                                                <c:if test="${order.status == 'PENDING'}">
+                                                    <div class="yyqgYp">
+                                                        <div class="iwUeSD">
+                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Chờ xác
+                                                                    nhận</span></div>
+                                                        </div>
+                                                        <section class="po9nwN">
+                                                            <h3 class="a11y-hidden"></h3>
+                                                            <div class="aAXjeK">
+                                                                <div><button
+                                                                        class="stardust-button stardust-button--primary QY7kZh">Hủy
+                                                                        đơn hàng</button></div>
+                                                            </div>
+                                                            <div class="hbQXWm"><a
+                                                                    href="/user/purchase/cancellation/186904745262679"><button
+                                                                        class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Xem
+                                                                        chi tiết đơn hàng</button></a></div>
+                                                            <div class="hbQXWm">
+                                                                <div><button
+                                                                        class="stardust-button stardust-button--secondary QY7kZh">Liên
+                                                                        hệ Người bán</button></div>
+                                                            </div>
+                                                        </section>
                                                     </div>
-                                                    <section class="po9nwN">
-                                                        <h3 class="a11y-hidden"></h3>
-                                                        <div class="aAXjeK">
-                                                            <div><button
-                                                                    class="stardust-button stardust-button--primary QY7kZh">Mua
-                                                                    lại</button></div>
+                                                </c:if>
+
+                                                <c:if test="${order.status == 'SHIPPING'}">
+                                                    <div class="yyqgYp">
+                                                        <div class="iwUeSD">
+                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đang
+                                                                    được vận chuyển tới bạn</span></div>
                                                         </div>
-                                                        <div class="hbQXWm"><a
-                                                                href="/user/purchase/cancellation/186904745262679"><button
-                                                                    class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Xem
-                                                                    chi tiết Hủy đơn</button></a></div>
-                                                        <div class="hbQXWm">
-                                                            <div><button
-                                                                    class="stardust-button stardust-button--secondary QY7kZh">Liên
-                                                                    hệ Người bán</button></div>
+                                                        <section class="po9nwN">
+                                                            <h3 class="a11y-hidden"></h3>
+                                                            <div class="aAXjeK">
+                                                                <div><button
+                                                                        class="stardust-button stardust-button--primary QY7kZh">Xem
+                                                                        chi tiết đơn hàng</button></div>
+                                                            </div>
+                                                            <div class="hbQXWm">
+                                                                <div><button
+                                                                        class="stardust-button stardust-button--secondary QY7kZh">Liên
+                                                                        hệ Người bán</button></div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </c:if>
+
+                                                <c:if test="${order.status == 'OUT_FOR_DELIVERY'}">
+                                                    <div class="yyqgYp">
+                                                        <div class="yyqgYp">
+                                                            <div class="iwUeSD">
+                                                                <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đơn
+                                                                        hàng
+                                                                        đang được giao</span></div>
+                                                            </div>
+                                                            <section class="po9nwN">
+                                                                <h3 class="a11y-hidden"></h3>
+                                                                <div class="aAXjeK">
+                                                                    <div><button
+                                                                            class="stardust-button stardust-button--primary QY7kZh">Xem
+                                                                            chi tiết đơn hàng</button></div>
+                                                                </div>
+                                                                <div class="hbQXWm">
+                                                                    <div><button
+                                                                            class="stardust-button stardust-button--secondary QY7kZh">Liên
+                                                                            hệ Người bán</button></div>
+                                                                </div>
+                                                            </section>
                                                         </div>
-                                                    </section>
-                                                </div>
+                                                </c:if>
+
+                                                <c:if test="${order.status == 'COMPLETED'}">
+                                                    <div class="yyqgYp">
+                                                        <div class="iwUeSD">
+                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã giao
+                                                                    thành công</span></div>
+                                                        </div>
+                                                        <section class="po9nwN">
+                                                            <h3 class="a11y-hidden"></h3>
+                                                            <div class="aAXjeK">
+                                                                <div><button
+                                                                        class="stardust-button stardust-button--primary QY7kZh">Mua
+                                                                        lại</button></div>
+                                                            </div>
+                                                            <div class="hbQXWm"><a
+                                                                    href="/user/purchase/cancellation/186904745262679"><button
+                                                                        class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Trả
+                                                                        hàng</button></a></div>
+                                                            <div class="hbQXWm">
+                                                                <div><button
+                                                                        class="stardust-button stardust-button--secondary QY7kZh">Liên
+                                                                        hệ Người bán</button></div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </c:if>
+
+                                                <c:if test="${order.status == 'CANCELED'}">
+                                                    <div class="yyqgYp">
+                                                        <div class="iwUeSD">
+                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã hủy
+                                                                    bởi
+                                                                    bạn</span></div>
+                                                        </div>
+                                                        <section class="po9nwN">
+                                                            <h3 class="a11y-hidden"></h3>
+                                                            <div class="aAXjeK">
+                                                                <div><button
+                                                                        class="stardust-button stardust-button--primary QY7kZh">Mua
+                                                                        lại</button></div>
+                                                            </div>
+                                                            <div class="hbQXWm"><a
+                                                                    href="/user/purchase/cancellation/186904745262679"><button
+                                                                        class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Xem
+                                                                        chi tiết Hủy đơn</button></a></div>
+                                                            <div class="hbQXWm">
+                                                                <div><button
+                                                                        class="stardust-button stardust-button--secondary QY7kZh">Liên
+                                                                        hệ Người bán</button></div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </c:if>
+
+                                                <c:if test="${order.status == 'RETURNED'}">
+                                                    <div class="yyqgYp">
+                                                        <div class="yyqgYp">
+                                                            <div class="iwUeSD">
+                                                                <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã
+                                                                        hủy
+                                                                        bởi
+                                                                        bạn</span></div>
+                                                            </div>
+                                                            <section class="po9nwN">
+                                                                <h3 class="a11y-hidden"></h3>
+                                                                <div class="aAXjeK">
+                                                                    <div><button
+                                                                            class="stardust-button stardust-button--primary QY7kZh">Mua
+                                                                            lại</button></div>
+                                                                </div>
+                                                                <div class="hbQXWm"><a
+                                                                        href="/user/purchase/cancellation/186904745262679"><button
+                                                                            class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Xem
+                                                                            chi tiết Hủy đơn</button></a></div>
+                                                                <div class="hbQXWm">
+                                                                    <div><button
+                                                                            class="stardust-button stardust-button--secondary QY7kZh">Liên
+                                                                            hệ Người bán</button></div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+                                                </c:if>
                                             </div>
                                         </c:forEach>
                                     </div>
@@ -249,21 +378,20 @@
                                                     </div>
                                                     <div class="yyqgYp">
                                                         <div class="iwUeSD">
-                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã hủy
-                                                                    bởi
-                                                                    bạn</span></div>
+                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Chờ xác
+                                                                    nhận</span></div>
                                                         </div>
                                                         <section class="po9nwN">
                                                             <h3 class="a11y-hidden"></h3>
                                                             <div class="aAXjeK">
                                                                 <div><button
-                                                                        class="stardust-button stardust-button--primary QY7kZh">Mua
-                                                                        lại</button></div>
+                                                                        class="stardust-button stardust-button--primary QY7kZh">Hủy
+                                                                        đơn hàng</button></div>
                                                             </div>
                                                             <div class="hbQXWm"><a
                                                                     href="/user/purchase/cancellation/186904745262679"><button
                                                                         class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Xem
-                                                                        chi tiết Hủy đơn</button></a></div>
+                                                                        chi tiết đơn hàng</button></a></div>
                                                             <div class="hbQXWm">
                                                                 <div><button
                                                                         class="stardust-button stardust-button--secondary QY7kZh">Liên
@@ -337,21 +465,16 @@
                                                     </div>
                                                     <div class="yyqgYp">
                                                         <div class="iwUeSD">
-                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã hủy
-                                                                    bởi
-                                                                    bạn</span></div>
+                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đang
+                                                                    được vận chuyển tới bạn</span></div>
                                                         </div>
                                                         <section class="po9nwN">
                                                             <h3 class="a11y-hidden"></h3>
                                                             <div class="aAXjeK">
                                                                 <div><button
-                                                                        class="stardust-button stardust-button--primary QY7kZh">Mua
-                                                                        lại</button></div>
+                                                                        class="stardust-button stardust-button--primary QY7kZh">Xem
+                                                                        chi tiết đơn hàng</button></div>
                                                             </div>
-                                                            <div class="hbQXWm"><a
-                                                                    href="/user/purchase/cancellation/186904745262679"><button
-                                                                        class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Xem
-                                                                        chi tiết Hủy đơn</button></a></div>
                                                             <div class="hbQXWm">
                                                                 <div><button
                                                                         class="stardust-button stardust-button--secondary QY7kZh">Liên
@@ -424,21 +547,16 @@
                                                     </div>
                                                     <div class="yyqgYp">
                                                         <div class="iwUeSD">
-                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã hủy
-                                                                    bởi
-                                                                    bạn</span></div>
+                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đơn hàng
+                                                                    đang được giao</span></div>
                                                         </div>
                                                         <section class="po9nwN">
                                                             <h3 class="a11y-hidden"></h3>
                                                             <div class="aAXjeK">
                                                                 <div><button
-                                                                        class="stardust-button stardust-button--primary QY7kZh">Mua
-                                                                        lại</button></div>
+                                                                        class="stardust-button stardust-button--primary QY7kZh">Xem
+                                                                        chi tiết đơn hàng</button></div>
                                                             </div>
-                                                            <div class="hbQXWm"><a
-                                                                    href="/user/purchase/cancellation/186904745262679"><button
-                                                                        class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Xem
-                                                                        chi tiết Hủy đơn</button></a></div>
                                                             <div class="hbQXWm">
                                                                 <div><button
                                                                         class="stardust-button stardust-button--secondary QY7kZh">Liên
@@ -512,9 +630,8 @@
                                                     </div>
                                                     <div class="yyqgYp">
                                                         <div class="iwUeSD">
-                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã hủy
-                                                                    bởi
-                                                                    bạn</span></div>
+                                                            <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã giao
+                                                                    thành công</span></div>
                                                         </div>
                                                         <section class="po9nwN">
                                                             <h3 class="a11y-hidden"></h3>
@@ -525,8 +642,8 @@
                                                             </div>
                                                             <div class="hbQXWm"><a
                                                                     href="/user/purchase/cancellation/186904745262679"><button
-                                                                        class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Xem
-                                                                        chi tiết Hủy đơn</button></a></div>
+                                                                        class="stardust-button stardust-button--secondary QY7kZh IY1xwI">Trả
+                                                                        hàng</button></a></div>
                                                             <div class="hbQXWm">
                                                                 <div><button
                                                                         class="stardust-button stardust-button--secondary QY7kZh">Liên

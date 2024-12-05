@@ -122,11 +122,38 @@
                             }
                         }
 
+                        // Hàm cập nhật tổng phí vận chuyển khi chọn phương thức giao hàng
+                        // Hàm cập nhật tổng phí vận chuyển khi chọn phương thức giao hàng
+                        function updateShippingCost() {
+                            const selectedShippingMethod = document.querySelector('input[name="shipping_method"]:checked');
+                            const shippingCost = selectedShippingMethod ? parseInt(selectedShippingMethod.value) : 0;
+
+                            const totalShippingElement = document.getElementById("total-shipping-cost");
+                            totalShippingElement.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(shippingCost);
+                        }
+
+                        // Lắng nghe sự kiện thay đổi khi người dùng chọn phương thức giao hàng
+                        const shippingRadios = document.querySelectorAll('input[name="shipping_method"]');
+
+                        // Gọi hàm một lần khi trang được tải lên để thiết lập giá trị ban đầu
+                        document.addEventListener('DOMContentLoaded', updateShippingCost);
+
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const shippingRadios = document.querySelectorAll('input[name="shipping_method"]');
+                            console.log(shippingRadios); // Kiểm tra lại sau khi DOM được tải xong
+                            shippingRadios.forEach(radio => {
+                                radio.addEventListener('change', updateShippingCost); // Đảm bảo rằng hàm được gọi khi thay đổi
+                            });
+                        });
+
                     </script>
                     <link rel="stylesheet" href="css/style1.css" />
                 </head>
 
                 <body>
+                    <c:set var="discountTotal" value="0" />
+                    <c:set var="shippingTotal" value="0" />
+                    <c:set var="paymentTotal" value="0" />
                     <!--================Header Menu Area =================-->
                     <header class="header_area">
                         <div class="top_menu">
@@ -307,20 +334,19 @@
                                                                 <p style="display: inline;margin-right: 14px;"> Giao
                                                                     hàng hỏa tốc: đ50.000 </p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="express-delivery" checked
-                                                                    value="expressdelivery">
+                                                                    id="express-delivery" checked value="50000">
                                                             </li>
                                                             <li>
                                                                 <p style="display: inline;margin-right: 14px;">Giao hàng
                                                                     nhanh: đ30.000 </p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="fast_delivery" value="fast delivery">
+                                                                    id="fast_delivery" value="30000">
                                                             </li>
                                                             <li>
                                                                 <p style="display: inline;margin-right: 14px;">Giao hàng
                                                                     tiết kiệm: đ20.000</p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="economy_delivery" value="economy delivery">
+                                                                    id="economy_delivery" value="20000">
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -402,7 +428,7 @@
                                                                                 style="padding-right: 15px;">
                                                                                 <input type="radio" id="voucher-select"
                                                                                     name="voucher-select"
-                                                                                    value="${pro.id}" />
+                                                                                    value="${pro.discountValue}" />
                                                                             </div>
                                                                         </div>
                                                                     </c:forEach>
@@ -492,23 +518,27 @@
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng giảm giá :</span>
-                                                            <p>
-                                                                <fmt:formatNumber type="number" value="${totalPrice}" />
+                                                            <p id="total-discount">
+                                                                <fmt:formatNumber type="number" value="0" />
                                                                 đ
+                                                                <c:set var="discountTotal" value="" />
                                                             </p>
                                                         </div>
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng tiền phí vận chuyển :</span>
-                                                            <p>
-                                                                <fmt:formatNumber type="number" value="${totalPrice}" />
+                                                            <p id="total-shipping-cost">
+                                                                <fmt:formatNumber type="number" value="" />
                                                                 đ
                                                             </p>
                                                         </div>
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng thanh toán :</span>
-                                                            <p>343443</p>
+                                                            <p>
+                                                                <fmt:formatNumber type="number" value="${totalPrice}" />
+                                                                đ
+                                                            </p>
                                                         </div>
                                                     </div>
 
@@ -582,6 +612,26 @@
                     <script src="vendors/counter-up/jquery.counterup.js"></script>
                     <script src="js/theme.js"></script>
                     <script src="/js/myjs.js"></script>
+                    <script>
+                        function updateVoucherCost() {
+                            const selectedVoucherMethod = document.querySelector('input[name="voucher-select"]:checked');
+                            const shippingCost = selectedVoucherMethod ? parseInt(selectedVoucherMethod.value) : 0;
+
+                            const totalShippingElement = document.getElementById("total-discount");
+                            totalShippingElement.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(shippingCost);
+                        }
+
+                        // Lắng nghe sự kiện thay đổi khi người dùng chọn phương thức giao hàng
+                        const Radios = document.querySelectorAll('input[name="voucher-select"]');
+
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const voucherRadios = document.querySelectorAll('input[name="voucher-select"]');
+                            console.log(voucherRadios); // Kiểm tra lại sau khi DOM được tải xong
+                            voucherRadios.forEach(radio => {
+                                radio.addEventListener('change', updateVoucherCost); // Đảm bảo rằng hàm được gọi khi thay đổi
+                            });
+                        });
+                    </script>
                 </body>
 
                 </html>

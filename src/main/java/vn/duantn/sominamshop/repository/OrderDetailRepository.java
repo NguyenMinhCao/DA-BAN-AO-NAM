@@ -9,3 +9,4 @@ import vn.duantn.sominamshop.model.OrderDetail;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
 
 }
+

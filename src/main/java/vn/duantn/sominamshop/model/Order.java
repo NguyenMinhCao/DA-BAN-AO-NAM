@@ -43,14 +43,14 @@ public class Order {
     @Column(name = "total_amount", precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
-    @Column(name = "payment_method")
-    private String paymentMethod;
-
-    @Column(name = "shipping_unit")
-    private String shippingUnit;
-
     @Column(name = "shipping_method")
     private String shippingMethod;
+
+    @Column(name = "note", columnDefinition = "NVARCHAR(MAX)")
+    private String note;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -63,7 +63,10 @@ public class Order {
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
 
+    @Column(name = "created_by")
     private String createdBy;
+
+    @Column(name = "updated_by")
     private String updatedBy;
 
     @PrePersist

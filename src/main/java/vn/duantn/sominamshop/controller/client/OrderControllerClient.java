@@ -23,7 +23,7 @@ import vn.duantn.sominamshop.service.PromotionService;
 import vn.duantn.sominamshop.service.UserService;
 
 @Controller
-public class OrderController {
+public class OrderControllerClient {
 
     private final ProductService productService;
     private final CartService cartService;
@@ -32,7 +32,7 @@ public class OrderController {
     private final AddressService addressService;
     private final PromotionService promotionService;
 
-    public OrderController(ProductService productService, UserService userService, AddressService addressService,
+    public OrderControllerClient(ProductService productService, UserService userService, AddressService addressService,
             CartService cartService, OrderService orderService, PromotionService promotionService) {
         this.productService = productService;
         this.userService = userService;

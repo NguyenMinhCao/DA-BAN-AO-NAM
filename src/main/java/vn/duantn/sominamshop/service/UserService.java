@@ -1,5 +1,7 @@
 package vn.duantn.sominamshop.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +54,9 @@ public class UserService {
         user.setPassword(hashPassWord);
         user.setRole(this.getRoleByName("USER"));
         return user;
+    }
+
+    public Page<User> findUserByFullNameContainingAndRole(String fullName, Role role, Pageable pageable) {
+        return this.userRepository.findByFullNameContainingAndRole(fullName, role, pageable);
     }
 }
