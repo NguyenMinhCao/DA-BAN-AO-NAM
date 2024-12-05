@@ -51,68 +51,81 @@
                         <div class="col-md-6 col-12 mx-auto">
                             <h3>Create promotions</h3>
                             <hr>
-                            <form:form class="row g-3" method="post"
-                                       action="/admin/promotions/create-promotions" modelAttribute="newPromotions"
-                                       enctype="multipart/form-data">
-                                <c:set var="errorDiscountType">
-                                    <form:errors path="discountType" cssClass="invalid-feedback" />
-                                </c:set>
-                                <c:set var="errorStartDate">
-                                    <form:errors path="startDate" cssClass="invalid-feedback" />
-                                </c:set>
-                                <c:set var="errorEndDate">
-                                    <form:errors path="endDate" cssClass="invalid-feedback" />
-                                </c:set>
-                                <div class="col-md-6">
-                                    <label class="form-label">Discount Type:</label>
-                                    <form:input type="text"
-                                                class="form-control ${not empty errorDiscountType ? 'is-invalid':''}"
-                                                path="discountType" />
-                                        ${errorDiscountType}
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Price:</label>
-                                    <form:input type="text"
-                                                class="form-control ${not empty errorPrice ? 'is-invalid':''}"
-                                                path="price" />
-                                        ${errorPrice}
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Quantity:</label>
-                                    <form:input type="text"
-                                                class="form-control ${not empty errorQuantity ? 'is-invalid':''}"
-                                                path="quantity" />
-                                        ${errorQuantity}
-                                </div>
+<%--                            <form:form class="row g-3" method="post"--%>
+<%--                                       action="view-add"--%>
+<%--                                       enctype="multipart/form-data">--%>
+<%--                                <c:set var="errorDiscountType">--%>
+<%--                                    <form:errors path="discountType" cssClass="invalid-feedback" />--%>
+<%--                                </c:set>--%>
+<%--                                <c:set var="errorStartDate">--%>
+<%--                                    <form:errors path="startDate" cssClass="invalid-feedback" />--%>
+<%--                                </c:set>--%>
+<%--                                <c:set var="errorEndDate">--%>
+<%--                                    <form:errors path="endDate" cssClass="invalid-feedback" />--%>
+<%--                                </c:set>--%>
+<%--                                <div class="col-md-6">--%>
+<%--                                    <label class="form-label">Discount Type:</label>--%>
+<%--                                    <form:input type="text"--%>
+<%--                                                class="form-control ${not empty errorDiscountType ? 'is-invalid':''}"--%>
+<%--                                                path="discountType" />--%>
+<%--                                        ${errorDiscountType}--%>
+<%--                                </div>--%>
+<%--                                <div class="col-md-6">--%>
+<%--                                    <label class="form-label">Price:</label>--%>
+<%--                                    <form:input type="text"--%>
+<%--                                                class="form-control ${not empty errorPrice ? 'is-invalid':''}"--%>
+<%--                                                path="price" />--%>
+<%--                                        ${errorPrice}--%>
+<%--                                </div>--%>
+<%--                                <div class="col-md-6">--%>
+<%--                                    <label class="form-label">Quantity:</label>--%>
+<%--                                    <form:input type="text"--%>
+<%--                                                class="form-control ${not empty errorQuantity ? 'is-invalid':''}"--%>
+<%--                                                path="quantity" />--%>
+<%--                                        ${errorQuantity}--%>
+<%--                                </div>--%>
 
-                                <div class="col-md-12">
-                                    <label for="formFile" class="form-label">Avatar:</label>
-                                    <input class="form-control" type="file" id="avatarFile"
-                                           name="getImgFiles" accept=".png, .jpg, .jpeg" multiple>
+<%--                                <div class="col-12 mb-3">--%>
+<%--                                    <img style="max-height: 250px; display: none;" alt="avatar preview"--%>
+<%--                                         id="avatarPreview">--%>
+<%--                                </div>--%>
+<%--                                <div class="col-md-12">--%>
+<%--                                    <button type="submit" class="btn btn-primary">Create</button>--%>
+<%--                                    <a style="margin-left: 10px;" class="btn btn-warning"--%>
+<%--                                       href="/admin/product">Back</a>--%>
+<%--                                </div>--%>
+<%--                            </form:form>--%>
+                            <form action="/add" method="post">
+                                <div class="form-group">
+                                    <b class="bi bi-person"> <label>Discount Type</label></b>
+                                    <input type="text" class="form-control" name="discountType" placeholder="">
                                 </div>
-
-                                <div class="col-md-12">
-                                    <label for="formFile" class="form-label">Avatar:</label>
-                                    <input class="form-control" type="file" id="avatarFile"
-                                           name="getImgFiles" accept=".png, .jpg, .jpeg" multiple>
+                                <br>
+                                <div class="form-group">
+                                    <b class="bi bi-key-fill"> <label>Start Date</label></b>
+                                    <input type="date" class="form-control" name="startDate" placeholder="">
                                 </div>
-
-                                <div class="col-md-12">
-                                    <label for="formFile" class="form-label">Avatar:</label>
-                                    <input class="form-control" type="file" id="avatarFile"
-                                           name="getImgFiles" accept=".png, .jpg, .jpeg" multiple>
+                                <br>
+                                <div class="form-group">
+                                    <b class="bi bi-person-arms-up"> <label>End Date</label></b>
+                                    <input type="date" class="form-control" name="endDate" placeholder="">
                                 </div>
-
-                                <div class="col-12 mb-3">
-                                    <img style="max-height: 250px; display: none;" alt="avatar preview"
-                                         id="avatarPreview">
+                                <br>
+                                <br>
+                                <div class="mb-3">
+                                    <b class="bi bi-gender-ambiguous"><label>Status</label></b>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" value="1">
+                                        <label class="form-check-label">Hoạt động</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" value="0">
+                                        <label class="form-check-label">Không hoạt động</label>
+                                    </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary">Create</button>
-                                    <a style="margin-left: 10px;" class="btn btn-warning"
-                                       href="/admin/product">Back</a>
-                                </div>
-                            </form:form>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Thêm</button>
+                            </form>
                         </div>
                     </div>
                 </div>

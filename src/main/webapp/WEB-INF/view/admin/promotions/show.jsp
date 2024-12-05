@@ -31,7 +31,7 @@
                 <div class="container mt-5">
                     <div class="d-flex justify-content-between">
                         <h3>Table discount</h3>
-                        <a href="/admin/promotions/create" class="btn btn-primary">Create a discount</a>
+                        <a href="/view-add" class="btn btn-primary">Create a discount</a>
                     </div>
                     <hr>
                     <table class="table table-hover">
