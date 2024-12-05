@@ -43,6 +43,15 @@ public class Order {
     @Column(name = "total_amount", precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+    @Column(name = "shipping_unit")
+    private String shippingUnit;
+
+    @Column(name = "shipping_method")
+    private String shippingMethod;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

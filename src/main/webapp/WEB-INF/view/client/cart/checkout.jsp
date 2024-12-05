@@ -28,7 +28,101 @@
                         .out_button_area .checkout_btn_inner .main_btn a {
                             color: #fff;
                         }
+
+                        /* Ẩn nút radio gốc */
+                        input[type="radio"] {
+                            appearance: none;
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                            border: 2px solid #ccc;
+                            position: relative;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        }
+
+                        /* Tạo hiệu ứng dấu chấm giữa */
+                        input[type="radio"]:checked::after {
+                            content: "";
+                            height: 10px;
+                            width: 10px;
+                            border-radius: 50%;
+                            background: #71cd14;
+                            display: inline-block;
+                            position: absolute;
+                            right: 3px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+
+                        /* Khi hover vào nút */
+                        input[type="radio"]:hover {
+                            border-color: #888;
+                        }
+
+                        /* Ẩn các nút radio gốc */
+                        .radio-input-payment {
+                            display: none;
+                        }
+
+                        /* Kiểu cho phần hiển thị bên ngoài nút radio */
+                        .radio-btn-payment {
+                            padding: 10px 20px;
+                            border: 2px solid #ccc;
+                            cursor: pointer;
+                            margin-right: 10px;
+                            border-radius: 5px;
+                            transition: background-color 0.3s ease;
+                        }
+
+                        /* Khi radio được chọn */
+                        .radio-input-payment:checked+.radio-btn-payment {
+                            border-color: #71cd14;
+                            color: #71cd14;
+                        }
                     </style>
+                    <script>
+                        function setPaymentMethod() {
+                            // Lấy giá trị của phương thức thanh toán được chọn
+                            var paymentMethod = document.querySelector('input[name="payment"]:checked');
+
+                            // Kiểm tra nếu có phương thức thanh toán được chọn
+                            if (paymentMethod) {
+                                // Cập nhật giá trị của phương thức thanh toán vào một hidden input trong form
+                                document.getElementById('paymentMethod').value = paymentMethod.id;
+                            }
+                        }
+
+                        function setShippingMethod() {
+                            // Lấy giá trị của phương thức thanh toán được chọn
+                            var shippingMethod = document.querySelector('input[name="shipping_method"]:checked');
+
+                            // Kiểm tra nếu có phương thức thanh toán được chọn
+                            if (shippingMethod) {
+                                // Cập nhật giá trị của phương thức thanh toán vào một hidden input trong form
+                                document.getElementById('shippingMethod').value = shippingMethod.id;
+                            }
+                        }
+
+                        function setPromotionIdMethod() {
+                            // Lấy phần tử radio button đã được chọn
+                            var setPromotionId = document.querySelector('input[name="voucher-select"]:checked');
+
+                            // Kiểm tra nếu có voucher được chọn
+                            if (setPromotionId) {
+                                // In ra giá trị của voucher đã chọn
+                                console.log("Promotion ID selected: ", setPromotionId.value);
+
+                                // Cập nhật giá trị vào hidden input trong form
+                                document.getElementById('setPromotionId').value = setPromotionId.value;
+                            } else {
+                                console.log("No promotion selected.");
+                            }
+                        }
+
+                    </script>
                     <link rel="stylesheet" href="css/style1.css" />
                 </head>
 
@@ -210,13 +304,23 @@
                                                     <div class="shipping_box">
                                                         <ul class="list">
                                                             <li>
-                                                                <a href="#">Giao hàng hỏa tốc: đ50.000</a>
+                                                                <p style="display: inline;margin-right: 14px;"> Giao
+                                                                    hàng hỏa tốc: đ50.000 </p>
+                                                                <input type="radio" name="shipping_method"
+                                                                    id="express-delivery" checked
+                                                                    value="expressdelivery">
                                                             </li>
                                                             <li>
-                                                                <a href="#">Giao hàng nhanh: đ30.000</a>
+                                                                <p style="display: inline;margin-right: 14px;">Giao hàng
+                                                                    nhanh: đ30.000 </p>
+                                                                <input type="radio" name="shipping_method"
+                                                                    id="fast_delivery" value="fast delivery">
                                                             </li>
-                                                            <li class="active">
-                                                                <a href="#">Giao hàng tiết kiệm: đ20.000</a>
+                                                            <li>
+                                                                <p style="display: inline;margin-right: 14px;">Giao hàng
+                                                                    tiết kiệm: đ20.000</p>
+                                                                <input type="radio" name="shipping_method"
+                                                                    id="economy_delivery" value="economy delivery">
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -275,44 +379,33 @@
                                                                             Danh Sách Mã</p>
                                                                         <small>Có thể chọn một voucher</small>
                                                                     </div>
+                                                                    <c:forEach items="${listPromotions}" var="pro">
+                                                                        <div class="voucher-item">
+                                                                            <div class="hhiiii"
+                                                                                style="display: flex; justify-content: center; align-items: center; position: relative; background-color: #71cd14;">
+                                                                                <div class="vm3TF0"
+                                                                                    style="display: flex; justify-content: center; align-items: center; width: 90px; height: 90px;">
+                                                                                    <img class="e52C78 nh7RxM"
+                                                                                        style="width: 45px; height: 45px; border-radius: 50%;"
+                                                                                        src="/img/voucher.png"
+                                                                                        alt="Logo">
+                                                                                </div>
+                                                                            </div>
 
-                                                                    <div class="voucher-item">
-                                                                        <img src="https://go-korea.com/wp-content/themes/kadence-child/img/icon-su-kien.png"
-                                                                            alt="Placeholder for Image">
-                                                                        <div class="voucher-details">
-                                                                            <div class="voucher-exp">Giảm tối đa
-                                                                                300k | Đơn tối thiểu 0₫<br>HSD:
-                                                                                27.11.2024</div>
+                                                                            <div class="voucher-details">
+                                                                                <div class="voucher-exp">Giảm tối đa
+                                                                                    ${pro.discountValue}k | Đơn tối
+                                                                                    thiểu 0₫<br>HSD:
+                                                                                    27.11.2024</div>
+                                                                            </div>
+                                                                            <div class="voucher-checkbox"
+                                                                                style="padding-right: 15px;">
+                                                                                <input type="radio" id="voucher-select"
+                                                                                    name="voucher-select"
+                                                                                    value="${pro.id}" />
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="voucher-checkbox">
-                                                                            <input type="radio" name="voucher" />
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="voucher-item">
-                                                                        <img src="" alt="Placeholder for Image">
-                                                                        <div class="voucher-details">
-                                                                            <div class="voucher-exp">Giảm tối đa
-                                                                                300k | Đơn tối thiểu 0₫<br>HSD:
-                                                                                27.11.2024</div>
-                                                                        </div>
-                                                                        <div class="voucher-checkbox">
-                                                                            <input type="radio" name="voucher" />
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="voucher-item">
-                                                                        <img src="" alt="Placeholder for Image">
-                                                                        <div class="voucher-details">
-                                                                            <div class="voucher-exp">Giảm tối đa 37k
-                                                                                | Đơn tối thiểu 0₫<br>HSD:
-                                                                                27.11.2024</div>
-                                                                        </div>
-                                                                        <div class="voucher-checkbox">
-                                                                            <input type="radio" name="voucher" />
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Thêm nhiều class="voucher-item" để kiểm tra cuộn -->
+                                                                    </c:forEach>
                                                                 </div>
 
                                                             </div>
@@ -365,9 +458,21 @@
                                                         style="margin-bottom: 0px; margin-right: 10px;  margin-left: 10px;display: inline-block;">
                                                         Phương thức
                                                         thanh toán</h4>
-                                                    <button role="radio">Thanh toán khi
-                                                        nhận hàng</button>
-                                                    <button role="radio">VN PAY</button>
+                                                    <div class="payment-methods" style="display: inline;">
+                                                        <label class="radio-label">
+                                                            <input type="radio" name="payment" id="cash-on-delivery"
+                                                                class="radio-input-payment" value="Thanh toán khi nhận
+                                                                hàng" checked>
+                                                            <span class="radio-btn-payment">Thanh toán khi nhận
+                                                                hàng</span>
+                                                        </label>
+                                                        <label class="radio-label">
+                                                            <input type="radio" name="payment" id="vnpay"
+                                                                class="radio-input-payment" value="VN PAY">
+                                                            <span class="radio-btn-payment">VN PAY</span>
+                                                        </label>
+                                                    </div>
+
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -386,8 +491,19 @@
                                                         </div>
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
+                                                            <span>Tổng giảm giá :</span>
+                                                            <p>
+                                                                <fmt:formatNumber type="number" value="${totalPrice}" />
+                                                                đ
+                                                            </p>
+                                                        </div>
+                                                        <div
+                                                            style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng tiền phí vận chuyển :</span>
-                                                            <p>343443</p>
+                                                            <p>
+                                                                <fmt:formatNumber type="number" value="${totalPrice}" />
+                                                                đ
+                                                            </p>
                                                         </div>
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
@@ -411,7 +527,7 @@
                                                         <a class="gray_btn" href="/cart">Giỏ hàng</a>
                                                         <div class="main_btn">
                                                             <a style="font-size: 12px;font-weight: 500;" class="btn"
-                                                                onclick="document.getElementById('myForm').submit();">Đặt
+                                                                onclick="setPaymentMethod(); setShippingMethod(); setPromotionIdMethod(); document.getElementById('myForm').submit();">Đặt
                                                                 hàng</a>
 
                                                             <form:form id="myForm" action="/order-checkout"
@@ -422,6 +538,15 @@
 
                                                                 <form:input path="totalAmount"
                                                                     value="${orderCheckout.totalAmount != null ? orderCheckout.totalAmount : totalPrice}" />
+
+                                                                <form:input path="paymentMethod" type="hidden"
+                                                                    id="paymentMethod" name="paymentMethod" />
+
+                                                                <form:input path="shippingMethod" type="hidden"
+                                                                    id="shippingMethod" name="shippingMethod" />
+
+                                                                <form:input path="promotionId" type="hidden"
+                                                                    id="setPromotionId" name="promotionId" />
                                                             </form:form>
                                                         </div>
                                                     </div>

@@ -10,4 +10,7 @@ import lombok.Setter;
 public class OrderCheckoutDTO {
     private String address;
     private BigDecimal totalAmount;
+    private String paymentMethod;
+    private String shippingMethod;
+    private Long promotionId;
 }

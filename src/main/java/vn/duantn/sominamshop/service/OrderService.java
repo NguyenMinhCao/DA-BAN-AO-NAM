@@ -10,6 +10,7 @@ import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
+import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.dto.OrderCheckoutDTO;
@@ -24,14 +25,17 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final PromotionService promotionService;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
-            CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository) {
+            CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
+            PromotionService promotionService) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
+        this.promotionService = promotionService;
     }
 
     public List<Order> findOrderByUser(User user) {
@@ -51,6 +55,12 @@ public class OrderService {
                 order.setTotalAmount(dto.getTotalAmount());
                 order.setUser(userByEmail);
                 order.setTotalProducts(cartByUser.getTotalProducts());
+                order.setPaymentMethod(dto.getPaymentMethod());
+                order.setShippingMethod(dto.getShippingMethod());
+                if (dto.getPromotionId() != null) {
+                    Promotion promotionById = this.promotionService.findPromotionById(dto.getPromotionId()).get();
+                    order.setPromotion(promotionById);
+                }
                 this.orderRepository.save(order);
 
                 // create order Detail

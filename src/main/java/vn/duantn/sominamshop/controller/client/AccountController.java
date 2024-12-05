@@ -11,8 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import vn.duantn.sominamshop.model.Order;
+import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.service.OrderService;
+import vn.duantn.sominamshop.service.PromotionService;
 import vn.duantn.sominamshop.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,6 +68,7 @@ public class AccountController {
 
         model.addAttribute("orderUsers", orderByUsers);
         model.addAttribute("userByEmail", userByEmail);
+
         return "client/account/order-show";
     }
 

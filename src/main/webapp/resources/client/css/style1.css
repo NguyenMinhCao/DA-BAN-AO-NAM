@@ -253,19 +253,19 @@
 .voucher-item {
     display: flex;
     align-items: center;
-    padding: 15px;
+    /* padding: 15px; */
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-bottom: 10px;
     background-color: #f9f9f9;
 }
 
-.voucher-item img {
+/* .voucher-item img {
     width: 80px;
     height: 80px;
     border: 1px dashed #ccc;
     background-color: #fff;
-}
+} */
 
 .voucher-details {
     margin-left: 15px;
