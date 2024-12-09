@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderCheckoutDTO {
+public class OrderUpdateRequestDTO {
     private String address;
     private BigDecimal totalAmount;
     private String paymentMethod;

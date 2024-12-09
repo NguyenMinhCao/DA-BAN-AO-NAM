@@ -25,6 +25,65 @@
                     <link rel="stylesheet" href="css/style.css" />
                     <link rel="stylesheet" href="css/responsive.css" />
                     <link rel="stylesheet" href="css/style1.css" />
+                    <style>
+                        .out_button_area .checkout_btn_inner .main_btn a {
+                            color: #fff;
+                        }
+
+                        /* Ẩn nút radio gốc */
+                        input[type="radio"] {
+                            appearance: none;
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                            border: 2px solid #ccc;
+                            position: relative;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        }
+
+                        /* Tạo hiệu ứng dấu chấm giữa */
+                        input[type="radio"]:checked::after {
+                            content: "";
+                            height: 10px;
+                            width: 10px;
+                            border-radius: 50%;
+                            background: #71cd14;
+                            display: inline-block;
+                            position: absolute;
+                            right: 3px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+
+                        /* Khi hover vào nút */
+                        input[type="radio"]:hover {
+                            border-color: #888;
+                        }
+
+                        /* Ẩn các nút radio gốc */
+                        .radio-input-payment {
+                            display: none;
+                        }
+
+                        /* Kiểu cho phần hiển thị bên ngoài nút radio */
+                        .radio-btn-payment {
+                            padding: 10px 20px;
+                            border: 2px solid #ccc;
+                            cursor: pointer;
+                            margin-right: 10px;
+                            border-radius: 5px;
+                            transition: background-color 0.3s ease;
+                        }
+
+                        /* Khi radio được chọn */
+                        .radio-input-payment:checked+.radio-btn-payment {
+                            border-color: #71cd14;
+                            color: #71cd14;
+                        }
+                    </style>
                 </head>
 
                 <body>
@@ -142,136 +201,132 @@
                                                         <div class="shipping_box">
                                                             <ul class="list">
                                                                 <li>
-                                                                    <a href="#">Giao hàng hỏa tốc: đ50.000</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#">Giao hàng nhanh: đ30.000</a>
-                                                                </li>
-                                                                <li class="active">
-                                                                    <a href="#">Giao hàng tiết kiệm: đ20.000</a>
-                                                                </li>
-                                                            </ul>
+                                                                    <p style="display: inline;margin-right: 14px;"> Giao
+                                                                        hàng hỏa tốc: đ50.000 </p>
+                                                                    <input type="radio" name="shipping_method"
+                                                                        id="expressDelivery" value="express" <c:if
+                                                                        test="${sessionScope.shippingMethodInOrder == 'express'}">checked
+                    </c:if>>
+                    </li>
+                    <li>
+                        <p style="display: inline;margin-right: 14px;">Giao
+                            hàng
+                            nhanh: đ30.000 </p>
+                        <input type="radio" name="shipping_method" id="fastDelivery" value="fast" <c:if
+                            test="${sessionScope.shippingMethodInOrder == 'fast'}">checked
+                        </c:if>>
+                    </li>
+                    <li>
+                        <p style="display: inline;margin-right: 14px;">Giao
+                            hàng
+                            tiết kiệm: đ20.000</p>
+                        <input type="radio" name="shipping_method" id="economyDelivery" value="economy" <c:if
+                            test="${sessionScope.shippingMethodInOrder == 'economy'}">checked
+                        </c:if>>
+                    </li>
+                    </ul>
+                    </div>
+                    </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td-voucher-add" colspan="3">
+                            <p><i style="color: orange; font-size: 11px;" class="ti-layout-width-default"></i></p>
+                            <p style="margin-left: 5px;">Voucher</p>
+                            <p style="font-weight: bold;">
+                                <button class="open-btn-add-voucher" id="openModalBtnAddVoucher"
+                                    style="font-weight: 400;">Chọn hoặc nhập mã
+                                </button>
+                            </p>
+                        </td>
+                        <!-- <td colspan="1"></td> -->
+                        <td colspan="2">
+                            <h5 style="display: inline-block;">Tổng thanh toán (
+                                <%=pageContext.getAttribute("sumInCart")%> sản
+                                    phẩm):
+                            </h5>
+                            <h5 style="color: #71cd14;display: inline-block;">
+                                <fmt:formatNumber type="number" value="${totalPrice}" />
+                                đ
+                            </h5>
+                            <div class="modal-overlay-add-voucher" id="modalOverlayAddVoucher">
+                                <!-- Nội dung modal -->
+                                <div class="modal-content-add-voucher">
+                                    <div class="header-voucher">
+                                        <h3>Chọn voucher</h3>
+                                        <hr>
+                                    </div>
+
+                                    <div class="body-voucher">
+                                        <div class="search-voucher"
+                                            style="display: flex;align-items: center; background: #f8f8f8; padding: 8px;justify-content: space-between;">
+                                            <label style="margin-bottom: 0px; margin-left: 9px;">Mã
+                                                voucher</label>
+                                            <div class="input-with-validator">
+                                                <input style="border:none; width: 200px; padding: 0px; outline: none;"
+                                                    type="text" value="" placeholder="Mã Shopee Voucher"
+                                                    maxlength="255">
+                                            </div>
+                                            <button class="button-add-voucher">ÁP
+                                                DỤNG</button>
+                                        </div>
+                                        <div class="voucher-list">
+                                            <div style="margin: 10px 0;">
+                                                <p style="margin-bottom: 0px; font-weight: bold;">
+                                                    Danh Sách Mã
+                                                </p>
+                                                <small>Có thể chọn một voucher</small>
+                                            </div>
+                                            <c:forEach items="${listPromotions}" var="pro">
+                                                <div class="voucher-item">
+                                                    <div class="hhiiii"
+                                                        style="display: flex; justify-content: center; align-items: center; position: relative; background-color: #71cd14;">
+                                                        <div class="vm3TF0"
+                                                            style="display: flex; justify-content: center; align-items: center; width: 90px; height: 90px;">
+                                                            <img class="e52C78 nh7RxM"
+                                                                style="width: 45px; height: 45px; border-radius: 50%;"
+                                                                src="/img/voucher.png" alt="Logo">
                                                         </div>
-                                                    </td>
-                                                </tr>
+                                                    </div>
 
-                                                <tr>
-                                                    <td class="td-voucher-add" colspan="3">
-                                                        <p><i style="color: orange; font-size: 11px;"
-                                                                class="ti-layout-width-default"></i></p>
-                                                        <p style="margin-left: 5px;">Voucher</p>
-                                                        <p style="font-weight: bold;">
-                                                            <button class="open-btn-add-voucher"
-                                                                id="openModalBtnAddVoucher"
-                                                                style="font-weight: 400;">Chọn hoặc nhập mã
-                                                            </button>
-                                                        </p>
-                                                    </td>
-                                                    <!-- <td colspan="1"></td> -->
-                                                    <td colspan="2">
-                                                        <h5 style="display: inline-block;">Tổng thanh toán (
-                                                            <%=pageContext.getAttribute("sumInCart")%> sản
-                                                                phẩm):
-                                                        </h5>
-                                                        <h5 style="color: #71cd14;display: inline-block;">
-                                                            <fmt:formatNumber type="number" value="${totalPrice}" />
-                                                            đ
-                                                        </h5>
-                                                        <div class="modal-overlay-add-voucher"
-                                                            id="modalOverlayAddVoucher">
-                                                            <!-- Nội dung modal -->
-                                                            <div class="modal-content-add-voucher">
-                                                                <div class="header-voucher">
-                                                                    <h3>Chọn voucher</h3>
-                                                                    <hr>
-                                                                </div>
+                                                    <div class="voucher-details">
+                                                        <div class="voucher-exp">Giảm tối đa
+                                                            ${pro.discountValue}k | Đơn tối
+                                                            thiểu 0₫<br>HSD:
+                                                            27.11.2024</div>
+                                                    </div>
+                                                    <div class="voucher-checkbox" style="padding-right: 15px;">
+                                                        <input type="radio" id="voucherSelect" name="voucher-select"
+                                                            value="${pro.id}" />
+                                                    </div>
+                                                </div>
+                                                <!-- <c:set var="discountValue"
+                                                                                value="${listPromotions[0].discountValue}" /> -->
+                                            </c:forEach>
+                                        </div>
 
-                                                                <div class="body-voucher">
-                                                                    <div class="search-voucher"
-                                                                        style="display: flex;align-items: center; background: #f8f8f8; padding: 8px;justify-content: space-between;">
-                                                                        <label
-                                                                            style="margin-bottom: 0px; margin-left: 9px;">Mã
-                                                                            voucher</label>
-                                                                        <div class="input-with-validator">
-                                                                            <input
-                                                                                style="border:none; width: 200px; padding: 0px; outline: none;"
-                                                                                type="text" value=""
-                                                                                placeholder="Mã Shopee Voucher"
-                                                                                maxlength="255">
-                                                                        </div>
-                                                                        <button class="button-add-voucher">ÁP
-                                                                            DỤNG</button>
-                                                                    </div>
-                                                                    <div class="voucher-list">
-                                                                        <div style="margin: 10px 0;">
-                                                                            <p
-                                                                                style="margin-bottom: 0px; font-weight: bold;">
-                                                                                Danh Sách Mã</p>
-                                                                            <small>Có thể chọn một voucher</small>
-                                                                        </div>
+                                    </div>
+                                    <div class="footer-voucher">
+                                        <button class="close-btn-add-voucher" id="closeModalBtnAddVouCher">TRỞ
+                                            LẠI</button>
+                                        <button class="OK-btn-add-voucher" id="closeModalBtnAddVouCher">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
 
-                                                                        <div class="voucher-item">
-                                                                            <img src="https://go-korea.com/wp-content/themes/kadence-child/img/icon-su-kien.png"
-                                                                                alt="Placeholder for Image">
-                                                                            <div class="voucher-details">
-                                                                                <div class="voucher-exp">Giảm tối đa
-                                                                                    300k | Đơn tối thiểu 0₫<br>HSD:
-                                                                                    27.11.2024</div>
-                                                                            </div>
-                                                                            <div class="voucher-checkbox">
-                                                                                <input type="radio" name="voucher" />
-                                                                            </div>
-                                                                        </div>
+                    <tr class="out_button_area">
+                        <td colspan="2"></td>
+                        <td colspan="3">
+                            <div class="checkout_btn_inner">
+                                <a class="gray_btn" href="/products">Tiếp tục mua sắm</a>
+                                <a class="main_btn" href="/order">Đi đến thanh toán</a>
+                            </div>
+                        </td>
+                    </tr>
 
-                                                                        <div class="voucher-item">
-                                                                            <img src="" alt="Placeholder for Image">
-                                                                            <div class="voucher-details">
-                                                                                <div class="voucher-exp">Giảm tối đa
-                                                                                    300k | Đơn tối thiểu 0₫<br>HSD:
-                                                                                    27.11.2024</div>
-                                                                            </div>
-                                                                            <div class="voucher-checkbox">
-                                                                                <input type="radio" name="voucher" />
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="voucher-item">
-                                                                            <img src="" alt="Placeholder for Image">
-                                                                            <div class="voucher-details">
-                                                                                <div class="voucher-exp">Giảm tối đa 37k
-                                                                                    | Đơn tối thiểu 0₫<br>HSD:
-                                                                                    27.11.2024</div>
-                                                                            </div>
-                                                                            <div class="voucher-checkbox">
-                                                                                <input type="radio" name="voucher" />
-                                                                            </div>
-                                                                        </div>
-                                                                        <!-- Thêm nhiều class="voucher-item" để kiểm tra cuộn -->
-                                                                    </div>
-
-                                                                </div>
-                                                                <div class="footer-voucher">
-                                                                    <button class="close-btn-add-voucher"
-                                                                        id="closeModalBtnAddVouCher">TRỞ LẠI</button>
-                                                                    <button class="OK-btn-add-voucher"
-                                                                        id="closeModalBtnAddVouCher">OK</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-
-                                                <tr class="out_button_area">
-                                                    <td colspan="2"></td>
-                                                    <td colspan="3">
-                                                        <div class="checkout_btn_inner">
-                                                            <a class="gray_btn" href="/products">Tiếp tục mua sắm</a>
-                                                            <a class="main_btn" href="/order">Đi đến thanh toán</a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-
-                                                <!-- <tr class="bottom_button">
+                    <!-- <tr class="bottom_button">
                                                     <td>
                                                         <a class="gray_btn" href="#">Update Cart</a>
                                                     </td>
@@ -286,12 +341,12 @@
                                                 </tr> -->
 
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                    </tbody>
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    </section>
                     </c:if>
 
                     <!--================End Cart Area =================-->
@@ -302,7 +357,7 @@
 
                     <!-- Optional JavaScript -->
                     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-                    <script src="/js/jquery-3.2.1.min.js"></script>
+                    <!-- <script src="/js/jquery-3.2.1.min.js"></script>
                     <script src="/js/popper.js"></script>
                     <script src="/js/bootstrap.min.js"></script>
                     <script src="/js/stellar.js"></script>
@@ -314,33 +369,11 @@
                     <script src="/js/jquery.ajaxchimp.min.js"></script>
                     <script src="/js/mail-script.js"></script>
                     <script src="/vendors/jquery-ui/jquery-ui.js"></script>
-                    <script src="/vendors/counter-up/jquery.waypoints.min.js"></script>
-                    <script src="/vendors/counter-up/jquery.counterup.js"></script>
-                    <script src="/js/theme.js"></script>
+                    <script src="/vendors/counter-up/jquery.wa  ypoints.min.js"></script>
+                    <script src="/vendors/counter-up/jquery.counterup.js"></script> -->
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                     <script src="/js/myjs.js"></script>
-                    <!-- <script>
-                        // Lấy các phần tử
-                        const modalOverlayAddVoucher = document.getElementById('modalOverlayAddVoucher');
-                        const openModalBtnAddVoucher = document.getElementById('openModalBtnAddVoucher');
-                        const closeModalBtnAddVouCher = document.getElementById('closeModalBtnAddVouCher');
-
-                        // Sự kiện mở modal
-                        openModalBtnAddVoucher.addEventListener('click', () => {
-                            modalOverlayAddVoucher.style.display = 'block'; // Hiển thị modal
-                        });
-
-                        // Sự kiện đóng modal
-                        closeModalBtnAddVouCher.addEventListener('click', () => {
-                            modalOverlayAddVoucher.style.display = 'none'; // Ẩn modal
-                        });
-
-                        // Đóng modal khi click ra ngoài nội dung
-                        modalOverlayAddVoucher.addEventListener('click', (e) => {
-                            if (e.target === modalOverlayAddVoucher) {
-                                modalOverlayAddVoucher.style.display = 'none'; // Ẩn modal
-                            }
-                        });
-                    </script> -->
+                    <script src="/js/ajaxjs.js"></script>
                 </body>
 
                 </html>

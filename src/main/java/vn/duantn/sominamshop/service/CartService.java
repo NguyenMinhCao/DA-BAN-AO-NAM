@@ -2,11 +2,13 @@ package vn.duantn.sominamshop.service;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
 import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
+import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.repository.CartDetailRepository;
@@ -19,13 +21,15 @@ public class CartService {
     private final UserService userService;
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
+    private final OrderService orderService;
 
     public CartService(ProductService productService, UserService userService, CartRepository cartRepository,
-            CartDetailRepository cartDetailRepository) {
+            CartDetailRepository cartDetailRepository, @Lazy OrderService orderService) {
         this.productService = productService;
         this.userService = userService;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
+        this.orderService = orderService;
     }
 
     public void addProductToCart(String email, long idProduct, HttpSession session) {
@@ -36,6 +40,12 @@ public class CartService {
             cart.setTotalProducts(0);
             cart.setUser(user);
             this.cartRepository.save(cart);
+
+            // tạo mới một order phục vụ cho bên order không liên quan đến cart
+            Order order = new Order();
+            order.setPaymentMethod("cash-on-delivery");
+            order.setShippingMethod("fast");
+            this.orderService.saveOrder(order);
         }
         Product product = this.productService.findProductById(idProduct);
 
@@ -87,6 +97,13 @@ public class CartService {
         int sum = findLstCartDetail.size();
         cart.setTotalProducts(sum);
         this.cartRepository.save(cart);
+        if (sum == 0) {
+            Order order = this.orderService.findOrderByStatusAndCreatedBy();
+            if (order != null) {
+                this.orderService.deleteOrder(order);
+            }
+            this.cartRepository.delete(cart);
+        }
         session.setAttribute("sum", sum);
     }
 

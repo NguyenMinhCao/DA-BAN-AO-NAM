@@ -14,13 +14,7 @@
                     <!-- Bootstrap CSS -->
                     <link rel="stylesheet" href="css/bootstrap.css" />
                     <link rel="stylesheet" href="vendors/linericon/style.css" />
-                    <link rel="stylesheet" href="css/font-awesome.min.css" />
                     <link rel="stylesheet" href="css/themify-icons.css" />
-                    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css" />
-                    <link rel="stylesheet" href="vendors/lightbox/simpleLightbox.css" />
-                    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css" />
-                    <link rel="stylesheet" href="vendors/animate-css/animate.css" />
-                    <link rel="stylesheet" href="vendors/jquery-ui/jquery-ui.css" />
                     <!-- main css -->
                     <link rel="stylesheet" href="css/style.css" />
                     <link rel="stylesheet" href="css/responsive.css" />
@@ -83,77 +77,14 @@
                             color: #71cd14;
                         }
                     </style>
-                    <script>
-                        function setPaymentMethod() {
-                            // Lấy giá trị của phương thức thanh toán được chọn
-                            var paymentMethod = document.querySelector('input[name="payment"]:checked');
 
-                            // Kiểm tra nếu có phương thức thanh toán được chọn
-                            if (paymentMethod) {
-                                // Cập nhật giá trị của phương thức thanh toán vào một hidden input trong form
-                                document.getElementById('paymentMethod').value = paymentMethod.id;
-                            }
-                        }
-
-                        function setShippingMethod() {
-                            // Lấy giá trị của phương thức thanh toán được chọn
-                            var shippingMethod = document.querySelector('input[name="shipping_method"]:checked');
-
-                            // Kiểm tra nếu có phương thức thanh toán được chọn
-                            if (shippingMethod) {
-                                // Cập nhật giá trị của phương thức thanh toán vào một hidden input trong form
-                                document.getElementById('shippingMethod').value = shippingMethod.id;
-                            }
-                        }
-
-                        function setPromotionIdMethod() {
-                            // Lấy phần tử radio button đã được chọn
-                            var setPromotionId = document.querySelector('input[name="voucher-select"]:checked');
-
-                            // Kiểm tra nếu có voucher được chọn
-                            if (setPromotionId) {
-                                // In ra giá trị của voucher đã chọn
-                                console.log("Promotion ID selected: ", setPromotionId.value);
-
-                                // Cập nhật giá trị vào hidden input trong form
-                                document.getElementById('setPromotionId').value = setPromotionId.value;
-                            } else {
-                                console.log("No promotion selected.");
-                            }
-                        }
-
-                        // Hàm cập nhật tổng phí vận chuyển khi chọn phương thức giao hàng
-                        // Hàm cập nhật tổng phí vận chuyển khi chọn phương thức giao hàng
-                        function updateShippingCost() {
-                            const selectedShippingMethod = document.querySelector('input[name="shipping_method"]:checked');
-                            const shippingCost = selectedShippingMethod ? parseInt(selectedShippingMethod.value) : 0;
-
-                            const totalShippingElement = document.getElementById("total-shipping-cost");
-                            totalShippingElement.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(shippingCost);
-                        }
-
-                        // Lắng nghe sự kiện thay đổi khi người dùng chọn phương thức giao hàng
-                        const shippingRadios = document.querySelectorAll('input[name="shipping_method"]');
-
-                        // Gọi hàm một lần khi trang được tải lên để thiết lập giá trị ban đầu
-                        document.addEventListener('DOMContentLoaded', updateShippingCost);
-
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const shippingRadios = document.querySelectorAll('input[name="shipping_method"]');
-                            console.log(shippingRadios); // Kiểm tra lại sau khi DOM được tải xong
-                            shippingRadios.forEach(radio => {
-                                radio.addEventListener('change', updateShippingCost); // Đảm bảo rằng hàm được gọi khi thay đổi
-                            });
-                        });
-
-                    </script>
                     <link rel="stylesheet" href="css/style1.css" />
                 </head>
 
                 <body>
                     <c:set var="discountTotal" value="0" />
                     <c:set var="shippingTotal" value="0" />
-                    <c:set var="paymentTotal" value="0" />
+                    <c:set var="discountValue" value="0" />
                     <!--================Header Menu Area =================-->
                     <header class="header_area">
                         <div class="top_menu">
@@ -334,19 +265,28 @@
                                                                 <p style="display: inline;margin-right: 14px;"> Giao
                                                                     hàng hỏa tốc: đ50.000 </p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="express-delivery" checked value="50000">
+                                                                    id="express-delivery" value="express" <c:if
+                                                                    test="${sessionScope.shippingMethodInOrder == 'express'}">
+                                                                checked
+                                                                </c:if>>
                                                             </li>
                                                             <li>
                                                                 <p style="display: inline;margin-right: 14px;">Giao hàng
                                                                     nhanh: đ30.000 </p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="fast_delivery" value="30000">
+                                                                    id="fast_delivery" value="fast" <c:if
+                                                                    test="${sessionScope.shippingMethodInOrder == 'fast'}">
+                                                                checked
+                                                                </c:if>>
                                                             </li>
                                                             <li>
                                                                 <p style="display: inline;margin-right: 14px;">Giao hàng
                                                                     tiết kiệm: đ20.000</p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="economy_delivery" value="20000">
+                                                                    id="economy_delivery" value="economy" <c:if
+                                                                    test="${sessionScope.shippingMethodInOrder == 'economy'}">
+                                                                checked
+                                                                </c:if>>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -402,7 +342,8 @@
                                                                     <div style="margin: 10px 0;">
                                                                         <p
                                                                             style="margin-bottom: 0px; font-weight: bold;">
-                                                                            Danh Sách Mã</p>
+                                                                            Danh Sách Mã
+                                                                        </p>
                                                                         <small>Có thể chọn một voucher</small>
                                                                     </div>
                                                                     <c:forEach items="${listPromotions}" var="pro">
@@ -426,11 +367,18 @@
                                                                             </div>
                                                                             <div class="voucher-checkbox"
                                                                                 style="padding-right: 15px;">
-                                                                                <input type="radio" id="voucher-select"
+                                                                                <input type="radio"
                                                                                     name="voucher-select"
-                                                                                    value="${pro.discountValue}" />
+                                                                                    value="${pro.id}"
+                                                                                    data-discount="${pro.discountValue}"
+                                                                                    <c:if
+                                                                                    test="${promotionInOrder.id == pro.id}">
+                                                                                checked
+                                                                                </c:if>/>
                                                                             </div>
                                                                         </div>
+                                                                        <!-- <c:set var="discountValue"
+                                                                            value="${listPromotions[0].discountValue}" /> -->
                                                                     </c:forEach>
                                                                 </div>
 
@@ -486,15 +434,21 @@
                                                         thanh toán</h4>
                                                     <div class="payment-methods" style="display: inline;">
                                                         <label class="radio-label">
-                                                            <input type="radio" name="payment" id="cash-on-delivery"
-                                                                class="radio-input-payment" value="Thanh toán khi nhận
-                                                                hàng" checked>
+                                                            <input type="radio" name="payment-method"
+                                                                id="cash-on-delivery" class="radio-input-payment"
+                                                                value="cash-on-delivery" checked <c:if
+                                                                test="${paymentMethodInOrder == 'cash-on-delivery'}">
+                                                            checked
+                                                            </c:if>>
                                                             <span class="radio-btn-payment">Thanh toán khi nhận
                                                                 hàng</span>
                                                         </label>
                                                         <label class="radio-label">
-                                                            <input type="radio" name="payment" id="vnpay"
-                                                                class="radio-input-payment" value="VN PAY">
+                                                            <input type="radio" name="payment-method" id="vnpay"
+                                                                class="radio-input-payment" value="vn-pay" <c:if
+                                                                test="${paymentMethodInOrder == 'vn-pay'}">
+                                                            checked
+                                                            </c:if>>
                                                             <span class="radio-btn-payment">VN PAY</span>
                                                         </label>
                                                     </div>
@@ -519,24 +473,28 @@
                                                             style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng giảm giá :</span>
                                                             <p id="total-discount">
-                                                                <fmt:formatNumber type="number" value="0" />
-                                                                đ
-                                                                <c:set var="discountTotal" value="" />
+                                                                <c:if test="${promotionInOrder.discountValue == null}">0
+                                                                </c:if>
+                                                                <c:if test="${promotionInOrder.discountValue != null}">
+                                                                    ${promotionInOrder.discountValue}
+                                                                </c:if> đ
                                                             </p>
                                                         </div>
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng tiền phí vận chuyển :</span>
                                                             <p id="total-shipping-cost">
-                                                                <fmt:formatNumber type="number" value="" />
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${shippingPrice}" />
                                                                 đ
                                                             </p>
                                                         </div>
                                                         <div
                                                             style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng thanh toán :</span>
-                                                            <p>
-                                                                <fmt:formatNumber type="number" value="${totalPrice}" />
+                                                            <p id="total-payment">
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${totalPayment}" />
                                                                 đ
                                                             </p>
                                                         </div>
@@ -556,28 +514,11 @@
                                                         style="margin-left: 187px; display: inline-block;">
                                                         <a class="gray_btn" href="/cart">Giỏ hàng</a>
                                                         <div class="main_btn">
-                                                            <a style="font-size: 12px;font-weight: 500;" class="btn"
-                                                                onclick="setPaymentMethod(); setShippingMethod(); setPromotionIdMethod(); document.getElementById('myForm').submit();">Đặt
-                                                                hàng</a>
-
-                                                            <form:form id="myForm" action="/order-checkout"
-                                                                method="post" modelAttribute="orderCheckout"
-                                                                style="display: none;">
-                                                                <form:input path="address"
-                                                                    value="${orderCheckout.address != null ? orderCheckout.address : address.address}" />
-
-                                                                <form:input path="totalAmount"
-                                                                    value="${orderCheckout.totalAmount != null ? orderCheckout.totalAmount : totalPrice}" />
-
-                                                                <form:input path="paymentMethod" type="hidden"
-                                                                    id="paymentMethod" name="paymentMethod" />
-
-                                                                <form:input path="shippingMethod" type="hidden"
-                                                                    id="shippingMethod" name="shippingMethod" />
-
-                                                                <form:input path="promotionId" type="hidden"
-                                                                    id="setPromotionId" name="promotionId" />
-                                                            </form:form>
+                                                            <form action="/order-checkout" method="POST">
+                                                                <button type="submit"
+                                                                    style="font-size: 12px;font-weight: 500;"
+                                                                    class="btn">Đặt hàng</button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -596,42 +537,10 @@
 
                     <!-- Optional JavaScript -->
                     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-                    <script src="js/jquery-3.2.1.min.js"></script>
-                    <script src="js/popper.js"></script>
-                    <script src="js/bootstrap.min.js"></script>
-                    <script src="js/stellar.js"></script>
-                    <script src="vendors/lightbox/simpleLightbox.min.js"></script>
-                    <script src="vendors/nice-select/js/jquery.nice-select.min.js"></script>
-                    <script src="vendors/isotope/imagesloaded.pkgd.min.js"></script>
-                    <script src="vendors/isotope/isotope-min.js"></script>
-                    <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
-                    <script src="js/jquery.ajaxchimp.min.js"></script>
-                    <script src="js/mail-script.js"></script>
-                    <script src="vendors/jquery-ui/jquery-ui.js"></script>
-                    <script src="vendors/counter-up/jquery.waypoints.min.js"></script>
-                    <script src="vendors/counter-up/jquery.counterup.js"></script>
-                    <script src="js/theme.js"></script>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                     <script src="/js/myjs.js"></script>
-                    <script>
-                        function updateVoucherCost() {
-                            const selectedVoucherMethod = document.querySelector('input[name="voucher-select"]:checked');
-                            const shippingCost = selectedVoucherMethod ? parseInt(selectedVoucherMethod.value) : 0;
+                    <script src="/js/ajaxjs.js"></script>
 
-                            const totalShippingElement = document.getElementById("total-discount");
-                            totalShippingElement.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(shippingCost);
-                        }
-
-                        // Lắng nghe sự kiện thay đổi khi người dùng chọn phương thức giao hàng
-                        const Radios = document.querySelectorAll('input[name="voucher-select"]');
-
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const voucherRadios = document.querySelectorAll('input[name="voucher-select"]');
-                            console.log(voucherRadios); // Kiểm tra lại sau khi DOM được tải xong
-                            voucherRadios.forEach(radio => {
-                                radio.addEventListener('change', updateVoucherCost); // Đảm bảo rằng hàm được gọi khi thay đổi
-                            });
-                        });
-                    </script>
                 </body>
 
                 </html>

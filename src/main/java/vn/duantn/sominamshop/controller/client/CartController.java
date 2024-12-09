@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import vn.duantn.sominamshop.model.CartDetail;
+import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.CartService;
+import vn.duantn.sominamshop.service.OrderService;
 import vn.duantn.sominamshop.service.ProductService;
+import vn.duantn.sominamshop.service.PromotionService;
 import vn.duantn.sominamshop.service.UserService;
 
 @Controller
@@ -23,26 +27,49 @@ public class CartController {
     private final CartService cartService;
     private final UserService userService;
     private final AddressService addressService;
+    private final PromotionService promotionService;
+    private final OrderService orderService;
 
     public CartController(ProductService productService, UserService userService, AddressService addressService,
-            CartService cartService) {
+            CartService cartService, PromotionService promotionService, OrderService orderService) {
         this.productService = productService;
         this.userService = userService;
         this.addressService = addressService;
         this.cartService = cartService;
+        this.promotionService = promotionService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/cart")
     public String getCart(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
+        session.removeAttribute("promotionInOrder");
         String emailUser = (String) session.getAttribute("email");
+
         List<CartDetail> lstCartDetail = this.productService.getAllProductByUser(emailUser);
         double totalPrice = 0;
         for (CartDetail cartDetail : lstCartDetail) {
             totalPrice += cartDetail.getPrice();
         }
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("lstCartDetail", lstCartDetail);
+
+        // Lấy ra toàn bộ promotions để hiển thị
+        List<Promotion> listPromotions = this.promotionService.findAllPromotion();
+
+        // thiết lập lại trường promotion trong order có status null khi người dùng rời
+        // khỏi trang order
+        Order order = this.orderService.findOrderByStatusAndCreatedBy();
+        if (order != null) {
+            order.setPromotion(null);
+            this.orderService.saveOrder(order);
+        }
+
+        // thiết lập mặc định tự chọn radio button ở giao diện khi chuyển vào trang
+        // /cart hoặc /order
+        session.setAttribute("shippingMethodInOrder", order != null ? order.getShippingMethod() : null);
+
+        session.setAttribute("totalPrice", totalPrice);
+        session.setAttribute("lstCartDetail", lstCartDetail);
+        session.setAttribute("listPromotions", listPromotions);
         return "client/cart/show";
     }
 
