@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
+import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
@@ -22,14 +23,16 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
     private final OrderService orderService;
+    private final AddressService addressService;
 
     public CartService(ProductService productService, UserService userService, CartRepository cartRepository,
-            CartDetailRepository cartDetailRepository, @Lazy OrderService orderService) {
+            CartDetailRepository cartDetailRepository, @Lazy OrderService orderService, AddressService addressService) {
         this.productService = productService;
         this.userService = userService;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.orderService = orderService;
+        this.addressService = addressService;
     }
 
     public void addProductToCart(String email, long idProduct, HttpSession session) {
@@ -45,6 +48,12 @@ public class CartService {
             Order order = new Order();
             order.setPaymentMethod("cash-on-delivery");
             order.setShippingMethod("fast");
+            List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
+            for (Address address : arrAddressByUser) {
+                if (address.isStatus() == true) {
+                    order.setAddress(address);
+                }
+            }
             this.orderService.saveOrder(order);
         }
         Product product = this.productService.findProductById(idProduct);

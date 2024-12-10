@@ -20,4 +20,8 @@ public class AddressService {
         return this.addressRepository.findAllAddressByUser(user);
     }
 
+    public Address findAddressById(Long id) {
+        return this.addressRepository.findById(id).get();
+    }
+
 }

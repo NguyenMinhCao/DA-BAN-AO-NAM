@@ -167,7 +167,8 @@
 
 
 /* Định dạng nền mờ */
-.modal-overlay-add-voucher {
+.modal-overlay-add-voucher,
+.modal-overlay-address {
     display: none;
     /* Ẩn modal theo mặc định */
     position: fixed;
@@ -182,7 +183,8 @@
 }
 
 /* Định dạng hộp nội dung ở giữa màn hình */
-.modal-content-add-voucher {
+.modal-content-add-voucher,
+.modal-content-address {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -198,7 +200,9 @@
 
 /* Nút đóng */
 .OK-btn-add-voucher,
-.close-btn-add-voucher {
+.close-btn-add-voucher,
+.OK-btn-add-address,
+.close-btn-add-address {
     padding: 8px 20px;
     cursor: pointer;
     width: 140px;
@@ -209,23 +213,27 @@
     float: right;
 }
 
-.OK-btn-add-voucher {
+.OK-btn-add-voucher,
+.OK-btn-add-address {
     background-color: #ff5e57;
     color: white;
     border: none;
 }
 
-.close-btn-add-voucher {
+.close-btn-add-voucher,
+.close-btn-add-address {
     margin-right: 4px;
     background: none;
     border: .0625rem solid rgba(0, 0, 0, .26);
 }
 
-.OK-btn-add-voucher:hover {
+.OK-btn-add-voucher:hover,
+.OK-btn-add-address:hover {
     background-color: #ff3b2f;
 }
 
-.close-btn-add-voucher:hover {
+.close-btn-add-voucher:hover,
+.close-btn-add-address:hover {
     background-color: #ccc
 }
 
@@ -242,12 +250,19 @@
     display: inline-block;
 }
 
-.body-voucher .voucher-list {
+.body-voucher .voucher-list,
+.body-address {
     padding: 20px;
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: auto;
     padding: 0;
     margin: 0;
+}
+
+/* ẩn thành cuộn */
+.body-address::-webkit-scrollbar {
+    display: none;
+    /* Dành cho Chrome, Safari và Edge */
 }
 
 .voucher-item {
@@ -307,4 +322,232 @@
 .out_button_area .checkout_btn_inner .main_btn:hover a {
     background: transparent;
     color: #71cd14;
+}
+
+
+/* chọn address ở order*/
+.LX32OX {
+    padding: 0 10px 0 0;
+}
+
+.z6dXMD {
+    min-width: 0;
+    width: 100%;
+}
+
+.CRFtuZ {
+    margin-bottom: 4px;
+}
+
+.kdrlZs {
+    justify-content: space-between;
+}
+
+.MM8UDO,
+.ZnXbv2,
+.ieb1A9,
+.kdrlZs {
+    display: flex;
+}
+
+.h44KA2 {
+    margin-right: 8px;
+}
+
+.knfOzn {
+    color: rgba(0, 0, 0, .87);
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.kI16mM {
+    font-weight: 500;
+    min-width: 0;
+}
+
+.kI16mM {
+    display: inline-flex;
+}
+
+.ieb1A9,
+.kI16mM {
+    align-items: center;
+}
+
+._BEX6X {
+    border-left: .5px solid rgba(0, 0, 0, .26);
+    margin: 0 8px;
+}
+
+.EdB7nx,
+.F62XCn {
+    font-size: .875rem;
+    line-height: 1.25rem;
+}
+
+.EdB7nx {
+    color: rgba(0, 0, 0, .54);
+}
+
+.qVJxSe {
+    white-space: nowrap;
+}
+
+.MM8UDO {
+    flex-basis: 40px;
+}
+
+.MM8UDO {
+    justify-content: flex-end;
+}
+
+.zN45gZ {
+    background: none;
+    border: 0;
+    color: #08f;
+    outline: none;
+    padding: 4px;
+    white-space: nowrap;
+}
+
+.CRFtuZ {
+    margin-bottom: 4px;
+}
+
+.kdrlZs {
+    justify-content: space-between;
+}
+
+.h44KA2 {
+    margin-right: 8px;
+}
+
+.ZnXbv2 {
+    flex-grow: 1;
+    overflow-x: hidden;
+}
+
+.glTVDN {
+    font-size: .875rem;
+    line-height: 1.25rem;
+}
+
+.DuAeL9,
+.glTVDN {
+    color: rgba(0, 0, 0, .54);
+}
+
+.MM8UDO,
+.ZnXbv2,
+.ieb1A9,
+.kdrlZs {
+    display: flex;
+}
+
+.ieb1A9,
+.kI16mM {
+    align-items: center;
+}
+
+.MM8UDO,
+.ZnXbv2,
+.ieb1A9,
+.kdrlZs {
+    display: flex;
+}
+
+.ieb1A9,
+.kI16mM {
+    align-items: center;
+}
+
+.p2Hy8c {
+    padding-top: 4px;
+}
+
+.MM8UDO {
+    flex-basis: 40px;
+}
+
+.MM8UDO {
+    justify-content: flex-end;
+}
+
+.K9nwA9 {
+    margin-top: 4px;
+}
+
+.K9nwA9 {
+    flex-wrap: wrap;
+}
+
+.MM8UDO,
+.ZnXbv2,
+.ieb1A9,
+.kdrlZs {
+    display: flex;
+}
+
+.Fq8OwQ:last-child {
+    margin-right: 0;
+}
+
+.lVoK9N {
+    border-color: #ee4d2d;
+    color: #ee4d2d;
+}
+
+.Fq8OwQ {
+    margin: 0 4px 4px 0;
+}
+
+.mHRnNW {
+    border: .5px solid;
+    border-radius: 1px;
+    padding: 2px 4px;
+}
+
+.Yt_Dxy {
+    align-items: center;
+    background: none;
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    font-size: 14px;
+    justify-content: center;
+    min-width: 140px;
+    outline: none;
+    padding: 10px;
+}
+
+
+
+.sHL4SN {
+    border: 1px solid rgba(0, 0, 0, .09);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .03);
+    color: rgba(0, 0, 0, .65);
+    font-size: 1rem;
+    height: 40px;
+    line-height: 1.5rem;
+}
+
+.M4fibi,
+.hmAUGb {
+    background-color: #fff;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+.u2BTTb {
+    height: 16px;
+    width: 16px;
+    fill: rgba(0, 0, 0, .54);
+    margin-right: 8px;
+}
+
+.Yt_Dxy:hover {
+    opacity: .9;
 }

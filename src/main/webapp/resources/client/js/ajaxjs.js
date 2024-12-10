@@ -94,4 +94,26 @@ $(document).ready(function () {
         });
     });
 
+
+    $('.OK-btn-add-address').click(function () {
+        var selectedAddress = $("input[name='address-select']:checked").val();
+        var data = {
+            addressId: selectedAddress
+        };
+        // Gửi AJAX request
+        $.ajax({
+            url: '/order/update',  // Đường dẫn API
+            method: 'POST',           // Phương thức gửi dữ liệu
+            contentType: 'application/json',  // Đảm bảo dữ liệu được gửi dưới dạng JSON
+            data: JSON.stringify(data),      // Chuyển đối tượng JSON thành chuỗi JSON
+            success: function (response) {
+
+                console.log('Dữ liệu đã được gửi thành công!', response);
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu:', error);
+            }
+        });
+    });
+
 });

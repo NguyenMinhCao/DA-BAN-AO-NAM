@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.CartDetail;
@@ -40,10 +41,11 @@ public class OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final PromotionService promotionService;
     private final CounterRepository counterRepository;
+    private final AddressService addressService;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
-            PromotionService promotionService, CounterRepository counterRepository) {
+            PromotionService promotionService, CounterRepository counterRepository, AddressService addressService) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
@@ -51,6 +53,7 @@ public class OrderService {
         this.orderDetailRepository = orderDetailRepository;
         this.promotionService = promotionService;
         this.counterRepository = counterRepository;
+        this.addressService = addressService;
     }
 
     public List<Order> findOrderByUser(User user) {
@@ -115,8 +118,10 @@ public class OrderService {
     }
 
     public Map<String, Object> orderCheckoutUpdate(OrderUpdateRequestDTO orderReq, HttpSession session) {
+        session.removeAttribute("totalPayment");
         //
         Long promotionId = orderReq.getPromotionId();
+        Long addressId = orderReq.getAddressId();
         String shippingMethod = orderReq.getShippingMethod();
         String paymentMethod = orderReq.getPaymentMethod();
 
@@ -126,6 +131,16 @@ public class OrderService {
         Order order = this.findOrderByStatusAndCreatedBy();
 
         if (order != null) {
+
+            if (addressId != null) {
+                Address addressById = this.addressService.findAddressById(addressId);
+                order.setAddress(addressById);
+            }
+
+            if (paymentMethod != null) {
+                order.setPaymentMethod(paymentMethod);
+            }
+
             if (promotionId != null) {
                 promotionById = this.promotionService.findPromotionById(promotionId);
                 if (promotionById.isPresent()) {
@@ -134,71 +149,68 @@ public class OrderService {
                 }
             }
 
-            if (paymentMethod != null) {
-                order.setPaymentMethod(paymentMethod);
-            }
-
             if (shippingMethod != null) {
                 order.setShippingMethod(shippingMethod);
-
             }
 
             this.orderRepository.save(order);
 
-            String emailUser = (String) session.getAttribute("email");
+            if (shippingMethod != null || promotionId != null) {
+                String emailUser = (String) session.getAttribute("email");
 
-            // Lấy ra tổng tiền hàng
-            List<CartDetail> lstCartDetail = this.productService.getAllProductByUser(emailUser);
-            double totalPrice = 0;
-            for (CartDetail cartDetail : lstCartDetail) {
-                totalPrice += cartDetail.getPrice();
-            }
+                // Lấy ra tổng tiền hàng
+                List<CartDetail> lstCartDetail = this.productService.getAllProductByUser(emailUser);
+                double totalPrice = 0;
+                for (CartDetail cartDetail : lstCartDetail) {
+                    totalPrice += cartDetail.getPrice();
+                }
 
-            double shippingPrice = 0;
-            double discountValue = 0;
+                double shippingPrice = 0;
+                double discountValue = 0;
 
-            if (order.getShippingMethod().equals("express")) {
-                shippingPrice = 50000;
-            } else if (order.getShippingMethod().equals("fast")) {
-                shippingPrice = 30000;
-            } else {
-                shippingPrice = 20000;
-            }
+                if (order.getShippingMethod().equals("express")) {
+                    shippingPrice = 50000;
+                } else if (order.getShippingMethod().equals("fast")) {
+                    shippingPrice = 30000;
+                } else {
+                    shippingPrice = 20000;
+                }
 
-            double totalPayment = 0;
-            totalPayment = totalPrice + shippingPrice;
+                double totalPayment = 0;
+                totalPayment = totalPrice + shippingPrice;
 
-            // người dùng truyền lên promotion
-            if (promotionId != null) {
-                discountValue = Double.parseDouble(promotionById.get().getDiscountValue());
-            }
-            // người dùng không truyền lên nhưng trong DB có
-            else if (promotionId == null && order.getPromotion() != null) {
-                discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
-            }
-            // người dùng không truyền lên trong DB cũng ko có
-            else {
-                discountValue = 0;
-            }
+                // người dùng truyền lên promotion
+                if (promotionId != null) {
+                    discountValue = Double.parseDouble(promotionById.get().getDiscountValue());
+                }
+                // người dùng không truyền lên nhưng trong DB có
+                else if (promotionId == null && order.getPromotion() != null) {
+                    discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
+                }
+                // người dùng không truyền lên trong DB cũng ko có
+                else {
+                    discountValue = 0;
+                }
 
-            totalPayment = totalPayment - discountValue;
+                totalPayment = totalPayment - discountValue;
 
-            order.setTotalAmount(BigDecimal.valueOf(totalPayment));
-            this.orderRepository.save(order);
+                order.setTotalAmount(BigDecimal.valueOf(totalPayment));
+                this.orderRepository.save(order);
 
-            session.setAttribute("shippingMethodInOrder", order.getShippingMethod());
-            // session.setAttribute("paymentMethodInOrder", order.getPaymentMethod());
+                session.setAttribute("shippingMethodInOrder", order.getShippingMethod());
+                session.setAttribute("totalPayment", totalPayment);
+                // session.setAttribute("paymentMethodInOrder", order.getPaymentMethod());
 
-            // Trả về dữ liệu cần thiết cho client
-            // response.put("shippingMethod", order.getShippingMethod());
-            response.put("totalPayment", totalPayment);
-            response.put("shippingPrice", shippingPrice);
-            if (discountValue != 0) {
-                response.put("discountValue", order.getPromotion().getDiscountValue());
+                // Trả về dữ liệu cần thiết cho client
+                // response.put("shippingMethod", order.getShippingMethod());
+                response.put("totalPayment", totalPayment);
+                response.put("shippingPrice", shippingPrice);
+                if (discountValue != 0) {
+                    response.put("discountValue", order.getPromotion().getDiscountValue());
+                }
             }
 
         }
-
         return response;
     }
 

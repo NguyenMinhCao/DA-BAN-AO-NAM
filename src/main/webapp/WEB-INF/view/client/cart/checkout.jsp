@@ -172,6 +172,7 @@
                     <section class="cart_area" style="background-color: #f6f6f6;">
 
                         <div class="container">
+                            <!-- Bắt đầu hiển thị địa chỉ -->
                             <div class="container-place" style="background-color: #fff; margin-bottom: 20px;">
                                 <div class="line-top"></div>
                                 <div class="place">
@@ -186,15 +187,98 @@
                                         <div>
                                             <div class="place-detail-one">
                                                 <div class="PzGLCh">${address.fullName} ${address.phoneNumber}</div>
-                                                <div class="a9c4OR" style="margin-left: 20px;">${address.address}
+                                                <div class="a9c4OR" style="margin-left: 20px;">
+                                                    ${address.streetDetails}, ${address.address}
                                                 </div>
                                                 <div class="dIzOca">Mặc định</div>
                                             </div>
                                         </div>
-                                        <button class="VNkBIJ" style="color: #71cd14;">Thay đổi</button>
+                                        <button class="VNkBIJ" id="openModalBtnAddress" style="color: #71cd14;">Thay
+                                            đổi</button>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Kết thúc hiển thị địa chỉ -->
+
+                            <!-- Bắt đầu nội dung box địa chỉ -->
+                            <div class="modal-overlay-address" id="modalOverlayAddress">
+                                <!-- Nội dung modal -->
+                                <div class="modal-content-address">
+                                    <div class="header-address">
+                                        <h3 style="font-size: 20px;
+    font-weight: 500;">Địa chỉ của tôi</h3>
+                                    </div>
+
+                                    <div class="body-address">
+                                        <c:forEach items="${arrAddressByUser}" var="address">
+                                            <div class="address-item"
+                                                style="display: flex; padding: 16px 0; border-top: 1px solid rgba(0, 0, 0, .09);">
+                                                <div class="LX32OX">
+                                                    <div class="stardust-radio stardust-radio--checked">
+                                                        <input type="radio" name="address-select" value="${address.id}"
+                                                            <c:if test="${address.status == true}">
+                                                        checked
+                                                        </c:if>/>
+                                                    </div>
+                                                </div>
+                                                <div class="z6dXMD">
+                                                    <div class="" style="display: flex;">
+                                                        <div class="h44KA2 ZnXbv2">
+                                                            <span class="knfOzn kI16mM">
+                                                                <div class="bzNVjQ">${address.fullName}</div>
+                                                            </span>
+                                                            <div class="_BEX6X"></div>
+                                                            <div role="row" class="qVJxSe EdB7nx ieb1A9">(+84)
+                                                                ${address.phoneNumber}
+                                                            </div>
+                                                        </div>
+                                                        <div class="MM8UDO"><button class="zN45gZ">Cập nhật</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="CRFtuZ kdrlZs">
+                                                        <div class="h44KA2 ZnXbv2">
+                                                            <div class="glTVDN">
+                                                                <div class="ieb1A9">${address.streetDetails}</div>
+                                                                <div class="ieb1A9">${address.address}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="p2Hy8c MM8UDO"></div>
+                                                    </div>
+
+                                                    <div class="K9nwA9 ieb1A9" <c:if test="${address.status != true}">
+                                                        style="display: none;"
+                                                        </c:if>>
+                                                        <span class="Fq8OwQ lVoK9N mHRnNW">Mặc
+                                                            định
+                                                        </span>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                        <button class="sHL4SN Yt_Dxy hmAUGb">
+                                            <svg viewBox="0 0 10 10" class="u2BTTb">
+                                                <path stroke="none"
+                                                    d="m10 4.5h-4.5v-4.5h-1v4.5h-4.5v1h4.5v4.5h1v-4.5h4.5z">
+                                                </path>
+                                            </svg>
+                                            Thêm Địa Chỉ Mới
+                                        </button>
+                                    </div>
+
+                                    <hr>
+                                    <div class="footer-address">
+                                        <div style="margin-left: 142px;">
+                                            <button class="close-btn-add-address" id="closeModalBtnAddress">HỦY</button>
+                                            <button type="submit" class="OK-btn-add-address"
+                                                id="closeModalBtnAddressXn">XÁC
+                                                NHẬN</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Kết thúc nội dung box địa chỉ -->
 
                             <div class="cart_inner">
                                 <div class="table-responsive">
@@ -209,6 +293,7 @@
                                         </thead>
                                         <tbody>
                                             <c:set var="sumInCart" value="0" />
+                                            <!-- Bắt đầu hiển thị sản phẩm trong giỏ hàng -->
                                             <c:forEach items="${lstCartDetail}" var="cartDetail">
                                                 <tr>
                                                     <td>
@@ -253,7 +338,9 @@
                                                 </tr>
                                                 <c:set var="sumInCart" value="${cartDetail.cart.totalProducts}" />
                                             </c:forEach>
+                                            <!-- Kết thúc hiển thị sản phẩm trong giỏ hàng -->
 
+                                            <!-- Bắt đầu đơn vị vận chuyển  -->
                                             <tr class="shipping_area">
                                                 <td colspan="2" style="vertical-align:top;">
                                                     <h5>Chọn đơn vị vận chuyển</h5>
@@ -271,7 +358,8 @@
                                                                 </c:if>>
                                                             </li>
                                                             <li>
-                                                                <p style="display: inline;margin-right: 14px;">Giao hàng
+                                                                <p style="display: inline;margin-right: 14px;">Giao
+                                                                    hàng
                                                                     nhanh: đ30.000 </p>
                                                                 <input type="radio" name="shipping_method"
                                                                     id="fast_delivery" value="fast" <c:if
@@ -280,7 +368,8 @@
                                                                 </c:if>>
                                                             </li>
                                                             <li>
-                                                                <p style="display: inline;margin-right: 14px;">Giao hàng
+                                                                <p style="display: inline;margin-right: 14px;">Giao
+                                                                    hàng
                                                                     tiết kiệm: đ20.000</p>
                                                                 <input type="radio" name="shipping_method"
                                                                     id="economy_delivery" value="economy" <c:if
@@ -292,7 +381,9 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <!-- Kết thúc đơn vị vận chuyển  -->
 
+                                            <!-- Bắt đầu chọn voucher -->
                                             <tr>
                                                 <td class="td-voucher-add" colspan="2">
                                                     <p style="margin-left: 9px;"><i
@@ -393,39 +484,13 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <!-- <tr class="out_button_area">
-                                                <td colspan="1"></td>
-                                                <td colspan="3">
-                                                    <div class="checkout_btn_inner" style="margin-left: 107px">
-                                                        <a class="gray_btn" href="/cart">Giỏ hàng</a>
-                                                        <a class="main_btn" href="/order">Đặt hàng</a>
-                                                    </div>
-                                                </td>
-                                            </tr> -->
-
-                                            <!-- <tr class="bottom_button">
-                                                <td>
-                                                    <a class="gray_btn" href="#">Update Cart</a>
-                                                </td>
-
-                                                <td colspan="4">
-                                                    <div class="cupon_text">
-                                                        <input type="text" placeholder="Coupon Code" />
-                                                        <a class="main_btn" href="#">Apply</a>
-                                                        <a class="gray_btn" href="#">Close Coupon</a>
-                                                    </div>
-                                                </td>
-                                            </tr> -->
-
+                                            <!-- Kết thúc chọn voucher -->
 
                                         </tbody>
                                     </table>
                                     <table class="table" style="margin-top: 20px; background-color: #fff;">
-                                        <!-- <thead>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
-                                        </thead> -->
                                         <tbody>
+                                            <!-- Bắt đầu chọn phương thức thanh toán -->
                                             <tr class="out_button_area">
                                                 <td style="display: block;">
                                                     <h4
@@ -456,6 +521,9 @@
                                                 </td>
                                                 <td></td>
                                             </tr>
+                                            <!-- Kết thúc chọn phương thức thanh toán -->
+
+                                            <!-- Bắt đầu tính tiền trong đơn hàng -->
                                             <tr class="out_button_area">
                                                 <td></td>
                                                 <td>
@@ -473,7 +541,8 @@
                                                             style="display: flex; justify-content: space-between; height: 27px;">
                                                             <span>Tổng giảm giá :</span>
                                                             <p id="total-discount">
-                                                                <c:if test="${promotionInOrder.discountValue == null}">0
+                                                                <c:if test="${promotionInOrder.discountValue == null}">
+                                                                    0
                                                                 </c:if>
                                                                 <c:if test="${promotionInOrder.discountValue != null}">
                                                                     ${promotionInOrder.discountValue}
@@ -494,7 +563,7 @@
                                                             <span>Tổng thanh toán :</span>
                                                             <p id="total-payment">
                                                                 <fmt:formatNumber type="number"
-                                                                    value="${totalPayment}" />
+                                                                    value="${sessionScope.totalPayment}" />
                                                                 đ
                                                             </p>
                                                         </div>
@@ -502,10 +571,14 @@
 
                                                 </td>
                                             </tr>
+                                            <!-- Kết thúc tính tiền trong đơn hàng -->
+
+                                            <!-- Bắt đầu nút ấn đặt hàng -->
                                             <tr class="out_button_area">
                                                 <td>
                                                     <div class="" style="margin-left: 10px; ">
-                                                        Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo Điều
+                                                        Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo
+                                                        Điều
                                                         khoản Shopee
                                                     </div>
                                                 </td>
@@ -513,16 +586,16 @@
                                                     <div class="checkout_btn_inner"
                                                         style="margin-left: 187px; display: inline-block;">
                                                         <a class="gray_btn" href="/cart">Giỏ hàng</a>
-                                                        <div class="main_btn">
-                                                            <form action="/order-checkout" method="POST">
-                                                                <button type="submit"
-                                                                    style="font-size: 12px;font-weight: 500;"
-                                                                    class="btn">Đặt hàng</button>
-                                                            </form>
-                                                        </div>
+                                                        <form style="display: inline-block;" action="/order-checkout"
+                                                            method="POST">
+                                                            <button type="submit" class="main_btn">Đặt
+                                                                hàng</button>
+                                                        </form>
+
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <!-- Kết thúc nút ấn đặt hàng -->
                                         </tbody>
                                     </table>
                                 </div>

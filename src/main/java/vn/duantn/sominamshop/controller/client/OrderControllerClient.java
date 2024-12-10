@@ -74,7 +74,7 @@ public class OrderControllerClient {
         double totalPayment = 0;
         totalPayment = totalPrice + shippingPrice;
 
-        // ???
+        // Lấy địa chỉ mặc định
         User user = this.userService.findUserByEmail(emailUser);
         List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
         for (Address address : arrAddressByUser) {
@@ -85,6 +85,7 @@ public class OrderControllerClient {
 
         session.setAttribute("totalPayment", totalPayment);
         session.setAttribute("shippingPrice", shippingPrice);
+        session.setAttribute("arrAddressByUser", arrAddressByUser);
 
         return "client/cart/checkout";
     }
@@ -93,7 +94,7 @@ public class OrderControllerClient {
     public ResponseEntity<Map<String, Object>> postMethodName(@RequestBody OrderUpdateRequestDTO orderReq,
             HttpServletRequest req) {
         HttpSession session = req.getSession();
-       
+
         return ResponseEntity.ok(this.orderService.orderCheckoutUpdate(orderReq, session));
     }
 

@@ -3385,7 +3385,7 @@ h6 {
     letter-spacing: 0.25px;
     color: #fff;
     font-family: "Roboto", sans-serif;
-    font-size: 12px;
+    /* font-size: 12px; */
     font-weight: 500;
     line-height: 44px;
     outline: none !important;
