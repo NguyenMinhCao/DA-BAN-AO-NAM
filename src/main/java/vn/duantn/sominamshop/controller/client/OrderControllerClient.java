@@ -51,6 +51,7 @@ public class OrderControllerClient {
     @GetMapping("/order")
     public String getOrder(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
+        session.removeAttribute("checkIsStatusAddress");
         String emailUser = (String) session.getAttribute("email");
 
         // Lấy ra tổng tiền hàng
@@ -77,11 +78,11 @@ public class OrderControllerClient {
         // Lấy địa chỉ mặc định
         User user = this.userService.findUserByEmail(emailUser);
         List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
-        for (Address address : arrAddressByUser) {
-            if (address.isStatus() == true) {
-                model.addAttribute("address", address);
-            }
-        }
+
+        Long idAddress = order.getAddress().getId();
+        Address addressById = this.addressService.findAddressById(idAddress);
+
+        session.setAttribute("address", addressById);
 
         session.setAttribute("totalPayment", totalPayment);
         session.setAttribute("shippingPrice", shippingPrice);
@@ -94,6 +95,8 @@ public class OrderControllerClient {
     public ResponseEntity<Map<String, Object>> postMethodName(@RequestBody OrderUpdateRequestDTO orderReq,
             HttpServletRequest req) {
         HttpSession session = req.getSession();
+        // Kiểm tra người dùng có thay đổi address trong order không
+        session.setAttribute("checkChangeAddress", "true");
 
         return ResponseEntity.ok(this.orderService.orderCheckoutUpdate(orderReq, session));
     }

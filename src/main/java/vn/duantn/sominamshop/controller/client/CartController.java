@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.CartService;
 import vn.duantn.sominamshop.service.OrderService;
@@ -61,6 +63,15 @@ public class CartController {
         if (order != null) {
             order.setPromotion(null);
             this.orderService.saveOrder(order);
+        }
+
+        // Lấy địa chỉ mặc định phục vụ hiển thị bên /order
+        User user = this.userService.findUserByEmail(emailUser);
+        List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
+        for (Address address : arrAddressByUser) {
+            if (address.isStatus() == true) {
+                session.setAttribute("address", address);
+            }
         }
 
         // thiết lập mặc định tự chọn radio button ở giao diện khi chuyển vào trang

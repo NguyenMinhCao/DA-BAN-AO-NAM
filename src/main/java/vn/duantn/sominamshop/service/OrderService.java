@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -22,6 +23,7 @@ import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.OrderStatus;
+import vn.duantn.sominamshop.model.dto.AddressDTO;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;
@@ -118,6 +120,7 @@ public class OrderService {
     }
 
     public Map<String, Object> orderCheckoutUpdate(OrderUpdateRequestDTO orderReq, HttpSession session) {
+
         session.removeAttribute("totalPayment");
         //
         Long promotionId = orderReq.getPromotionId();
@@ -131,10 +134,16 @@ public class OrderService {
         Order order = this.findOrderByStatusAndCreatedBy();
 
         if (order != null) {
-
             if (addressId != null) {
                 Address addressById = this.addressService.findAddressById(addressId);
                 order.setAddress(addressById);
+                AddressDTO dto = new AddressDTO();
+                dto.setAddress(addressById.getAddress());
+                dto.setFullName(addressById.getFullName());
+                dto.setPhoneNumber(addressById.getPhoneNumber());
+                dto.setStreetDetails(addressById.getStreetDetails());
+                dto.setStatus(addressById.isStatus());
+                response.put("addressById", dto);
             }
 
             if (paymentMethod != null) {
@@ -203,6 +212,7 @@ public class OrderService {
 
                 // Trả về dữ liệu cần thiết cho client
                 // response.put("shippingMethod", order.getShippingMethod());
+
                 response.put("totalPayment", totalPayment);
                 response.put("shippingPrice", shippingPrice);
                 if (discountValue != 0) {

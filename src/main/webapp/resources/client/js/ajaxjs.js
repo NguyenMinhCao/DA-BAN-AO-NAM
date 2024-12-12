@@ -94,8 +94,8 @@ $(document).ready(function () {
         });
     });
 
-
-    $('.OK-btn-add-address').click(function () {
+    // thay đổi địa chỉ
+    $('.OK-btn-change-address').click(function () {
         var selectedAddress = $("input[name='address-select']:checked").val();
         var data = {
             addressId: selectedAddress
@@ -109,11 +109,120 @@ $(document).ready(function () {
             success: function (response) {
 
                 console.log('Dữ liệu đã được gửi thành công!', response);
+                $('#fullNameAndPhoneNumber').text(response.addressById.fullName + ' ' + response.addressById.phoneNumber);  // Cập nhật phí vận chuyển
+                $('#streetDetailsAndAdress').text(response.addressById.streetDetails + ' ' + response.addressById.address);  // Cập nhật tổng tiền thanh toán
+                // Kiểm tra trạng thái và hiển thị hoặc ẩn phần tử "Mặc định"
+                if (response.addressById.status) {
+                    $('.dIzOca').show();  // Nếu status là true, hiển thị phần tử
+                } else {
+                    $('.dIzOca').hide();  // Nếu status là false, ẩn phần tử
+                }
             },
             error: function (error) {
                 console.error('Lỗi khi gửi dữ liệu:', error);
             }
         });
     });
+
+    // thêm địa chỉ
+    $('.btn-add-address').click(function () {
+        var nameUser = $("input[name='user_address_fullname']").val();
+        var phoneUser = $("input[name='user_address_phone']").val();
+        var addressUser = $("input[name='user_address']").val();
+        var streetAdressUser = $("input[name='user_street_address']").val();
+        var isCheckedAddress = $("input[name='address_select']").is(':checked');
+
+
+        var data = {
+            fullName: nameUser,
+            phoneNumber: phoneUser,
+            address: addressUser,
+            streetDetails: streetAdressUser,
+            status: isCheckedAddress
+        };
+        // Gửi AJAX request
+        $.ajax({
+            url: '/user/address',  // Đường dẫn API
+            method: 'POST',           // Phương thức gửi dữ liệu
+            contentType: 'application/json',  // Đảm bảo dữ liệu được gửi dưới dạng JSON
+            data: JSON.stringify(data),      // Chuyển đối tượng JSON thành chuỗi JSON
+            success: function (response) {
+                console.log('Dữ liệu đã được gửi thành công!', response);
+                localStorage.setItem("needToOpenModal", "true");
+                window.location.reload(true);
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu:', error);
+            }
+        });
+
+    });
+
+    if (localStorage.getItem("needToOpenModal") === "true") {
+        $('#openModalBtnAddress').click();
+        localStorage.removeItem("needToOpenModal"); // Clean up
+    }
+
+    $('.openModalBtnUpdateAddress').click(function () {
+        var selectedAddress = $(this).val(); // Lấy giá trị của nút được nhấn
+
+        // Gửi AJAX request
+        $.ajax({
+            url: '/user/address-detail',  // Đường dẫn API
+            method: 'GET',         // Phương thức gửi dữ liệu
+            // Không cần contentType cho yêu cầu GET với tham số truy vấn
+            data: { idAddress: selectedAddress }, // Truyền tham số qua URL
+            success: function (response) {
+                console.log('Dữ liệu đã được gửi thành công!', response);
+                $('#userAddressFullName').val(response.fullName);
+                $('#userAddress').val(response.address);
+                $('#userAddressId').val(response.idAddress);
+                $('#userAddressPhone').val(response.phoneNumber);
+                // $('#userAddressFullName').val(response.status);
+                $('#userStreetAddress').val(response.streetDetails);
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu:', error);
+            }
+        });
+    });
+
+    $('.btn-update-address').click(function () {
+        var idAddress = $("input[id='userAddressId']").val();
+        var nameUser = $("input[id='userAddressFullName']").val();
+        var phoneUser = $("input[id='userAddressPhone']").val();
+        var addressUser = $("input[id='userAddress']").val();
+        var streetAdressUser = $("input[id='userStreetAddress']").val();
+        var isCheckedAddress = $("input[name='address_select']").is(':checked');
+
+        var data = {
+            idAddress: idAddress,
+            fullName: nameUser,
+            phoneNumber: phoneUser,
+            address: addressUser,
+            streetDetails: streetAdressUser,
+            status: isCheckedAddress
+        };
+        // Gửi AJAX request
+        $.ajax({
+            url: '/user/address',  // Đường dẫn API
+            method: 'PUT',           // Phương thức gửi dữ liệu
+            contentType: 'application/json',  // Đảm bảo dữ liệu được gửi dưới dạng JSON
+            data: JSON.stringify(data),      // Chuyển đối tượng JSON thành chuỗi JSON
+            success: function (response) {
+                console.log('Dữ liệu đã được gửi thành công!', response);
+                localStorage.setItem("needToOpenModalUpdate", "true");
+                window.location.reload(true);
+            },
+            error: function (error) {
+                console.error('Lỗi khi gửi dữ liệu:', error);
+            }
+        });
+
+    });
+    if (localStorage.getItem("needToOpenModalUpdate") === "true") {
+        $('#openModalBtnAddress').click();
+        localStorage.removeItem("needToOpenModalUpdate"); // Clean up
+    }
 
 });

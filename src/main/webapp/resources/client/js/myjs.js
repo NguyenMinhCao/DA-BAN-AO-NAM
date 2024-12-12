@@ -104,6 +104,72 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Modal handling add address
+    const modalOverlayAddAddress = document.getElementById('modalOverlayAddAddress');
+    const openModalBtnAddAddress = document.getElementById('openModalBtnAddAddress');
+    const closeModalBtnAddAddress = document.getElementById('closeModalBtnAddAddress');
+    const closeModalBtnAddAddressXn = document.getElementById('closeModalBtnAddAddressXn');
+
+
+    if (openModalBtnAddress) {
+        openModalBtnAddAddress.addEventListener('click', () => {
+            modalOverlayAddAddress.style.display = 'block';
+        });
+    }
+
+    if (closeModalBtnAddAddress) {
+        closeModalBtnAddAddress.addEventListener('click', () => {
+            modalOverlayAddAddress.style.display = 'none';
+        });
+    }
+
+    if (closeModalBtnAddAddressXn) {
+        closeModalBtnAddAddressXn.addEventListener('click', () => {
+            modalOverlayAddAddress.style.display = 'none';
+        });
+    }
+
+    if (modalOverlayAddAddress) {
+        modalOverlayAddAddress.addEventListener('click', (e) => {
+            if (e.target === modalOverlayAddAddress) {
+                modalOverlayAddAddress.style.display = 'none';
+            }
+        });
+    }
+
+    // Modal handling add address
+    const modalOverlayUpdateAddress = document.getElementById('modalOverlayUpdateAddress');
+    const openModalBtnUpdateAddress = document.getElementById('openModalBtnUpdateAddress');
+    const closeModalBtnUpdateAddress = document.getElementById('closeModalBtnUpdateAddress');
+    const closeModalBtnUpdateAddressXn = document.getElementById('closeModalBtnUpdateAddressXn');
+
+
+    document.querySelectorAll('.openModalBtnUpdateAddress').forEach(button => {
+        button.addEventListener('click', () => {
+            modalOverlayUpdateAddress.style.display = 'block';
+        });
+    });
+
+
+    if (closeModalBtnUpdateAddress) {
+        closeModalBtnUpdateAddress.addEventListener('click', () => {
+            modalOverlayUpdateAddress.style.display = 'none';
+        });
+    }
+
+    if (closeModalBtnUpdateAddressXn) {
+        closeModalBtnUpdateAddressXn.addEventListener('click', () => {
+            modalOverlayUpdateAddress.style.display = 'none';
+        });
+    }
+
+    if (modalOverlayUpdateAddress) {
+        modalOverlayUpdateAddress.addEventListener('click', (e) => {
+            if (e.target === modalOverlayUpdateAddress) {
+                modalOverlayUpdateAddress.style.display = 'none';
+            }
+        });
+    }
 
 
 });
