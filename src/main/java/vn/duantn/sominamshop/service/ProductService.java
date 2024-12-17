@@ -43,11 +43,6 @@ public class ProductService {
         return this.productRepository.findAll();
     }
 
-    public List<CartDetail> getAllProductByUser(String email) {
-        User user = this.userService.findUserByEmail(email);
-        Cart cart = this.cartRepository.findCartByUser(user);
-        return this.cartDetailRepository.findAllCartDetailByCart(cart);
-    }
 
     public Product handleSaveProduct(Product product) {
         return this.productRepository.save(product);

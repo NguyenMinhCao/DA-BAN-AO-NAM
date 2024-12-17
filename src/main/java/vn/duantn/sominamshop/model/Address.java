@@ -10,10 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
@@ -22,6 +19,7 @@ import vn.duantn.sominamshop.util.SecurityUtil;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +31,16 @@ public class Address {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(columnDefinition = "NVARCHAR(2500)")
+    @Column(columnDefinition = "NVARCHAR(1500)")
     private String address;
+
+    @Column(name = "street_details", columnDefinition = "NVARCHAR(1500)")
+    private String streetDetails;
 
     private boolean status;
 
-    private String createBy;
-    private String updateBy;
+    private String createdBy;
+    private String updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -47,14 +48,14 @@ public class Address {
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }

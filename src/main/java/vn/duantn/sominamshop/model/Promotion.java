@@ -1,9 +1,12 @@
 package vn.duantn.sominamshop.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
@@ -33,13 +37,20 @@ public class Promotion {
     @Column(name = "promotion_code")
     private String promotionCode;
 
-    @Column(name = "discount_type", columnDefinition = "NVARCHAR(50)")
-    private String discountType;
+    @Column(name = "discount_type")
+    @Enumerated(EnumType.STRING)
+    private DiscountType discountType;
 
     @Column(name = "discount_value")
     private String discountValue;
 
-    @Column(name = "start_date")
+    @Column(name = "min_order_value", precision = 10, scale = 2)
+    private BigDecimal minOrderValue;
+
+    @Column(name = "usage_limit ")
+    private Integer usageLimit;
+
+    @Column(name = "start_date ")
     private String startDate;
 
     @Column(name = "end_date")
@@ -50,19 +61,19 @@ public class Promotion {
     @ManyToMany(mappedBy = "promotions")
     private List<Product> products;
 
-    private String createBy;
-    private String updateBy;
+    private String createdBy;
+    private String updatedBy;
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }

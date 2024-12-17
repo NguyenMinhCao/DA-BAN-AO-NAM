@@ -6,6 +6,8 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
@@ -32,13 +35,23 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @Column(name = "total_products")
     private Integer totalProducts;
 
     @Column(name = "total_amount", precision = 10, scale = 2)
     private BigDecimal totalAmount;
+
+    @Column(name = "shipping_method")
+    private String shippingMethod;
+
+    @Column(name = "note", columnDefinition = "NVARCHAR(MAX)")
+    private String note;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -48,11 +61,18 @@ public class Order {
     private List<OrderDetail> orderDetails;
 
     @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @ManyToOne
     @JoinColumn(name = "promotion_id")
     private Promotion promotion;
 
-    private String createBy;
-    private String updateBy;
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
 
 
     @Column(name = "created_at")
@@ -61,8 +81,16 @@ public class Order {
     @PrePersist
     public void handleBeforeCreate() {
         this.createdAt = LocalDateTime.now();
-        this.createBy = SecurityUtil.getCurrentUserLogin().orElse("");
-        this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+
+
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
 

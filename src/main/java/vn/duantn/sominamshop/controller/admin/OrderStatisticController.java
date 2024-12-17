@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vn.duantn.sominamshop.model.Product;
-import vn.duantn.sominamshop.model.dto.OrderDTO;
+import vn.duantn.sominamshop.model.dto.OrderStaticDTO;
 import vn.duantn.sominamshop.service.OrderStatisticService;
 
 import java.math.BigDecimal;
@@ -45,7 +45,7 @@ public class OrderStatisticController {
             Date startDate = sdf.parse("2024-01-01");
             Date endDate = sdf.parse("2024-12-31");
 
-            List<OrderDTO> orderStatistics = orderService.getOrderStatisticsByMonth(startDate, endDate);
+            List<OrderStaticDTO> orderStatistics = orderService.getOrderStatisticsByMonth(startDate, endDate);
             String jsonOrderStats = new ObjectMapper().writeValueAsString(orderStatistics);
             model.addAttribute("orderStatisticsJson", jsonOrderStats);
         } catch (Exception e) {

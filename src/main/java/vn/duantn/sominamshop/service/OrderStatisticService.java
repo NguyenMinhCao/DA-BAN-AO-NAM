@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.duantn.sominamshop.model.Product;
-import vn.duantn.sominamshop.model.dto.OrderDTO;
+import vn.duantn.sominamshop.model.dto.OrderStaticDTO;
 import vn.duantn.sominamshop.repository.OrderDetailRepository;
 import vn.duantn.sominamshop.repository.OrderRepository;
 import vn.duantn.sominamshop.repository.PatternRepository;
@@ -26,13 +26,13 @@ public class OrderStatisticService {
     }
 
 
-        public List<OrderDTO> getOrderStatisticsByMonth(Date startDate, Date endDate) {
+        public List<OrderStaticDTO> getOrderStatisticsByMonth(Date startDate, Date endDate) {
         // Lấy kết quả từ repository
         List<Object[]> results = orderRepository.getOrderStatisticsByMonth(startDate, endDate);
 
         // In kết quả ra console để kiểm tra
         System.out.println("Results: " + results);
-        List<OrderDTO> orderDTOs = new ArrayList<>();
+        List<OrderStaticDTO> orderDTOs = new ArrayList<>();
 
         // Tạo map để lưu tổng số lượng và số đơn hàng cho từng tháng
         Map<Integer, Long> orderCounts = new HashMap<>();
@@ -59,7 +59,7 @@ public class OrderStatisticService {
             BigDecimal totalQuantity = monthlyTotals.getOrDefault(i, BigDecimal.ZERO);
 
             // Tạo DTO cho tháng hiện tại
-            OrderDTO orderDTO = new OrderDTO(i, orderCount, totalQuantity);
+            OrderStaticDTO orderDTO = new OrderStaticDTO(i, orderCount, totalQuantity);
             orderDTOs.add(orderDTO);
         }
 

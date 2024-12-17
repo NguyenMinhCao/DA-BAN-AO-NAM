@@ -2,6 +2,8 @@ package vn.duantn.sominamshop.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import vn.duantn.sominamshop.model.User;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -57,5 +60,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT p FROM Product p WHERE p.quantity < 20")
     Page<Product> findLowStockProducts(Pageable pageable);
 
+
+    List<Order> findOrderByUser(User user);
+
+    @Query("SELECT o FROM Order o WHERE o.status IS NULL AND o.createdBy = :createdBy")
+    Order findOrderByStatusAndCreatedBy(@Param("createdBy") String createdBy);
 
 }

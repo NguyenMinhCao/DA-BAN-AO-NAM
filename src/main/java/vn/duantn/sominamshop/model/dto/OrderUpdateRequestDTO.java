@@ -7,7 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderCheckoutDTO {
-    private String address;
+public class OrderUpdateRequestDTO {
+    private Long addressId;
     private BigDecimal totalAmount;
+    private String paymentMethod;
+    private String shippingMethod;
+    private Long promotionId;
 }

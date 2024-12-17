@@ -1,30 +1,39 @@
 package vn.duantn.sominamshop.model.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import vn.duantn.sominamshop.model.Order;
+import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 
 import java.math.BigDecimal;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class OrderDTO {
 
-    private int month;
-    private long orderCount;
-    private BigDecimal totalQuantity;
-    private int year;
+    private long id;
+    private OrderStatus status;
+    private User user;
+    private Promotion promotion;
+    private String note;
+    private BigDecimal totalAmount;
+    private String paymentMethod;
 
-
-
-    public OrderDTO(int i, long orderCount, BigDecimal totalQuantity) {
-        this.month = i;
-        this.orderCount = orderCount;
-        this.totalQuantity = totalQuantity;
-        this.year = year;
+    public static OrderDTO toOrderDTO(Order order) {
+        OrderDTO orderDTO = OrderDTO.builder()
+                .id(order.getId())
+                .paymentMethod("Vận chuyển tiết kiệm")
+                .note(order.getNote())
+                .status(order.getStatus())
+                .user(order.getUser())
+                .totalAmount(order.getTotalAmount())
+                .build();
+        return orderDTO;
     }
 }
-
