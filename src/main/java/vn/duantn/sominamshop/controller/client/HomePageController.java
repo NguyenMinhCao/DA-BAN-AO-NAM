@@ -34,10 +34,10 @@ public class HomePageController {
 
     @GetMapping("/")
     public String getHomePage(@RequestParam(defaultValue = "0") int page, Model model) {
-        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").ascending()); // Phân trang với 6 sản phẩm mỗi trang
-        Page<Product> productPage = productService.getAllProducts(pageable);
+        // Phân trang với 6 sản phẩm mỗi trang
+        List<Product> productPage = this.productService.getAllProduct();
 
-        model.addAttribute("productPage", productPage); // Truyền Page<Product> cho JSP
+        model.addAttribute("listProducts", productPage); // Truyền Page<Product> cho JSP
         return "client/homepage/show"; // Chuyển đến trang hiển thị
     }
 
@@ -49,7 +49,6 @@ public class HomePageController {
         model.addAttribute("productPage", productPage); // Truyền Page<Product> cho JSP
         return "client/product/show"; // Chuyển đến trang hiển thị
     }
-
 
     @GetMapping("/register")
     public String getRegister(Model model) {
