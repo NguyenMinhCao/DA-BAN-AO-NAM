@@ -14,6 +14,7 @@
                 <link href="/admin/css/order/order.css" rel="stylesheet" />
                 <link href="/admin/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+                <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
                 <!-- Latest compiled and minified CSS -->
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
             </head>
@@ -73,7 +74,7 @@
                                                         0<p>VND</p></span>
                                                 </div>
                                             </div>
-                                            <!-- hóa đơn chi tiết end -->
+                                            <!---------------------- hóa đơn chi tiết end ----------------------->
                                             <hr class="product-customer">
 
                                             <!---------------------------- Khách hàng và thông tin hóa đơn start ---------------------->
@@ -158,7 +159,7 @@
                                                         </div>
                                                         <div class="form-invoice-item">
                                                             <strong>Phiếu giảm giá:</strong>
-                                                            <input id="" type="number" placeholder="Giảm giá">
+                                                            <input id="voucher" type="number" placeholder="Giảm giá">
                                                             <button>Chọn</button>
                                                         </div>
                                                         <div class="form-invoice-item">
@@ -228,7 +229,7 @@
                                     <!--------------------- Table chọn khách hàng start ------------------------------>
                                     <div id="customer-modal" class="modal">
                                         <div class="modal-content">
-                                            <h2>Danh sách sản phẩm</h2>
+                                            <h2>Danh sách khách hàng</h2>
                                             <div class="search-bar">
                                                 <input type="text" id="search-input-customer"
                                                     placeholder="Tìm kiếm sản phẩm...">
@@ -304,6 +305,77 @@
                                     </div>
                                     <!---------------------- ô nhập số lượng khi mua end-------------------------------------->
                                 </div>
+
+<%------------------------         Form nhập thêm khách hàng mới start------------------------%>
+                                <div class="form-container-add-customer">
+                                    <h2>Thêm mới khách hàng</h2>
+                                    <form>
+                                        <!-- Họ và tên -->
+                                        <label for="fullname">Họ và tên</label>
+                                        <input type="text" id="fullname" placeholder="Nhập họ và tên khách hàng">
+
+                                        <!-- Số điện thoại và Email -->
+                                        <div class="row">
+                                            <div class="input-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" id="email" placeholder="Nhập email khách hàng">
+                                            </div>
+                                        </div>
+
+                                        <!-- Địa chỉ và Quốc gia -->
+                                        <div class="row">
+                                            <div class="input-group">
+                                                <label for="address">Địa chỉ</label>
+                                                <input type="text" id="address-detail" placeholder="Nhập địa chỉ chi tiết">
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="area">Khu vực</label>
+                                                <select id="area">
+                                                    <option>Chọn khu vực</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Khu vực và Phường/Xã -->
+                                        <div class="row">
+                                            <div class="input-group">
+                                                <label for="Districts">Quận/Huyện</label>
+                                                <select id="Districts">
+                                                    <option>Chọn Quận/Huyện</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="Wards">Phường/Xã</label>
+                                                <select id="Wards">
+                                                    <option>Chọn Phường/Xã</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Giới tính và Ngày sinh -->
+                                        <div class="row">
+                                            <div class="input-group">
+                                                <label for="gender">Giới tính</label>
+                                                <select id="gender">
+                                                    <option>Chọn giới tính</option>
+                                                    <option>Nam</option>
+                                                    <option>Nữ</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group">
+                                                <label for="dob">Ngày sinh</label>
+                                                <input type="date" id="dob">
+                                            </div>
+                                        </div>
+
+                                        <!-- Buttons -->
+                                        <div class="buttons">
+                                            <button type="reset" class="cancel-btn">Hủy (ESC)</button>
+                                            <button type="submit" class="add-btn">Thêm (F8)</button>
+                                        </div>
+                                    </form>
+                                </div>
+<%------------------------         Form nhập thêm khách hàng mới end ------------------------%>
 
                             </div>
                         </main>

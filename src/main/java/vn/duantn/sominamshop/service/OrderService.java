@@ -1,7 +1,11 @@
 package vn.duantn.sominamshop.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,14 +21,8 @@ import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.OrderStatus;
-import vn.duantn.sominamshop.model.dto.CounterProductProjection;
-import vn.duantn.sominamshop.model.dto.OrderCheckoutDTO;
-import vn.duantn.sominamshop.model.dto.OrderDTO;
-import vn.duantn.sominamshop.model.dto.UserDTO;
-import vn.duantn.sominamshop.repository.CartRepository;
-import vn.duantn.sominamshop.repository.CounterRepository;
-import vn.duantn.sominamshop.repository.OrderDetailRepository;
-import vn.duantn.sominamshop.repository.OrderRepository;
+import vn.duantn.sominamshop.model.dto.*;
+import vn.duantn.sominamshop.repository.*;
 
 @Service
 public class OrderService {
@@ -35,10 +33,11 @@ public class OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final PromotionService promotionService;
     private final CounterRepository counterRepository;
+    private final PromotionRepository promotionRepository;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
-            PromotionService promotionService, CounterRepository counterRepository) {
+            PromotionService promotionService, CounterRepository counterRepository, PromotionRepository promotionRepository) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
@@ -46,6 +45,7 @@ public class OrderService {
         this.orderDetailRepository = orderDetailRepository;
         this.promotionService = promotionService;
         this.counterRepository = counterRepository;
+        this.promotionRepository = promotionRepository;
     }
 
     public List<Order> findOrderByUser(User user) {
@@ -130,5 +130,17 @@ public class OrderService {
     @Transactional
     public void updateQuantityProduct(Long quantity, Long id) {
         counterRepository.updateQuantityProduct(quantity, id);
+    }
+
+    public List<PromotionDTO> getPromotion(Double orderValue){
+        LocalDate today = LocalDate.now();
+        List<PromotionDTO> listPromotionDTO = promotionRepository.findByMinOrderValueLessThanEqual(orderValue).stream()
+                .map(PromotionDTO::toPromotionDTO)
+                .filter(promotionDTO -> promotionDTO.getStartDateAsLocalDate() != null && promotionDTO.getStartDateAsLocalDate().isBefore(today) || promotionDTO.getStartDateAsLocalDate().equals(today))
+                .filter(promotionDTO -> promotionDTO.getEndDateAsLocalDate() !=null && promotionDTO.getEndDateAsLocalDate().isAfter(today))
+                .filter(promotionDTO -> promotionDTO.getUsageLimit() != null && promotionDTO.getUsageLimit() > 0)
+                .filter(promotionDTO -> promotionDTO.isStatus())
+                .collect(Collectors.toList());
+        return listPromotionDTO;
     }
 }

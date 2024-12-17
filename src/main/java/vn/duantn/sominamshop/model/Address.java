@@ -33,9 +33,7 @@ public class Address {
 
     @Column(columnDefinition = "NVARCHAR(2500)")
     private String address;
-
     private boolean status;
-
     private String createdBy;
     private String updatedBy;
 
