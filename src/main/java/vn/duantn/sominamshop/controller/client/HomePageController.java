@@ -2,6 +2,10 @@ package vn.duantn.sominamshop.controller.client;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.RegisterDTO;
@@ -28,18 +33,23 @@ public class HomePageController {
     }
 
     @GetMapping("/")
-    public String getHomePage(Model model) {
-        List<Product> listProducts = productService.getAllProduct();
-        model.addAttribute("listProducts", listProducts);
-        return "client/homepage/show";
+    public String getHomePage(@RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").ascending()); // Phân trang với 6 sản phẩm mỗi trang
+        Page<Product> productPage = productService.getAllProducts(pageable);
+
+        model.addAttribute("productPage", productPage); // Truyền Page<Product> cho JSP
+        return "client/homepage/show"; // Chuyển đến trang hiển thị
     }
 
     @GetMapping("/products")
-    public String getProducts(Model model) {
-        List<Product> listProducts = productService.getAllProduct();
-        model.addAttribute("listProducts", listProducts);
-        return "client/product/show";
+    public String getProducts(@RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").ascending()); // Phân trang với 6 sản phẩm mỗi trang
+        Page<Product> productPage = productService.getAllProducts(pageable);
+
+        model.addAttribute("productPage", productPage); // Truyền Page<Product> cho JSP
+        return "client/product/show"; // Chuyển đến trang hiển thị
     }
+
 
     @GetMapping("/register")
     public String getRegister(Model model) {

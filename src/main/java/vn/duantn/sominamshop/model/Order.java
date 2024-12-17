@@ -1,6 +1,7 @@
 package vn.duantn.sominamshop.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -53,17 +54,17 @@ public class Order {
     private String createBy;
     private String updateBy;
 
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     @PrePersist
     public void handleBeforeCreate() {
-        this.createBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
-
-    @PreUpdate
-    public void handleBeforeUpdate() {
+        this.createdAt = LocalDateTime.now();
+        this.createBy = SecurityUtil.getCurrentUserLogin().orElse("");
         this.updateBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
+
     }
 }
