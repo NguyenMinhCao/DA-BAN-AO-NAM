@@ -1,6 +1,9 @@
 package vn.duantn.sominamshop.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.dto.CartDetailUpdateRequestDTO;
 import vn.duantn.sominamshop.repository.CartDetailRepository;
 import vn.duantn.sominamshop.repository.CartRepository;
 
@@ -96,6 +100,10 @@ public class CartService {
         this.cartDetailRepository.delete(cartDetail);
     }
 
+    public void saveCartDetail(CartDetail cartDetail) {
+        this.cartDetailRepository.save(cartDetail);
+    }
+
     public void deleteCartDetailByCartAndProduct(String email, Product product, HttpSession session) {
         User user = this.userService.findUserByEmail(email);
         Cart cart = this.cartRepository.findCartByUser(user);
@@ -116,6 +124,12 @@ public class CartService {
         session.setAttribute("sum", sum);
     }
 
+    public List<CartDetail> getAllCartDetailByCart(String email) {
+        User user = this.userService.findUserByEmail(email);
+        Cart cart = this.cartRepository.findCartByUser(user);
+        return this.cartDetailRepository.findAllCartDetailByCart(cart);
+    }
+
     public CartDetail findCartDetailByProduct(Product product) {
         return this.cartDetailRepository.findCartDetailByProduct(product);
     }
@@ -126,5 +140,34 @@ public class CartService {
 
     public CartDetail findCartDetailByCart(Cart cart) {
         return this.cartDetailRepository.findCartDetailByCart(cart);
+    }
+
+    public Optional<CartDetail> findCartDetailById(Long id) {
+        return this.cartDetailRepository.findById(id);
+    }
+
+    public Map<String, Object> updateCartDetailProductQuantity(CartDetailUpdateRequestDTO dto, HttpSession session) {
+        String emailUser = (String) session.getAttribute("email");
+        Map<String, Object> response = new HashMap<>();
+
+        long cartDetailId = dto.getCartDetailId();
+        int quantity = dto.getQuantity();
+
+        CartDetail cartDetailById = this.findCartDetailById(cartDetailId).get();
+        if (cartDetailById != null) {
+            cartDetailById.setQuantity(quantity);
+            cartDetailById.setPrice(cartDetailById.getProduct().getPrice() * quantity);
+            this.saveCartDetail(cartDetailById);
+        }
+
+        List<CartDetail> lstCartDetail = this.getAllCartDetailByCart(emailUser);
+        double totalPrice = 0;
+        for (CartDetail cartDetail : lstCartDetail) {
+            totalPrice += cartDetail.getPrice();
+        }
+
+        response.put("totalPrice", totalPrice);
+        response.put("shippingPrice", "");
+        return response;
     }
 }

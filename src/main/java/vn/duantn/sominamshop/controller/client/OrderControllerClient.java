@@ -55,7 +55,7 @@ public class OrderControllerClient {
         String emailUser = (String) session.getAttribute("email");
 
         // Lấy ra tổng tiền hàng
-        List<CartDetail> lstCartDetail = this.productService.getAllProductByUser(emailUser);
+        List<CartDetail> lstCartDetail = this.cartService.getAllCartDetailByCart(emailUser);
         double totalPrice = 0;
         for (CartDetail cartDetail : lstCartDetail) {
             totalPrice += cartDetail.getPrice();
@@ -79,10 +79,12 @@ public class OrderControllerClient {
         User user = this.userService.findUserByEmail(emailUser);
         List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
 
-        Long idAddress = order.getAddress().getId();
-        Address addressById = this.addressService.findAddressById(idAddress);
+        if (session.getAttribute("isChangeAddress") != null) {
+            Long idAddress = order.getAddress().getId();
+            Address addressById = this.addressService.findAddressById(idAddress);
 
-        session.setAttribute("address", addressById);
+            session.setAttribute("address", addressById);
+        }
 
         session.setAttribute("totalPayment", totalPayment);
         session.setAttribute("shippingPrice", shippingPrice);
@@ -95,8 +97,6 @@ public class OrderControllerClient {
     public ResponseEntity<Map<String, Object>> postMethodName(@RequestBody OrderUpdateRequestDTO orderReq,
             HttpServletRequest req) {
         HttpSession session = req.getSession();
-        // Kiểm tra người dùng có thay đổi address trong order không
-        session.setAttribute("checkChangeAddress", "true");
 
         return ResponseEntity.ok(this.orderService.orderCheckoutUpdate(orderReq, session));
     }

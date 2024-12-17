@@ -143,6 +143,7 @@ public class OrderService {
                 dto.setPhoneNumber(addressById.getPhoneNumber());
                 dto.setStreetDetails(addressById.getStreetDetails());
                 dto.setStatus(addressById.isStatus());
+                session.setAttribute("isChangeAddress", "true");
                 response.put("addressById", dto);
             }
 
@@ -168,7 +169,7 @@ public class OrderService {
                 String emailUser = (String) session.getAttribute("email");
 
                 // Lấy ra tổng tiền hàng
-                List<CartDetail> lstCartDetail = this.productService.getAllProductByUser(emailUser);
+                List<CartDetail> lstCartDetail = this.cartService.getAllCartDetailByCart(emailUser);
                 double totalPrice = 0;
                 for (CartDetail cartDetail : lstCartDetail) {
                     totalPrice += cartDetail.getPrice();
