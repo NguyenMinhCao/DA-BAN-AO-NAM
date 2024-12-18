@@ -31,8 +31,11 @@ public class Address {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(columnDefinition = "NVARCHAR(2500)")
+    @Column(columnDefinition = "NVARCHAR(1500)")
     private String address;
+    @Column(name = "street_details", columnDefinition = "NVARCHAR(1500)")
+    private String streetDetails;
+
     private boolean status;
     private String createdBy;
     private String updatedBy;
