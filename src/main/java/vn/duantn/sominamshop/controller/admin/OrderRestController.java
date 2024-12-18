@@ -13,7 +13,6 @@ import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.PromotionDTO;
 import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.service.OrderService;
-import vn.duantn.sominamshop.service.ProductService;
 import vn.duantn.sominamshop.service.PromotionService;
 
 import java.util.List;
@@ -47,8 +46,7 @@ public class OrderRestController {
 
     @GetMapping("/get/promotions")
     public ResponseEntity<List<PromotionDTO>> getPromotion(
-            @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue
-    ){
+            @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue) {
         List<PromotionDTO> promotionDTOList = promotionService.getPromotion(orderValue);
         return ResponseEntity.ok(promotionDTOList);
     }

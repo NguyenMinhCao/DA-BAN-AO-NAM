@@ -249,6 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 quantity: quantity
             }),
             success: function (response) {
+                var formattedTotalPayment = new Intl.NumberFormat('vi-VN').format(response.totalPayment);
+                $('#total-payment').text(formattedTotalPayment + ' đ');
                 console.log('Cập nhật thành công');
             },
             error: function (xhr, status, error) {

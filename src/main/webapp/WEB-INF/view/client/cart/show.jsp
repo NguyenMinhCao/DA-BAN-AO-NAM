@@ -326,20 +326,6 @@
                         </td>
                     </tr>
 
-                    <!-- <tr class="bottom_button">
-                                                    <td>
-                                                        <a class="gray_btn" href="#">Update Cart</a>
-                                                    </td>
-    
-                                                    <td colspan="4">
-                                                        <div class="cupon_text">
-                                                            <input type="text" placeholder="Coupon Code" />
-                                                            <a class="main_btn" href="#">Apply</a>
-                                                            <a class="gray_btn" href="#">Close Coupon</a>
-                                                        </div>
-                                                    </td>
-                                                </tr> -->
-
 
                     </tbody>
                     </table>
