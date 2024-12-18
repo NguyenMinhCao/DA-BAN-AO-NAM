@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class OrderDTO {
+
     private long id;
     private OrderStatus status;
     private User user;
