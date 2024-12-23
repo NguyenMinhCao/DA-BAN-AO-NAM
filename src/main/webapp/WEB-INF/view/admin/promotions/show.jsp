@@ -54,22 +54,28 @@
                                 <td>${km.endDate}</td>
                                 <td>${km.status}</td>
                                 <td>
-                                    <a href="/admin/product/detail/${km.id}"
-                                       class="btn btn-success">View</a>
-                                    <a href="/admin/product/view-update/${km.id}"
-                                       class="btn btn-warning">Update</a>
-                                    <a href="/admin/product/view-detele/${km.id}"
-                                       class="btn btn-danger">Delete</a>
+                                    <a href="/view-updateKM/${km.id}" class="btn btn-success">View</a>
+                                    <a href="/view-update/${km.id}" class="btn btn-warning">Update</a>
+                                    <a href="/remove/${km.id}" class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </main>
         <jsp:include page="../layout/footer.jsp" />
+        <div class="popup" id="popup">
+            <div class="popup_content">
+                <div class="popup-left">
+                    <h1>Hello</h1>
+                </div>
+                <div class="popup_right">
+                    <h1>Hi</h1>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
