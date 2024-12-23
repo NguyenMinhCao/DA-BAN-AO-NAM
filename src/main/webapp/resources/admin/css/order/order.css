@@ -537,6 +537,66 @@ body {
     display: flex;
     justify-content: flex-end;
 }
-/*.btn-order-payment{*/
-/*    right: 0;*/
-/*}*/
+
+
+/*cc cho form thêm khách hàng start*/
+.form-add-customer{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+.content-add-customer{
+    padding: 22px;
+    width: 600px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+.row
+{
+    display: flex;
+    align-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.input-group{
+    flex:1
+}
+.input-group input,
+.input-group select{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.input-group label{
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* box-sizing: border-box; */
+}
+
+.form-actions .cancel-btn {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.form-actions .add-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+/*cc cho form thêm khách hàng end*/
