@@ -728,8 +728,9 @@
                                                                     0
                                                                 </c:if>
                                                                 <c:if test="${promotionInOrder.discountValue != null}">
-                                                                    ${promotionInOrder.discountValue}
-                                                                </c:if> đ
+                                                                    <fmt:formatNumber type="number"
+                                                                        value="${promotionInOrder.discountValue}" />
+                                                                </c:if>đ
                                                             </p>
                                                         </div>
                                                         <div

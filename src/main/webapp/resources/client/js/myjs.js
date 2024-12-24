@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal handling add address
+    // Modal handling update address
     const modalOverlayUpdateAddress = document.getElementById('modalOverlayUpdateAddress');
     const openModalBtnUpdateAddress = document.getElementById('openModalBtnUpdateAddress');
     const closeModalBtnUpdateAddress = document.getElementById('closeModalBtnUpdateAddress');
@@ -169,6 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalOverlayUpdateAddress.style.display = 'none';
             }
         });
+    }
+
+    // Modal handling add address account
+    const openModalBtnAddAddressAcc = document.getElementById('openModalBtnAddAddressAcc');
+
+
+    if (openModalBtnAddAddressAcc) {
+        openModalBtnAddAddressAcc.addEventListener('click', () => {
+            modalOverlayAddAddress.style.display = 'block';
+        })
     }
 
     // tăng giảm số lượng sản phẩm trong giỏ hàng

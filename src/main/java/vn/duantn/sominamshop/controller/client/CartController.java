@@ -85,6 +85,20 @@ public class CartController {
         // /cart hoặc /order
         session.setAttribute("shippingMethodInOrder", order != null ? order.getShippingMethod() : null);
 
+        double shippingPrice = 0;
+        if (order != null && order.getShippingMethod().equals("express")) {
+            shippingPrice = 50000;
+        } else if (order != null && order.getShippingMethod().equals("fast")) {
+            shippingPrice = 30000;
+        } else {
+            shippingPrice = 20000;
+        }
+
+        double totalPayment = 0;
+        totalPayment = totalPrice + shippingPrice;
+
+        session.setAttribute("totalPayment", totalPayment);
+        session.setAttribute("shippingPrice", shippingPrice);
         session.setAttribute("totalPrice", totalPrice);
         session.setAttribute("lstCartDetail", lstCartDetail);
         session.setAttribute("listPromotions", listPromotions);

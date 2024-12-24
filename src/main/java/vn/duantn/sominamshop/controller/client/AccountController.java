@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.OrderService;
 import vn.duantn.sominamshop.service.PromotionService;
 import vn.duantn.sominamshop.service.UserService;
@@ -26,10 +28,12 @@ public class AccountController {
 
     private final UserService userService;
     private final OrderService orderService;
+    private final AddressService addressService;
 
-    public AccountController(UserService userService, OrderService orderService) {
+    public AccountController(UserService userService, OrderService orderService, AddressService addressService) {
         this.userService = userService;
         this.orderService = orderService;
+        this.addressService = addressService;
     }
 
     @GetMapping("/user/profile")
@@ -43,9 +47,11 @@ public class AccountController {
     }
 
     @PostMapping("/user/account-update")
-    public String updateAccount(@ModelAttribute User user, @RequestParam("getImgFile") MultipartFile file) {
-
-        return "redirect:/user/account";
+    public String updateAccount(@ModelAttribute User user, @RequestParam("getImgFile") MultipartFile file,
+            HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        this.userService.handleUpdateUser(user, session);
+        return "redirect:/user/profile";
     }
 
     @GetMapping("/user/address")
@@ -54,6 +60,10 @@ public class AccountController {
         String emailUser = (String) session.getAttribute("email");
 
         User userByEmail = this.userService.findUserByEmail(emailUser);
+        User user = this.userService.findUserByEmail(emailUser);
+        List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
+
+        model.addAttribute("arrAddressByUser", arrAddressByUser);
         model.addAttribute("userByEmail", userByEmail);
         return "client/account/address";
     }

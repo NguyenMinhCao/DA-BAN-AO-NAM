@@ -36,7 +36,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/fonts/**").addResourceLocations("/resources/client/fonts/");
         registry.addResourceHandler("/admin/**").addResourceLocations("/resources/admin/");
         registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:uploads/");  // 'file:' giúp Spring biết đây là thư mục trên hệ thống file
     }
 
+    }
+
+
+
    
-}
+
