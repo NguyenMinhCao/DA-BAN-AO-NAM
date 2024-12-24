@@ -28,15 +28,18 @@ public class CartService {
     private final CartDetailRepository cartDetailRepository;
     private final OrderService orderService;
     private final AddressService addressService;
+    private final PromotionService promotionService;
 
     public CartService(ProductService productService, UserService userService, CartRepository cartRepository,
-            CartDetailRepository cartDetailRepository, @Lazy OrderService orderService, AddressService addressService) {
+            CartDetailRepository cartDetailRepository, @Lazy OrderService orderService, AddressService addressService,
+            PromotionService promotionService) {
         this.productService = productService;
         this.userService = userService;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.orderService = orderService;
         this.addressService = addressService;
+        this.promotionService = promotionService;
     }
 
     public void addProductToCart(String email, long idProduct, HttpSession session) {
@@ -149,6 +152,7 @@ public class CartService {
     public Map<String, Object> updateCartDetailProductQuantity(CartDetailUpdateRequestDTO dto, HttpSession session) {
         String emailUser = (String) session.getAttribute("email");
         Map<String, Object> response = new HashMap<>();
+        Order order = this.orderService.findOrderByStatusAndCreatedBy();
 
         long cartDetailId = dto.getCartDetailId();
         int quantity = dto.getQuantity();
@@ -166,8 +170,25 @@ public class CartService {
             totalPrice += cartDetail.getPrice();
         }
 
-        response.put("totalPrice", totalPrice);
-        response.put("shippingPrice", "");
+        double shippingPrice = 0;
+        double discountValue = 0;
+        double totalPayment = 0;
+
+        if (order.getShippingMethod().equals("express")) {
+            shippingPrice = 50000;
+        } else if (order.getShippingMethod().equals("fast")) {
+            shippingPrice = 30000;
+        } else {
+            shippingPrice = 20000;
+        }
+
+        if (order.getPromotion() != null) {
+            discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
+        }
+
+        totalPayment = totalPrice + shippingPrice - discountValue;
+
+        response.put("totalPayment", totalPayment);
         return response;
     }
 }

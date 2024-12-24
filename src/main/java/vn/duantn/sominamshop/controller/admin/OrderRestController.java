@@ -50,8 +50,7 @@ public class OrderRestController {
 
     @GetMapping("/get/promotions")
     public ResponseEntity<List<PromotionDTO>> getPromotion(
-            @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue
-    ){
+            @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue) {
         List<PromotionDTO> promotionDTOList = promotionService.getPromotion(orderValue);
         return ResponseEntity.ok(promotionDTOList);
     }
