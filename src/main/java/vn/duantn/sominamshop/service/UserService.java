@@ -1,10 +1,14 @@
 package vn.duantn.sominamshop.service;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.RegisterDTO;
@@ -54,6 +58,23 @@ public class UserService {
         user.setPassword(hashPassWord);
         user.setRole(this.getRoleByName("USER"));
         return user;
+    }
+
+    public Optional<User> findUserById(Long id) {
+        return this.userRepository.findById(id);
+    }
+
+    public void handleUpdateUser(User user, HttpSession session) {
+        User userById = this.userRepository.findById(user.getId()).get();
+
+        if (userById != null) {
+            session.setAttribute("email", user.getEmail());
+            userById.setFullName(user.getFullName());
+            userById.setEmail(user.getEmail());
+            userById.setPhoneNumber(user.getPhoneNumber());
+            userById.setGender(user.getGender());
+            this.userRepository.save(userById);
+        }
     }
 
     public Page<User> findUserByFullNameContainingAndRole(String fullName, Role role, Pageable pageable) {

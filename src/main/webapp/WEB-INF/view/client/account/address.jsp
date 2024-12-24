@@ -81,95 +81,240 @@
                             </div>
 
                             <!-- Profile Section -->
-                            <div class="col-md-9" style="height: 450px;">
+                            <div class="col-md-9">
                                 <div class="card">
-                                    <div class="card-body" style="height: 450px;">
-                                        <h4 class="" style="margin: 0; padding: 0">Địa chỉ của tôi</h4>
-                                        <button style="float: right;">Thêm địa chỉ mới</button>
+                                    <div class="card-body">
+                                        <div class="" style="display: flex;">
+                                            <h4 class="" style="margin: 0; padding: 0; flex: 1;">
+                                                <p style="margin-top: 0;
+                                                margin-bottom: 0;
+                                                line-height: 29.2px;">Địa chỉ
+                                                    của
+                                                    tôi</p>
+                                            </h4>
+                                            <button style="padding: 0 7px; font-size: 12px; line-height: 31px;"
+                                                class="main_btn" id="openModalBtnAddAddressAcc">Thêm địa
+                                                chỉ mới
+                                            </button>
+                                        </div>
                                         <hr>
-                                        <form:form class=" d-flex" method="post" action="/user/account-update"
-                                            modelAttribute="userByEmail" enctype="multipart/form-data">
-                                            <div class="">
-                                                <div class="mb-3" style="display: none;">
-                                                    <label class="form-label">Id</label>
-                                                    <form:input type="text" class="form-control" path="id" />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="name" class="form-label">Tên</label>
-                                                    <form:input type="text" class="form-control" id="name"
-                                                        path="fullName" />
-                                                </div>
+                                        <div style="font-size: 1.125rem;
+                                        line-height: 1.75rem;
+                                        margin-bottom: 30px; color: #000;">Địa chỉ</div>
 
-                                                <div class="mb-3">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <form:input type="email" class="form-control" path="email" />
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="phone" class="form-label">Số điện thoại</label>
-                                                    <form:input type="text" class="form-control" path="phoneNumber" />
-                                                </div>
-
-                                                <fieldset class="mb-3">
-                                                    <label style="margin-right: 107px;">Giới tính</label>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" value="true"
-                                                            name="gender" ${userByEmail.gender==true?'checked':''}>
-                                                        <label class="form-check-label">Nam</label>
+                                        <c:forEach items="${arrAddressByUser}" var="address" varStatus="status">
+                                            <div class="z6dXMD">
+                                                <div class="" style="display: flex;">
+                                                    <div class="h44KA2 ZnXbv2">
+                                                        <span class="knfOzn kI16mM">
+                                                            <div class="bzNVjQ">${address.fullName}</div>
+                                                        </span>
+                                                        <div class="_BEX6X"></div>
+                                                        <div role="row" class="qVJxSe EdB7nx ieb1A9">(+84)
+                                                            ${address.phoneNumber}
+                                                        </div>
                                                     </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" value="false"
-                                                            name="gender" ${!userByEmail.gender==true?'checked':''}>
-                                                        <label class="form-check-label">Nữ</label>
-                                                    </div>
-                                                </fieldset>
-
-                                                <div class="mb-3">
-                                                    <label for="dob" class="form-label">Ngày sinh</label>
-                                                    <div class="d-flex-date"
-                                                        style="justify-content: space-between; display: flex;">
-                                                        <select class="form-select me-2" id="day">
-                                                            <option style="display: none;">Ngày</option>
-                                                            <c:forEach var="i" begin="1" end="30" step="1">
-                                                                <option>${i}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                        <select class="form-select me-2" id="month">
-                                                            <option>Tháng</option>
-                                                            <c:forEach var="i" begin="1" end="12" step="1">
-                                                                <option>Tháng ${i}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                        <select class="form-select" id="yeariii">
-                                                            <option>Năm</option>
-                                                            <c:forEach var="i" begin="1950" end="2024" step="1">
-                                                                <option>Năm ${i}</option>
-                                                            </c:forEach>
-                                                        </select>
+                                                    <div class="MM8UDO">
+                                                        <button class="zN45gZ openModalBtnUpdateAddress"
+                                                            value="${address.id}" name="id-update-address">Cập
+                                                            nhật
+                                                        </button>
                                                     </div>
                                                 </div>
-
-                                                <button type="submit" class="btn btn-primary">Lưu</button>
-                                            </div>
-
-                                            <div class="input-user-photo" style="border-left: .0625rem solid #efefef;">
-                                                <div class="TJWfNh">
-                                                    <div class="nMPYiw" role="header">
-                                                        <label for="file-input" class="cW0oBM"
-                                                            style="background-image: url('/images/avatar/${userByEmail.avatar}')"></label>
-                                                        <input id="file-input" type="file" accept=".jpg,.jpeg,.png"
-                                                            style="display: none;" name="getImgFile">
+                                                <div class="CRFtuZ kdrlZs">
+                                                    <div class="h44KA2 ZnXbv2">
+                                                        <div class="glTVDN">
+                                                            <div class="ieb1A9">${address.streetDetails}</div>
+                                                            <div class="ieb1A9">${address.address}</div>
+                                                        </div>
                                                     </div>
-                                                    <button type="button" class="btn btn-light btn--m btn--inline"
-                                                        id="choose-file-btn">Chọn ảnh</button>
-                                                    <div class="T_8sqN">
-                                                        <div class="JIExfq">Dụng lượng file tối đa 1 MB</div>
-                                                        <div class="JIExfq">Định dạng:.JPEG, .PNG</div>
-                                                    </div>
+                                                    <div class="p2Hy8c MM8UDO"></div>
+                                                </div>
+
+                                                <div class="K9nwA9 ieb1A9" <c:if test="${address.status != true}">
+                                                    style="display: none;"
+                                                    </c:if>>
+                                                    <span class="Fq8OwQ lVoK9N mHRnNW">Mặc
+                                                        định
+                                                    </span>
                                                 </div>
                                             </div>
-                                        </form:form>
+                                            <c:if test="${!status.last}">
+                                                <hr>
+                                            </c:if>
+                                        </c:forEach>
+
                                     </div>
+                                    <!-- Bắt đầu nội dung box thêm địa chỉ -->
+                                    <div class="modal-overlay-add-address" id="modalOverlayAddAddress">
+                                        <div class="modal-content-add-address">
+                                            <div class="header-add-address">
+                                                <h3 style="font-size: 20px;font-weight: 500;">Thêm địa chỉ</h3>
+                                            </div>
+                                            <hr style="margin-top: 0;">
+
+                                            <div class="add-body-address">
+                                                <form>
+                                                    <div class="GIYGxC">
+                                                        <div class="xBS0bh">
+                                                            <div class="k81zo2">
+                                                                <div class="aXMKUl gGu3qC">
+                                                                    <div class="aWf_k3">
+                                                                        <div class="K5cdoq">Họ và tên</div>
+                                                                        <input class="uU_7Kb" type="text"
+                                                                            placeholder="Họ và tên" maxlength="64"
+                                                                            name="user_address_fullname" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="P49sO4"></div>
+                                                                <div class="aXMKUl oawiV9">
+                                                                    <div class="aWf_k3">
+                                                                        <div class="K5cdoq">Số điện thoại</div>
+                                                                        <input class="uU_7Kb" type="text"
+                                                                            placeholder="Số điện thoại"
+                                                                            name="user_address_phone" value="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="k81zo2">
+                                                                <div class="B3Z66j">
+                                                                    <div class="fD7jc0">
+                                                                        <div class="RyrP3M">
+                                                                            <input class="uU_7Kb" type="text"
+                                                                                placeholder="Tỉnh/ Thành phố, Quận/Huyện, Phường/Xã"
+                                                                                name="user_address" value="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="k81zo2">
+                                                                <div class="HtRrP7">
+                                                                    <div class="yb8LRL _6FQEs4 WsMrm9">
+                                                                        <div class="NCOcN7">
+                                                                            <div class="bMYo7S">Địa chỉ cụ thể</div>
+                                                                            <input class="zKGLlL" rows="2"
+                                                                                placeholder="Địa chỉ cụ thể"
+                                                                                name="user_street_address"
+                                                                                maxlength="128"></input>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="GDmj6q"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="htdX_R">
+                                                                <label class="M64DVD">
+                                                                    <input class="QDGDYv" type="checkbox"
+                                                                        style="margin-right: 10px;"
+                                                                        name="address_select">
+                                                                    <div class="QoOTGC"></div>
+                                                                    Đặt làm địa chỉ mặc đinh
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="footer-add-address">
+                                                <div style="margin-left: 142px;">
+                                                    <button type="reset" class="close-btn-add-address"
+                                                        id="closeModalBtnAddAddress">HỦY</button>
+                                                    <button type="submit" id="closeModalBtnAddAddressXn"
+                                                        class="btn-add-address">HOÀN THÀNH</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Kết thúc nội dung box thêm địa chỉ -->
+
+
+                                    <!-- Bắt đầu nội dung box cập nhật địa chỉ -->
+                                    <div class="modal-overlay-update-address" id="modalOverlayUpdateAddress">
+                                        <div class="modal-content-update-address">
+                                            <div class="header-update-address">
+                                                <h3 style="font-size: 20px;font-weight: 500;">Cập nhật địa chỉ</h3>
+                                            </div>
+                                            <hr>
+
+                                            <div class="body-update-address">
+                                                <form>
+                                                    <div class="GIYGxC">
+                                                        <input id="userAddressId" style="display: none;">
+                                                        <div class="xBS0bh">
+                                                            <div class="k81zo2">
+                                                                <div class="aXMKUl gGu3qC">
+                                                                    <div class="aWf_k3">
+                                                                        <div class="K5cdoq">Họ và tên</div>
+                                                                        <input class="uU_7Kb" type="text"
+                                                                            placeholder="Họ và tên" maxlength="64"
+                                                                            name="user_address_fullname"
+                                                                            id="userAddressFullName">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="P49sO4"></div>
+                                                                <div class="aXMKUl oawiV9">
+                                                                    <div class="aWf_k3">
+                                                                        <div class="K5cdoq">Số điện thoại</div>
+                                                                        <input class="uU_7Kb" type="text"
+                                                                            placeholder="Số điện thoại"
+                                                                            name="user_address_phone"
+                                                                            id="userAddressPhone" value="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="k81zo2">
+                                                                <div class="B3Z66j">
+                                                                    <div class="fD7jc0">
+                                                                        <div class="RyrP3M">
+                                                                            <input class="uU_7Kb" type="text"
+                                                                                placeholder="Tỉnh/ Thành phố, Quận/Huyện, Phường/Xã"
+                                                                                name="user_address" id="userAddress"
+                                                                                value="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="k81zo2">
+                                                                <div class="HtRrP7">
+                                                                    <div class="yb8LRL _6FQEs4 WsMrm9">
+                                                                        <div class="NCOcN7">
+                                                                            <div class="bMYo7S">Địa chỉ cụ thể</div>
+                                                                            <input class="zKGLlL" rows="2"
+                                                                                placeholder="Địa chỉ cụ thể"
+                                                                                name="user_street_address"
+                                                                                maxlength="128"
+                                                                                id="userStreetAddress"></input>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="GDmj6q"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="htdX_R">
+                                                                <label class="M64DVD">
+                                                                    <input class="QDGDYv" type="checkbox"
+                                                                        style="margin-right: 10px;"
+                                                                        name="address_select">
+                                                                    <div class="QoOTGC"></div>
+                                                                    Đặt làm địa chỉ mặc đinh
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="footer-update-address">
+                                                <div style="margin-left: 142px;">
+                                                    <button class="close-btn-add-address"
+                                                        id="closeModalBtnUpdateAddress">HỦY</button>
+                                                    <button type="submit" class="btn-update-address"
+                                                        id="closeModalBtnUpdateAddressXn">XÁC
+                                                        NHẬN</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Kết thúc nội dung box cập nhật địa chỉ -->
                                 </div>
                             </div>
 
@@ -197,8 +342,8 @@
                     <script src="/vendors/counter-up/jquery.waypoints.min.js"></script>
                     <script src="/vendors/counter-up/jquery.counterup.js"></script>
                     <script src="/js/theme.js"></script>
+                    <script src="/js/ajaxjs.js"></script>
                     <script src="/js/myjs.js"></script>
-
                 </body>
 
                 </html>
