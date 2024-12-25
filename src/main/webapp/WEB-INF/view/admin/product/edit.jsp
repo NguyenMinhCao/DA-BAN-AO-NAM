@@ -15,17 +15,16 @@
     <style>
 
 
-        /* Add CSS to resize images to 200px by 200px */
         .product-image {
             width: 200px;
             height: 200px;
-            object-fit: cover; /* This ensures the image keeps its aspect ratio */
+            object-fit: cover;
         }
 
         #avatarPreviews img {
-            width: 200px; /* Đặt chiều rộng là 50px */
-            height: 200px; /* Đặt chiều cao là 50px */
-            object-fit: cover; /* Cắt ảnh để giữ tỷ lệ khung hình và không bị méo */
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
 
         }
     </style>

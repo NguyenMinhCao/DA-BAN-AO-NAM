@@ -89,4 +89,13 @@ public class OrderStatisticService {
     public BigDecimal getYearlyRevenue() {
         return orderRepository.getYearlyRevenue();
     }
+
+
+    public long getTotalProducts() {
+        return orderRepository.getTotalProducts();
+    }
+
+    public long getLowStockProductCount() {
+        return orderRepository.getLowStockProductCount();
+    }
 }

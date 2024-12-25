@@ -32,6 +32,9 @@ public class OrderStatisticController {
         BigDecimal monthlyRevenue = orderService.getMonthlyRevenue();
         BigDecimal todayRevenue = orderService.getTodayRevenue();
         BigDecimal yearlyRevenue = orderService.getYearlyRevenue();
+        Long totalProduct = orderService.getTotalProducts();
+        Long totalLowProduct = orderService.getLowStockProductCount();
+
 
         // Lấy phân trang cho sản phẩm hết hàng
         Pageable pageable = PageRequest.of(page, 5);  // Mỗi trang hiển thị 5 sản phẩm
@@ -55,7 +58,10 @@ public class OrderStatisticController {
         model.addAttribute("totalRevenue", totalRevenue);
         model.addAttribute("monthlyRevenue", monthlyRevenue);
         model.addAttribute("todayRevenue", todayRevenue);
+        model.addAttribute("totalProduct", totalProduct);
         model.addAttribute("yearlyRevenue", yearlyRevenue);
+        model.addAttribute("totalLowProduct", totalLowProduct);
+
 
         return "admin/order/order-statistics";
     }
