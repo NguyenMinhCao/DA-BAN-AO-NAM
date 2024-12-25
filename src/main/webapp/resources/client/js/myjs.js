@@ -299,4 +299,5 @@ document.addEventListener('DOMContentLoaded', () => {
         // Gán giá trị vào trường ẩn
         document.getElementById('dateOfBirth').value = dateOfBirth;
     });
+
 });
