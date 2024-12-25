@@ -1,86 +1,81 @@
-/* Thêm CSS để căn đều các div */
+#layoutSidenav {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+#layoutSidenav_content {
+    flex: 1;
+    padding: 30px; /* Thêm padding để tránh bị đè */
+    overflow-y: auto;
+}
+
+#layoutSidenav .sidebar {
+    width: 250px; /* Đặt chiều rộng cố định cho sidebar */
+    flex-shrink: 0;
+}
+
+/* Thêm kiểu dáng đẹp cho stat-box */
 .stat-box {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-size: 1.2rem;
-    margin-bottom: 20px;  /* Đảm bảo các stat-box không chồng lên nhau */
+    background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Hiệu ứng sáng tối */
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1), -3px -3px 5px rgba(255, 255, 255, 0.7); /* Đổ bóng mềm mại */
+    border-radius: 15px; /* Bo tròn các góc */
+    padding: 15px 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng hover */
+}
+
+.stat-box:hover {
+    transform: translateY(-5px); /* Hiệu ứng nổi lên khi hover */
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.8);
 }
 
 .stat-box h4 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* Màu chữ đậm */
+    margin-bottom: 5px;
 }
 
 .stat-box p {
-    font-size: 1.2rem;
+    font-size: 24px; /* Làm số liệu lớn hơn */
     font-weight: bold;
-    color: #007bff;
+    color: #007bff; /* Màu xanh chủ đạo */
+    margin: 0;
 }
 
-/* Căn chỉnh div cho đẹp */
-.row {
-    margin-top: 20px;
+/* Tăng khoảng cách và định dạng các biểu tượng */
+.stat-box .fas {
+    margin-right: 15px;
 }
 
-/* Đảm bảo phần container chiếm đủ không gian */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Điều chỉnh các phần tử stat-box */
-.stat-box {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
+/* Thêm khoảng cách giữa các box */
+.row .stat-box {
     margin-bottom: 20px;
 }
 
-/* Căn chỉnh nội dung chính để tránh bị sidebar đè lên */
-.main-content {
-    padding-left: 15px;
-    padding-right: 15px;
+/* Cải tiến bảng */
+.table {
+    background-color: #ffffff; /* Màu nền trắng */
+    border-radius: 10px; /* Bo tròn các góc bảng */
+    overflow: hidden;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng mềm mại */
 }
 
-/* Đảm bảo sidebar và content không bị đè lên nhau */
-#layoutSidenav_content {
-    padding: 20px;
-    padding-left: 0;  /* Không để padding-left quá lớn */
-    margin-left: 250px;  /* Đảm bảo nội dung không bị che khuất bởi sidebar */
+
+
+
+
+/* Trang trí nút phân trang */
+.pagination a {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
 }
 
-/* Điều chỉnh phần nội dung chính (content) để căn giữa */
-#layoutSidenav_content main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Căn giữa các stat-box */
-.row.justify-content-center {
-    justify-content: center;
-    display: flex;
-    gap: 20px;  /* Tạo khoảng cách giữa các div stat-box */
-}
-
-/* Điều chỉnh cho màn hình nhỏ */
-@media (max-width: 768px) {
-    #layoutSidenav_content {
-        margin-left: 0;
-    }
-
-    .row.justify-content-center {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .stat-box {
-        margin-bottom: 15px;  /* Giảm khoảng cách giữa các stat-box trên màn hình nhỏ */
-    }
+.pagination a:hover {
+    background-color: #0056b3;
 }

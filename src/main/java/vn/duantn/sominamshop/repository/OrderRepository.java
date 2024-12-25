@@ -66,4 +66,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE o.status IS NULL AND o.createdBy = :createdBy")
     Order findOrderByStatusAndCreatedBy(@Param("createdBy") String createdBy);
 
+    @Query("SELECT COUNT(p) FROM Product p")
+    long getTotalProducts();
+
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.quantity < 20")
+    long getLowStockProductCount();
 }

@@ -96,10 +96,8 @@
                             <a href="/admin/product?page=${productPage.number - 1}">Trang trước</a>
                         </c:if>
 
-                        <!-- Hiển thị số trang -->
                         <span>Trang ${productPage.number + 1} / ${productPage.totalPages}</span>
 
-                        <!-- Nút "Trang sau" -->
                         <c:if test="${productPage.hasNext()}">
                             <a href="/admin/product?page=${productPage.number + 1}">Trang sau</a>
                         </c:if>
