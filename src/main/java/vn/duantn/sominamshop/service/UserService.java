@@ -1,5 +1,6 @@
 package vn.duantn.sominamshop.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -64,7 +65,7 @@ public class UserService {
         return this.userRepository.findById(id);
     }
 
-    public void handleUpdateUser(User user, HttpSession session) {
+    public void handleUpdateUser(User user, HttpSession session, String dateOfBirthStr, String avatar) {
         User userById = this.userRepository.findById(user.getId()).get();
 
         if (userById != null) {
@@ -73,6 +74,9 @@ public class UserService {
             userById.setEmail(user.getEmail());
             userById.setPhoneNumber(user.getPhoneNumber());
             userById.setGender(user.getGender());
+            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthStr);
+            userById.setDateOfBirth(dateOfBirth);
+            userById.setAvatar(avatar);
             this.userRepository.save(userById);
         }
     }

@@ -1,5 +1,6 @@
 package vn.duantn.sominamshop.controller.client;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.OrderService;
 import vn.duantn.sominamshop.service.PromotionService;
+import vn.duantn.sominamshop.service.UploadService;
 import vn.duantn.sominamshop.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,11 +31,14 @@ public class AccountController {
     private final UserService userService;
     private final OrderService orderService;
     private final AddressService addressService;
+    private final UploadService uploadService;
 
-    public AccountController(UserService userService, OrderService orderService, AddressService addressService) {
+    public AccountController(UserService userService, OrderService orderService, AddressService addressService,
+            UploadService uploadService) {
         this.userService = userService;
         this.orderService = orderService;
         this.addressService = addressService;
+        this.uploadService = uploadService;
     }
 
     @GetMapping("/user/profile")
@@ -42,15 +47,20 @@ public class AccountController {
         String emailUser = (String) session.getAttribute("email");
 
         User userByEmail = this.userService.findUserByEmail(emailUser);
+        int uu = userByEmail.getDateOfBirth().getMonthValue();
+        System.out.println(uu);
         model.addAttribute("userByEmail", userByEmail);
         return "client/account/account";
     }
 
     @PostMapping("/user/account-update")
-    public String updateAccount(@ModelAttribute User user, @RequestParam("getImgFile") MultipartFile file,
+    public String updateAccount(@ModelAttribute("userByEmail") User user,
+            @RequestParam("dateOfBirth") String dateOfBirthStr,
+            @RequestParam("getImgFile") MultipartFile file,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
-        this.userService.handleUpdateUser(user, session);
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+        this.userService.handleUpdateUser(user, session, dateOfBirthStr, avatar);
         return "redirect:/user/profile";
     }
 

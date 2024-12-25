@@ -128,28 +128,41 @@
                                                     <label for="dob" class="form-label">Ngày sinh</label>
                                                     <div class="d-flex-date"
                                                         style="justify-content: space-between; display: flex;">
-                                                        <select class="form-select me-2" id="day">
-                                                            <option style="display: none;">Ngày</option>
+                                                        <select class="form-select me-2" id="day" name="day">
+                                                            <option>Ngày</option>
                                                             <c:forEach var="i" begin="1" end="30" step="1">
-                                                                <option>${i}</option>
+                                                                <option value="${i}" <c:if
+                                                                    test="${userByEmail.dateOfBirth.dayOfMonth == i}">
+                                                                    selected
+                                                                    </c:if>>Ngày ${i}</option>
                                                             </c:forEach>
                                                         </select>
-                                                        <select class="form-select me-2" id="month">
+                                                        <select class="form-select me-2" id="month" name="month">
                                                             <option>Tháng</option>
                                                             <c:forEach var="i" begin="1" end="12" step="1">
-                                                                <option>Tháng ${i}</option>
+                                                                <option value="${i}" <c:if
+                                                                    test="${userByEmail.dateOfBirth.monthValue == i}">
+                                                                    selected
+                                                                    </c:if>>Tháng ${i}</option>
                                                             </c:forEach>
                                                         </select>
-                                                        <select class="form-select" id="yeariii">
+                                                        <select class="form-select" id="year" name="year">
                                                             <option>Năm</option>
                                                             <c:forEach var="i" begin="1950" end="2024" step="1">
-                                                                <option>Năm ${i}</option>
+                                                                <option value="${i}" <c:if
+                                                                    test="${userByEmail.dateOfBirth.year == i}">
+                                                                    selected
+                                                                    </c:if>>Năm ${i}</option>
                                                             </c:forEach>
                                                         </select>
                                                     </div>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                                <input type="hidden" path="dateOfBirth" name="dateOfBirth"
+                                                    id="dateOfBirth" />
+
+                                                <button type="submit" id="btn-update-user"
+                                                    class="btn btn-primary">Lưu</button>
                                             </div>
 
                                             <div class="input-user-photo" style="border-left: .0625rem solid #efefef;">

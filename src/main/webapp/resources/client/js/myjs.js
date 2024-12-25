@@ -283,4 +283,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return formatted;
     }
 
-})(jQuery);
+    //update user dateOfbirth
+    const btnUpdate = document.getElementById('btn-update-user');
+    btnUpdate.addEventListener('click', function () {
+        const day = document.getElementById('day').value;
+        const month = document.getElementById('month').value;
+        const year = document.getElementById('year').value;
+        let dateOfBirth = null;
+
+        if (day && month && year) {
+            // Đảm bảo định dạng ngày chuẩn yyyy-MM-dd
+            dateOfBirth = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+
+        // Gán giá trị vào trường ẩn
+        document.getElementById('dateOfBirth').value = dateOfBirth;
+    });
+});
