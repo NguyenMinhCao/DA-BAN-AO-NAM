@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import vn.duantn.sominamshop.model.Promotion;
 
+import java.util.List;
+
 @Repository
 public interface PromotionRepository extends JpaRepository<Promotion, Long>{
-    
+    List<Promotion> findByMinOrderValueLessThanEqual(Double orderValue);
 }

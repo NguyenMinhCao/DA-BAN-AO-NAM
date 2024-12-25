@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal handling add address
+    // Modal handling update address
     const modalOverlayUpdateAddress = document.getElementById('modalOverlayUpdateAddress');
     const openModalBtnUpdateAddress = document.getElementById('openModalBtnUpdateAddress');
     const closeModalBtnUpdateAddress = document.getElementById('closeModalBtnUpdateAddress');
@@ -169,6 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalOverlayUpdateAddress.style.display = 'none';
             }
         });
+    }
+
+    // Modal handling add address account
+    const openModalBtnAddAddressAcc = document.getElementById('openModalBtnAddAddressAcc');
+
+
+    if (openModalBtnAddAddressAcc) {
+        openModalBtnAddAddressAcc.addEventListener('click', () => {
+            modalOverlayAddAddress.style.display = 'block';
+        })
     }
 
     // tăng giảm số lượng sản phẩm trong giỏ hàng
@@ -249,6 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 quantity: quantity
             }),
             success: function (response) {
+                var formattedTotalPayment = new Intl.NumberFormat('vi-VN').format(response.totalPayment);
+                $('#total-payment').text(formattedTotalPayment + ' đ');
                 console.log('Cập nhật thành công');
             },
             error: function (xhr, status, error) {
@@ -271,4 +283,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return formatted;
     }
 
-})(jQuery);
+    //update user dateOfbirth
+    const btnUpdate = document.getElementById('btn-update-user');
+    btnUpdate.addEventListener('click', function () {
+        const day = document.getElementById('day').value;
+        const month = document.getElementById('month').value;
+        const year = document.getElementById('year').value;
+        let dateOfBirth = null;
+
+        if (day && month && year) {
+            // Đảm bảo định dạng ngày chuẩn yyyy-MM-dd
+            dateOfBirth = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+
+        // Gán giá trị vào trường ẩn
+        document.getElementById('dateOfBirth').value = dateOfBirth;
+    });
+
+});

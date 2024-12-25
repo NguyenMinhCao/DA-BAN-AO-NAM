@@ -75,6 +75,10 @@ public class OrderControllerClient {
         double totalPayment = 0;
         totalPayment = totalPrice + shippingPrice;
 
+        if (order.getPromotion() != null) {
+            totalPayment = totalPayment - Double.parseDouble(order.getPromotion().getDiscountValue());
+        }
+
         // Lấy địa chỉ mặc định
         User user = this.userService.findUserByEmail(emailUser);
         List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
@@ -86,6 +90,8 @@ public class OrderControllerClient {
             session.setAttribute("address", addressById);
         }
 
+        session.setAttribute("totalPrice", totalPrice);
+        session.setAttribute("lstCartDetail", lstCartDetail);
         session.setAttribute("totalPayment", totalPayment);
         session.setAttribute("shippingPrice", shippingPrice);
         session.setAttribute("arrAddressByUser", arrAddressByUser);
