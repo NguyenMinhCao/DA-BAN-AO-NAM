@@ -8,13 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Statistics</title>
 
-    <!-- Link thư viện Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Link thư viện Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Link thư viện Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <!-- Link file CSS tùy chỉnh -->
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link href="/admin/css/order-statstics.css" rel="stylesheet"/>
 </head>
@@ -35,7 +31,6 @@
                 </div>
 
 
-                <!-- Hàng 1 -->
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <div class="stat-box">
@@ -91,14 +86,13 @@
                     </div>
                 </div>
 
-                <!-- Hàng 2 -->
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-cogs fa-2x text-danger me-3"></i>
                                 <div>
-                                    <h4>Tổng số sản phẩm quản lí</h4>
+                                    <h4>Số sản phẩm quản lí</h4>
                                     <p id="totalProduct">
                                         <span>${totalProduct}</span>
                                     </p>
@@ -111,7 +105,7 @@
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-exclamation-triangle fa-2x text-warning me-3"></i>
                                 <div>
-                                    <h4>Tổng số sản phẩm sắp hết hàng</h4>
+                                    <h4>Số sản phẩm sắp hết hàng</h4>
                                     <p id="totalLowProduct">
                                         <span>${totalLowProduct}</span>
                                     </p>
@@ -119,7 +113,32 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Thêm box nữa nếu có -->
+                    <div class="col-md-3">
+                        <div class="stat-box">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-calendar-alt fa-2x text-warning me-3"></i>
+                                <div>
+                                    <h4>Đơn hàng hôm nay</h4>
+                                    <p id="totalTodayOrderCount">
+                                        <span>${totalTodayOrderCount}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-box">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-calendar-alt fa-2x text-warning me-3"></i>
+                                <div>
+                                    <h4>Doanh Thu Hôm Nay</h4>
+                                    <p id="">
+                                        <span>0</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -192,7 +211,6 @@
                         }
                     });
 
-                    // Gọi API để cập nhật biểu đồ
                     fetchOrderStatistics();
                 });
             </script>

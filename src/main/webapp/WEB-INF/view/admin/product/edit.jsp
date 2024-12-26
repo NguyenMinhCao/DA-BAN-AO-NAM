@@ -75,7 +75,6 @@
                             <h3>Update Product</h3>
                             <hr>
 
-                            <!-- Display Error Message -->
                             <c:if test="${not empty errorMessage}">
                                 <div class="alert alert-danger">
                                     <span>${errorMessage}</span>
@@ -84,7 +83,6 @@
 
                             <form:form  action="/admin/product/edit/${product.id}"  class="row g-3" method="post"
                                        modelAttribute="product" enctype="multipart/form-data">
-                                <!-- Name -->
                                 <div class="col-md-6">
                                     <label class="form-label">Name:</label>
                                     <form:input type="text"

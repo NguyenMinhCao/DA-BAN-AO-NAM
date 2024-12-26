@@ -45,13 +45,11 @@
                         <h3>Sản Phẩm</h3>
                         <a href="/admin/product/create" class="btn btn-primary">Create a product</a>
                     </div>
-
-                    <form action="/admin/product/search" method="get" class="mb-3">
-                        <div class="input-group">
-                            <input type="text" name="productName" class="form-control" placeholder="Tìm kiếm theo tên sản phẩm" aria-label="Tìm kiếm theo tên sản phẩm">
-                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
-                        </div>
+                    <form action="/admin/product/search" method="get" class="d-flex mb-4">
+                        <input type="text" name="productName" class="form-control" placeholder="Tìm kiếm theo tên sản phẩm" value="${param.productName}">
+                        <button type="submit" class="btn btn-secondary ms-2">Tìm kiếm</button>
                     </form>
+
                     <hr>
                     <table class="table table-hover">
                         <thead>
@@ -81,10 +79,10 @@
                                 <td>${product.quantity}</td>
                                 <td>
                                     <a href="/admin/product/detail/${product.id}" class="btn btn-success" title="View">
-                                        <i class="fas fa-eye"></i> <!-- Icon mắt cho "View" -->
+                                        <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="/admin/product/edit/${product.id}" class="btn btn-warning" title="Update">
-                                        <i class="fas fa-edit"></i> <!-- Icon bút chì cho "Update" -->
+                                        <i class="fas fa-edit"></i>
 
                                     </a>
                                 </td>

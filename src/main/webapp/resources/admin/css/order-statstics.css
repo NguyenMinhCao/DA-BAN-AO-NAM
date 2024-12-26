@@ -6,66 +6,72 @@
 
 #layoutSidenav_content {
     flex: 1;
-    padding: 30px; /* Thêm padding để tránh bị đè */
+    padding: 30px;
     overflow-y: auto;
 }
 
 #layoutSidenav .sidebar {
-    width: 250px; /* Đặt chiều rộng cố định cho sidebar */
+    width: 250px;
     flex-shrink: 0;
 }
 
-/* Thêm kiểu dáng đẹp cho stat-box */
-.stat-box {
-    background: linear-gradient(145deg, #ffffff, #e6e6e6); /* Hiệu ứng sáng tối */
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1), -3px -3px 5px rgba(255, 255, 255, 0.7); /* Đổ bóng mềm mại */
-    border-radius: 15px; /* Bo tròn các góc */
-    padding: 15px 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng hover */
+.col-md-3 {
+    display: flex;
+    flex: 1 1 22%;
+    margin: 10px;
 }
 
+.stat-box {
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1), -3px -3px 5px rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    padding: 15px 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 250px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+
 .stat-box:hover {
-    transform: translateY(-5px); /* Hiệu ứng nổi lên khi hover */
+    transform: translateY(-5px);
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.8);
 }
 
 .stat-box h4 {
     font-size: 18px;
     font-weight: bold;
-    color: #333; /* Màu chữ đậm */
+    color: #333;
     margin-bottom: 5px;
 }
 
 .stat-box p {
-    font-size: 24px; /* Làm số liệu lớn hơn */
+    font-size: 24px;
     font-weight: bold;
-    color: #007bff; /* Màu xanh chủ đạo */
+    color: #007bff;
     margin: 0;
 }
 
-/* Tăng khoảng cách và định dạng các biểu tượng */
 .stat-box .fas {
     margin-right: 15px;
 }
 
-/* Thêm khoảng cách giữa các box */
 .row .stat-box {
     margin-bottom: 20px;
 }
 
-/* Cải tiến bảng */
 .table {
-    background-color: #ffffff; /* Màu nền trắng */
-    border-radius: 10px; /* Bo tròn các góc bảng */
+    background-color: #ffffff;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng mềm mại */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 
 
-
-
-/* Trang trí nút phân trang */
 .pagination a {
     background-color: #007bff;
     color: #ffffff;

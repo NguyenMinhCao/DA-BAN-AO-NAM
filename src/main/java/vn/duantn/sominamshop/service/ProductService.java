@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import org.springframework.web.multipart.MultipartFile;
+
 import vn.duantn.sominamshop.model.*;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.repository.CartDetailRepository;
@@ -76,8 +76,8 @@ public class ProductService {
     }
 
 
-    public List<Product> searchByName(String productName) {
-        return productRepository.findByNameContainingIgnoreCase(productName);
+    public Page<Product> searchByName(String name, Pageable pageable) {
+        return productRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 
     }

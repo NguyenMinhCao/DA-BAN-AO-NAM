@@ -71,4 +71,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT COUNT(p) FROM Product p WHERE p.quantity < 20")
     long getLowStockProductCount();
+
+
+    @Query("SELECT COUNT(o) FROM Order o " +
+            "JOIN o.orderDetails od " +
+            "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE) " +
+            "AND FUNCTION('DAY', o.createdAt) = FUNCTION('DAY', CURRENT_DATE)")
+    long getTodayOrderCount();
+
 }
