@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const productModal = document.getElementById('product-modal');
     const customerModal = document.getElementById('customer-modal');
+    const addCustomerModal = document.getElementById('form-add-customer');
 
     const chooseProductBtn = document.getElementById('btn-choose-product');
     const chooseCustomerBtn = document.getElementById('btn-choose-customer');
@@ -116,6 +117,12 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#infoDetail').empty()
         $('#btn-delete-customer').prop('disabled', true);
     })
+
+    //Thêm mới khách hàng
+    document.getElementById('btn-add-customer').addEventListener('click', function(e){
+        toggleModal(addCustomerModal, true);
+    })
+
     // Tạo hóa đơn chờ
     createInvoiceBtn.addEventListener('click', () => {
         if(invoiceCounter <= 4){
@@ -148,6 +155,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Tìm kiếm sản phẩm theo tên
     productSearchBtn.addEventListener('click', function () {
         fetchProducts(0);
+    });
+    // Tìm kiếm khách hàng theo tên
+    document.getElementById('search-btn-customer').addEventListener('click', function () {
+        fetchCustomers(0);
     });
 
     // Cập nhật trả tiền khách hàng
@@ -250,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
             listProduct.push(product)
         }
         updateTotalPrice();
+        fetchVoucher();
         saveDataToLocalStorage(selectedInvoiceId)
     }
 
@@ -264,6 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
                 saveDataToLocalStorage(selectedInvoiceId)
                 updateTotalPrice();
+                fetchVoucher();
             }
         });
         newRow.querySelector(".increase").addEventListener("click", () => {
@@ -273,6 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
             saveDataToLocalStorage(selectedInvoiceId)
             updateTotalPrice();
+            fetchVoucher();
         });
         quantityInput.addEventListener("change", () => {
             if(Number(quantityInput.value) > Number(totalQuantityProduct)){
@@ -290,6 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
             saveDataToLocalStorage(selectedInvoiceId)
             updateTotalPrice();
+            fetchVoucher();
         });
         //Xóa sản phẩm trong table
         newRow.querySelector('.delete-btn').addEventListener('click', function() {
@@ -300,6 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
             saveDataToLocalStorage(selectedInvoiceId)
             newRow.remove();
             updateTotalPrice()
+            fetchVoucher();
         });
     }
     // Tạo hóa đơn mới
@@ -664,6 +680,29 @@ document.addEventListener('DOMContentLoaded', function () {
             success: function (response) {
                 if (response.id != null) {
                     saveInvoiceDetail(response.id)
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Có lỗi khi lưu hóa đơn",
+                    showConfirmButton: true,
+                    timer: 1500
+                });
+                console.log("Error:", error);
+            }
+        });
+    }
+    //Lấy voucher
+    function fetchVoucher(){
+        const orderValue = document.getElementById('form-invoice-total-amount')
+        $.ajax({
+            url: `http://localhost:8080/api/admin/order/get/promotions`,
+            type: 'GET',
+            data: {orderValue: orderValue},
+            success: function (response) {
+                if (response.id != null) {
+                    $('#voucher').text(response?.promotionCode || '')
                 }
             },
             error: function (error) {

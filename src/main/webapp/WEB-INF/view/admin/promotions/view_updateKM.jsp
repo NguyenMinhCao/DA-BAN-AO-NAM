@@ -75,6 +75,11 @@
 <%--                                    <form:errors path="endDate"/>--%>
                                 </div>
                                 <br>
+                                <div class="form-group">
+                                    <b class="bi bi-person-arms-up"> <label>Promotion code</label></b>
+                                    <input type="text" name="promotionCode" class="form-control" value="${promo.promotionCode}" readonly>
+                                    <%--                                    <form:errors path="endDate"/>--%>
+                                </div>
                                 <br>
                                 <div class="mb-3">
                                     <b class="bi bi-gender-ambiguous"><label>Status</label></b>

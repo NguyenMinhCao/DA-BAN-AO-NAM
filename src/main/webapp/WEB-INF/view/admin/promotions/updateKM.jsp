@@ -74,6 +74,11 @@
                                     <input type="text" name="endDate" class="form-control" value="${promo.endDate}" >
                                     <%--                                    <form:errors path="endDate"/>--%>
                                 </div>
+                                <div class="form-group">
+                                    <b class="bi bi-person-arms-up"> <label>Promtion code</label></b>
+                                    <input type="text" name="promotionCode" class="form-control" value="${promo.promotionCode}" >
+                                    <%--                                    <form:errors path="promotionCode"/>--%>
+                                </div>
                                 <br>
                                 <br>
                                 <div class="mb-3">

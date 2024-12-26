@@ -1,14 +1,21 @@
 package vn.duantn.sominamshop.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
+import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
+import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.dto.CartDetailUpdateRequestDTO;
 import vn.duantn.sominamshop.repository.CartDetailRepository;
 import vn.duantn.sominamshop.repository.CartRepository;
 
@@ -19,13 +26,20 @@ public class CartService {
     private final UserService userService;
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
+    private final OrderService orderService;
+    private final AddressService addressService;
+    private final PromotionService promotionService;
 
     public CartService(ProductService productService, UserService userService, CartRepository cartRepository,
-            CartDetailRepository cartDetailRepository) {
+            CartDetailRepository cartDetailRepository, @Lazy OrderService orderService, AddressService addressService,
+            PromotionService promotionService) {
         this.productService = productService;
         this.userService = userService;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
+        this.orderService = orderService;
+        this.addressService = addressService;
+        this.promotionService = promotionService;
     }
 
     public void addProductToCart(String email, long idProduct, HttpSession session) {
@@ -36,6 +50,18 @@ public class CartService {
             cart.setTotalProducts(0);
             cart.setUser(user);
             this.cartRepository.save(cart);
+
+            // tạo mới một order phục vụ cho bên order không liên quan đến cart
+            Order order = new Order();
+            order.setPaymentMethod("cash-on-delivery");
+            order.setShippingMethod("fast");
+            List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
+            for (Address address : arrAddressByUser) {
+                if (address.isStatus() == true) {
+                    order.setAddress(address);
+                }
+            }
+            this.orderService.saveOrder(order);
         }
         Product product = this.productService.findProductById(idProduct);
 
@@ -77,6 +103,10 @@ public class CartService {
         this.cartDetailRepository.delete(cartDetail);
     }
 
+    public void saveCartDetail(CartDetail cartDetail) {
+        this.cartDetailRepository.save(cartDetail);
+    }
+
     public void deleteCartDetailByCartAndProduct(String email, Product product, HttpSession session) {
         User user = this.userService.findUserByEmail(email);
         Cart cart = this.cartRepository.findCartByUser(user);
@@ -87,7 +117,20 @@ public class CartService {
         int sum = findLstCartDetail.size();
         cart.setTotalProducts(sum);
         this.cartRepository.save(cart);
+        if (sum == 0) {
+            Order order = this.orderService.findOrderByStatusAndCreatedBy();
+            if (order != null) {
+                this.orderService.deleteOrder(order);
+            }
+            this.cartRepository.delete(cart);
+        }
         session.setAttribute("sum", sum);
+    }
+
+    public List<CartDetail> getAllCartDetailByCart(String email) {
+        User user = this.userService.findUserByEmail(email);
+        Cart cart = this.cartRepository.findCartByUser(user);
+        return this.cartDetailRepository.findAllCartDetailByCart(cart);
     }
 
     public CartDetail findCartDetailByProduct(Product product) {
@@ -100,5 +143,52 @@ public class CartService {
 
     public CartDetail findCartDetailByCart(Cart cart) {
         return this.cartDetailRepository.findCartDetailByCart(cart);
+    }
+
+    public Optional<CartDetail> findCartDetailById(Long id) {
+        return this.cartDetailRepository.findById(id);
+    }
+
+    public Map<String, Object> updateCartDetailProductQuantity(CartDetailUpdateRequestDTO dto, HttpSession session) {
+        String emailUser = (String) session.getAttribute("email");
+        Map<String, Object> response = new HashMap<>();
+        Order order = this.orderService.findOrderByStatusAndCreatedBy();
+
+        long cartDetailId = dto.getCartDetailId();
+        int quantity = dto.getQuantity();
+
+        CartDetail cartDetailById = this.findCartDetailById(cartDetailId).get();
+        if (cartDetailById != null) {
+            cartDetailById.setQuantity(quantity);
+            cartDetailById.setPrice(cartDetailById.getProduct().getPrice() * quantity);
+            this.saveCartDetail(cartDetailById);
+        }
+
+        List<CartDetail> lstCartDetail = this.getAllCartDetailByCart(emailUser);
+        double totalPrice = 0;
+        for (CartDetail cartDetail : lstCartDetail) {
+            totalPrice += cartDetail.getPrice();
+        }
+
+        double shippingPrice = 0;
+        double discountValue = 0;
+        double totalPayment = 0;
+
+        if (order.getShippingMethod().equals("express")) {
+            shippingPrice = 50000;
+        } else if (order.getShippingMethod().equals("fast")) {
+            shippingPrice = 30000;
+        } else {
+            shippingPrice = 20000;
+        }
+
+        if (order.getPromotion() != null) {
+            discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
+        }
+
+        totalPayment = totalPrice + shippingPrice - discountValue;
+
+        response.put("totalPayment", totalPayment);
+        return response;
     }
 }
