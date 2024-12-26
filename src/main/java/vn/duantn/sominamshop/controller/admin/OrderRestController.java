@@ -13,7 +13,9 @@ import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.PromotionDTO;
 import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.service.OrderService;
+import vn.duantn.sominamshop.service.ProductService;
 import vn.duantn.sominamshop.service.PromotionService;
+import vn.duantn.sominamshop.service.UserService;
 
 import java.util.List;
 
@@ -23,6 +25,8 @@ import java.util.List;
 public class OrderRestController {
     private final PromotionService promotionService;
     private final OrderService orderService;
+    private final UserService userService;
+    private final ProductService productService;
 
     @GetMapping("/get/products")
     public ResponseEntity<?> GetProduct(
@@ -30,7 +34,7 @@ public class OrderRestController {
             @RequestParam(name = "limit", defaultValue = "5") int limit,
             @RequestParam(value = "keyword", defaultValue = "") String search) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<CounterProductProjection> pageProduct = orderService.GetAllProductByName(pageable, search);
+        Page<CounterProductProjection> pageProduct = productService.GetAllProductByName(pageable, search);
         return ResponseEntity.ok(pageProduct);
     }
 
@@ -40,7 +44,7 @@ public class OrderRestController {
             @RequestParam(name = "limit", defaultValue = "2") int limit,
             @RequestParam(value = "keyword", defaultValue = "") String search) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = orderService.GetCustomer(pageable, search);
+        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search);
         return ResponseEntity.ok(pageCustomer);
     }
 
@@ -64,7 +68,7 @@ public class OrderRestController {
     @PutMapping("/update/products")
     public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail) {
         if (orderDetail != null) {
-            orderService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProduct().getId());
+            productService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProduct().getId());
         }
         return ResponseEntity.ok("Cập nhật thành công");
     }

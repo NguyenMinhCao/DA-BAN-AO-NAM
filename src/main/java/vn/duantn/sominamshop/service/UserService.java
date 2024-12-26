@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.RegisterDTO;
+import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.repository.RoleRepository;
 import vn.duantn.sominamshop.repository.UserRepository;
 
@@ -83,5 +84,11 @@ public class UserService {
 
     public Page<User> findUserByFullNameContainingAndRole(String fullName, Role role, Pageable pageable) {
         return this.userRepository.findByFullNameContainingAndRole(fullName, role, pageable);
+    }
+    public Page<UserDTO> findByFullNameAndRole(Pageable pageable, String name) {
+        Page<User> pageCustomer = userRepository.findByFullNameContainingAndRole(name, Role.builder().id(1).build(),
+                pageable);
+        Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
+        return pageCustomerDto;
     }
 }

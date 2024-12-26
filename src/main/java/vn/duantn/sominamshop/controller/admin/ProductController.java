@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.UUID;
 
 
@@ -34,12 +35,11 @@ public class ProductController {
     private final UploadService uploadService;
     private final ImageService imageService;
     private final SizeService sizeService;
-    private final CategoryService  categoryService;
-    private final ColorService  colorService;
-    private final MaterialService  materialService;
-    private final OriginService  originService;
-    private final PatternService  patternService;
-
+    private final CategoryService categoryService;
+    private final ColorService colorService;
+    private final MaterialService materialService;
+    private final OriginService originService;
+    private final PatternService patternService;
 
 
     public ProductController(ProductService productService, UploadService uploadService, ImageService imageService, SizeService sizeService, CategoryService categoryService, ColorService colorService, MaterialService materialService, OriginService originService, PatternService patternService) {
@@ -53,7 +53,6 @@ public class ProductController {
         this.originService = originService;
         this.patternService = patternService;
     }
-
 
 
     @GetMapping("/admin/product")
@@ -139,7 +138,6 @@ public class ProductController {
         }
 
 
-
         Product productNew = this.productService.handleSaveProduct(product);
 
         // Lưu các ảnh được tải lên
@@ -194,30 +192,23 @@ public class ProductController {
     }
 
 
-
-
-
     @GetMapping("/admin/product/detail/{id}")
     public String getProductDetail(@PathVariable("id") long id, Model model) {
         Product product = productService.findProductById(id);
         model.addAttribute("product", product);
-        return "admin/product/detail";  // Trỏ tới trang JSP hiển thị chi tiết sản phẩm
+        return "admin/product/detail";
     }
-
 
 
     @GetMapping("/admin/product/edit/{id}")
     public String editProduct(@PathVariable Long id, Model model) {
-        // Lấy sản phẩm theo ID
         Product product = productService.findProductById(id);
 
-        // Kiểm tra nếu không tìm thấy sản phẩm
         if (product == null) {
             model.addAttribute("error", "Sản phẩm không tồn tại.");
-            return "admin/product/error"; // Trả về trang lỗi nếu không tìm thấy sản phẩm
+            return "admin/product/error";
         }
 
-        // Lấy danh sách các thuộc tính khác
         List<Category> categories = categoryService.getAllCategories();
         List<Size> sizes = sizeService.getAllSizes();
         List<Color> colors = colorService.getAllColors();
@@ -225,7 +216,6 @@ public class ProductController {
         List<Pattern> patterns = patternService.getAllPatterns();
         List<Origin> origins = originService.getAllOrigins();
 
-        // Thêm các đối tượng vào model để sử dụng trong JSP
         model.addAttribute("product", product);
         model.addAttribute("categories", categories);
         model.addAttribute("sizes", sizes);
@@ -234,10 +224,8 @@ public class ProductController {
         model.addAttribute("patterns", patterns);
         model.addAttribute("origins", origins);
 
-        // Trả về view tương ứng
         return "admin/product/edit";
     }
-
 
 
     @RequestMapping(value = "/admin/product/edit/{id}", method = RequestMethod.POST)
@@ -255,29 +243,29 @@ public class ProductController {
         }
 
         try {
-            // ** Xử lý cập nhật ảnh mới **
+
             List<Image> updatedImages = new ArrayList<>();
 
             for (int i = 0; i < files.length; i++) {
                 if (!files[i].isEmpty()) {
-                    // Tạo file ảnh mới
+
                     String fileExtension = Objects.requireNonNull(files[i].getOriginalFilename())
                             .substring(files[i].getOriginalFilename().lastIndexOf('.'));
                     String fileName = UUID.randomUUID() + fileExtension;
 
                     Path imagePath = Paths.get("src", "main", "webapp", "resources", "images", "product", fileName);
 
-                    // Lưu ảnh vào thư mục
+
                     Files.createDirectories(imagePath.getParent()); // Tạo thư mục nếu chưa tồn tại
                     Files.write(imagePath, files[i].getBytes());
 
-                    // Tạo đối tượng ảnh mới
+
                     Image image = new Image();
                     image.setImageUrl(fileName);
                     image.setProduct(existingProduct);
 
                     if (i == 0) {
-                        image.setIsMain(true); // Đánh dấu ảnh chính
+                        image.setIsMain(true);
                     } else {
                         image.setIsMain(false);
                     }
@@ -286,16 +274,15 @@ public class ProductController {
                 }
             }
 
-            // ** Xoá ảnh cũ nếu có **
+
             if (!updatedImages.isEmpty()) {
-                imageService.deleteImagesByProduct(existingProduct); // Xoá tất cả ảnh liên quan đến sản phẩm
+                imageService.deleteImagesByProduct(existingProduct);
                 for (Image newImage : updatedImages) {
-                    imageService.handleSaveImage(newImage); // Lưu các ảnh mới
+                    imageService.handleSaveImage(newImage);
                 }
                 existingProduct.setImages(updatedImages);
             }
 
-            // Cập nhật các thông tin khác của sản phẩm
             existingProduct.setName(product.getName());
             existingProduct.setPrice(product.getPrice());
             existingProduct.setQuantity(product.getQuantity());
@@ -316,6 +303,13 @@ public class ProductController {
         }
 
         return "redirect:/admin/product";
+    }
+
+    @GetMapping("/admin/product/search")
+    public String searchProducts(@RequestParam("productName") String productName, Model model) {
+        List<Product> filteredProducts = productService.searchByName(productName);
+        model.addAttribute("productPage", filteredProducts); // Gửi filteredProducts vào model với tên 'productPage'
+        return "admin/product/show"; // Trả về trang JSP
     }
 
 }

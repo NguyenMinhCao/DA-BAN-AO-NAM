@@ -126,50 +126,62 @@
             <h2>Thống Kê Đơn Hàng và Sản Phẩm Bán Được</h2>
             <canvas id="orderChart" width="400" height="200"></canvas>
             <script>
-                console.log('${orderStatisticsJson}');
-
-                var orderData = [];
-                try {
-                    if ('${orderStatisticsJson}' && '${orderStatisticsJson}' !== 'null' && '${orderStatisticsJson}' !== '') {
-                        orderData = JSON.parse('${orderStatisticsJson}');
-                    } else {
-                        console.error('Invalid JSON data or empty response from server.');
+                async function fetchOrderStatistics() {
+                    try {
+                        const response = await fetch('/api/admin/order/order-statistics');
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        const data = await response.json();
+                        updateChart(data);
+                    } catch (error) {
+                        console.error('Error fetching order statistics:', error);
                     }
-                } catch (e) {
-                    console.error('Error parsing JSON:', e);
                 }
 
-                console.log(orderData);  // Kiểm tra giá trị sau khi parse JSON
+                function updateChart(data) {
+                    const months = [];
+                    const orderCounts = [];
+                    const totalQuantity = [];
 
-                if (orderData && orderData.length > 0) {
-                    var ctx = document.getElementById('orderChart').getContext('2d');
-                    var months = [];
-                    var orderCounts = [];
-                    var totalQuantity = [];
-
-                    orderData.forEach(function (item) {
+                    data.forEach(item => {
                         months.push(item.month);
                         orderCounts.push(item.orderCount);
                         totalQuantity.push(item.totalQuantity || 0);
                     });
 
-                    var orderChart = new Chart(ctx, {
+                    if (orderChart) {
+                        orderChart.data.labels = months;
+                        orderChart.data.datasets[0].data = orderCounts;
+                        orderChart.data.datasets[1].data = totalQuantity;
+                        orderChart.update();
+                    }
+                }
+
+                // Khởi tạo biểu đồ
+                let orderChart = null;
+                window.addEventListener('DOMContentLoaded', () => {
+                    const ctx = document.getElementById('orderChart').getContext('2d');
+                    orderChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: months,
-                            datasets: [{
-                                label: 'Số Đơn Hàng',
-                                data: orderCounts,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            }, {
-                                label: 'Số Sản Phẩm Bán Được',
-                                data: totalQuantity,
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                borderWidth: 1
-                            }]
+                            labels: [],
+                            datasets: [
+                                {
+                                    label: 'Số Đơn Hàng',
+                                    data: [],
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Số Sản Phẩm Bán Được',
+                                    data: [],
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1
+                                }
+                            ]
                         },
                         options: {
                             scales: {
@@ -179,9 +191,10 @@
                             }
                         }
                     });
-                } else {
-                    console.warn("No data available for the chart.");
-                }
+
+                    // Gọi API để cập nhật biểu đồ
+                    fetchOrderStatistics();
+                });
             </script>
 
             <h2 class="mt-4">Sản phẩm sắp hết hàng</h2>

@@ -45,6 +45,13 @@
                         <h3>Sản Phẩm</h3>
                         <a href="/admin/product/create" class="btn btn-primary">Create a product</a>
                     </div>
+
+                    <form action="/admin/product/search" method="get" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" name="productName" class="form-control" placeholder="Tìm kiếm theo tên sản phẩm" aria-label="Tìm kiếm theo tên sản phẩm">
+                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                        </div>
+                    </form>
                     <hr>
                     <table class="table table-hover">
                         <thead>
@@ -78,28 +85,38 @@
                                     </a>
                                     <a href="/admin/product/edit/${product.id}" class="btn btn-warning" title="Update">
                                         <i class="fas fa-edit"></i> <!-- Icon bút chì cho "Update" -->
-                                    </a>
-                                    <a href="/admin/product/view-detele/${product.id}" class="btn btn-danger" title="Delete">
-                                        <i class="fas fa-trash-alt"></i> <!-- Icon thùng rác cho "Delete" -->
+
                                     </a>
                                 </td>
-
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
 
                     <!-- Pagination -->
-                    <div class="pagination">
-                        <!-- Nút "Trang trước" -->
+                    <div class="pagination justify-content-center">
                         <c:if test="${productPage.hasPrevious()}">
-                            <a href="/admin/product?page=${productPage.number - 1}">Trang trước</a>
+                            <a class="page-link" href="/admin/product?page=${productPage.number - 1}" aria-label="Trang trước">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
                         </c:if>
 
-                        <span>Trang ${productPage.number + 1} / ${productPage.totalPages}</span>
+                        <c:forEach var="page" begin="0" end="${productPage.totalPages - 1}">
+                            <c:choose>
+                                <c:when test="${page == productPage.number}">
+                                    <a class="page-link active" href="/admin/product?page=${page}">${page + 1}</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a class="page-link" href="/admin/product?page=${page}">${page + 1}</a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
 
+                        <!-- Nút "Trang sau" -->
                         <c:if test="${productPage.hasNext()}">
-                            <a href="/admin/product?page=${productPage.number + 1}">Trang sau</a>
+                            <a class="page-link" href="/admin/product?page=${productPage.number + 1}" aria-label="Trang sau">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
                         </c:if>
                     </div>
 
