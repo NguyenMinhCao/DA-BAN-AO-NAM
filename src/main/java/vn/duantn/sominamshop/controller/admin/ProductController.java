@@ -51,13 +51,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/admin/product")
-    public String getProductPage(@RequestParam(defaultValue = "0") int page, Model model) {
-        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").ascending());
-        Page<Product> productPage = productService.getAllProducts(pageable);
-        model.addAttribute("productPage", productPage);
-        return "admin/product/show";
-    }
+
 
     @GetMapping("/admin/product/create")
     public String getProductCreate(Model model) {
@@ -254,18 +248,33 @@ public class ProductController {
         return "redirect:/admin/product";
     }
 
-    @GetMapping("/admin/product/search")
-    public String searchProducts(@RequestParam("productName") String productName,
-                                 @RequestParam(defaultValue = "0") int page,
-                                 Model model) {
-        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").ascending());
-        Page<Product> filteredProducts = productService.searchByName(productName, pageable);
+    @GetMapping("/admin/product")
+    public String getProductPage(
+            @RequestParam(defaultValue = "") String productName,
+            @RequestParam(defaultValue = "0") int page,
+            Model model) {
 
-        model.addAttribute("productPage", filteredProducts);
+        Pageable pageable = PageRequest.of(page, 6, Sort.by("id").ascending());
+
+        Page<Product> productPage;
+        if (productName.isEmpty()) {
+            productPage = productService.getAllProducts(pageable);
+        } else {
+            productPage = productService.searchByName(productName, pageable);
+        }
+
+        model.addAttribute("productPage", productPage);
         model.addAttribute("productName", productName);
+
+        if (productPage.isEmpty()) {
+            model.addAttribute("noProductMessage", "Không có sản phẩm nào có tên như vậy.");
+        }
 
         return "admin/product/show";
     }
+
+
+
 
 
 }

@@ -40,17 +40,34 @@
                         <a href="/admin" style="text-decoration: none;">Dashboard</a> / Product
                     </li>
                 </ol>
+
                 <div class="container mt-5">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
                         <h3>Sản Phẩm</h3>
-                        <a href="/admin/product/create" class="btn btn-primary">Create a product</a>
+                        <form method="get" action="/admin/product" class="d-flex align-items-center me-4">
+                            <input
+                                    type="text"
+                                    name="productName"
+                                    value="${productName}"
+                                    placeholder="Tìm kiếm sản phẩm"
+                                    class="form-control form-control-md me-3"
+                                    style="width: 280px; border-radius: 6px; font-size: 1rem;"
+                            >
+                            <button type="submit" class="btn btn-success btn-md d-flex align-items-center px-3 py-2" style="font-size: 1rem;">
+                                <i class="bi bi-search me-2"></i> Tìm kiếm
+                            </button>
+                        </form>
+                        <a href="/admin/product/create" class="btn btn-primary btn-md d-flex align-items-center px-3 py-2" style="font-size: 1rem;">
+                            <i class="bi bi-plus-circle me-2"></i> Tạo sản phẩm
+                        </a>
                     </div>
-                    <form action="/admin/product/search" method="get" class="d-flex mb-4">
-                        <input type="text" name="productName" class="form-control" placeholder="Tìm kiếm theo tên sản phẩm" value="${param.productName}">
-                        <button type="submit" class="btn btn-secondary ms-2">Tìm kiếm</button>
-                    </form>
 
                     <hr>
+                    <c:if test="${productPage.content.isEmpty()}">
+                        <div class="alert alert-warning text-center" role="alert">
+                            Không có sản phẩm nào phù hợp với từ khóa "<strong>${productName}</strong>".
+                        </div>
+                    </c:if>
                     <table class="table table-hover">
                         <thead>
                         <tr>
@@ -71,7 +88,8 @@
                                     <c:if test="${not empty product.images}">
                                         <c:forEach var="image" items="${product.images}">
                                             <c:if test="${image.isMain}">
-                                                <img src="${pageContext.request.contextPath}/images/product/${fn:escapeXml(URLEncoder.encode(image.imageUrl, 'UTF-8'))}" class="img-thumbnail" style="max-width: 100px;">                                            </c:if>
+                                                <img src="${pageContext.request.contextPath}/images/product/${fn:escapeXml(URLEncoder.encode(image.imageUrl, 'UTF-8'))}" class="img-thumbnail" style="max-width: 100px;">
+                                            </c:if>
                                         </c:forEach>
                                     </c:if>
                                 </td>
@@ -83,7 +101,6 @@
                                     </a>
                                     <a href="/admin/product/edit/${product.id}" class="btn btn-warning" title="Update">
                                         <i class="fas fa-edit"></i>
-
                                     </a>
                                 </td>
                             </tr>
@@ -91,34 +108,36 @@
                         </tbody>
                     </table>
 
-                    <!-- Pagination -->
-                    <div class="pagination justify-content-center">
-                        <c:if test="${productPage.hasPrevious()}">
-                            <a class="page-link" href="/admin/product?page=${productPage.number - 1}" aria-label="Trang trước">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </c:if>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            <c:if test="${not empty productPage}">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center">
+                                        <c:if test="${productPage.hasPrevious()}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="/admin/product?productName=${productName}&page=${productPage.number - 1}">&laquo;</a>
+                                            </li>
+                                        </c:if>
 
-                        <c:forEach var="page" begin="0" end="${productPage.totalPages - 1}">
-                            <c:choose>
-                                <c:when test="${page == productPage.number}">
-                                    <a class="page-link active" href="/admin/product?page=${page}">${page + 1}</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a class="page-link" href="/admin/product?page=${page}">${page + 1}</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
+                                        <c:forEach var="i" begin="0" end="${productPage.totalPages > 0 ? productPage.totalPages - 1 : 0}">
+                                            <li class="page-item ${productPage.number == i ? 'active' : ''}">
+                                                <a class="page-link" href="/admin/product?productName=${productName}&page=${i}">
+                                                        ${i + 1}
+                                                </a>
+                                            </li>
+                                        </c:forEach>
 
-                        <!-- Nút "Trang sau" -->
-                        <c:if test="${productPage.hasNext()}">
-                            <a class="page-link" href="/admin/product?page=${productPage.number + 1}" aria-label="Trang sau">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </c:if>
-                    </div>
+                                        <c:if test="${productPage.hasNext()}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="/admin/product?productName=${productName}&page=${productPage.number + 1}">&raquo;</a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </nav>
+                            </c:if>
 
-
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </main>
