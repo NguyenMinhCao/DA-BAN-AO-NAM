@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#infoDetail').empty()
             customerNameInput.innerText = e.target.getAttribute('data-name');
             customerNameInput.setAttribute('data-customer-id', e.target.getAttribute('customer-id'))
-            var phoneNumber = e.target.getAttribute('data-name');
+            var phoneNumber = e.target.getAttribute('data-sdt');
             var email  = e.target.getAttribute('data-email')
             $('#infoDetail').append('<p>Số điện thoại: ' + phoneNumber + '</p>');
             $('#infoDetail').append('<p>email: ' + email + '</p>');
@@ -261,7 +261,6 @@ document.addEventListener('DOMContentLoaded', function () {
             listProduct.push(product)
         }
         updateTotalPrice();
-        fetchVoucher();
         saveDataToLocalStorage(selectedInvoiceId)
     }
 
@@ -276,7 +275,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
                 saveDataToLocalStorage(selectedInvoiceId)
                 updateTotalPrice();
-                fetchVoucher();
             }
         });
         newRow.querySelector(".increase").addEventListener("click", () => {
@@ -286,7 +284,6 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
             saveDataToLocalStorage(selectedInvoiceId)
             updateTotalPrice();
-            fetchVoucher();
         });
         quantityInput.addEventListener("change", () => {
             if(Number(quantityInput.value) > Number(totalQuantityProduct)){
@@ -304,7 +301,6 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
             saveDataToLocalStorage(selectedInvoiceId)
             updateTotalPrice();
-            fetchVoucher();
         });
         //Xóa sản phẩm trong table
         newRow.querySelector('.delete-btn').addEventListener('click', function() {
@@ -315,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function () {
             saveDataToLocalStorage(selectedInvoiceId)
             newRow.remove();
             updateTotalPrice()
-            fetchVoucher();
         });
     }
     // Tạo hóa đơn mới
@@ -594,7 +589,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchCustomers(page) {
         const inputSearch = document.getElementById('search-input-customer').value
         $.ajax({
-            url: `http://localhost:8080/api/admin/order/get/customers?page=${page}&limit=2`,
+            url: `http://localhost:8080/api/admin/user/get/customers?page=${page}&limit=2`,
             type: 'GET',
             data: {keyword: inputSearch},
             success: function (response) {
@@ -680,29 +675,6 @@ document.addEventListener('DOMContentLoaded', function () {
             success: function (response) {
                 if (response.id != null) {
                     saveInvoiceDetail(response.id)
-                }
-            },
-            error: function (error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Có lỗi khi lưu hóa đơn",
-                    showConfirmButton: true,
-                    timer: 1500
-                });
-                console.log("Error:", error);
-            }
-        });
-    }
-    //Lấy voucher
-    function fetchVoucher(){
-        const orderValue = document.getElementById('form-invoice-total-amount')
-        $.ajax({
-            url: `http://localhost:8080/api/admin/order/get/promotions`,
-            type: 'GET',
-            data: {orderValue: orderValue},
-            success: function (response) {
-                if (response.id != null) {
-                    $('#voucher').text(response?.promotionCode || '')
                 }
             },
             error: function (error) {
@@ -862,10 +834,31 @@ document.addEventListener('DOMContentLoaded', function () {
     //Mở thêm khách hàng
     document.getElementById('btn-add-customer').addEventListener('click', function(e){
         toggleModal(addCustomerModal, true);
+        toggleModal(customerModal, false)
     })
 
     //đóng form thêm khách hàng
     document.getElementById('cancel-btn-add-customer').addEventListener('click', ()=> toggleModal(addCustomerModal, false))
+
+    //function cho thông báo
+    function notificationAddCusstomer(message){
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.style.zIndex = 2000;
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: message
+        });
+    }
 
     //fetch địa chỉ cho các ô select
     function fetchLocation(){
@@ -930,6 +923,51 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     //add khách hàng
+    function addCustomer(){
+        let name = $("#fullnameCustomer").val()
+        let phoneNumber = $("#phoneNumberAdd").val()
+        let email = $("#emailCustomer").val()
+        let city = $('#area option:selected').text();
+        let district = $('#Districts option:selected').text();
+        let ward = $('#Wards option:selected').text();
+        let gender = $('#gender').val();
+        const address = [city, district, ward].filter(value => value.trim() !== "").join(", ");
+        let addressDetail = $('#addressAddDetail').text();
+        if(!name ||  (!phoneNumber && !email)){
+            notificationAddCusstomer('Tên, số điện thoại hoặc email đang trống!')
+            return
+        }
+        let data = {
+            email : email,
+            fullName : name,
+            phoneNumber : phoneNumber,
+            gender : gender,
+            address:[
+                {
+                    address: address,
+                    streetDetails:addressDetail
+                }
+            ]
+        }
+        $.ajax({
+            url: `http://localhost:8080/api/admin/user/save/customer`,
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function(data) {
+
+            },
+            error: function(xhr, status, error) {
+                let errorMap = JSON.parse(xhr.responseText);
+                let errorMessages = Object.values(errorMap);
+                notificationAddCusstomer(errorMessages)
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+    $('#add-customer').on('click', function(e) {
+        addCustomer()
+    })
 });
 
 function localtt() {

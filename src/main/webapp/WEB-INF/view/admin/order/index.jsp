@@ -159,9 +159,21 @@
                                                             <span id="total-payment">0 VND</span>
                                                         </div>
                                                         <div class="form-invoice-item">
+                                                            <strong>Phương thức thanh toán:</strong>
+                                                            <div>
+                                                                <select id="payMethod">
+                                                                    <option value="">Tiền mặt</option>
+                                                                    <option>Chuyển khoản</option>
+                                                                    <option>Tiền mặt và chuyển khoản</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-invoice-item">
                                                             <strong>Phiếu giảm giá:</strong>
-                                                            <input id="voucher" type="number" placeholder="Giảm giá">
-                                                            <button id="openModalBtnAddVoucher">Chọn</button>
+                                                            <div class="choose-voucher">
+                                                                <input id="voucher" type="number" placeholder="Giảm giá">
+                                                                <button id="openModalBtnAddVoucher">Chọn</button>
+                                                            </div>
                                                         </div>
                                                         <div class="form-invoice-item">
                                                             <strong>Giảm giá:</strong>
@@ -169,8 +181,10 @@
                                                         </div>
                                                         <div class="form-invoice-item">
                                                             <strong>Khách thanh toán:</strong>
-                                                            <input id="customer-payment" type="number"
-                                                                placeholder="Tiền khách thanh toán">
+                                                            <div>
+                                                                <input id="customer-payment" type="number"
+                                                                       placeholder="Tiền khách thanh toán">
+                                                            </div>
                                                         </div>
                                                         <div class="form-invoice-item">
                                                             <strong>Tiền khách còn thiếu:</strong>
@@ -299,7 +313,7 @@
                                         </div>
                                     </div>
                                     <div class="btn-pay">
-                                        <button onclick="localtt()">Xóa</button>
+<%--                                        <button onclick="localtt()">Xóa</button>--%>
                                         <button class="btn-order-payment" id="btn-order-payment" formmethod="post">Xác
                                             nhận thanh
                                             toán</button>
@@ -315,15 +329,15 @@
                                             <!-- Họ và tên -->
                                             <div class="row">
                                                 <div class="input-group">
-                                                    <label for="fullname">Họ và tên</label>
-                                                    <input type="text" id="fullname" placeholder="Nhập họ và tên khách hàng">
+                                                    <label for="fullnameCustomer">Họ và tên</label>
+                                                    <input type="text" id="fullnameCustomer" placeholder="Nhập họ và tên khách hàng">
                                                 </div>
                                             </div>
                                             <!-- Số điện thoại và Email -->
                                             <div class="row">
                                                 <div class="input-group">
-                                                    <label for="email">Email</label>
-                                                    <input type="email" id="email" placeholder="Nhập email khách hàng">
+                                                    <label for="emailCustomer">Email</label>
+                                                    <input type="email" id="emailCustomer" placeholder="Nhập email khách hàng">
                                                 </div>
                                                 <div class="input-group">
                                                     <label for="phoneNumberAdd">Số điện thoại</label>
@@ -334,13 +348,13 @@
                                             <!-- Địa chỉ và Quốc gia -->
                                             <div class="row">
                                                 <div class="input-group">
-                                                    <label for="addressAdd">Địa chỉ</label>
-                                                    <input type="text" id="addressAdd" placeholder="Nhập địa chỉ chi tiết">
+                                                    <label for="addressAddDetail">Địa chỉ chi tiết</label>
+                                                    <input type="text" id="addressAddDetail" placeholder="Nhập địa chỉ chi tiết">
                                                 </div>
                                                 <div class="input-group">
                                                     <label for="area">Khu vực</label>
                                                     <select id="area">
-                                                        <option>Chọn khu vực</option>
+                                                        <option disabled selected>Chọn khu vực</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -350,13 +364,13 @@
                                                 <div class="input-group">
                                                     <label for="Districts">Quận/Huyện</label>
                                                     <select id="Districts">
-                                                        <option>Chọn Quận/Huyện</option>
+                                                        <option disabled selected>Chọn Quận/Huyện</option>
                                                     </select>
                                                 </div>
                                                 <div class="input-group">
                                                     <label for="Wards">Phường/Xã</label>
                                                     <select id="Wards">
-                                                        <option>Chọn Phường/Xã</option>
+                                                        <option disabled selected>Chọn Phường/Xã</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -366,9 +380,9 @@
                                                 <div class="input-group">
                                                     <label for="gender">Giới tính</label>
                                                     <select id="gender">
-                                                        <option>Chọn giới tính</option>
-                                                        <option>Nam</option>
-                                                        <option>Nữ</option>
+                                                        <option disabled selected>Chọn giới tính</option>
+                                                        <option value="true">Nam</option>
+                                                        <option value="false">Nữ</option>
                                                     </select>
                                                 </div>
                                                 <div class="input-group">
@@ -380,7 +394,7 @@
                                             <!-- Buttons -->
                                             <div class="form-actions">
                                                 <button type="reset" id="cancel-btn-add-customer" class="cancel-btn">Hủy (ESC)</button>
-                                                <button class="add-btn">Thêm (F8)</button>
+                                                <button class="add-btn" id="add-customer">Thêm</button>
                                             </div>
                                         </div>
                                     </div>

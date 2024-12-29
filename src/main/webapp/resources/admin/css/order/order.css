@@ -27,7 +27,7 @@ body {
 .btn-qr {
     margin: 0 5px;
     padding: 8px 16px;
-    background-color: #007bff;
+    background-color: #4a90e2;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -35,7 +35,11 @@ body {
     font-size: 14px;
 }
 
-.btn:hover {
+.btn-select-customer:hover,
+.btn-add-product:hover,
+.btn-add-customer:hover,
+.btn-order-payment:hover,
+.btn-qr:hover {
     background-color: #0056b3;
 }
 
@@ -151,7 +155,10 @@ body {
     margin: 0;
 
 }
-
+#product-list-invoice td{
+    max-width: 200px; /* Giới hạn độ rộng */
+    word-wrap: break-word;
+}
 .tab {
     padding: 10px 30px;
     cursor: pointer;
@@ -233,7 +240,7 @@ body {
 
 .create-invoice-btn {
     padding: 8px 16px;
-    background-color: #007bff;
+    background-color: #4a90e2;
     color: white;
     border: none;
     border-radius: 4px;
@@ -249,24 +256,16 @@ body {
 /* css cho input amount  */
 
 
-/* Container chứa input và nút */
 .quantity-wrapper {
     display: inline-flex;
-    /* Dùng flexbox để các phần tử nằm ngang */
     align-items: center;
-    /* Căn giữa theo chiều dọc */
     border-radius: 12px;
-    /* Bo góc cho cả nhóm */
     overflow: hidden;
-    /* Ẩn các cạnh của phần tử khi nó ra ngoài vùng chứa */
-    border: 1px solid #ccc;
-    /* Viền mỏng chung cho cả khối */
-    /* width: 50px; */
+    border: 1px solid #ccc;/
     height: 40px;
 }
 
 .quantity-btn {
-    /* background-color: #4CAF50; */
     color: white;
     border: none;
     width: 50px;
@@ -517,7 +516,7 @@ body {
 }
 
 .cancel-btn {
-    background-color: red;
+    background-color: #ff5e57;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -550,7 +549,7 @@ body {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2000;
+    /*z-index: 2000;*/
 }
 .content-add-customer{
     padding: 22px;
@@ -586,7 +585,6 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    /* box-sizing: border-box; */
 }
 
 .form-actions .cancel-btn {
@@ -600,3 +598,51 @@ body {
 }
 
 /*cc cho form thêm khách hàng end*/
+
+/*phần input và select ở thông tin hóa đơn start */
+#payMethod,
+#voucher,
+#customer-payment
+ {
+    /*font-size: 16px;*/
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 100%;
+    box-sizing: border-box;
+}
+.choose-voucher{
+    display: flex;
+}
+
+#payMethod:focus,
+#voucher:focus,
+#customer-payment:focus
+{
+    border-color: #4a90e2;
+    outline: none;
+    background-color: #fff;
+}
+
+#openModalBtnAddVoucher {
+    font-size: 16px;
+    padding: 8px 12px;
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#openModalBtnAddVoucher:hover {
+    background-color: #357ab7;
+}
+
+#payMethod::placeholder,
+#voucher::placeholder,
+#customer-payment::placeholder
+{
+    color: #888;
+}
+/*phần input và select ở thông tin hóa đơn end */

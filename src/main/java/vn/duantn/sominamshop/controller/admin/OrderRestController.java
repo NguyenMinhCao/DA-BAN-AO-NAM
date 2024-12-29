@@ -8,16 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.PromotionDTO;
-import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.service.OrderService;
 import vn.duantn.sominamshop.service.ProductService;
 import vn.duantn.sominamshop.service.PromotionService;
 import vn.duantn.sominamshop.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/admin/order")
@@ -38,16 +39,6 @@ public class OrderRestController {
         return ResponseEntity.ok(pageProduct);
     }
 
-    @GetMapping("/get/customers")
-    public ResponseEntity<?> getProduct(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "2") int limit,
-            @RequestParam(value = "keyword", defaultValue = "") String search) {
-        Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search);
-        return ResponseEntity.ok(pageCustomer);
-    }
-
     @GetMapping("/get/promotions")
     public ResponseEntity<List<PromotionDTO>> getPromotion(
             @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue) {
@@ -57,6 +48,7 @@ public class OrderRestController {
 
     @PostMapping("/save/invoice")
     public ResponseEntity<OrderDTO> saveInvoice(@RequestBody Order order) {
+        order.setStatus(OrderStatus.COMPLETED);
         return ResponseEntity.ok(orderService.saveInvoice(order));
     }
 

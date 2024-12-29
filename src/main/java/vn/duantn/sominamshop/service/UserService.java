@@ -12,6 +12,9 @@ import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.repository.RoleRepository;
 import vn.duantn.sominamshop.repository.UserRepository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -46,7 +49,6 @@ public class UserService {
             return false;
         }
     }
-
     public User registerDTOtoUser(RegisterDTO registerDTO) {
         User user = new User();
         user.setEmail(registerDTO.getEmail());
@@ -62,5 +64,16 @@ public class UserService {
                 pageable);
         Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
         return pageCustomerDto;
+    }
+
+    public Map<String, String> validateCustomerData(User user) {
+        Map<String, String> errors = new HashMap<>();
+        if (user.getPhoneNumber() != null && userRepository.existsByPhoneNumber(user.getPhoneNumber())){
+            errors.put("phoneNumber", "Phone number already exists.");
+        }
+        if (user.getEmail() != null && this.checkEmailExits(user.getEmail())) {
+            errors.put("email", "Email already exists.");
+        }
+        return errors;
     }
 }
