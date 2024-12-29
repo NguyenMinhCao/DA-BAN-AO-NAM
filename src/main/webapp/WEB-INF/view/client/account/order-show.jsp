@@ -26,13 +26,6 @@
                     <link rel="stylesheet" href="/css/responsive.css" />
                     <link rel="stylesheet" href="/css/style1.css" />
                     <link rel="stylesheet" href="/css/style-account.css" />
-                    <style>
-                        .active {
-                            /* background-color: #4CAF50; */
-                            /* Ví dụ, màu nền của tab đang chọn */
-                            /* color: white; */
-                        }
-                    </style>
                 </head>
 
                 <body>
@@ -44,60 +37,25 @@
                     <div class="container mt-5" style="max-width: 1328px; margin-bottom: 120px;">
                         <div class="row">
                             <!-- Sidebar -->
-                            <div class="col-md-3">
-                                <div class="card" style="height: 450px;">
-                                    <div class="profile-pic text-center" style="margin-top: 25px;">
-                                        <img src="/images/avatar/${userByEmail.avatar}" alt="Profile Picture"
-                                            class="rounded-circle img-fluid" style="width: 69px;height: 69px ;">
-                                        <p style="margin-bottom: 0px;">${userByEmail.fullName}</p>
-                                    </div>
-                                    <div class="card-body" style="padding: 0px; margin-left:70px; margin-top: 12px;">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item">
-                                                <i style="font-size: 17px;color: #0044ad;" class="ti-user"></i>
-                                                <a style="display: inline-block;padding-left: 9px;" class="nav-link"
-                                                    href="#">Tài Khoản
-                                                    Của Tôi</a>
-                                            </li>
-                                            <div class="nav-item-account" style="margin-left: 15px;">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="/user/profile">Hồ Sơ</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="/user/address">Địa chỉ</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Đổi Mật Khẩu</a>
-                                                </li>
-
-                                            </div>
-                                            <li class="nav-item">
-                                                <i style="font-size: 17px;color: #0044ad;" class="ti-receipt"></i>
-                                                <a style="display: inline-block;padding-left: 9px;" class="nav-link"
-                                                    href="/user/orders">Đơn mua</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <i style="font-size: 17px;color: #0044ad;" class="ti-package"></i>
-                                                <a style="display: inline-block;padding-left: 9px;" class="nav-link"
-                                                    href="#">Kho voucher</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            <jsp:include page="../layout/sidebarAcc.jsp" />
 
                             <!-- Profile Section -->
                             <div class="col-md-9">
                                 <div class="card">
                                     <div class="tabs">
-                                        <button class="tab-button" onclick="openTab('tab1')">Tất cả</button>
-                                        <button class="tab-button" onclick="openTab('tab2')">Chờ xác nhận</button>
-                                        <button class="tab-button" onclick="openTab('tab3')">Vận chuyển</button>
-                                        <button class="tab-button" onclick="openTab('tab4')">Chờ giao
+                                        <button class="tab-button" id="tab1-btn" onclick="openTab('tab1')">Tất
+                                            cả</button>
+                                        <button class="tab-button" id="tab2-btn" onclick="openTab('tab2')">Chờ xác
+                                            nhận</button>
+                                        <button class="tab-button" id="tab3-btn" onclick="openTab('tab3')">Vận
+                                            chuyển</button>
+                                        <button class="tab-button" id="tab4-btn" onclick="openTab('tab4')">Chờ giao
                                             hàng</button>
-                                        <button class="tab-button" onclick="openTab('tab5')">Hoàn thành</button>
-                                        <button class="tab-button" onclick="openTab('tab6')">Đã hủy</button>
-                                        <button class="tab-button" onclick="openTab('tab7')">Trả hàng/Hoàn
+                                        <button class="tab-button" id="tab5-btn" onclick="openTab('tab5')">Hoàn
+                                            thành</button>
+                                        <button class="tab-button" id="tab6-btn" onclick="openTab('tab6')">Đã
+                                            hủy</button>
+                                        <button class="tab-button" id="tab7-btn" onclick="openTab('tab7')">Trả hàng/Hoàn
                                             tiền</button>
                                     </div>
 
@@ -859,8 +817,20 @@
                     <script src="/vendors/counter-up/jquery.counterup.js"></script>
                     <script src="/js/theme.js"></script>
                     <script src="/js/myjs.js"></script>
+                    <script src="/js/js-account.js"></script>
                     <script>
                         function openTab(tabId) {
+                            tabbuttons = document.getElementsByClassName("tab-button");
+                            for (i = 0; i < tabbuttons.length; i++) {
+                                tabbuttons[i].style.borderBottom = "none";
+                                tabbuttons[i].style.color = "#000";
+                            }
+
+                            // thêm border dưới button
+                            var activeButton = document.getElementById(tabId + '-btn');
+                            activeButton.style.borderBottom = '2px #4CAF50 solid';
+                            activeButton.style.color = '#4CAF50';
+
                             // Lấy tất cả các nội dung tab và ẩn chúng
                             const contents = document.querySelectorAll('.tab-content');
                             contents.forEach(content => content.classList.remove('active'));
@@ -868,12 +838,14 @@
                             // Hiển thị nội dung của tab được chọn
                             const activeTab = document.getElementById(tabId);
                             activeTab.classList.add('active');
+
                         }
                         window.onload = function () {
                             openTab('tab1'); // Mở tab1 khi trang tải
                         }
 
                     </script>
+
                 </body>
 
                 </html>

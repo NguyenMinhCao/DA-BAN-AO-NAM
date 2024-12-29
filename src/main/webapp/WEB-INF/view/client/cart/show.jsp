@@ -315,6 +315,45 @@
                             </div>
                         </td>
                     </tr>
+                    <tr class="out_button_area">
+                        <td colspan="1"></td>
+                        <td colspan="4">
+                            <div style="margin-left: 195px; display: inline-block; width: 300px;">
+                                <div style="display: flex; justify-content: space-between; height: 27px;">
+                                    <span>Tổng tiền hàng :</span>
+                                    <p data-cart-total-price="${totalPrice}">
+                                        <fmt:formatNumber type="number" value="${totalPrice}" />
+                                        đ
+                                    </p>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; height: 27px;">
+                                    <span>Tổng giảm giá :</span>
+                                    <p id="total-discount">
+                                        <c:if test="${promotionInOrder.discountValue == null}">
+                                            0
+                                        </c:if>
+                                        <c:if test="${promotionInOrder.discountValue != null}">
+                                            ${promotionInOrder.discountValue}
+                                        </c:if> đ
+                                    </p>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; height: 27px;">
+                                    <span>Tổng tiền phí vận chuyển :</span>
+                                    <p id="total-shipping-cost">
+                                        <fmt:formatNumber type="number" value="${shippingPrice}" />
+                                        đ
+                                    </p>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; height: 27px;">
+                                    <span>Tổng thanh toán :</span>
+                                    <p id="total-payment">
+                                        <fmt:formatNumber type="number" value="${sessionScope.totalPayment}" />
+                                        đ
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
 
                     <tr class="out_button_area">
                         <td colspan="2"></td>
@@ -325,7 +364,6 @@
                             </div>
                         </td>
                     </tr>
-
 
                     </tbody>
                     </table>

@@ -2,6 +2,8 @@ package vn.duantn.sominamshop.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -53,6 +55,9 @@ public class Order {
     @Column(name = "payment_method")
     private String paymentMethod;
 
+    @Column(name = "order_source")
+    private Boolean orderSource;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -74,14 +79,12 @@ public class Order {
     @Column(name = "updated_by")
     private String updatedBy;
 
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @PrePersist
     public void handleBeforeCreate() {
         this.createdAt = LocalDateTime.now();
-
 
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()

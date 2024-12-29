@@ -1,5 +1,6 @@
 package vn.duantn.sominamshop.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -31,6 +32,8 @@ public class User {
     private String avatar;
 
     private Boolean gender;
+
+    private LocalDate dateOfBirth;
 
     @OneToOne(mappedBy = "user")
     private Cart cart;

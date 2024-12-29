@@ -20,50 +20,50 @@ import vn.duantn.sominamshop.model.User;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query(value = "SELECT " +
-            "YEAR(o.created_at) AS year, " +
-            "MONTH(o.created_at) AS month, " +
-            "COUNT(o.id) AS orderCount, " +
-            "SUM(od.quantity) AS totalQuantity " +
-            "FROM orders o " +
-            "LEFT JOIN order_details od ON o.id = od.order_id " +
-            "WHERE o.created_at BETWEEN :startDate AND :endDate " +
-            "GROUP BY YEAR(o.created_at), MONTH(o.created_at) " +
-            "ORDER BY year, month", nativeQuery = true)
-    List<Object[]> getOrderStatisticsByMonth(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+        @Query(value = "SELECT " +
+                        "YEAR(o.created_at) AS year, " +
+                        "MONTH(o.created_at) AS month, " +
+                        "COUNT(o.id) AS orderCount, " +
+                        "SUM(od.quantity) AS totalQuantity " +
+                        "FROM orders o " +
+                        "LEFT JOIN order_details od ON o.id = od.order_id " +
+                        "WHERE o.created_at BETWEEN :startDate AND :endDate " +
+                        "GROUP BY YEAR(o.created_at), MONTH(o.created_at) " +
+                        "ORDER BY year, month", nativeQuery = true)
+        List<Object[]> getOrderStatisticsByMonth(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    @Query("SELECT SUM(od.price * od.quantity) FROM Order o " +
-            "JOIN o.orderDetails od")
-    BigDecimal getTotalRevenue();
+        @Query("SELECT SUM(od.price * od.quantity) FROM Order o " +
+                        "JOIN o.orderDetails od")
+        BigDecimal getTotalRevenue();
 
+        @Query("SELECT SUM(od.price * od.quantity) FROM Order o " +
+                        "JOIN o.orderDetails od " +
+                        "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE) " +
+                        "AND FUNCTION('MONTH', o.createdAt) = FUNCTION('MONTH', CURRENT_DATE)")
+        BigDecimal getMonthlyRevenue();
 
-    @Query("SELECT SUM(od.price * od.quantity) FROM Order o " +
-            "JOIN o.orderDetails od " +
-            "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE) " +
-            "AND FUNCTION('MONTH', o.createdAt) = FUNCTION('MONTH', CURRENT_DATE)")
-    BigDecimal getMonthlyRevenue();
+        // Tổng doanh thu hôm nay
+        @Query("SELECT SUM(od.price * od.quantity) FROM Order o " +
+                        "JOIN o.orderDetails od " +
+                        "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE) " +
+                        "AND FUNCTION('DAY', o.createdAt) = FUNCTION('DAY', CURRENT_DATE)")
+        BigDecimal getTodayRevenue();
 
-    // Tổng doanh thu hôm nay
-    @Query("SELECT SUM(od.price * od.quantity) FROM Order o " +
-            "JOIN o.orderDetails od " +
-            "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE) " +
-            "AND FUNCTION('DAY', o.createdAt) = FUNCTION('DAY', CURRENT_DATE)")
-    BigDecimal getTodayRevenue();
+        // Tổng doanh thu năm nay
+        @Query("SELECT SUM(od.price * od.quantity) FROM Order o " +
+                        "JOIN o.orderDetails od " +
+                        "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE)")
+        BigDecimal getYearlyRevenue();
 
-    // Tổng doanh thu năm nay
-    @Query("SELECT SUM(od.price * od.quantity) FROM Order o " +
-            "JOIN o.orderDetails od " +
-            "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE)")
-    BigDecimal getYearlyRevenue();
+        @Query("SELECT p FROM Product p WHERE p.quantity < 20")
+        Page<Product> findLowStockProducts(Pageable pageable);
 
+        List<Order> findOrderByUser(User user);
 
-    @Query("SELECT p FROM Product p WHERE p.quantity < 20")
-    Page<Product> findLowStockProducts(Pageable pageable);
+        @Query("SELECT o FROM Order o WHERE o.status IS NULL AND o.createdBy = :createdBy")
+        Order findOrderByStatusAndCreatedBy(@Param("createdBy") String createdBy);
 
-
-    List<Order> findOrderByUser(User user);
-
-    @Query("SELECT o FROM Order o WHERE o.status IS NULL AND o.createdBy = :createdBy")
-    Order findOrderByStatusAndCreatedBy(@Param("createdBy") String createdBy);
+        @Query("SELECT o FROM Order o WHERE o.status IS NOT NULL")
+        List<Order> findAllOrderByStatusNotNull();
 
 }

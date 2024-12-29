@@ -8,6 +8,14 @@ body {
     color: #797979
 }
 
+html {
+    scrollbar-width: thin;
+}
+
+body {
+    scrollbar-color: rgb(163, 168, 175) rgb(238, 239, 239);
+}
+
 h1,
 h2,
 h3,

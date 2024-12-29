@@ -34,7 +34,6 @@ import vn.duantn.sominamshop.repository.OrderDetailRepository;
 import vn.duantn.sominamshop.repository.OrderRepository;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
-
 @Service
 public class OrderService {
     private final ProductService productService;
@@ -109,6 +108,7 @@ public class OrderService {
                 // update order
                 order.setOrderDetails(lstOrderDetails);
                 order.setStatus(OrderStatus.PENDING);
+                order.setOrderSource(true);
                 this.orderRepository.save(order);
 
                 // delete cart
@@ -237,8 +237,13 @@ public class OrderService {
         return this.orderRepository.findOrderByStatusAndCreatedBy(createdBy);
     }
 
+    public List<Order> getAllOrdersByStatusNotNull() {
+        return this.orderRepository.findAllOrderByStatusNotNull();
+    }
+
     @Transactional
     public OrderDTO saveInvoice(Order order) {
+        order.setOrderSource(false);
         Order orderCreate = orderRepository.save(order);
         OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
         return orderDTO;
