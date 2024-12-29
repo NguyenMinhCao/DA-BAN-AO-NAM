@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--<html xmlns:th="http://www.thymeleaf.org">--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,6 +56,7 @@
                                 <td>${km.endDate}</td>
                                 <td>${km.discountValue}</td>
                                 <td>${km.status}</td>
+<%--                                <td value="${km.status ? '1' : '0'}"></td>--%>
                                 <td>
                                     <a href="/view-updateKM/${km.id}" class="btn btn-success">View</a>
                                     <a href="/view-update/${km.id}" class="btn btn-warning">Update</a>
@@ -67,7 +69,7 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <c:if test="${listKM != null && listKM.totalPages > 0}">
-                                <c:forEach begin="0" end="${listSanPham.totalPages - 1}" varStatus="loop">
+                                <c:forEach begin="0" end="${listKM.totalPages - 1}" varStatus="loop">
                                     <li class="page-item">
                                         <a class="page-link" href="/hien-thiKM?page=${loop.begin + loop.count - 1}">
                                                 ${loop.begin + loop.count}

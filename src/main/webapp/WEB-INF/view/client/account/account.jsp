@@ -38,47 +38,7 @@
                     <div class="container mt-5" style="max-width: 1328px; margin-bottom: 120px;">
                         <div class="row">
                             <!-- Sidebar -->
-                            <div class="col-md-3">
-                                <div class="card" style="height: 450px;">
-                                    <div class="profile-pic text-center" style="margin-top: 25px;">
-                                        <img src="/images/avatar/${userByEmail.avatar}" alt="Profile Picture"
-                                            class="rounded-circle img-fluid" style="width: 69px;height: 69px ;">
-                                        <p style="margin-bottom: 0px;">${userByEmail.fullName}</p>
-                                    </div>
-                                    <div class="card-body" style="padding: 0px; margin-left:70px; margin-top: 12px;">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item">
-                                                <i style="font-size: 17px;color: #0044ad;" class="ti-user"></i>
-                                                <a style="display: inline-block;padding-left: 9px;" class="nav-link"
-                                                    href="#">Tài Khoản
-                                                    Của Tôi</a>
-                                            </li>
-                                            <div class="nav-item-account" style="margin-left: 15px;">
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="/user/profile">Hồ Sơ</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="/user/address">Địa chỉ</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Đổi Mật Khẩu</a>
-                                                </li>
-
-                                            </div>
-                                            <li class="nav-item">
-                                                <i style="font-size: 17px;color: #0044ad;" class="ti-receipt"></i>
-                                                <a style="display: inline-block;padding-left: 9px;" class="nav-link"
-                                                    href="/user/orders">Đơn mua</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <i style="font-size: 17px;color: #0044ad;" class="ti-package"></i>
-                                                <a style="display: inline-block;padding-left: 9px;" class="nav-link"
-                                                    href="#">Kho voucher</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            <jsp:include page="../layout/sidebarAcc.jsp" />
 
                             <!-- Profile Section -->
                             <div class="col-md-9" style="height: 450px;">
@@ -128,28 +88,41 @@
                                                     <label for="dob" class="form-label">Ngày sinh</label>
                                                     <div class="d-flex-date"
                                                         style="justify-content: space-between; display: flex;">
-                                                        <select class="form-select me-2" id="day">
-                                                            <option style="display: none;">Ngày</option>
+                                                        <select class="form-select me-2" id="day" name="day">
+                                                            <!-- <option>Ngày</option> -->
                                                             <c:forEach var="i" begin="1" end="30" step="1">
-                                                                <option>${i}</option>
+                                                                <option value="${i}" <c:if
+                                                                    test="${userByEmail.dateOfBirth.dayOfMonth == i}">
+                                                                    selected
+                                                                    </c:if>>Ngày ${i}</option>
                                                             </c:forEach>
                                                         </select>
-                                                        <select class="form-select me-2" id="month">
-                                                            <option>Tháng</option>
+                                                        <select class="form-select me-2" id="month" name="month">
+                                                            <!-- <option>Tháng</option> -->
                                                             <c:forEach var="i" begin="1" end="12" step="1">
-                                                                <option>Tháng ${i}</option>
+                                                                <option value="${i}" <c:if
+                                                                    test="${userByEmail.dateOfBirth.monthValue == i}">
+                                                                    selected
+                                                                    </c:if>>Tháng ${i}</option>
                                                             </c:forEach>
                                                         </select>
-                                                        <select class="form-select" id="yeariii">
-                                                            <option>Năm</option>
+                                                        <select class="form-select" id="year" name="year">
+                                                            <!-- <option>Năm</option> -->
                                                             <c:forEach var="i" begin="1950" end="2024" step="1">
-                                                                <option>Năm ${i}</option>
+                                                                <option value="${i}" <c:if
+                                                                    test="${userByEmail.dateOfBirth.year == i}">
+                                                                    selected
+                                                                    </c:if>>Năm ${i}</option>
                                                             </c:forEach>
                                                         </select>
                                                     </div>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                                <input type="hidden" path="dateOfBirth" name="dateOfBirth"
+                                                    id="dateOfBirth" />
+
+                                                <button type="submit" id="btn-update-user"
+                                                    class="btn btn-primary">Lưu</button>
                                             </div>
 
                                             <div class="input-user-photo" style="border-left: .0625rem solid #efefef;">
@@ -198,6 +171,7 @@
                     <script src="/vendors/counter-up/jquery.counterup.js"></script>
                     <script src="/js/theme.js"></script>
                     <script src="/js/myjs.js"></script>
+                    <script src="/js/js-account.js"></script>
 
                 </body>
 

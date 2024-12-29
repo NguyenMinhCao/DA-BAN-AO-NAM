@@ -30,6 +30,9 @@ public class Image {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "is_main")
+    private Boolean isMain; // Ảnh chính
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

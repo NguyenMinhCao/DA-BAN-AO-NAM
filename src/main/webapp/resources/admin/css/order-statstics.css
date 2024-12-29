@@ -1,0 +1,86 @@
+/* Thêm CSS để căn đều các div */
+.stat-box {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 20px;  /* Đảm bảo các stat-box không chồng lên nhau */
+}
+
+.stat-box h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.stat-box p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Căn chỉnh div cho đẹp */
+.row {
+    margin-top: 20px;
+}
+
+/* Đảm bảo phần container chiếm đủ không gian */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Điều chỉnh các phần tử stat-box */
+.stat-box {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Căn chỉnh nội dung chính để tránh bị sidebar đè lên */
+.main-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Đảm bảo sidebar và content không bị đè lên nhau */
+#layoutSidenav_content {
+    padding: 20px;
+    padding-left: 0;  /* Không để padding-left quá lớn */
+    margin-left: 250px;  /* Đảm bảo nội dung không bị che khuất bởi sidebar */
+}
+
+/* Điều chỉnh phần nội dung chính (content) để căn giữa */
+#layoutSidenav_content main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Căn giữa các stat-box */
+.row.justify-content-center {
+    justify-content: center;
+    display: flex;
+    gap: 20px;  /* Tạo khoảng cách giữa các div stat-box */
+}
+
+/* Điều chỉnh cho màn hình nhỏ */
+@media (max-width: 768px) {
+    #layoutSidenav_content {
+        margin-left: 0;
+    }
+
+    .row.justify-content-center {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-box {
+        margin-bottom: 15px;  /* Giảm khoảng cách giữa các stat-box trên màn hình nhỏ */
+    }
+}

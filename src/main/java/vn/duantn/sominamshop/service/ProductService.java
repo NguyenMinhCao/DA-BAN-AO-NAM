@@ -1,16 +1,21 @@
 package vn.duantn.sominamshop.service;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import vn.duantn.sominamshop.model.Cart;
-import vn.duantn.sominamshop.model.CartDetail;
-import vn.duantn.sominamshop.model.Product;
-import vn.duantn.sominamshop.model.User;
+import org.springframework.web.multipart.MultipartFile;
+import vn.duantn.sominamshop.model.*;
 import vn.duantn.sominamshop.repository.CartDetailRepository;
 import vn.duantn.sominamshop.repository.CartRepository;
+import vn.duantn.sominamshop.repository.ImageRepository;
 import vn.duantn.sominamshop.repository.ProductRepository;
 
 @Service
@@ -19,14 +24,20 @@ public class ProductService {
     private final UserService userService;
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
+    private final ImageRepository imageRepository;
 
     public ProductService(ProductRepository productRepository, UserService userService, CartRepository cartRepository,
-            CartDetailRepository cartDetailRepository) {
+                          CartDetailRepository cartDetailRepository, ImageRepository imageRepository) {
         this.productRepository = productRepository;
         this.userService = userService;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
+        this.imageRepository = imageRepository;
     }
+    public Page<Product> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
 
     public List<Product> getAllProduct() {
         return this.productRepository.findAll();
@@ -47,4 +58,17 @@ public class ProductService {
         return prOptional.get();
     }
 
+    public boolean existsByName(String name) {
+        return productRepository.existsByName(name);
+    }
+
+
+
+
 }
+
+
+
+
+
+
