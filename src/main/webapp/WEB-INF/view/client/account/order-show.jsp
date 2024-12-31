@@ -820,6 +820,7 @@
                     <script src="/js/js-account.js"></script>
                     <script>
                         function openTab(tabId) {
+
                             tabbuttons = document.getElementsByClassName("tab-button");
                             for (i = 0; i < tabbuttons.length; i++) {
                                 tabbuttons[i].style.borderBottom = "none";

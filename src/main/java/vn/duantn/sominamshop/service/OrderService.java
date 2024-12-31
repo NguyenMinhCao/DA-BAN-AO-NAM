@@ -238,6 +238,10 @@ public class OrderService {
         return response;
     }
 
+    public Optional<Order> findOrderById(Long id) {
+        return this.orderRepository.findById(id);
+    }
+
     public void saveOrder(Order order) {
         this.orderRepository.save(order);
     }
