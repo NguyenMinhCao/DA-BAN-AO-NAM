@@ -90,6 +90,8 @@ public class OrderControllerClient {
             session.setAttribute("address", addressById);
         }
 
+        session.setAttribute("totalPrice", totalPrice);
+        session.setAttribute("lstCartDetail", lstCartDetail);
         session.setAttribute("totalPayment", totalPayment);
         session.setAttribute("shippingPrice", shippingPrice);
         session.setAttribute("arrAddressByUser", arrAddressByUser);

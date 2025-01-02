@@ -31,16 +31,19 @@ public class Color {
     private String createdBy;
     private String updatedBy;
 
+    @Column(name = "status", columnDefinition = "NVARCHAR(50) DEFAULT 'Hoạt động'")
+    private String status = "Hoạt động";
+
     @PrePersist
     public void handleBeforeCreate() {
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent()
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent()
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
     }

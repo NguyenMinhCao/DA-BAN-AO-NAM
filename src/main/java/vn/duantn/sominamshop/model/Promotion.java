@@ -1,12 +1,8 @@
 package vn.duantn.sominamshop.model;
 
-import java.math.BigDecimal;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,12 +12,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.util.SecurityUtil;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "promotions")
@@ -38,8 +37,8 @@ public class Promotion {
     private String promotionCode;
 
     @Column(name = "discount_type")
-    @Enumerated(EnumType.STRING)
-    private DiscountType discountType;
+//    @Enumerated(EnumType.STRING)
+    private String discountType;
 
     @Column(name = "discount_value")
     private String discountValue;
@@ -56,7 +55,9 @@ public class Promotion {
     @Column(name = "end_date")
     private String endDate;
 
+    @Column(name = "status")
     private boolean status;
+
 
     @ManyToMany(mappedBy = "promotions")
     private List<Product> products;

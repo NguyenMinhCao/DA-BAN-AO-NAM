@@ -4,31 +4,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <title>Product Detail</title>
-    <link href="/admin/css/styles.css" rel="stylesheet" />
+    <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
-        /* Add CSS to resize images to 200px by 200px */
         .product-image {
             width: 200px;
             height: 200px;
-            object-fit: cover; /* This ensures the image keeps its aspect ratio */
+            object-fit: cover;
         }
 
-        /* Add padding-left for the content */
         .container {
             margin-left: 200px;
         }
     </style>
 </head>
 <body class="sb-nav-fixed">
-<jsp:include page="../layout/header.jsp" />
+<jsp:include page="../layout/header.jsp"/>
 <div id="layoutSidenav">
-    <jsp:include page="../layout/sidebar.jsp" />
+    <jsp:include page="../layout/sidebar.jsp"/>
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4 content-container">
@@ -43,7 +41,6 @@
                             <h3>${product.name}</h3>
                             <hr>
 
-                            <!-- Product Information Section -->
                             <div class="row">
                                 <div class="col-md-6">
                                     <h5>Price:</h5>
@@ -87,7 +84,6 @@
                                 </div>
                             </div>
 
-                            <!-- Promotions Section -->
                             <c:if test="${not empty product.promotions}">
                                 <h5>Promotions:</h5>
                                 <ul>
@@ -97,14 +93,14 @@
                                 </ul>
                             </c:if>
 
-                            <!-- Product Images Section -->
                             <c:if test="${not empty product.images}">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h5>Images:</h5>
                                         <div class="product-image-container">
                                             <c:forEach var="image" items="${product.images}">
-                                                <img src="${pageContext.request.contextPath}/images/product/${image.imageUrl}" class="img-fluid product-image" alt="Product Image">
+                                                <img src="${pageContext.request.contextPath}/images/product/${image.imageUrl}"
+                                                     class="img-fluid product-image" alt="Product Image">
                                             </c:forEach>
                                         </div>
                                     </div>
@@ -117,7 +113,7 @@
                 </div>
             </div>
         </main>
-        <jsp:include page="../layout/footer.jsp" />
+        <jsp:include page="../layout/footer.jsp"/>
     </div>
 </div>
 </body>

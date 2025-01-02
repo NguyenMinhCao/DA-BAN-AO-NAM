@@ -31,6 +31,9 @@ public class Material {
     private String createdBy;
     private String updatedBy;
 
+    @Column(name = "status", columnDefinition = "NVARCHAR(50) DEFAULT 'Hoạt động'")
+    private String status = "Hoạt động";
+
     @PrePersist
     public void handleBeforeCreate() {
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true

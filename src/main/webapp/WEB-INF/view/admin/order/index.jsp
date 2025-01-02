@@ -13,7 +13,9 @@
                 <title>Dashboard - SB Admin</title>
                 <link href="/admin/css/order/order.css" rel="stylesheet" />
                 <link href="/admin/css/styles.css" rel="stylesheet" />
+                <link rel="stylesheet" href="/css/style1.css" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+                <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
                 <!-- Latest compiled and minified CSS -->
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
             </head>
@@ -73,7 +75,7 @@
                                                         0<p>VND</p></span>
                                                 </div>
                                             </div>
-                                            <!-- hóa đơn chi tiết end -->
+                                            <!---------------------- hóa đơn chi tiết end ----------------------->
                                             <hr class="product-customer">
 
                                             <!---------------------------- Khách hàng và thông tin hóa đơn start ---------------------->
@@ -158,8 +160,8 @@
                                                         </div>
                                                         <div class="form-invoice-item">
                                                             <strong>Phiếu giảm giá:</strong>
-                                                            <input id="" type="number" placeholder="Giảm giá">
-                                                            <button>Chọn</button>
+                                                            <input id="voucher" type="number" placeholder="Giảm giá">
+                                                            <button id="openModalBtnAddVoucher">Chọn</button>
                                                         </div>
                                                         <div class="form-invoice-item">
                                                             <strong>Giảm giá:</strong>
@@ -228,7 +230,7 @@
                                     <!--------------------- Table chọn khách hàng start ------------------------------>
                                     <div id="customer-modal" class="modal">
                                         <div class="modal-content">
-                                            <h2>Danh sách sản phẩm</h2>
+                                            <h2>Danh sách khách hàng</h2>
                                             <div class="search-bar">
                                                 <input type="text" id="search-input-customer"
                                                     placeholder="Tìm kiếm sản phẩm...">
@@ -304,6 +306,166 @@
                                     </div>
                                     <!---------------------- ô nhập số lượng khi mua end-------------------------------------->
                                 </div>
+
+<%------------------------         Form nhập thêm khách hàng mới start------------------------%>
+                                <div class="form-add-customer" id="form-add-customer">
+                                    <div class="content-add-customer">
+                                        <h2>Thêm mới khách hàng</h2>
+                                        <div>
+                                            <!-- Họ và tên -->
+                                            <div class="row">
+                                                <div class="input-group">
+                                                    <label for="fullname">Họ và tên</label>
+                                                    <input type="text" id="fullname" placeholder="Nhập họ và tên khách hàng">
+                                                </div>
+                                            </div>
+                                            <!-- Số điện thoại và Email -->
+                                            <div class="row">
+                                                <div class="input-group">
+                                                    <label for="email">Email</label>
+                                                    <input type="email" id="email" placeholder="Nhập email khách hàng">
+                                                </div>
+                                                <div class="input-group">
+                                                    <label for="phoneNumberAdd">Số điện thoại</label>
+                                                    <input type="tel" id="phoneNumberAdd" placeholder="Nhập sdt khách hàng">
+                                                </div>
+                                            </div>
+
+                                            <!-- Địa chỉ và Quốc gia -->
+                                            <div class="row">
+                                                <div class="input-group">
+                                                    <label for="addressAdd">Địa chỉ</label>
+                                                    <input type="text" id="addressAdd" placeholder="Nhập địa chỉ chi tiết">
+                                                </div>
+                                                <div class="input-group">
+                                                    <label for="area">Khu vực</label>
+                                                    <select id="area">
+                                                        <option>Chọn khu vực</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Khu vực và Phường/Xã -->
+                                            <div class="row">
+                                                <div class="input-group">
+                                                    <label for="Districts">Quận/Huyện</label>
+                                                    <select id="Districts">
+                                                        <option>Chọn Quận/Huyện</option>
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <label for="Wards">Phường/Xã</label>
+                                                    <select id="Wards">
+                                                        <option>Chọn Phường/Xã</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Giới tính và Ngày sinh -->
+                                            <div class="row">
+                                                <div class="input-group">
+                                                    <label for="gender">Giới tính</label>
+                                                    <select id="gender">
+                                                        <option>Chọn giới tính</option>
+                                                        <option>Nam</option>
+                                                        <option>Nữ</option>
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <label for="dob">Ngày sinh</label>
+                                                    <input type="date" id="dob">
+                                                </div>
+                                            </div>
+
+                                            <!-- Buttons -->
+                                            <div class="form-actions">
+                                                <button type="reset" id="cancel-btn-add-customer" class="cancel-btn">Hủy (ESC)</button>
+                                                <button class="add-btn">Thêm (F8)</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+<%------------------------         Form nhập thêm khách hàng mới end ------------------------%>
+
+<%------------------------         Form chọn voucher start --------------------------%>
+                                <div class="modal-overlay-add-voucher" id="modalOverlayAddVoucher">
+                                    <!-- Nội dung modal -->
+                                    <div class="modal-content-add-voucher">
+                                        <div class="header-voucher">
+                                            <h3>Chọn voucher</h3>
+                                            <hr>
+                                        </div>
+
+                                        <div class="body-voucher">
+                                            <div class="search-voucher"
+                                                 style="display: flex;align-items: center; background: #f8f8f8; padding: 8px;justify-content: space-between;">
+                                                <label
+                                                        style="margin-bottom: 0px; margin-left: 9px;">Mã
+                                                    voucher</label>
+                                                <div class="input-with-validator">
+                                                    <input
+                                                            style="border:none; width: 200px; padding: 0px; outline: none;"
+                                                            type="text" value=""
+                                                            placeholder="Mã Shopee Voucher"
+                                                            maxlength="255">
+                                                </div>
+                                                <button class="button-add-voucher">ÁP
+                                                    DỤNG</button>
+                                            </div>
+                                            <div class="voucher-list">
+                                                <div style="margin: 10px 0;">
+                                                    <p
+                                                            style="margin-bottom: 0px; font-weight: bold;">
+                                                        Danh Sách Mã
+                                                    </p>
+                                                    <small>Có thể chọn một voucher</small>
+                                                </div>
+                                                <c:forEach items="${listPromotions}" var="pro">
+                                                    <div class="voucher-item">
+                                                        <div class="hhiiii"
+                                                             style="display: flex; justify-content: center; align-items: center; position: relative; background-color: #71cd14;">
+                                                            <div class="vm3TF0"
+                                                                 style="display: flex; justify-content: center; align-items: center; width: 90px; height: 90px;">
+                                                                <img class="e52C78 nh7RxM"
+                                                                     style="width: 45px; height: 45px; border-radius: 50%;"
+                                                                     src="/img/voucher.png"
+                                                                     alt="Logo">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="voucher-details">
+                                                            <div class="voucher-exp">Giảm tối đa
+                                                                    ${pro.discountValue}k | Đơn tối
+                                                                thiểu 0₫<br>HSD:
+                                                                27.11.2024</div>
+                                                        </div>
+                                                        <div class="voucher-checkbox"
+                                                             style="padding-right: 15px;">
+                                                            <input type="radio"
+                                                                   name="voucher-select"
+                                                                   value="${pro.id}"
+                                                                   data-discount="${pro.discountValue}"
+                                                                    <c:if
+                                                                            test="${promotionInOrder.id == pro.id}">
+                                                                        checked
+                                                                    </c:if>/>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <c:set var="discountValue"
+                                                                value="${listPromotions[0].discountValue}" /> -->
+                                                </c:forEach>
+                                            </div>
+
+                                        </div>
+                                        <div class="footer-voucher">
+                                            <button class="close-btn-add-voucher"
+                                                    id="closeModalBtnAddVouCher">TRỞ LẠI</button>
+                                            <button class="OK-btn-add-voucher"
+                                                    id="closeModalBtnAddVouCher">OK</button>
+                                        </div>
+                                    </div>
+                                </div>
+<%------------------------          Form chọn voucher end  --------------------------%>
 
                             </div>
                         </main>

@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const productModal = document.getElementById('product-modal');
     const customerModal = document.getElementById('customer-modal');
+    const addCustomerModal = document.getElementById('form-add-customer');
+    const modalChoseVoucher = document.getElementById('modalOverlayAddVoucher')
 
     const chooseProductBtn = document.getElementById('btn-choose-product');
     const chooseCustomerBtn = document.getElementById('btn-choose-customer');
@@ -26,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let deletedInvoiceIDs = [];
     fetchProducts(0, 2)
     fetchCustomers(0)
+    fetchLocation()
     // Hiển thị modal chọn sản phẩm
     chooseProductBtn.addEventListener('click', function () {
         if (invoiceCounter < 1) {
@@ -39,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleModal(productModal, true)
     });
 
+    document.getElementById('openModalBtnAddVoucher').addEventListener('click', function(){
+        toggleModal(modalChoseVoucher, true)
+    })
     // Đóng modal chọn sản phẩm
     closeProductModalBtn.addEventListener('click', () => toggleModal(productModal, false));
 
@@ -116,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#infoDetail').empty()
         $('#btn-delete-customer').prop('disabled', true);
     })
+
     // Tạo hóa đơn chờ
     createInvoiceBtn.addEventListener('click', () => {
         if(invoiceCounter <= 4){
@@ -148,6 +155,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Tìm kiếm sản phẩm theo tên
     productSearchBtn.addEventListener('click', function () {
         fetchProducts(0);
+    });
+    // Tìm kiếm khách hàng theo tên
+    document.getElementById('search-btn-customer').addEventListener('click', function () {
+        fetchCustomers(0);
     });
 
     // Cập nhật trả tiền khách hàng
@@ -250,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
             listProduct.push(product)
         }
         updateTotalPrice();
+        fetchVoucher();
         saveDataToLocalStorage(selectedInvoiceId)
     }
 
@@ -264,6 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
                 saveDataToLocalStorage(selectedInvoiceId)
                 updateTotalPrice();
+                fetchVoucher();
             }
         });
         newRow.querySelector(".increase").addEventListener("click", () => {
@@ -273,6 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
             saveDataToLocalStorage(selectedInvoiceId)
             updateTotalPrice();
+            fetchVoucher();
         });
         quantityInput.addEventListener("change", () => {
             if(Number(quantityInput.value) > Number(totalQuantityProduct)){
@@ -290,6 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
             saveDataToLocalStorage(selectedInvoiceId)
             updateTotalPrice();
+            fetchVoucher();
         });
         //Xóa sản phẩm trong table
         newRow.querySelector('.delete-btn').addEventListener('click', function() {
@@ -300,6 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
             saveDataToLocalStorage(selectedInvoiceId)
             newRow.remove();
             updateTotalPrice()
+            fetchVoucher();
         });
     }
     // Tạo hóa đơn mới
@@ -677,6 +693,29 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    //Lấy voucher
+    function fetchVoucher(){
+        const orderValue = document.getElementById('form-invoice-total-amount')
+        $.ajax({
+            url: `http://localhost:8080/api/admin/order/get/promotions`,
+            type: 'GET',
+            data: {orderValue: orderValue},
+            success: function (response) {
+                if (response.id != null) {
+                    $('#voucher').text(response?.promotionCode || '')
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Có lỗi khi lưu hóa đơn",
+                    showConfirmButton: true,
+                    timer: 1500
+                });
+                console.log("Error:", error);
+            }
+        });
+    }
 
     function saveInvoiceDetail(idInvoice) {
         if (!listProduct || listProduct.length === 0) {
@@ -749,7 +788,7 @@ document.addEventListener('DOMContentLoaded', function () {
         removeInvoice(selectedInvoiceId)
     }
 
-    // function in hóa đơn
+//********************* in hóa đơn **************
     function printInvoice(products) {
         let currentDate = new Date();
         let formattedDate = currentDate.toLocaleDateString('vi-VN');
@@ -818,6 +857,79 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     }
+
+//**************** Thêm mới khách hàng **************
+    //Mở thêm khách hàng
+    document.getElementById('btn-add-customer').addEventListener('click', function(e){
+        toggleModal(addCustomerModal, true);
+    })
+
+    //đóng form thêm khách hàng
+    document.getElementById('cancel-btn-add-customer').addEventListener('click', ()=> toggleModal(addCustomerModal, false))
+
+    //fetch địa chỉ cho các ô select
+    function fetchLocation(){
+        const apiUrl = 'https://provinces.open-api.vn/api/p';
+        $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            success: function(data) {
+                console.log(data);
+                data.forEach(function(value) {
+                    $('#area').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching provinces data:', error);
+            }
+        });
+    }
+    function fetchDistricts(districtsCode) {
+        const apiUrlDistricts = `https://provinces.open-api.vn/api/p/${districtsCode}/?depth=2`;
+        $.ajax({
+            url: apiUrlDistricts,
+            method: 'GET',
+            success: function(data) {
+                console.log(data);
+                let districts = data.districts;
+                $('#Districts').empty().append('<option value="">Select District</option>');
+                districts.forEach(function(value) {
+                    $('#Districts').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+    function fetchWards(wardCode) {
+        const apiUrlWards = `https://provinces.open-api.vn/api/d/${wardCode}/?depth=2`;
+        $.ajax({
+            url: apiUrlWards,
+            method: 'GET',
+            success: function(data) {
+                console.log(data);
+                let wards = data.wards;
+                $('#Wards').empty().append('<option value="">Select Ward</option>');
+                wards.forEach(function(value) {
+                    $('#Wards').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching wards data:', error);
+            }
+        });
+    }
+
+    $('#area').on('change', function(e) {
+        fetchDistricts(e.target.value);
+    });
+
+    $('#Districts').on('change', function(e) {
+        fetchWards(e.target.value);
+    });
+
+    //add khách hàng
 });
 
 function localtt() {
