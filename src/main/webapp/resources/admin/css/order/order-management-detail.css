@@ -5,53 +5,24 @@
 }
 
 .container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(6, minmax(64px, auto));
+    display: flex;
     gap: 15px;
+    flex-direction: column;
     max-width: 1200px;
     padding: 15px 54px;
     margin: 0 auto;
-    grid-template-areas:
-        "header header header"
-        "order order single-source"
-        "order order customer"
-        "payment payment customer"
-        "history history note"
-        "history history ."
-    ;
 }
 
-.header {
-    grid-area: header;
+.container .content {
+    gap: 15px;
 }
 
-.order-details {
-    grid-area: order;
-}
 
-.single-source {
-    grid-area: single-source;
-}
-
-.customer {
-    grid-area: customer;
+/* .order-details {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-}
-
-.payment-status {
-    grid-area: payment;
-}
-
-.order-history {
-    grid-area: history;
-}
-
-.order-notes {
-    grid-area: note;
-}
+    align-self: start;
+} */
 
 /* common */
 .text-black {
@@ -96,6 +67,14 @@
 
 .ml-10 {
     margin-left: 10px;
+}
+
+.width-70 {
+    width: 70%;
+}
+
+.width-30 {
+    width: 30%;
 }
 
 .mt-8p {
@@ -262,7 +241,8 @@
 
 .order-details .table-order td,
 .order-details .table-order th {
-    padding: 12px 24px;
+    padding: 14px 14px;
+    font-size: 14px;
 }
 
 .order-details tbody span {
@@ -277,6 +257,10 @@
 .order-details .product-img img {
     width: 40px;
     height: 40px;
+}
+
+.order-details .table-order tbody tr:hover {
+    background-color: rgba(243, 244, 245);
 }
 
 .order-details .product-img {

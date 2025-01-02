@@ -32,10 +32,7 @@ public class Product {
     @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
 
-
-
     private Long quantity;
-
 
     private Double price;
 

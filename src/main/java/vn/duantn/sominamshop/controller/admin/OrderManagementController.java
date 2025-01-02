@@ -45,11 +45,12 @@ public class OrderManagementController {
     }
 
     @GetMapping("/orders/{id}")
-    public String getOrderDetail(@PathVariable Long id) {
+    public String getOrderDetail(@PathVariable Long id, Model model) {
         Optional<Order> orderById = this.orderService.findOrderById(id);
         if (orderById.isPresent()) {
-
+            model.addAttribute("order", orderById.get());
         }
+        // model
         return "admin/order-management/detail";
     }
 
