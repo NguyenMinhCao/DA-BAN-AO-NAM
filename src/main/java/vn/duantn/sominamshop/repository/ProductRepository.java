@@ -66,5 +66,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("UPDATE Product p set p.quantity = p.quantity - :quantity WHERE p.id = :id")
     void updateQuantityProduct(@Param("quantity") Long quantity, @Param("id") Long id);
 
+    Page<Product> findByColorId(Long colorId, Pageable pageable);
 
 }

@@ -57,6 +57,21 @@
                                 <i class="bi bi-search me-2"></i> Tìm kiếm
                             </button>
                         </form>
+                        <form action="/admin/product" method="get">
+                            <div class="form-group">
+                                <label for="color">Lọc theo màu sắc:</label>
+                                <select name="colorId" id="color" class="form-control">
+                                    <option value="">-- Tất cả màu sắc --</option>
+                                    <c:forEach var="color" items="${colors}">
+                                        <option value="${color.id}" <c:if test="${param.colorId == color.id}">selected</c:if>>
+                                                ${color.colorName}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Lọc</button>
+                        </form>
+
                         <a href="/admin/product/create" class="btn btn-primary btn-md d-flex align-items-center px-3 py-2" style="font-size: 1rem;">
                             <i class="bi bi-plus-circle me-2"></i> Tạo sản phẩm
                         </a>

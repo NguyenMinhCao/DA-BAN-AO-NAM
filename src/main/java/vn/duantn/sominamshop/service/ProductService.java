@@ -42,7 +42,6 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-
     public List<Product> getAllProduct() {
         return this.productRepository.findAll();
     }
@@ -81,7 +80,10 @@ public class ProductService {
         return productRepository.findByNameContaining(name, pageable);
     }
 
+    public Page<Product> getProductsByColor(Long colorId, Pageable pageable) {
+        return productRepository.findByColorId(colorId, pageable);
     }
+}
 
 
 

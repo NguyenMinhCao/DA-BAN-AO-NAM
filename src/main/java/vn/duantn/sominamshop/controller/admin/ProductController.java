@@ -252,26 +252,34 @@ public class ProductController {
     public String getProductPage(
             @RequestParam(defaultValue = "") String productName,
             @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "") Long colorId,
             Model model) {
 
         Pageable pageable = PageRequest.of(page, 6, Sort.by("id").ascending());
 
         Page<Product> productPage;
-        if (productName.isEmpty()) {
-            productPage = productService.getAllProducts(pageable);
-        } else {
+
+        if (colorId != null && colorId > 0) {
+            productPage = productService.getProductsByColor(colorId, pageable);
+        } else if (!productName.isEmpty()) {
             productPage = productService.searchByName(productName, pageable);
+        } else {
+            productPage = productService.getAllProducts(pageable);
         }
 
+        List<Color> colors = colorService.getAllColors();
+        model.addAttribute("colors", colors);
         model.addAttribute("productPage", productPage);
         model.addAttribute("productName", productName);
+        model.addAttribute("colorId", colorId);
 
         if (productPage.isEmpty()) {
-            model.addAttribute("noProductMessage", "Không có sản phẩm nào có tên như vậy.");
+            model.addAttribute("noProductMessage", "Không có sản phẩm nào phù hợp.");
         }
 
         return "admin/product/show";
     }
+
 
 
 
