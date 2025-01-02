@@ -309,8 +309,66 @@
                             </div>
                         </div>
                         <!-- lịch sử đơn hàng -->
-                        <div class="order-history border-outline">
-
+                        <div class="order-history border-outline d-flex flex-column">
+                            <div class="pad-20px-3">
+                                <h2 class="title-font">Lịch sử đơn hàng</h2>
+                            </div>
+                            <div class="d-flex pad-20px-4 flex-grow-1" style="font-size: 14px;">
+                                <div class="d-flex flex-column justify-content-between flex-grow-1">
+                                    <div class="operation-day">02/01/2025</div>
+                                    <div class="min-height46 d-flex" style="gap: 4px;">
+                                        <div class="progress-bar-his d-flex flex-column">
+                                            <div class="circle"></div>
+                                            <div class="jamb"></div>
+                                        </div>
+                                        <div class="progress-details d-flex justify-content-between">
+                                            <div class="processing-time"><span>11:09</span></div>
+                                            <div class="describe-process d-flex">
+                                                <div class="order-processor" style="min-width: 150px;">
+                                                    <span>Nguyễn Minh Cao</span>
+                                                </div>
+                                                <div class="detailed-description">
+                                                    <span>Đã tạo đơn hàng từ đơn hàng nháp #D9Đã tạo đơn hàng từ đơn
+                                                        hàng nháp #D9</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="min-height46 d-flex" style="gap: 4px;">
+                                        <div class="progress-bar-his d-flex flex-column">
+                                            <div class="circle"></div>
+                                            <div class="jamb"></div>
+                                        </div>
+                                        <div class="progress-details d-flex justify-content-between">
+                                            <div class="processing-time"><span>11:09</span></div>
+                                            <div class="describe-process d-flex">
+                                                <div class="order-processor" style="min-width: 150px;">
+                                                    <span>Nguyễn Minh Cao</span>
+                                                </div>
+                                                <div class="detailed-description">
+                                                    <span>Đã tạo đơn hàng từ đơn hàng nháp #D9</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="min-height46 d-flex" style="gap: 4px;">
+                                        <div class="progress-bar-his d-flex flex-column">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="progress-details d-flex justify-content-between">
+                                            <div class="processing-time"><span>11:09</span></div>
+                                            <div class="describe-process d-flex">
+                                                <div class="order-processor" style="min-width: 150px;">
+                                                    <span>Nguyễn Minh Cao</span>
+                                                </div>
+                                                <div class="detailed-description">
+                                                    <span>Đã tạo đơn hàng từ đơn hàng nháp #D9</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <jsp:include page="../layout/footer.jsp" />

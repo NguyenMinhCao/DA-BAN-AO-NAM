@@ -118,6 +118,10 @@
     font-size: 14px;
 }
 
+.min-height46 {
+    min-height: 46px;
+}
+
 .font-w450 {
     font-weight: 500;
 }
@@ -311,4 +315,38 @@
     margin-top: 20px;
 }
 
-.product-quantity .product-order {}
+/* lịch sử đơn hàng */
+
+.order-history .progress-bar-his .jamb {
+    height: 100%;
+    width: 2px;
+    background-color: rgb(0, 136, 255);
+    border-radius: 2px;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    margin: 0 auto;
+}
+
+
+.order-history .progress-bar-his .circle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: rgb(0, 136, 255);
+    border: 2px solid rgb(230, 244, 255);
+    margin: 5px;
+    padding: 5px;
+}
+
+
+.order-history .progress-details {
+    gap: 16px;
+}
+
+.order-history .operation-day {
+    margin-bottom: 15px;
+}
+
+.order-history .describe-process {
+    margin-bottom: 24px;
+}
