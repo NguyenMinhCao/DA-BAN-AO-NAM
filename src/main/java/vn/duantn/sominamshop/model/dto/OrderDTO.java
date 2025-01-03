@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
-import vn.duantn.sominamshop.model.constants.OrderStatus;
+import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 
 import java.math.BigDecimal;
 
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class OrderDTO {
 
     private long id;
-    private OrderStatus status;
+    private DeliveryStatus status;
     private User user;
     private Promotion promotion;
     private String note;
@@ -30,7 +30,7 @@ public class OrderDTO {
                 .id(order.getId())
                 .paymentMethod(order.getPaymentMethod())
                 .note(order.getNote())
-                .status(order.getStatus())
+                .status(order.getDeliveryStatus())
                 .user(order.getUser())
                 .totalAmount(order.getTotalAmount())
                 .build();

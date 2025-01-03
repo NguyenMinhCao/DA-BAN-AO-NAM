@@ -21,7 +21,9 @@ import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
-import vn.duantn.sominamshop.model.constants.OrderStatus;
+
+import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.PaymentStatus;
 
 import vn.duantn.sominamshop.model.dto.AddressDTO;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
@@ -104,7 +106,12 @@ public class OrderService {
 
                 // update order
                 order.setOrderDetails(lstOrderDetails);
-                order.setStatus(OrderStatus.PENDING);
+                order.setDeliveryStatus(DeliveryStatus.PENDING);
+                if (order.getPaymentMethod().equalsIgnoreCase("cash-on-delivery")) {
+                    order.setPaymentStatus(PaymentStatus.PENDING);
+                } else {
+                    order.setPaymentStatus(PaymentStatus.COMPLETED);
+                }
                 order.setOrderSource(true);
                 this.orderRepository.save(order);
 
@@ -221,6 +228,10 @@ public class OrderService {
         return response;
     }
 
+    public Optional<Order> findOrderById(Long id) {
+        return this.orderRepository.findById(id);
+    }
+
     public void saveOrder(Order order) {
         this.orderRepository.save(order);
     }
@@ -231,16 +242,18 @@ public class OrderService {
 
     public Order findOrderByStatusAndCreatedBy() {
         String createdBy = SecurityUtil.getCurrentUserLogin().get();
-        return this.orderRepository.findOrderByStatusAndCreatedBy(createdBy);
+        return this.orderRepository.findOrderByDeliveryStatusAndCreatedBy(createdBy);
     }
 
-    public List<Order> getAllOrdersByStatusNotNull() {
-        return this.orderRepository.findAllOrderByStatusNotNull();
+    public List<Order> getAllOrdersByDeliveryStatusNotNull() {
+        return this.orderRepository.findAllOrderByDeliveryStatusNotNull();
     }
 
     @Transactional
     public OrderDTO saveInvoice(Order order) {
         order.setOrderSource(false);
+        order.setPaymentStatus(PaymentStatus.PENDING);
+        order.setDeliveryStatus(DeliveryStatus.COMPLETED);
         Order orderCreate = orderRepository.save(order);
         OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
         return orderDTO;

@@ -110,10 +110,10 @@ ul.tablist-order {
     text-decoration: none;
 }
 
-.css-1hfoem2 .e19wcowe2 {
-    color: rgb(0, 136, 255);
+/* .css-1hfoem2 .e19wcowe2 {
+    color: rgb(116, 124, 135);
     position: relative;
-}
+} */
 
 .css-1h1oecx {
     position: relative;
@@ -392,6 +392,10 @@ ul.tablist-order {
     background-color: rgb(255, 255, 255);
     cursor: pointer;
     border-top: 1px solid rgb(232, 234, 235);
+}
+
+.css-1n5r022:hover {
+    background-color: rgb(244, 246, 248);
 }
 
 /* css td */
@@ -706,4 +710,102 @@ ul.tablist-order {
     max-width: 100%;
     margin: auto;
     color: rgb(163, 168, 175);
+}
+
+/* order detail */
+
+.css-1pa4lcx {
+    padding: 16px 0px;
+}
+
+.css-wk342h {
+    display: flex;
+    justify-content: space-between;
+    min-height: 32px;
+}
+
+.css-1f8k439 {
+    padding-right: 16px;
+}
+
+.css-1t5u3ag {
+    cursor: pointer;
+    display: inline-flex;
+    position: relative;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin: 0px;
+    user-select: none;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: calc((36px - calc(1.25rem* var(--ui-rem-scale)) - 2px) / 2) calc((36px - calc(1.25rem* var(--ui-rem-scale)) - 2px) / 2);
+    border: 1px solid rgb(211, 213, 215);
+    color: rgb(15, 24, 36);
+    background: rgb(255, 255, 255);
+}
+
+.css-slup14 {
+    font-size: calc(0.875rem* var(--ui-rem-scale));
+    font-weight: 550;
+    line-height: calc(1rem* var(--ui-rem-scale));
+    text-transform: none;
+    letter-spacing: normal;
+    position: relative;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    min-width: 1px;
+    min-height: 1px;
+}
+
+.css-1o24pcm {
+    display: block;
+    height: 20px;
+    width: 20px;
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+}
+
+.css-1t5u3ag svg {
+    color: rgb(163, 168, 175);
+}
+
+.css-1o24pcm svg,
+.css-1o24pcm img {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.css-15bfscy {
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-box-align: center;
+    align-items: center;
+    row-gap: 8px;
+}
+
+.css-1ccmwki {
+    display: flex;
+    flex-flow: column wrap;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    margin-top: calc(-8px);
+    margin-left: calc(-8px);
+}
+
+.css-1ccmwki>.e14jmgg0 {
+    margin-top: 8px;
+    margin-left: 8px;
+    max-width: 100%;
 }

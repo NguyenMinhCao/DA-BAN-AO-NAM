@@ -65,7 +65,7 @@
                                         <c:forEach items="${orderUsers}" var="order">
                                             <div style="margin-bottom: 20px; border: 1px solid #ddd;">
                                                 <div class="" style="text-align: right; padding: 20px;">
-                                                    ${order.status.description}
+                                                    ${order.deliveryStatus.description}
                                                 </div>
                                                 <hr style="margin-top: 0rem;margin-bottom: 0rem;">
                                                 <c:forEach items="${order.orderDetails}" var="orderDetail"
@@ -118,7 +118,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <c:if test="${order.status == 'PENDING'}">
+                                                <c:if test="${order.deliveryStatus == 'PENDING'}">
                                                     <div class="yyqgYp">
                                                         <div class="iwUeSD">
                                                             <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Chờ xác
@@ -144,7 +144,7 @@
                                                     </div>
                                                 </c:if>
 
-                                                <c:if test="${order.status == 'SHIPPING'}">
+                                                <c:if test="${order.deliveryStatus == 'SHIPPING'}">
                                                     <div class="yyqgYp">
                                                         <div class="iwUeSD">
                                                             <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đang
@@ -166,7 +166,7 @@
                                                     </div>
                                                 </c:if>
 
-                                                <c:if test="${order.status == 'OUT_FOR_DELIVERY'}">
+                                                <c:if test="${order.deliveryStatus == 'OUT_FOR_DELIVERY'}">
                                                     <div class="yyqgYp">
                                                         <div class="yyqgYp">
                                                             <div class="iwUeSD">
@@ -190,7 +190,7 @@
                                                         </div>
                                                 </c:if>
 
-                                                <c:if test="${order.status == 'COMPLETED'}">
+                                                <c:if test="${order.deliveryStatus == 'COMPLETED'}">
                                                     <div class="yyqgYp">
                                                         <div class="iwUeSD">
                                                             <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã giao
@@ -216,7 +216,7 @@
                                                     </div>
                                                 </c:if>
 
-                                                <c:if test="${order.status == 'CANCELED'}">
+                                                <c:if test="${order.deliveryStatus == 'CANCELED'}">
                                                     <div class="yyqgYp">
                                                         <div class="iwUeSD">
                                                             <div><span aria-label="Đã hủy bởi bạn" tabindex="0">Đã hủy
@@ -243,7 +243,7 @@
                                                     </div>
                                                 </c:if>
 
-                                                <c:if test="${order.status == 'RETURNED'}">
+                                                <c:if test="${order.deliveryStatus == 'RETURNED'}">
                                                     <div class="yyqgYp">
                                                         <div class="yyqgYp">
                                                             <div class="iwUeSD">
@@ -277,10 +277,10 @@
 
                                     <div class="tab-content" id="tab2">
                                         <c:forEach items="${orderUsers}" var="order">
-                                            <c:if test="${order.status == 'PENDING'}">
+                                            <c:if test="${order.deliveryStatus == 'PENDING'}">
                                                 <div style="margin-bottom: 20px; border: 1px solid #ddd;">
                                                     <div class="" style="text-align: right; padding: 20px;">
-                                                        ${order.status.description}
+                                                        ${order.deliveryStatus.description}
                                                     </div>
                                                     <hr style="margin-top: 0rem;margin-bottom: 0rem;">
                                                     <c:forEach items="${order.orderDetails}" var="orderDetail"
@@ -364,10 +364,10 @@
 
                                     <div class="tab-content" id="tab3">
                                         <c:forEach items="${orderUsers}" var="order">
-                                            <c:if test="${order.status == 'SHIPPING'}">
+                                            <c:if test="${order.deliveryStatus == 'SHIPPING'}">
                                                 <div style="margin-bottom: 20px; border: 1px solid #ddd;">
                                                     <div class="" style="text-align: right; padding: 20px;">
-                                                        ${order.status.description}
+                                                        ${order.deliveryStatus.description}
                                                     </div>
                                                     <hr style="margin-top: 0rem;margin-bottom: 0rem;">
                                                     <c:forEach items="${order.orderDetails}" var="orderDetail"
@@ -446,10 +446,10 @@
                                     </div>
                                     <div class="tab-content" id="tab4">
                                         <c:forEach items="${orderUsers}" var="order">
-                                            <c:if test="${order.status == 'OUT_FOR_DELIVERY'}">
+                                            <c:if test="${order.deliveryStatus == 'OUT_FOR_DELIVERY'}">
                                                 <div style="margin-bottom: 20px; border: 1px solid #ddd;">
                                                     <div class="" style="text-align: right; padding: 20px;">
-                                                        ${order.status.description}
+                                                        ${order.deliveryStatus.description}
                                                     </div>
                                                     <hr style="margin-top: 0rem;margin-bottom: 0rem;">
                                                     <c:forEach items="${order.orderDetails}" var="orderDetail"
@@ -529,10 +529,10 @@
 
                                     <div class="tab-content" id="tab5">
                                         <c:forEach items="${orderUsers}" var="order">
-                                            <c:if test="${order.status == 'COMPLETED'}">
+                                            <c:if test="${order.deliveryStatus == 'COMPLETED'}">
                                                 <div style="margin-bottom: 20px; border: 1px solid #ddd;">
                                                     <div class="" style="text-align: right; padding: 20px;">
-                                                        ${order.status.description}
+                                                        ${order.deliveryStatus.description}
                                                     </div>
                                                     <hr style="margin-top: 0rem;margin-bottom: 0rem;">
                                                     <c:forEach items="${order.orderDetails}" var="orderDetail"
@@ -616,10 +616,10 @@
 
                                     <div class="tab-content" id="tab6">
                                         <c:forEach items="${orderUsers}" var="order">
-                                            <c:if test="${order.status == 'CANCELED'}">
+                                            <c:if test="${order.deliveryStatus == 'CANCELED'}">
                                                 <div style="margin-bottom: 20px; border: 1px solid #ddd;">
                                                     <div class="" style="text-align: right; padding: 20px;">
-                                                        ${order.status.description}
+                                                        ${order.deliveryStatus.description}
                                                     </div>
                                                     <hr style="margin-top: 0rem;margin-bottom: 0rem;">
                                                     <c:forEach items="${order.orderDetails}" var="orderDetail"
@@ -704,10 +704,10 @@
 
                                     <div class="tab-content" id="tab7">
                                         <c:forEach items="${orderUsers}" var="order">
-                                            <c:if test="${order.status == 'RETURNED'}">
+                                            <c:if test="${order.deliveryStatus == 'RETURNED'}">
                                                 <div style="margin-bottom: 20px; border: 1px solid #ddd;">
                                                     <div class="" style="text-align: right; padding: 20px;">
-                                                        ${order.status.description}
+                                                        ${order.deliveryStatus.description}
                                                     </div>
                                                     <hr style="margin-top: 0rem;margin-bottom: 0rem;">
                                                     <c:forEach items="${order.orderDetails}" var="orderDetail"
@@ -820,6 +820,7 @@
                     <script src="/js/js-account.js"></script>
                     <script>
                         function openTab(tabId) {
+
                             tabbuttons = document.getElementsByClassName("tab-button");
                             for (i = 0; i < tabbuttons.length; i++) {
                                 tabbuttons[i].style.borderBottom = "none";

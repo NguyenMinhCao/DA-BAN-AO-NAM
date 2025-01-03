@@ -3,11 +3,12 @@ package vn.duantn.sominamshop.controller.admin;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.duantn.sominamshop.model.Order;
@@ -25,7 +26,7 @@ public class OrderManagementController {
 
     @GetMapping("/orders")
     public String getOrders(Model model) {
-        List<Order> lstOrder = this.orderService.getAllOrdersByStatusNotNull();
+        List<Order> lstOrder = this.orderService.getAllOrdersByDeliveryStatusNotNull();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -42,4 +43,15 @@ public class OrderManagementController {
         model.addAttribute("lstOrder", lstOrder);
         return "admin/order-management/show";
     }
+
+    @GetMapping("/orders/{id}")
+    public String getOrderDetail(@PathVariable Long id, Model model) {
+        Optional<Order> orderById = this.orderService.findOrderById(id);
+        if (orderById.isPresent()) {
+            model.addAttribute("order", orderById.get());
+        }
+        // model
+        return "admin/order-management/detail";
+    }
+
 }

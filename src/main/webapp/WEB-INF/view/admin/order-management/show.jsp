@@ -56,30 +56,35 @@
                                     <!-- tab -->
                                     <ul class="tablist-order d-flex">
                                         <li>
-                                            <button class="css-1hfoem2"><span class="css-1h1oecx e19wcowe2">Tất
+                                            <button class="css-1hfoem2" id="tab1-btn" onclick="openTab('tab1')"><span
+                                                    class="css-1h1oecx e19wcowe2">Tất
                                                     cả</span>
                                             </button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2"><span class="css-1h1oecx e19wcowe2">Chưa xử lý
+                                            <button class="css-1hfoem2" id="tab2-btn" onclick="openTab('tab2')"><span
+                                                    class="css-1h1oecx e19wcowe2">Chưa xử lý
                                                     giao
                                                     hàng
                                                 </span>
                                             </button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2"><span class="css-1h1oecx e19wcowe2">Chở lấy hàng
+                                            <button class="css-1hfoem2" id="tab3-btn" onclick="openTab('tab3')"><span
+                                                    class="css-1h1oecx e19wcowe2">Chở lấy hàng
                                                 </span>
                                             </button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2"><span class="css-1h1oecx e19wcowe2">Đang chờ
+                                            <button class="css-1hfoem2" id="tab4-btn" onclick="openTab('tab4')"><span
+                                                    class="css-1h1oecx e19wcowe2">Đang chờ
                                                     giao
                                                     hàng</span>
                                             </button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2"><span class="css-1h1oecx e19wcowe2">Chưa thanh
+                                            <button class="css-1hfoem2" id="tab5-btn" onclick="openTab('tab5')"><span
+                                                    class="css-1h1oecx e19wcowe2">Chưa thanh
                                                     toán</span>
                                             </button>
                                         </li>
@@ -135,7 +140,7 @@
                                     </div>
                                     <!-- table -->
                                     <div class="">
-                                        <table class="css-18ohjh3 e1dc61xd0" style="border: 2;">
+                                        <table class="css-18ohjh3 e1dc61xd0">
                                             <thead>
                                                 <tr>
                                                     <th class="css-cnbeka">Mã đơn hàng</th>
@@ -147,13 +152,292 @@
                                                     <th class="css-cnbeka">Trạng thái xử lý</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="tab-content" id="tab1">
                                                 <c:forEach items="${lstOrder}" var="order" varStatus="i">
-                                                    <tr class="css-1n5r022">
+                                                    <tr class="css-1n5r022" onclick="openUrl('${order.id}')">
                                                         <td class="css-166t3yd e160qq0x2">
                                                             <div class="css-1xdhyk6 e1f1ig8p0"><a
                                                                     class="css-1w5iufu ehy6p5f0"
-                                                                    href="/admin/orders/15816991">
+                                                                    href="/admin/orders/${order.id}">
+                                                                    <div style="display: flex;"><span
+                                                                            class="css-dbt8sz e1nigx955"><span
+                                                                                class="css-1qvvvsu enzfz0r0">#</span></span><span
+                                                                            class="css-dbt8sz e1nigx955"><span
+                                                                                class="css-1qvvvsu enzfz0r0">${order.id}</span></span>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955">
+                                                                ${formattedDate[i.index]}
+                                                            </span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955"><span
+                                                                    class="css-1qvvvsu enzfz0r0">
+                                                                    <div style="width: 125px;"><span
+                                                                            class="css-ii5m0c e7ltd9p0">${order.user.fullName}</span>
+                                                                    </div>
+                                                                </span></span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955"><span
+                                                                    class="css-1qvvvsu enzfz0r0">
+                                                                    <div style="width: 125px;"><span
+                                                                            class="css-ii5m0c e7ltd9p0">
+                                                                            <c:if test="${order.orderSource == true}">
+                                                                                Website
+                                                                            </c:if>
+                                                                            <c:if test="${order.orderSource == false}">
+                                                                                Tại quầy
+                                                                            </c:if>
+                                                                        </span></div>
+                                                                </span></span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-4fkh5d e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-dbt8sz e1nigx955"><span
+                                                                            class="css-1qvvvsu enzfz0r0">
+                                                                            <fmt:formatNumber type="number"
+                                                                                value="${order.totalAmount}" />
+                                                                            đ
+                                                                        </span></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-1huj7c9 e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-2kmgkw e8ptwd0"><span
+                                                                            class="css-ljhpxb e8ptwd1"><span
+                                                                                class="css-1o24pcm e16p30ob1"><svg
+                                                                                    viewBox="0 0 20 20" fill="none">
+                                                                                    <path fill-rule="evenodd"
+                                                                                        clip-rule="evenodd"
+                                                                                        d="M10 13C11.66 13 13 11.66 13 10C13 8.34 11.66 7 10 7C8.34 7 7 8.34 7 10C7 11.66 8.34 13 10 13ZM6 10C6 12.21 7.79 14 10 14C12.21 14 14 12.21 14 10C14 7.79 12.21 6 10 6C7.79 6 6 7.79 6 10Z"
+                                                                                        fill="currentColor"></path>
+                                                                                </svg></span></span><span
+                                                                            class="css-z8vxi5 enzfz0r0">Chưa thanh
+                                                                            toán</span></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-k9p4ua e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-2kmgkw e8ptwd0"><span
+                                                                            class="css-ljhpxb e8ptwd1"><span
+                                                                                class="css-1o24pcm e16p30ob1"><svg
+                                                                                    viewBox="0 0 20 20" fill="none">
+                                                                                    <path fill-rule="evenodd"
+                                                                                        clip-rule="evenodd"
+                                                                                        d="M10 13C11.66 13 13 11.66 13 10C13 8.34 11.66 7 10 7C8.34 7 7 8.34 7 10C7 11.66 8.34 13 10 13ZM6 10C6 12.21 7.79 14 10 14C12.21 14 14 12.21 14 10C14 7.79 12.21 6 10 6C7.79 6 6 7.79 6 10Z"
+                                                                                        fill="currentColor"></path>
+                                                                                </svg></span></span><span
+                                                                            class="css-z8vxi5 enzfz0r0">Chưa xử lý giao
+                                                                            hàng</span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                            <tbody class="tab-content" id="tab2">
+                                                <c:forEach items="${lstOrder}" var="order" varStatus="i">
+                                                    <tr class="css-1n5r022" onclick="openUrl('${order.id}')">
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-1xdhyk6 e1f1ig8p0"><a
+                                                                    class="css-1w5iufu ehy6p5f0"
+                                                                    href="/admin/orders/${order.id}">
+                                                                    <div style="display: flex;"><span
+                                                                            class="css-dbt8sz e1nigx955"><span
+                                                                                class="css-1qvvvsu enzfz0r0">#</span></span><span
+                                                                            class="css-dbt8sz e1nigx955"><span
+                                                                                class="css-1qvvvsu enzfz0r0">${order.id}</span></span>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955">
+                                                                ${formattedDate[i.index]}
+                                                            </span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955"><span
+                                                                    class="css-1qvvvsu enzfz0r0">
+                                                                    <div style="width: 125px;"><span
+                                                                            class="css-ii5m0c e7ltd9p0">${order.user.fullName}</span>
+                                                                    </div>
+                                                                </span></span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955"><span
+                                                                    class="css-1qvvvsu enzfz0r0">
+                                                                    <div style="width: 125px;"><span
+                                                                            class="css-ii5m0c e7ltd9p0">
+                                                                            <c:if test="${order.orderSource == true}">
+                                                                                Website
+                                                                            </c:if>
+                                                                            <c:if test="${order.orderSource == false}">
+                                                                                Tại quầy
+                                                                            </c:if>
+                                                                        </span></div>
+                                                                </span></span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-4fkh5d e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-dbt8sz e1nigx955"><span
+                                                                            class="css-1qvvvsu enzfz0r0">
+                                                                            <fmt:formatNumber type="number"
+                                                                                value="${order.totalAmount}" />
+                                                                            đ
+                                                                        </span></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-1huj7c9 e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-2kmgkw e8ptwd0"><span
+                                                                            class="css-ljhpxb e8ptwd1"><span
+                                                                                class="css-1o24pcm e16p30ob1"><svg
+                                                                                    viewBox="0 0 20 20" fill="none">
+                                                                                    <path fill-rule="evenodd"
+                                                                                        clip-rule="evenodd"
+                                                                                        d="M10 13C11.66 13 13 11.66 13 10C13 8.34 11.66 7 10 7C8.34 7 7 8.34 7 10C7 11.66 8.34 13 10 13ZM6 10C6 12.21 7.79 14 10 14C12.21 14 14 12.21 14 10C14 7.79 12.21 6 10 6C7.79 6 6 7.79 6 10Z"
+                                                                                        fill="currentColor"></path>
+                                                                                </svg></span></span><span
+                                                                            class="css-z8vxi5 enzfz0r0">Chưa thanh
+                                                                            toán</span></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-k9p4ua e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-2kmgkw e8ptwd0"><span
+                                                                            class="css-ljhpxb e8ptwd1"><span
+                                                                                class="css-1o24pcm e16p30ob1"><svg
+                                                                                    viewBox="0 0 20 20" fill="none">
+                                                                                    <path fill-rule="evenodd"
+                                                                                        clip-rule="evenodd"
+                                                                                        d="M10 13C11.66 13 13 11.66 13 10C13 8.34 11.66 7 10 7C8.34 7 7 8.34 7 10C7 11.66 8.34 13 10 13ZM6 10C6 12.21 7.79 14 10 14C12.21 14 14 12.21 14 10C14 7.79 12.21 6 10 6C7.79 6 6 7.79 6 10Z"
+                                                                                        fill="currentColor"></path>
+                                                                                </svg></span></span><span
+                                                                            class="css-z8vxi5 enzfz0r0">Chưa xử lý giao
+                                                                            hàng</span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                            <tbody class="tab-content" id="tab3">
+                                                <c:forEach items="${lstOrder}" var="order" varStatus="i">
+                                                    <tr class="css-1n5r022" onclick="openUrl('${order.id}')">
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-1xdhyk6 e1f1ig8p0"><a
+                                                                    class="css-1w5iufu ehy6p5f0"
+                                                                    href="/admin/orders/${order.id}">
+                                                                    <div style="display: flex;"><span
+                                                                            class="css-dbt8sz e1nigx955"><span
+                                                                                class="css-1qvvvsu enzfz0r0">#</span></span><span
+                                                                            class="css-dbt8sz e1nigx955"><span
+                                                                                class="css-1qvvvsu enzfz0r0">${order.id}</span></span>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955">
+                                                                ${formattedDate[i.index]}
+                                                            </span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955"><span
+                                                                    class="css-1qvvvsu enzfz0r0">
+                                                                    <div style="width: 125px;"><span
+                                                                            class="css-ii5m0c e7ltd9p0">${order.user.fullName}</span>
+                                                                    </div>
+                                                                </span></span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955"><span
+                                                                    class="css-1qvvvsu enzfz0r0">
+                                                                    <div style="width: 125px;"><span
+                                                                            class="css-ii5m0c e7ltd9p0">
+                                                                            <c:if test="${order.orderSource == true}">
+                                                                                Website
+                                                                            </c:if>
+                                                                            <c:if test="${order.orderSource == false}">
+                                                                                Tại quầy
+                                                                            </c:if>
+                                                                        </span></div>
+                                                                </span></span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-4fkh5d e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-dbt8sz e1nigx955"><span
+                                                                            class="css-1qvvvsu enzfz0r0">
+                                                                            <fmt:formatNumber type="number"
+                                                                                value="${order.totalAmount}" />
+                                                                            đ
+                                                                        </span></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-1huj7c9 e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-2kmgkw e8ptwd0"><span
+                                                                            class="css-ljhpxb e8ptwd1"><span
+                                                                                class="css-1o24pcm e16p30ob1"><svg
+                                                                                    viewBox="0 0 20 20" fill="none">
+                                                                                    <path fill-rule="evenodd"
+                                                                                        clip-rule="evenodd"
+                                                                                        d="M10 13C11.66 13 13 11.66 13 10C13 8.34 11.66 7 10 7C8.34 7 7 8.34 7 10C7 11.66 8.34 13 10 13ZM6 10C6 12.21 7.79 14 10 14C12.21 14 14 12.21 14 10C14 7.79 12.21 6 10 6C7.79 6 6 7.79 6 10Z"
+                                                                                        fill="currentColor"></path>
+                                                                                </svg></span></span><span
+                                                                            class="css-z8vxi5 enzfz0r0">Chưa thanh
+                                                                            toán</span></span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-k9p4ua e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-2kmgkw e8ptwd0"><span
+                                                                            class="css-ljhpxb e8ptwd1"><span
+                                                                                class="css-1o24pcm e16p30ob1"><svg
+                                                                                    viewBox="0 0 20 20" fill="none">
+                                                                                    <path fill-rule="evenodd"
+                                                                                        clip-rule="evenodd"
+                                                                                        d="M10 13C11.66 13 13 11.66 13 10C13 8.34 11.66 7 10 7C8.34 7 7 8.34 7 10C7 11.66 8.34 13 10 13ZM6 10C6 12.21 7.79 14 10 14C12.21 14 14 12.21 14 10C14 7.79 12.21 6 10 6C7.79 6 6 7.79 6 10Z"
+                                                                                        fill="currentColor"></path>
+                                                                                </svg></span></span><span
+                                                                            class="css-z8vxi5 enzfz0r0">Chưa xử lý giao
+                                                                            hàng</span>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                            <tbody class="tab-content" id="tab4">
+                                                <c:forEach items="${lstOrder}" var="order" varStatus="i">
+                                                    <tr class="css-1n5r022" onclick="openUrl('${order.id}')">
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-1xdhyk6 e1f1ig8p0"><a
+                                                                    class="css-1w5iufu ehy6p5f0"
+                                                                    href="/admin/orders/${order.id}">
                                                                     <div style="display: flex;"><span
                                                                             class="css-dbt8sz e1nigx955"><span
                                                                                 class="css-1qvvvsu enzfz0r0">#</span></span><span
@@ -327,6 +611,33 @@
                     crossorigin="anonymous"></script>
                 <script src="/admin/js/scripts.js"></script>
                 <script src="/admin/js/order/order-management.js"></script>
+                <script>
+                    function openTab(tabId) {
+                        var tabContents = document.querySelectorAll('.tab-content');
+                        let activeTab = document.getElementById(tabId);
+                        let tabButtons = document.getElementsByClassName('css-1hfoem2');
+                        let tabBtn = document.getElementById(tabId + '-btn')
+
+                        for (i = 0; i < tabButtons.length; i++) {
+                            tabButtons[i].style.borderBottom = "none";
+                            tabButtons[i].style.color = "rgb(116, 124, 135)";
+                        }
+
+                        tabBtn.style.borderBottom = '2px #4CAF50 solid';
+                        tabBtn.style.color = '#4CAF50';
+
+                        tabContents.forEach(tabContent => tabContent.style.display = 'none');
+                        activeTab.style.display = 'table-row-group'
+                    }
+
+                    function openUrl(url) {
+                        window.location.href = "/admin/orders/" + url;
+                    }
+
+                    window.onload = function () {
+                        openTab('tab1'); // Mở tab1 khi trang tải
+                    }
+                </script>
             </body>
 
             </html>

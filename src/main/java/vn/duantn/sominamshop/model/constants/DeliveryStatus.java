@@ -1,6 +1,6 @@
 package vn.duantn.sominamshop.model.constants;
 
-public enum OrderStatus {
+public enum DeliveryStatus {
 
     PENDING("Đang chờ xử lý"),
     SHIPPING("Vận chuyển"),
@@ -11,7 +11,7 @@ public enum OrderStatus {
 
     private String description;
 
-    OrderStatus(String description) {
+    DeliveryStatus(String description) {
         this.description = description;
     }
 

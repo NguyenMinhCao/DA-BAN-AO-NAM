@@ -64,7 +64,7 @@ public class CartController {
         // Lấy ra toàn bộ promotions để hiển thị
         List<Promotion> listPromotions = this.promotionService.findAllPromotion();
 
-        // thiết lập lại trường promotion trong order có status null khi người dùng rời
+        // thiết lập lại trường promotion trong order có delivery-status null khi người dùng rời
         // khỏi trang order
         Order order = this.orderService.findOrderByStatusAndCreatedBy();
         if (order != null) {

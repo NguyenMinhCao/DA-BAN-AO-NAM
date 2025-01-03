@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
-import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.PromotionDTO;
@@ -48,7 +47,6 @@ public class OrderRestController {
 
     @PostMapping("/save/invoice")
     public ResponseEntity<OrderDTO> saveInvoice(@RequestBody Order order) {
-        order.setStatus(OrderStatus.COMPLETED);
         return ResponseEntity.ok(orderService.saveInvoice(order));
     }
 
