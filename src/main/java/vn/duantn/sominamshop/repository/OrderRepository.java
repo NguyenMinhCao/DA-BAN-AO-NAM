@@ -60,10 +60,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
         List<Order> findOrderByUser(User user);
 
-        @Query("SELECT o FROM Order o WHERE o.status IS NULL AND o.createdBy = :createdBy")
-        Order findOrderByStatusAndCreatedBy(@Param("createdBy") String createdBy);
+        @Query("SELECT o FROM Order o WHERE o.deliveryStatus IS NULL AND o.createdBy = :createdBy")
+        Order findOrderByDeliveryStatusAndCreatedBy(@Param("createdBy") String createdBy);
 
-        @Query("SELECT o FROM Order o WHERE o.status IS NOT NULL")
-        List<Order> findAllOrderByStatusNotNull();
+        @Query("SELECT o FROM Order o WHERE o.deliveryStatus IS NOT NULL")
+        List<Order> findAllOrderByDeliveryStatusNotNull();
 
 }

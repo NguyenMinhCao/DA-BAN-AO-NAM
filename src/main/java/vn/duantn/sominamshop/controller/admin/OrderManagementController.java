@@ -26,7 +26,7 @@ public class OrderManagementController {
 
     @GetMapping("/orders")
     public String getOrders(Model model) {
-        List<Order> lstOrder = this.orderService.getAllOrdersByStatusNotNull();
+        List<Order> lstOrder = this.orderService.getAllOrdersByDeliveryStatusNotNull();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 

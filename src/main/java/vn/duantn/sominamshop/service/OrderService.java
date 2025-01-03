@@ -30,8 +30,8 @@ import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
-import vn.duantn.sominamshop.model.constants.OrderStatus;
-
+import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.PaymentStatus;
 import vn.duantn.sominamshop.model.dto.*;
 import vn.duantn.sominamshop.repository.*;
 
@@ -121,7 +121,12 @@ public class OrderService {
 
                 // update order
                 order.setOrderDetails(lstOrderDetails);
-                order.setStatus(OrderStatus.PENDING);
+                order.setDeliveryStatus(DeliveryStatus.PENDING);
+                if (order.getPaymentMethod().equalsIgnoreCase("cash-on-delivery")) {
+                    order.setPaymentStatus(PaymentStatus.PENDING);
+                } else {
+                    order.setPaymentStatus(PaymentStatus.COMPLETED);
+                }
                 order.setOrderSource(true);
                 this.orderRepository.save(order);
 
@@ -252,11 +257,11 @@ public class OrderService {
 
     public Order findOrderByStatusAndCreatedBy() {
         String createdBy = SecurityUtil.getCurrentUserLogin().get();
-        return this.orderRepository.findOrderByStatusAndCreatedBy(createdBy);
+        return this.orderRepository.findOrderByDeliveryStatusAndCreatedBy(createdBy);
     }
 
-    public List<Order> getAllOrdersByStatusNotNull() {
-        return this.orderRepository.findAllOrderByStatusNotNull();
+    public List<Order> getAllOrdersByDeliveryStatusNotNull() {
+        return this.orderRepository.findAllOrderByDeliveryStatusNotNull();
     }
 
     public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name) {
