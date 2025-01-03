@@ -841,7 +841,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cancel-btn-add-customer').addEventListener('click', ()=> toggleModal(addCustomerModal, false))
 
     //function cho thông báo
-    function notificationAddCusstomer(message){
+    function notificationAddCusstomer(message, icon){
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -855,7 +855,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
         Toast.fire({
-            icon: "error",
+            icon: icon,
             title: message
         });
     }
@@ -921,6 +921,23 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#Districts').on('change', function(e) {
         fetchWards(e.target.value);
     });
+    function validateCustomer(name, phoneNumber, email){
+        let emailRegex = /^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        let phoneRegex = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
+        if(!name ||  (!phoneNumber && !email)){
+            notificationAddCusstomer('Tên, số điện thoại hoặc email đang trống!', 'error')
+            return false;
+        }
+        if(email && !emailRegex.test(email)){
+            notificationAddCusstomer('email không hợp lệ!', 'error')
+            return false;
+        }
+        if(phoneNumber && !phoneRegex.test(phoneNumber)){
+            notificationAddCusstomer('Số điện thoại không hợp lệ!', 'error')
+            return false;
+        }
+        return true
+    }
 
     //add khách hàng
     function addCustomer(){
@@ -933,8 +950,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let gender = $('#gender').val();
         const address = [city, district, ward].filter(value => value.trim() !== "").join(", ");
         let addressDetail = $('#addressAddDetail').text();
-        if(!name ||  (!phoneNumber && !email)){
-            notificationAddCusstomer('Tên, số điện thoại hoặc email đang trống!')
+        if(!validateCustomer(name, phoneNumber, email)){
             return
         }
         let data = {
@@ -955,12 +971,24 @@ document.addEventListener('DOMContentLoaded', function () {
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function(data) {
-
+                toggleModal(addCustomerModal,false)
+                notificationAddCusstomer('Thêm thành công', 'success')
+                $('#infoDetail').empty()
+                customerNameInput.innerText = data.fullName,
+                customerNameInput.setAttribute('data-customer-id',data.id)
+                var phoneNumber = data.phoneNumber;
+                var email  = data.email;
+                $('#infoDetail').append('<p>Số điện thoại: ' + phoneNumber + '</p>');
+                $('#infoDetail').append('<p>email: ' + email + '</p>');
+                $('#btn-delete-customer').prop('disabled', false);
+                toggleModal(customerModal, false);
+                saveDataToLocalStorage(selectedInvoiceId)
+                fetchCustomers()
             },
             error: function(xhr, status, error) {
                 let errorMap = JSON.parse(xhr.responseText);
                 let errorMessages = Object.values(errorMap);
-                notificationAddCusstomer(errorMessages)
+                notificationAddCusstomer(errorMessages, 'error')
                 console.error('Error fetching districts data:', error);
             }
         });
@@ -968,6 +996,14 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#add-customer').on('click', function(e) {
         addCustomer()
     })
+//**************** Voucher **************
+    function fetchVoucher(){
+        $.ajax({
+
+        })
+
+    }
+
 });
 
 function localtt() {

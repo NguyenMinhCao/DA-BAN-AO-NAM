@@ -27,15 +27,27 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);
         }
         user.setRole(Role.builder().id(1).build());
-        return ResponseEntity.ok(userService.handleSaveUser(user));
+        User userSave = userService.handleSaveUser(user);
+        UserDTO userDTO = UserDTO.toDTO(userSave);
+        return ResponseEntity.ok(userDTO);
     }
     @GetMapping("/get/customers")
-    public ResponseEntity<?> getProduct(
+    public ResponseEntity<?> getCustomers(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "2") int limit,
             @RequestParam(value = "keyword") String search) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search);
+        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(search ,Role.builder().id(1).build(), pageable);
         return ResponseEntity.ok(pageCustomer);
+    }
+    @GetMapping("/get/staffs")
+    public ResponseEntity<?> getStaff(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "limit", defaultValue = "2") int limit,
+            @RequestParam(value = "keyword") String search
+    ){
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<UserDTO> pageStaff = userService.findByFullNameAndRole(search ,Role.builder().id(1).build(), pageable);
+        return ResponseEntity.ok(pageStaff);
     }
 }

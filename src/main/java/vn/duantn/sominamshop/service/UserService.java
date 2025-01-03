@@ -1,6 +1,7 @@
 package vn.duantn.sominamshop.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -65,19 +66,18 @@ public class UserService {
     }
 
 
-    public Page<UserDTO> findByFullNameAndRole(Pageable pageable, String name) {
-        Page<User> pageCustomer = userRepository.findByFullNameContainingAndRole(name, Role.builder().id(1).build(),
-                pageable);
-        Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
-        return pageCustomerDto;
+    public Page<UserDTO> findByFullNameAndRole(String name, Role role, Pageable pageable) {
+        Page<User> pageUser = userRepository.findByFullNameContainingAndRole(name, role, pageable);
+        Page<UserDTO> pageUserDto = pageUser.map(user -> UserDTO.toDTO(user));
+        return pageUserDto;
     }
 
     public Map<String, String> validateCustomerData(User user) {
         Map<String, String> errors = new HashMap<>();
-        if (user.getPhoneNumber() != null && userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+        if (!user.getPhoneNumber().isEmpty() && userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
             errors.put("phoneNumber", "Phone number already exists.");
         }
-        if (user.getEmail() != null && this.checkEmailExits(user.getEmail())) {
+        if (!user.getEmail().isEmpty()&& this.checkEmailExits(user.getEmail())) {
             errors.put("email", "Email already exists.");
         }
         return errors;
@@ -101,10 +101,5 @@ public class UserService {
             userById.setAvatar(avatar);
             this.userRepository.save(userById);
         }
-    }
-
-    public Page<User> findUserByFullNameContainingAndRole(String fullName, Role role, Pageable pageable) {
-        return this.userRepository.findByFullNameContainingAndRole(fullName, role, pageable);
-
     }
 }

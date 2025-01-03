@@ -532,12 +532,35 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
-.btn-pay{
+.btn-pay-note{
     display: flex;
     justify-content: flex-end;
 }
-
-
+btn-pay-note{
+    height: 40px;
+}
+.note-input-group{
+    display: flex;
+    width: 360px;
+    /*gap: 4px;*/
+    /*height: ;*/
+}
+.note-input-group textarea{
+    /*height: 40px;*/
+    min-height: 30px; /* Chiều cao tối thiểu */
+    max-height: 300px; /* Chiều cao tối đa */
+    overflow-y: auto; /* Chỉ hiện thanh cuộn dọc nếu vượt quá max-height */
+    /*resize: none;*/
+}
+.input-group-prepend .input-group-text {
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 11px;
+    background-color: #f8f9fa;
+    /*border: 1px solid #ced4da;*/
+    /*border-radius: 4px;*/
+}
 /*cc cho form thêm khách hàng start*/
 .form-add-customer{
     display: none;

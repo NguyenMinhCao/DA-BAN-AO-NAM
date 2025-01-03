@@ -40,4 +40,13 @@ public class UserController {
         //
         return "redirect:/admin/user/create";
     }
+
+    @GetMapping("/admin/customer/create")
+    public String showIndexPageCustomer(){
+        return "admin/user/customer";
+    }
+    @GetMapping("/admin/staff/create")
+    public String showIndexPageStaff(){
+        return "admin/user/staff";
+    }
 }
