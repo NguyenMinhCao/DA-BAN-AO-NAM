@@ -22,7 +22,7 @@
 
                     <div id="layoutSidenav_content">
                         <div class="container">
-                            <div class="header">
+                            <div class="header" style="min-height: 64px;">
                                 <div class="header__btn">
                                     <a class="header__btn-link" href="/admin/orders">
                                         <span class="header__btn-icon"><i class="fa-solid fa-arrow-left"></i></span>
@@ -30,30 +30,61 @@
                                 </div>
                                 <div class="order">
                                     <div class="order__status">
-                                        <div class="code">#1005</div>
-                                        <div class="status">
-                                            <span class="payment-status--unpaid">Chưa thanh
-                                                toán</span>
-                                            <span class="shipping-status--delivered">Đã xử lý
-                                                giao
-                                                hàng</span>
+                                        <div class="code align-self-start">#1005</div>
+                                        <div class="status align-self-center">
+                                            <c:if test="${order.paymentStatus == 'PENDING'}">
+                                                <span class="payment-status--unpaid border-status status-pending">
+                                                    Chưa thanh
+                                                    toán
+                                                </span>
+                                            </c:if>
+                                            <c:if test="${order.paymentStatus == 'COMPLETED'}">
+                                                <span class="payment-status--unpaid border-status status-completed">
+                                                    Đã thanh toán
+                                                </span>
+                                            </c:if>
+                                            <c:if test="${order.deliveryStatus == 'PENDING'}">
+                                                <span class="shipping-status--delivered border-status status-pending">
+                                                    Chưa xử lý giao hàng
+                                                </span>
+                                            </c:if>
+                                            <c:if test="${order.deliveryStatus != 'PENDING'}">
+                                                <span class="shipping-status--delivered border-status status-pending">
+                                                    Đã xử lý giao hàng
+                                                </span>
+                                            </c:if>
+
                                         </div>
                                     </div>
                                     <div class="order__details">
-                                        <span class="order__date">28/12/2024 14:02</span>
-                                        <span class="order__store">Đặt hàng tại Cửa hàng chính</span>
+                                        <span class="order__date sub-font">28/12/2024 14:02</span>
+                                        <span class="order__store sub-font">Đặt hàng tại Cửa hàng chính</span>
                                     </div>
                                 </div>
-                                <div class="operation">
+                                <div class="operation sub-font">
                                     <div class="operation__container">
-                                        <div class="return">
-                                            <a href="">
-                                                <span>
-                                                    <span class="icon"><i class="fa-solid fa-box"></i></span>
-                                                    <span class="text-black">Trả hàng</span>
-                                                </span>
-                                            </a>
-                                        </div>
+                                        <c:if
+                                            test="${order.paymentStatus == 'COMPLETED' && order.deliveryStatus == 'COMPLETED'}">
+                                            <div class="return">
+                                                <a href="">
+                                                    <span>
+                                                        <span class="icon"><i class="fa-solid fa-box"></i></span>
+                                                        <span class="text-black">Trả hàng</span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </c:if>
+                                        <c:if
+                                            test="${order.paymentStatus == 'PENDING' && order.deliveryStatus == 'PENDING'}">
+                                            <div class="return">
+                                                <a href="">
+                                                    <span>
+                                                        <span class="icon"><i class="fa-solid fa-pencil"></i></span>
+                                                        <span class="text-black">Sửa đơn</span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </c:if>
                                         <div class="print-invoice">
                                             <a href="#">
                                                 <span>
@@ -79,100 +110,159 @@
                                     <div class="order-details border-outline w-100">
                                         <div class="ui-card__section pad-20px-4">
                                             <div class="processing-status">
-                                                <div class="status">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                                                        <g clip-path="url(#176__a)">
-                                                            <circle cx="12" cy="12" r="10" fill="#fff" stroke="#CFF6E7"
-                                                                stroke-width="4"></circle>
-                                                            <path fill="#0DB473" fill-rule="evenodd"
-                                                                d="M4 12c0-4.416 3.584-8 8-8s8 3.584 8 8-3.584 8-8 8-8-3.584-8-8m6.4 1.736 5.272-5.272 1.128 1.136-6.4 6.4-3.2-3.2 1.128-1.128z"
-                                                                clip-rule="evenodd"></path>
-                                                        </g>
-                                                        <defs>
-                                                            <clipPath id="176__a">
-                                                                <path fill="#fff" d="M0 0h24v24h-24z"></path>
-                                                            </clipPath>
-                                                        </defs>
-                                                    </svg>
-                                                </div>
-                                                <div class="status-text ml-10"><span>Đã xử lý giao hàng</span>
-                                                </div>
-                                                <div class="confirm-delivery ml-10 border-status"><span>Đã giao
+
+                                                <c:if test="${order.deliveryStatus == 'PENDING'}">
+                                                    <div class="status">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                                                            <g clip-path="url(#171__a)">
+                                                                <circle cx="12" cy="12" r="12" fill="#FFDF9B"></circle>
+                                                                <circle cx="12" cy="12" r="7" fill="#fff"
+                                                                    stroke="#E49C06" stroke-dasharray="2 2"
+                                                                    stroke-width="1.5"></circle>
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="171__a">
+                                                                    <path fill="#fff" d="M0 0h24v24h-24z"></path>
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="status-text ml-10"><span>Chưa xử lý</span>
+                                                </c:if>
+                                                <c:if test="${order.deliveryStatus != 'PENDING'}">
+                                                    <div class="status">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                                                            <g clip-path="url(#176__a)">
+                                                                <circle cx="12" cy="12" r="10" fill="#fff"
+                                                                    stroke="#CFF6E7" stroke-width="4"></circle>
+                                                                <path fill="#0DB473" fill-rule="evenodd"
+                                                                    d="M4 12c0-4.416 3.584-8 8-8s8 3.584 8 8-3.584 8-8 8-8-3.584-8-8m6.4 1.736 5.272-5.272 1.128 1.136-6.4 6.4-3.2-3.2 1.128-1.128z"
+                                                                    clip-rule="evenodd"></path>
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="176__a">
+                                                                    <path fill="#fff" d="M0 0h24v24h-24z"></path>
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="status-text ml-10"><span>Đã xử lý giao hàng</span>
+                                                </c:if>
+
+                                            </div>
+                                            <c:if test="${order.deliveryStatus == 'COMPLETED'}">
+                                                <div class="confirm-delivery ml-10 border-status status-completed">
+                                                    <span>Đã giao
                                                         hàng</span>
                                                 </div>
+                                            </c:if>
+                                            <c:if test="${order.deliveryStatus == 'DELIVERY'}">
+                                                <div class="confirm-delivery ml-10 border-status status-pending">
+                                                    <span>Chờ giao hàng</span>
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                        <div class="delivery-date d-flex mt-8p">
+                                            <div class="text-delivery mw-88 sub-font">
+                                                Ngày giao
                                             </div>
-                                            <div class="delivery-date d-flex mt-8p">
-                                                <div class="text-delivery mw-88 sub-font">
-                                                    Ngày giao
-                                                </div>
-                                                <div class="text-date sub-font">
-                                                    : 29/12/2024 16:03:05
-                                                </div>
-                                            </div>
-                                            <div class="transport d-flex mt-8p">
-                                                <div class="text-transport mw-88 sub-font">
-                                                    Vận chuyển
-                                                </div>
-                                                <div class="text-transport sub-font">
-                                                    : 29/12/2024 16:03:05
-                                                </div>
+                                            <div class="text-date sub-font">
+                                                : 29/12/2024 16:03:05
                                             </div>
                                         </div>
-                                        <div class="table-order">
-                                            <table class="w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Sản phẩm</th>
-                                                        <th>Số lượng</th>
-                                                        <th>Đơn giá</th>
-                                                        <th>Thành tiền</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <c:forEach items="${order.orderDetails}" var="orderDetail"
-                                                        varStatus="i">
-                                                        <tr>
-                                                            <td>
-                                                                <div class="product-order d-flex">
-                                                                    <div class="product-img">
-                                                                        <img alt=""
-                                                                            src="/images/product/${orderDetail.product.images[i.index].imageUrl}">
-                                                                    </div>
-                                                                    <div class="product-name d-flex">
-                                                                        <span class="align-self-center"
-                                                                            style="text-align: start;">${orderDetail.product.name}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td><span
-                                                                    class="product-quantity text-center">${orderDetail.quantity}</span>
-                                                            </td>
-                                                            <td>
-                                                                <span class="product-price">
-                                                                    <fmt:formatNumber type="number"
-                                                                        value="${orderDetail.product.price}" />
-                                                                    đ
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <span class="total-price">
-                                                                    <fmt:formatNumber type="number"
-                                                                        value="${orderDetail.price}" />
-                                                                    đ
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                </tbody>
-                                            </table>
+                                        <div class="transport d-flex mt-8p">
+                                            <div class="text-transport mw-88 sub-font">
+                                                Vận chuyển
+                                            </div>
+                                            <div class="text-transport sub-font">
+                                                : 29/12/2024 16:03:05
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- trạng thái thanh toán -->
-                                    <div class="payment-status border-outline w-100">
-                                        <div class="header-payment">
-                                            <div class="pad-20px-3">
-                                                <div class="d-flex">
+                                    <div class="table-order">
+                                        <table class="w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sản phẩm</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Đơn giá</th>
+                                                    <th>Thành tiền</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${order.orderDetails}" var="orderDetail"
+                                                    varStatus="i">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="product-order d-flex">
+                                                                <div class="product-img">
+                                                                    <img alt=""
+                                                                        src="/images/product/${orderDetail.product.images[i.index].imageUrl}">
+                                                                </div>
+                                                                <div class="product-name d-flex">
+                                                                    <span class="align-self-center"
+                                                                        style="text-align: start;">${orderDetail.product.name}</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span
+                                                                class="product-quantity text-center">${orderDetail.quantity}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="product-price">
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${orderDetail.product.price}" />
+                                                                đ
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="total-price">
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${orderDetail.price}" />
+                                                                đ
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <c:if test="${order.deliveryStatus == 'PENDING'}">
+                                        <div class="order-is-pending pad-20px-4">
+                                            <div class="d-flex justify-content-end">
+                                                <button class="push-transport-btn">Đẩy vận chuyển</button>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </div>
+                                <!-- trạng thái thanh toán -->
+                                <div class="payment-status border-outline w-100">
+                                    <div class="header-payment">
+                                        <div class="pad-20px-3">
+                                            <div class="d-flex">
+                                                <c:if test="${order.paymentStatus == 'PENDING'}">
+                                                    <div class="status">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                                                            <g clip-path="url(#171__a)">
+                                                                <circle cx="12" cy="12" r="12" fill="#FFDF9B"></circle>
+                                                                <circle cx="12" cy="12" r="7" fill="#fff"
+                                                                    stroke="#E49C06" stroke-dasharray="2 2"
+                                                                    stroke-width="1.5"></circle>
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="171__a">
+                                                                    <path fill="#fff" d="M0 0h24v24h-24z"></path>
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="status-text ml-10"><span>Chưa thanh toán</span>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="${order.paymentStatus == 'COMPLETED'}">
                                                     <div class="status">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" focusable="false" aria-hidden="true">
@@ -192,43 +282,20 @@
                                                     </div>
                                                     <div class="status-text ml-10"><span>Đã thanh toán</span>
                                                     </div>
-                                                </div>
+                                                </c:if>
                                             </div>
                                         </div>
-                                        <div class="content-payment">
-                                            <div class="total-cost d-flex justify-content-between">
-                                                <div class="text-cost flex-grow-1" style="flex: 0 0 25%;">
-                                                    <span>Tổng tiền hàng</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between" style="flex-grow: 2; font-size: 14px;">
-                                                    <div class="product-quantity-cost"><span>${order.totalProducts} sản
-                                                            phẩm</span></div>
-                                                    <div class="total-price-cost">
-                                                        <span class="text-end">
-                                                            <fmt:formatNumber type="number"
-                                                                value="${order.totalAmount}" />
-                                                            đ
-                                                        </span>
-                                                    </div>
-                                                </div>
+                                    </div>
+                                    <div class="content-payment sub-font">
+                                        <div class="total-cost d-flex justify-content-between">
+                                            <div class="text-cost flex-grow-1" style="flex: 0 0 25%;">
+                                                <span>Tổng tiền hàng</span>
                                             </div>
-                                            <div class="delivery-fee d-flex justify-content-between">
-                                                <div class="text-delivery flex-grow-1" style="flex: 0 0 25%"><span>Phí
-                                                        giao
-                                                        hàng</span></div>
-                                                <div class="d-flex justify-content-between" style="flex-grow: 2;">
-                                                    <div class="method-delivery"><span>Giao hàng tận nơi</span></div>
-                                                    <div class="money-delivery">
-                                                        <span class="text-end">
-                                                            <fmt:formatNumber type="number" value="${}" />
-                                                            30.000đ
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="into-money d-flex justify-content-between">
-                                                <div class="money-text"><span>Thành tiền</span></div>
-                                                <div class="money-delivery">
+                                            <div class="d-flex justify-content-between"
+                                                style="flex-grow: 2; font-size: 14px;">
+                                                <div class="product-quantity-cost"><span>${order.totalProducts} sản
+                                                        phẩm</span></div>
+                                                <div class="total-price-cost">
                                                     <span class="text-end">
                                                         <fmt:formatNumber type="number" value="${order.totalAmount}" />
                                                         đ
@@ -236,7 +303,32 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="footer-payment pad-20px-4">
+                                        <div class="delivery-fee d-flex justify-content-between">
+                                            <div class="text-delivery flex-grow-1" style="flex: 0 0 25%"><span>Phí
+                                                    giao
+                                                    hàng</span></div>
+                                            <div class="d-flex justify-content-between" style="flex-grow: 2;">
+                                                <div class="method-delivery"><span>Giao hàng tận nơi</span></div>
+                                                <div class="money-delivery">
+                                                    <span class="text-end">
+                                                        <fmt:formatNumber type="number" value="${}" />
+                                                        30.000đ
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="into-money d-flex justify-content-between">
+                                            <div class="money-text"><span>Thành tiền</span></div>
+                                            <div class="money-delivery">
+                                                <span class="text-end">
+                                                    <fmt:formatNumber type="number" value="${order.totalAmount}" />
+                                                    đ
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <c:if test="${order.paymentStatus == 'COMPLETED'}">
+                                        <div class="footer-payment pad-20px-4 sub-font">
                                             <div class="d-flex">
                                                 <div class="payment-text flex-grow-1" style="flex: 0 0 25%"><span>Khách
                                                         đã
@@ -249,148 +341,158 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- lịch sử đơn hàng -->
-                                    <div class="order-history border-outline d-flex flex-column w-100">
-                                        <div class="pad-20px-3">
-                                            <h2 class="title-font">Lịch sử đơn hàng</h2>
-                                        </div>
-                                        <div class="d-flex pad-20px-4 flex-grow-1" style="font-size: 14px;">
-                                            <div class="d-flex flex-column justify-content-between flex-grow-1">
-                                                <div class="operation-day">02/01/2025</div>
-                                                <div class="min-height46 d-flex" style="gap: 4px;">
-                                                    <div class="progress-bar-his d-flex flex-column">
-                                                        <div class="circle"></div>
-                                                        <div class="jamb"></div>
-                                                    </div>
-                                                    <div class="progress-details d-flex justify-content-between">
-                                                        <div class="processing-time"><span>11:09</span></div>
-                                                        <div class="describe-process d-flex">
-                                                            <div class="order-processor" style="min-width: 150px;">
-                                                                <span>Nguyễn Minh Cao</span>
-                                                            </div>
-                                                            <div class="detailed-description">
-                                                                <span>Đã tạo đơn hàng từ đơn hàng nháp #D9Đã tạo đơn
-                                                                    hàng từ
-                                                                    đơn
-                                                                    hàng nháp #D9</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="min-height46 d-flex" style="gap: 4px;">
-                                                    <div class="progress-bar-his d-flex flex-column">
-                                                        <div class="circle"></div>
-                                                        <div class="jamb"></div>
-                                                    </div>
-                                                    <div class="progress-details d-flex justify-content-between">
-                                                        <div class="processing-time"><span>11:09</span></div>
-                                                        <div class="describe-process d-flex">
-                                                            <div class="order-processor" style="min-width: 150px;">
-                                                                <span>Nguyễn Minh Cao</span>
-                                                            </div>
-                                                            <div class="detailed-description">
-                                                                <span>Đã tạo đơn hàng từ đơn hàng nháp #D9</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="min-height46 d-flex" style="gap: 4px;">
-                                                    <div class="progress-bar-his d-flex flex-column">
-                                                        <div class="circle"></div>
-                                                    </div>
-                                                    <div class="progress-details d-flex justify-content-between">
-                                                        <div class="processing-time"><span>11:09</span></div>
-                                                        <div class="describe-process d-flex">
-                                                            <div class="order-processor" style="min-width: 150px;">
-                                                                <span>Nguyễn Minh Cao</span>
-                                                            </div>
-                                                            <div class="detailed-description">
-                                                                <span>Đã tạo đơn hàng từ đơn hàng nháp #D9</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    </c:if>
+                                    <c:if test="${order.paymentStatus == 'PENDING'}">
+                                        <div class="footer-payment-pending pad-20px-4 sub-font">
+                                            <div class="d-flex justify-content-end">
+                                                <!-- <div class="">sdf</div> -->
+                                                <button class="receive-money-btn">Nhận tiền</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </c:if>
                                 </div>
-                                <div class="d-flex flex-column width-30" style="gap: 15px;">
-                                    <!-- nguồn đơn -->
-                                    <div class="single-source border-outline w-100">
-                                        <div class="pad-20px-3">
-                                            <h2 class="title-font">Nguồn đơn</h2>
-                                        </div>
-                                        <div class="pad-20px-4 d-flex">
-                                            <c:if test="${order.orderSource == true}">
-                                                <img src="https://bizweb.dktcdn.net/assets/admin/v3/website.svg"
-                                                    alt="icon" style="width: 24px; height: 24px;">
-                                                <span class="origin-soure">Website</span>
-                                            </c:if>
-                                            <c:if test="${order.orderSource == false}">
-                                                <img src="https://bizweb.dktcdn.net/assets/admin/v3/draft_order.svg"
-                                                    alt="icon" style="width: 24px; height: 24px;">
-                                                <span class="origin-soure">Admin</span>
-                                            </c:if>
-                                        </div>
+                                <!-- lịch sử đơn hàng -->
+                                <div class="order-history border-outline d-flex flex-column w-100">
+                                    <div class="pad-20px-3">
+                                        <h2 class="title-font">Lịch sử đơn hàng</h2>
                                     </div>
-                                    <!-- khách hàng -->
-                                    <div class="customer border-outline w-100">
-                                        <div class="pad-20px-3">
-                                            <h2 class="title-font">Khách hàng</h2>
-                                        </div>
-                                        <div class="pad-20px-4 flex-grow-1 d-flex flex-column">
-                                            <div class="order-history-customer">
-                                                <p class="user-name mb-5p">${order.user.fullName}</p>
-                                                <div class="total-spending d-flex justify-content-between">
-                                                    <p class="text-spending mb-5p">Tổng chi tiêu (2 đơn hàng)</p>
-                                                    <span class="total-spending">1,600,000₫</span>
+                                    <div class="d-flex pad-20px-4 flex-grow-1" style="font-size: 14px;">
+                                        <div class="d-flex flex-column justify-content-between flex-grow-1">
+                                            <div class="operation-day">02/01/2025</div>
+                                            <div class="min-height46 d-flex" style="gap: 4px;">
+                                                <div class="progress-bar-his d-flex flex-column">
+                                                    <div class="circle"></div>
+                                                    <div class="jamb"></div>
                                                 </div>
-                                                <div class="nearest-menu d-flex justify-content-between">
-                                                    <p class="text-nearest">Đơn gần nhất</p>
-                                                    <span class="order-nearest">#1007</span>
-                                                </div>
-                                            </div>
-                                            <div class="contact-information">
-                                                <div class="header-contact d-flex justify-content-between">
-                                                    <p class="font-w450">Thông tin liên hệ</p>
-                                                    <span><i class="fa-solid fa-pencil"></i></span>
-                                                </div>
-                                                <p class="user-name mb-5p">${order.user.email}</p>
-                                                <p class="user-phone">${order.user.phoneNumber}</p>
-                                            </div>
-                                            <div class="delivery-address d-flex flex-grow-1">
-                                                <div class="d-flex flex-column justify-content-between">
-                                                    <div class="header-contact d-flex justify-content-between">
-                                                        <p class="font-w450 ">Địa chỉ giao hàng</p>
-                                                        <span><i class="fa-solid fa-pencil"></i></span>
+                                                <div class="progress-details d-flex justify-content-between">
+                                                    <div class="processing-time"><span>11:09</span></div>
+                                                    <div class="describe-process d-flex">
+                                                        <div class="order-processor" style="min-width: 150px;">
+                                                            <span>Nguyễn Minh Cao</span>
+                                                        </div>
+                                                        <div class="detailed-description">
+                                                            <span>Đã tạo đơn hàng từ đơn hàng nháp #D9Đã tạo đơn
+                                                                hàng từ
+                                                                đơn
+                                                                hàng nháp #D9</span>
+                                                        </div>
                                                     </div>
-                                                    <p class="user-name mb-5p">${order.address.fullName}</p>
-                                                    <p class="user-phone mb-5p">${order.address.phoneNumber}</p>
-                                                    <p class="user-name mb-5p">${order.address.streetDetails} ${order.address.address}</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <!-- ghi chú -->
-                                    <div class="order-notes border-outline w-100">
-                                        <div class="take-notes">
-                                            <div class="pad-20px-3 header-notes d-flex justify-content-between">
-                                                <p class="font-w450">Ghi chú</p>
-                                                <span><i class="fa-solid fa-pencil"></i></span>
+                                            <div class="min-height46 d-flex" style="gap: 4px;">
+                                                <div class="progress-bar-his d-flex flex-column">
+                                                    <div class="circle"></div>
+                                                    <div class="jamb"></div>
+                                                </div>
+                                                <div class="progress-details d-flex justify-content-between">
+                                                    <div class="processing-time"><span>11:09</span></div>
+                                                    <div class="describe-process d-flex">
+                                                        <div class="order-processor" style="min-width: 150px;">
+                                                            <span>Nguyễn Minh Cao</span>
+                                                        </div>
+                                                        <div class="detailed-description">
+                                                            <span>Đã tạo đơn hàng từ đơn hàng nháp #D9</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <p class="user-phone" style="padding: 0 20px;">
-                                                <c:if test="${order.note != null}"><span>${order.note}</span></c:if>
-                                                <c:if test="${order.note == null}"><span>Chưa có ghi chú</span></c:if>
-
-                                            </p>
+                                            <div class="min-height46 d-flex" style="gap: 4px;">
+                                                <div class="progress-bar-his d-flex flex-column">
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <div class="progress-details d-flex justify-content-between">
+                                                    <div class="processing-time"><span>11:09</span></div>
+                                                    <div class="describe-process d-flex">
+                                                        <div class="order-processor" style="min-width: 150px;">
+                                                            <span>Nguyễn Minh Cao</span>
+                                                        </div>
+                                                        <div class="detailed-description">
+                                                            <span>Đã tạo đơn hàng từ đơn hàng nháp #D9</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="d-flex flex-column width-30" style="gap: 15px;">
+                                <!-- nguồn đơn -->
+                                <div class="single-source border-outline w-100">
+                                    <div class="pad-20px-3">
+                                        <h2 class="title-font">Nguồn đơn</h2>
+                                    </div>
+                                    <div class="pad-20px-4 d-flex">
+                                        <c:if test="${order.orderSource == true}">
+                                            <img src="https://bizweb.dktcdn.net/assets/admin/v3/website.svg" alt="icon"
+                                                style="width: 24px; height: 24px;">
+                                            <span class="origin-soure">Website</span>
+                                        </c:if>
+                                        <c:if test="${order.orderSource == false}">
+                                            <img src="https://bizweb.dktcdn.net/assets/admin/v3/draft_order.svg"
+                                                alt="icon" style="width: 24px; height: 24px;">
+                                            <span class="origin-soure">Admin</span>
+                                        </c:if>
+                                    </div>
+                                </div>
+                                <!-- khách hàng -->
+                                <div class="customer border-outline w-100">
+                                    <div class="pad-20px-3">
+                                        <h2 class="title-font">Khách hàng</h2>
+                                    </div>
+                                    <div class="pad-20px-4 flex-grow-1 d-flex flex-column">
+                                        <div class="order-history-customer">
+                                            <p class="user-name mb-5p">${order.user.fullName}</p>
+                                            <div class="total-spending d-flex justify-content-between">
+                                                <p class="text-spending mb-5p">Tổng chi tiêu (2 đơn hàng)</p>
+                                                <span class="total-spending">1,600,000₫</span>
+                                            </div>
+                                            <div class="nearest-menu d-flex justify-content-between">
+                                                <p class="text-nearest">Đơn gần nhất</p>
+                                                <span class="order-nearest">#1007</span>
+                                            </div>
+                                        </div>
+                                        <div class="contact-information">
+                                            <div class="header-contact d-flex justify-content-between">
+                                                <p class="font-w450">Thông tin liên hệ</p>
+                                                <span><i class="fa-solid fa-pencil"></i></span>
+                                            </div>
+                                            <p class="user-name mb-5p sub-font">${order.user.email}</p>
+                                            <p class="user-phone sub-font">${order.user.phoneNumber}</p>
+                                        </div>
+                                        <div class="delivery-address d-flex flex-grow-1">
+                                            <div class="d-flex flex-column justify-content-between">
+                                                <div class="header-contact d-flex justify-content-between">
+                                                    <p class="font-w450 ">Địa chỉ giao hàng</p>
+                                                    <span><i class="fa-solid fa-pencil"></i></span>
+                                                </div>
+                                                <p class="user-name mb-5p sub-font">${order.address.fullName}</p>
+                                                <p class="user-phone mb-5p sub-font">${order.address.phoneNumber}</p>
+                                                <p class="user-name mb-5p sub-font">${order.address.streetDetails}
+                                                    ${order.address.address}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ghi chú -->
+                                <div class="order-notes border-outline w-100">
+                                    <div class="take-notes">
+                                        <div class="pad-20px-3 header-notes d-flex justify-content-between">
+                                            <p class="font-w450">Ghi chú</p>
+                                            <span><i class="fa-solid fa-pencil"></i></span>
+                                        </div>
+                                        <p class="user-phone sub-font" style="padding: 0 20px;">
+                                            <c:if test="${order.note != null}"><span>${order.note}</span></c:if>
+                                            <c:if test="${order.note == null}"><span>Chưa có ghi chú</span></c:if>
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <jsp:include page="../layout/footer.jsp" />
                     </div>
+                    <jsp:include page="../layout/footer.jsp" />
+                </div>
                 </div>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                     crossorigin="anonymous"></script>

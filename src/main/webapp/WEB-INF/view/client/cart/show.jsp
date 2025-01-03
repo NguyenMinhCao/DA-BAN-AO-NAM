@@ -204,24 +204,24 @@
                                                                     <p style="display: inline;margin-right: 14px;"> Giao
                                                                         hàng hỏa tốc: đ50.000 </p>
                                                                     <input type="radio" name="shipping_method"
-                                                                        id="expressDelivery" value="express" <c:if
-                                                                        test="${sessionScope.shippingMethodInOrder == 'express'}">checked
+                                                                        id="expressDelivery" value="EXPRESS" <c:if
+                                                                        test="${sessionScope.shippingMethodInOrder == 'EXPRESS'}">checked
                     </c:if>>
                     </li>
                     <li>
                         <p style="display: inline;margin-right: 14px;">Giao
                             hàng
                             nhanh: đ30.000 </p>
-                        <input type="radio" name="shipping_method" id="fastDelivery" value="fast" <c:if
-                            test="${sessionScope.shippingMethodInOrder == 'fast'}">checked
+                        <input type="radio" name="shipping_method" id="fastDelivery" value="FAST" <c:if
+                            test="${sessionScope.shippingMethodInOrder == 'FAST'}">checked
                         </c:if>>
                     </li>
                     <li>
                         <p style="display: inline;margin-right: 14px;">Giao
                             hàng
                             tiết kiệm: đ20.000</p>
-                        <input type="radio" name="shipping_method" id="economyDelivery" value="economy" <c:if
-                            test="${sessionScope.shippingMethodInOrder == 'economy'}">checked
+                        <input type="radio" name="shipping_method" id="economyDelivery" value="SAVE" <c:if
+                            test="${sessionScope.shippingMethodInOrder == 'SAVE'}">checked
                         </c:if>>
                     </li>
                     </ul>

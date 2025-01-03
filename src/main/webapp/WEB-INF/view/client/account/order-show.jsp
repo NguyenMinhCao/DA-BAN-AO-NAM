@@ -166,7 +166,7 @@
                                                     </div>
                                                 </c:if>
 
-                                                <c:if test="${order.deliveryStatus == 'OUT_FOR_DELIVERY'}">
+                                                <c:if test="${order.deliveryStatus == 'DELIVERY'}">
                                                     <div class="yyqgYp">
                                                         <div class="yyqgYp">
                                                             <div class="iwUeSD">
@@ -446,7 +446,7 @@
                                     </div>
                                     <div class="tab-content" id="tab4">
                                         <c:forEach items="${orderUsers}" var="order">
-                                            <c:if test="${order.deliveryStatus == 'OUT_FOR_DELIVERY'}">
+                                            <c:if test="${order.deliveryStatus == 'DELIVERY'}">
                                                 <div style="margin-bottom: 20px; border: 1px solid #ddd;">
                                                     <div class="" style="text-align: right; padding: 20px;">
                                                         ${order.deliveryStatus.description}
