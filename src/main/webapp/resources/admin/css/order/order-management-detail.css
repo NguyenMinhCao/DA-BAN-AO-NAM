@@ -36,17 +36,7 @@
     border-radius: 6px;
 }
 
-.border-status {
-    display: inline-flex;
-    align-items: center;
-    font-size: 16px;
-    padding: 4px 16px;
-    outline: rgb(211, 213, 215) solid 1px;
-    outline-offset: -1px;
-    border-radius: 20px;
-    background-color: rgb(243, 244, 245);
-    color: rgb(116, 124, 135);
-}
+
 
 .pad-20px-4 {
     padding: 20px;
@@ -154,13 +144,25 @@
     align-items: center;
 }
 
-.header .status span {
-    outline: rgb(255, 223, 155) solid 1px;
+.border-status {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    padding: 2px 16px;
     outline-offset: -1px;
     border-radius: 20px;
+}
+
+.status-completed {
+    outline: rgb(211, 213, 215) solid 1px;
+    background-color: rgb(243, 244, 245);
+    color: rgb(116, 124, 135);
+}
+
+.status-pending {
+    outline: rgb(255, 223, 155) solid 1px;
     background-color: rgb(255, 251, 242);
     color: rgb(228, 156, 6);
-    font-size: 12px;
 }
 
 
@@ -169,19 +171,13 @@
     margin-left: 8px;
 }
 
-.header .order__status .status {
-    display: flex;
-}
-
 .header .order__status .code {
     font-size: 20px;
 }
 
+.header .order__status .status,
+.header .operation,
 .header .operation__container {
-    display: flex;
-}
-
-.header .operation {
     display: flex;
 }
 
@@ -251,7 +247,7 @@
 }
 
 .order-details tbody tr {
-    border-top: 1px solid rgb(232, 234, 235);
+    border-bottom: 1px solid rgb(232, 234, 235);
 }
 
 .order-details .product-img img {
@@ -284,6 +280,24 @@
 
 .payment-status .content-payment .delivery-fee {
     padding: 8px 0;
+}
+
+
+.order-details .push-transport-btn,
+.payment-status .receive-money-btn {
+    padding: 5px 16px;
+    border: 1px solid transparent;
+    color: rgb(255, 255, 255);
+    background: rgb(0, 136, 255);
+    text-align: center;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.order-details .push-transport-btn:hover,
+.payment-status .receive-money-btn:hover {
+    background: rgb(51, 160, 255);
+    cursor: pointer;
 }
 
 .order-history-customer,

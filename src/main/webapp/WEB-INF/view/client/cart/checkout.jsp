@@ -534,8 +534,8 @@
                                                                 <p style="display: inline;margin-right: 14px;"> Giao
                                                                     hàng hỏa tốc: đ50.000 </p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="express-delivery" value="express" <c:if
-                                                                    test="${sessionScope.shippingMethodInOrder == 'express'}">
+                                                                    id="express-delivery" value="EXPRESS" <c:if
+                                                                    test="${sessionScope.shippingMethodInOrder == 'EXPRESS'}">
                                                                 checked
                                                                 </c:if>>
                                                             </li>
@@ -544,8 +544,8 @@
                                                                     hàng
                                                                     nhanh: đ30.000 </p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="fast_delivery" value="fast" <c:if
-                                                                    test="${sessionScope.shippingMethodInOrder == 'fast'}">
+                                                                    id="fast_delivery" value="FAST" <c:if
+                                                                    test="${sessionScope.shippingMethodInOrder == 'FAST'}">
                                                                 checked
                                                                 </c:if>>
                                                             </li>
@@ -554,8 +554,8 @@
                                                                     hàng
                                                                     tiết kiệm: đ20.000</p>
                                                                 <input type="radio" name="shipping_method"
-                                                                    id="economy_delivery" value="economy" <c:if
-                                                                    test="${sessionScope.shippingMethodInOrder == 'economy'}">
+                                                                    id="economy_delivery" value="SAVE" <c:if
+                                                                    test="${sessionScope.shippingMethodInOrder == 'SAVE'}">
                                                                 checked
                                                                 </c:if>>
                                                             </li>
@@ -684,8 +684,8 @@
                                                         <label class="radio-label">
                                                             <input type="radio" name="payment-method"
                                                                 id="cash-on-delivery" class="radio-input-payment"
-                                                                value="cash-on-delivery" checked <c:if
-                                                                test="${paymentMethodInOrder == 'cash-on-delivery'}">
+                                                                value="COD" checked <c:if
+                                                                test="${paymentMethodInOrder == 'COD'}">
                                                             checked
                                                             </c:if>>
                                                             <span class="radio-btn-payment">Thanh toán khi nhận
@@ -693,8 +693,8 @@
                                                         </label>
                                                         <label class="radio-label">
                                                             <input type="radio" name="payment-method" id="vnpay"
-                                                                class="radio-input-payment" value="vn-pay" <c:if
-                                                                test="${paymentMethodInOrder == 'vn-pay'}">
+                                                                class="radio-input-payment" value="VNPAY" <c:if
+                                                                test="${paymentMethodInOrder == 'VNPAY'}">
                                                             checked
                                                             </c:if>>
                                                             <span class="radio-btn-payment">VN PAY</span>

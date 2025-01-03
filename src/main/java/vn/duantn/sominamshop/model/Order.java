@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
+import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
@@ -48,7 +49,8 @@ public class Order {
     private String note;
 
     @Column(name = "shipping_method")
-    private String shippingMethod;
+    @Enumerated(EnumType.STRING)
+    private ShippingMethod shippingMethod;
 
     @Column(name = "payment_method")
     private String paymentMethod;

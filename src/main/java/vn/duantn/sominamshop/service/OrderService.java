@@ -32,6 +32,7 @@ import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
+import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.model.dto.*;
 import vn.duantn.sominamshop.repository.*;
 
@@ -87,9 +88,9 @@ public class OrderService {
                     double shippingPrice = 0;
                     double totalPrice = (double) session.getAttribute("totalPrice");
 
-                    if (order.getShippingMethod().equals("express")) {
+                    if (order.getShippingMethod().equals("EXPRESS")) {
                         shippingPrice = 50000;
-                    } else if (order.getShippingMethod().equals("fast")) {
+                    } else if (order.getShippingMethod().equals("FAST")) {
                         shippingPrice = 30000;
                     } else {
                         shippingPrice = 20000;
@@ -98,7 +99,6 @@ public class OrderService {
                 }
                 order.setUser(userByEmail);
                 order.setTotalProducts(cartByUser.getTotalProducts());
-                // order.setPaymentMethod(1);
                 this.orderRepository.save(order);
 
                 // create order Detail
@@ -122,7 +122,7 @@ public class OrderService {
                 // update order
                 order.setOrderDetails(lstOrderDetails);
                 order.setDeliveryStatus(DeliveryStatus.PENDING);
-                if (order.getPaymentMethod().equalsIgnoreCase("cash-on-delivery")) {
+                if (order.getPaymentMethod().toString().equalsIgnoreCase("COD")) {
                     order.setPaymentStatus(PaymentStatus.PENDING);
                 } else {
                     order.setPaymentStatus(PaymentStatus.COMPLETED);
@@ -178,7 +178,13 @@ public class OrderService {
             }
 
             if (shippingMethod != null) {
-                order.setShippingMethod(shippingMethod);
+                if (shippingMethod.equals("EXPRESS")) {
+                    order.setShippingMethod(ShippingMethod.EXPRESS);
+                } else if (shippingMethod.equals("FAST")) {
+                    order.setShippingMethod(ShippingMethod.FAST);
+                } else {
+                    order.setShippingMethod(ShippingMethod.SAVE);
+                }
             }
 
             this.orderRepository.save(order);
@@ -196,9 +202,11 @@ public class OrderService {
                 double shippingPrice = 0;
                 double discountValue = 0;
 
-                if (order.getShippingMethod().equals("express")) {
+                String shippingMethodString = order.getShippingMethod().toString();
+
+                if (shippingMethodString.equals("EXPRESS")) {
                     shippingPrice = 50000;
-                } else if (order.getShippingMethod().equals("fast")) {
+                } else if (shippingMethodString.equals("FAST")) {
                     shippingPrice = 30000;
                 } else {
                     shippingPrice = 20000;

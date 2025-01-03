@@ -86,9 +86,11 @@ public class CartController {
         session.setAttribute("shippingMethodInOrder", order != null ? order.getShippingMethod() : null);
 
         double shippingPrice = 0;
-        if (order != null && order.getShippingMethod().equals("express")) {
+        String shippingMethodString = order.getShippingMethod().toString();
+
+        if (order != null && shippingMethodString.equals("EXPRESS")) {
             shippingPrice = 50000;
-        } else if (order != null && order.getShippingMethod().equals("fast")) {
+        } else if (order != null && shippingMethodString.equals("FAST")) {
             shippingPrice = 30000;
         } else {
             shippingPrice = 20000;
