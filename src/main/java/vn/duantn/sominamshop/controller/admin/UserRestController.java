@@ -26,6 +26,7 @@ public class UserRestController {
         if (!validationErrors.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);
         }
+        if(user.getPhoneNumber() != null)
         user.setRole(Role.builder().id(1).build());
         User userSave = userService.handleSaveUser(user);
         UserDTO userDTO = UserDTO.toDTO(userSave);

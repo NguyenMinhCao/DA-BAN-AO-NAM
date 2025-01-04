@@ -68,6 +68,22 @@
                                     <a class="nav-link" href="layout-sidenav-light.html">Thêm sản phẩm</a>
                                 </nav>
                             </div>
+                            <!-- Khuyến mại -->
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayoutsPromotions" aria-expanded="false"
+                               aria-controls="collapseLayoutsPromotions">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"> </i></div>
+<%--                                <a href="/admin/promotions/show.jsp"></a>--%>
+                                Quản lý khuyến mại
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayoutsPromotions" aria-labelledby="headingOne"
+                                 data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/hien-thiKM">Danh sách</a>
+                                    <a class="nav-link" href="/view-add">Thêm khuyến mại</a>
+                                </nav>
+                            </div>
 
                             <!-- ..... -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -119,6 +135,7 @@
                                 Tables
                             </a>
                         </div>
+
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>

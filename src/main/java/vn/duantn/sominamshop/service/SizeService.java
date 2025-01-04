@@ -1,7 +1,6 @@
 package vn.duantn.sominamshop.service;
 
 import org.springframework.stereotype.Service;
-import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.Size;
 import vn.duantn.sominamshop.repository.SizeRepository;
 

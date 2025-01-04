@@ -29,7 +29,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Danh sách khách hàng</h1>
+                <h3 class="mt-4">Danh sách khách hàng</h3>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">
                         <a href="/admin" style="text-decoration: none;">Admin</a> /
@@ -69,6 +69,14 @@
                                 </tbody>
                             </table>
                         </div>
+<%--                        modal add khách hàng start--%>
+                        <div>
+                            <div>
+
+                            </div>
+                        </div>
+                        <%--                        modal add khách hàng end--%>
+                        <div></div>
                     </div>
                 </ol>
             </div>
@@ -191,7 +199,7 @@
         console.log(row)
         $('#sampleTable tbody').append(row)
     }
-    // $('#sampleTable').DataTable();
+    $('#sampleTable').DataTable();
 </script>
 </body>
 </html>
