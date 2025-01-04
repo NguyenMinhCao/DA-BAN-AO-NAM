@@ -86,8 +86,11 @@ public class CartController {
         session.setAttribute("shippingMethodInOrder", order != null ? order.getShippingMethod() : null);
 
         double shippingPrice = 0;
-        String shippingMethodString = order.getShippingMethod().toString();
-
+        String shippingMethodString = "";
+        if (order != null) {
+            shippingMethodString = order.getShippingMethod().toString();
+        }
+      
         if (order != null && shippingMethodString.equals("EXPRESS")) {
             shippingPrice = 50000;
         } else if (order != null && shippingMethodString.equals("FAST")) {
@@ -126,7 +129,7 @@ public class CartController {
     }
 
     @PutMapping("/cart/update")
-    public ResponseEntity<Map<String, Object>> putMethodName(@RequestBody CartDetailUpdateRequestDTO dto,
+    public ResponseEntity<Map<String, Object>> updateCart(@RequestBody CartDetailUpdateRequestDTO dto,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
         return ResponseEntity.ok().body(this.cartService.updateCartDetailProductQuantity(dto, session));

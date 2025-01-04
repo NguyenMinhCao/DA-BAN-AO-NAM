@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.duantn.sominamshop.model.Order;
+import vn.duantn.sominamshop.model.OrderHistory;
+import vn.duantn.sominamshop.model.dto.response.OrderHistoryResponse;
+import vn.duantn.sominamshop.service.OrderHistoryService;
 import vn.duantn.sominamshop.service.OrderService;
 
 @Controller
@@ -19,9 +22,11 @@ import vn.duantn.sominamshop.service.OrderService;
 public class OrderManagementController {
 
     private final OrderService orderService;
+    private final OrderHistoryService orderHistoryService;
 
-    public OrderManagementController(OrderService orderService) {
+    public OrderManagementController(OrderService orderService, OrderHistoryService orderHistoryService) {
         this.orderService = orderService;
+        this.orderHistoryService = orderHistoryService;
     }
 
     @GetMapping("/orders")
@@ -48,7 +53,10 @@ public class OrderManagementController {
     public String getOrderDetail(@PathVariable Long id, Model model) {
         Optional<Order> orderById = this.orderService.findOrderById(id);
         if (orderById.isPresent()) {
+            List<OrderHistoryResponse> lstOrderHis = this.orderHistoryService.getAllOrderHistoryByOrder(orderById.get());
+            
             model.addAttribute("order", orderById.get());
+            model.addAttribute("lstOrderHis", lstOrderHis);
         }
         // model
         return "admin/order-management/detail";

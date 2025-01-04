@@ -28,6 +28,7 @@ import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
+import vn.duantn.sominamshop.model.OrderHistory;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
@@ -57,10 +58,12 @@ public class OrderService {
     private final PromotionService promotionService;
     private final CounterRepository counterRepository;
     private final AddressService addressService;
+    private final OrderHistoryService orderHistoryService;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
-            PromotionService promotionService, CounterRepository counterRepository, AddressService addressService) {
+            PromotionService promotionService, CounterRepository counterRepository, AddressService addressService,
+            OrderHistoryService orderHistoryService) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
@@ -69,6 +72,7 @@ public class OrderService {
         this.promotionService = promotionService;
         this.counterRepository = counterRepository;
         this.addressService = addressService;
+        this.orderHistoryService = orderHistoryService;
     }
 
     public List<Order> findOrderByUser(User user) {
@@ -132,7 +136,8 @@ public class OrderService {
 
                 // delete cart
                 this.cartService.deleteCartByUser(userByEmail);
-
+                // save history order
+                this.orderHistoryService.orderCheckoutHistory(order);
             }
         }
     }
