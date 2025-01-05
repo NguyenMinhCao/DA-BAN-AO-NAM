@@ -35,6 +35,25 @@ public class OrderHistoryService {
         this.orderHistoryRepository.save(orderHistory);
     }
 
+    public void updateDeliveryStatus(Order order) {
+        OrderHistory orderHistory = new OrderHistory();
+        orderHistory.setOrder(order);
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        if (email != null) {
+            User userByEmail = this.userService.findUserByEmail(email);
+            if (userByEmail.getRole().getName().equals("USER")) {
+                orderHistory.setPerformedBy("Hệ thống");
+            } else {
+                orderHistory.setPerformedBy(userByEmail.getFullName());
+            }
+        }
+        orderHistory.setDescription("Đã xử lý giao hàng cho "
+                + order.getTotalProducts() + " sản phẩm");
+        orderHistoryRepository.save(orderHistory);
+    }
+
     public void orderCheckoutHistory(Order order) {
         Optional<User> userByOrder = this.userService.findUserById(order.getUser().getId());
         if (userByOrder.isPresent()) {
@@ -52,7 +71,7 @@ public class OrderHistoryService {
                         orderHistory.setPerformedBy(userByEmail.getFullName());
                     }
                 }
-                
+
                 if (i == 0) {
                     orderHistory.setDescription(userByOrder.get().getFullName() + " đặt đơn hàng trên WEBSITE");
                 }
