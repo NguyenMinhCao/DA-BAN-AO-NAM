@@ -29,11 +29,11 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Order</h1>
+                <h1 class="mt-4">Bán hàng</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">
                         <a href="/admin" style="text-decoration: none;">Admin</a> /
-                        Order
+                        Bán hàng
                     </li>
                 </ol>
 
@@ -84,7 +84,7 @@
                             <!---------------------------- Khách hàng và thông tin hóa đơn start ---------------------->
                             <div class="invoice-customer">
                                 <div class="customer-header">
-                                    <h5>Khách hàng</h5>
+                                    <h5>Thông tin khách hàng</h5>
                                     <div id="select-customer">
                                         <button class="btn btn-danger" id="btn-delete-customer"
                                                 disabled>Hủy
@@ -97,68 +97,77 @@
                                 </div>
                                 <div class="customer-select">
                                     <div id="infoCustomer">
-                                        <strong>Tên khách hàng</strong>
+                                        <strong>Tên khách hàng:</strong>
                                         <div id="infoDetail">
                                         </div>
                                     </div>
                                     <div id="nameCustomer">
                                         <span id="customer-name">Khách lẻ</span>
                                     </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                               id="flexSwitchCheckDefault">
-                                        <label class="form-check-label"
-                                               for="flexSwitchCheckDefault">Giao hàng</label>
-                                    </div>
                                 </div>
                                 <hr>
                                 <div class="form-customer-invoice">
+
                                     <div class="form-customer">
-                                        <div class="form-customer-item name-customer">
-                                            <input type="text" id="name" value="Nguyễn Thị Thùy Dương"
-                                                   disabled>
+                                        <div class="form-customer-item btn-choose-local">
+                                            <h4>Thông tin khách hàng</h4>
+                                            <button>Chọn địa chỉ</button>
                                         </div>
-                                        <div class="form-customer-item phone-number-customer">
-                                            <input type="text" id="phone" value="0473029182" disabled>
+                                        <div class="form-customer-item logo-ghn">
+                                            <img src="/img/Logo-GHN-Blue-Orange.webp" height="40px" width="auto">
+                                        </div>
+                                        <div class="form-customer-item name-customer">
+                                            <div class="item">
+                                                <label>Họ tên khách hàng</label>
+                                                <input type="text" id="name" value="Nguyễn Thị Thùy Dương">
+                                            </div>
+                                            <div class="item">
+                                                <label>SDT</label>
+                                                <input type="text" id="phone" value="0473029182">
+                                            </div>
                                         </div>
                                         <div class="form-customer-item address-customer">
-                                            <input type="text" id="address" value="Địa chỉ 12" disabled>
+                                            <div class="item">
+                                                <label>Địa chỉ chi tiết</label>
+                                                <input type="text" id="address" value="Địa chỉ 12">
+                                            </div>
                                         </div>
-                                        <diV class="form-customer-item cty-customer">
-                                            <label for="city">Tỉnh/thành phố</label>
-                                            <select id="city">
-                                                <option>Sơn La</option>
-                                                <!-- Add other cities as options -->
-                                            </select>
-                                        </diV>
-                                        <div class="form-customer-item district-customer">
-                                            <label for="district">Quận/huyện</label>
-                                            <select id="district">
-                                                <option>Huyện Quỳnh Nhai</option>
-                                                <!-- Add other districts -->
-                                            </select>
+                                        <div class="form-customer-item cty-customer">
+                                            <div class="item">
+                                                <label for="city">Tỉnh/thành phố</label>
+                                                <select id="city">
+                                                    <option>Sơn La</option>
+                                                    <!-- Add other cities as options -->
+                                                </select>
+                                            </div>
+                                            <div class="item">
+                                                <label for="district">Quận/huyện</label>
+                                                <select id="district">
+                                                    <option>Huyện Quỳnh Nhai</option>
+                                                    <!-- Add other districts -->
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="form-customer-item subdistrict-customer">
-                                            <label for="subdistrict">Xã/phường/thị
-                                                trấn</label>
-                                            <select id="subdistrict">
-                                                <option>Xã Mường Giôn</option>
-                                                <!-- Add other subdistricts -->
-                                            </select>
-                                        </div>
-                                        <div class="form-customer-item additional-address-customer">
-                                            <label for="additional-address">Địa chỉ cụ
-                                                thể</label>
-                                            <input type="text" id="additional-address" value="aaaaa"
-                                                   disabled>
-                                        </div>
-                                        <div class="form-customer-item note-customer">
-                                            <label for="note">Ghi chú</label>
-                                            <input type="text" id="note">
+                                            <div class="item">
+                                                <label for="subdistrict">Xã/phường/thị
+                                                    trấn</label>
+                                                <select id="subdistrict">
+                                                    <option>Xã Mường Giôn</option>
+                                                    <!-- Add other subdistricts -->
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+
+
                                     <div class="form-invoice">
-                                        <h4>Thông tin hóa đơn</h4>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                   id="flexSwitchCheckDefault">
+                                            <label class="form-check-label"
+                                                   for="flexSwitchCheckDefault">Giao hàng</label>
+                                        </div>
                                         <div class="form-invoice-item">
                                             <strong>Tổng tiền hàng:</strong>
                                             <span id="total-payment">0 VND</span>
@@ -176,7 +185,7 @@
                                         <div class="form-invoice-item">
                                             <strong>Phiếu giảm giá:</strong>
                                             <div class="choose-voucher">
-                                                <input id="voucher" type="number" placeholder="Giảm giá">
+                                                <input id="voucher" type="text" placeholder="Giảm giá">
                                                 <button id="openModalBtnAddVoucher">Chọn</button>
                                             </div>
                                         </div>

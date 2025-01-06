@@ -18,9 +18,31 @@ body {
     margin: 15px;
     /*align-items: ;*/
 }
+
 .status-add .radio-status{
     margin: 10px;
 }
+.search{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-left: 200px;
+}
+
+
+.search input{
+    box-sizing: border-box;
+    width: 250px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    margin: 10px 5px 10px 0px;
+}
+
+#btnSearch,
 .radio-status button{
     margin: 0 5px;
     padding: 8px 16px;
@@ -30,6 +52,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
+    flex-shrink: 0;
 }
 .container-table{
     border-radius: 5px;
@@ -40,4 +63,26 @@ body {
 .container-table table{
     min-height: 300px;
     max-height: 400px;
+}
+.pagination {
+    display: flex;
+    gap: 5px;
+    margin: 20px;
+}
+
+.pagination .page-item {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination .page-item.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination .page-item:hover {
+    background-color: #f0f0f0;
 }

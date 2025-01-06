@@ -20,6 +20,7 @@ body {
     margin-bottom: 20px;
 }
 
+.btn-choose-local button,
 .btn-select-customer,
 .btn-add-product,
 .btn-add-customer,
@@ -35,6 +36,7 @@ body {
     font-size: 14px;
 }
 
+.btn-choose-local button:hover,
 .btn-select-customer:hover,
 .btn-add-product:hover,
 .btn-add-customer:hover,
@@ -138,7 +140,6 @@ body {
 
 .customer-select {
     display: flex;
-    justify-content: space-between;
     margin: 20px 0 20px 0;
 }
 
@@ -318,10 +319,35 @@ body {
 .form-customer {
     width: 60%;
 }
-
-.form-customer-item {
-    display: none;
+.form-customer-item{
+    display: flex;
+    gap: 10px;
+    margin-right: 30px;
 }
+.form-customer-item input,
+.form-customer-item select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    margin: 10px 5px 10px 0px;
+}
+.form-customer-item img{
+    margin: 20px;
+}
+.btn-choose-local{
+    display: flex;
+    justify-content: space-between;
+}
+.item{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 
 .form-invoice {
     width: 40%;
@@ -598,7 +624,8 @@ btn-pay-note{
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-.input-group label{
+.input-group label,
+.item label{
     display: block;
     font-weight: bold;
     margin-bottom: 5px;

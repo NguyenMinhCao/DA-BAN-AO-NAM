@@ -19,24 +19,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserRestController {
     private final UserService userService;
-    @PostMapping("/save/customer")
-    public ResponseEntity<?> saveCustomer(@RequestBody User user){
-        System.out.println(user + " dữ liệu trả về");
-        Map<String, String> validationErrors = userService.validateCustomerData(user);
-        if (!validationErrors.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);
-        }
-        if(user.getPhoneNumber() != null)
-        user.setRole(Role.builder().id(1).build());
-        User userSave = userService.handleSaveUser(user);
-        UserDTO userDTO = UserDTO.toDTO(userSave);
-        return ResponseEntity.ok(userDTO);
-    }
     @GetMapping("/get/customers")
     public ResponseEntity<?> getCustomers(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "2") int limit,
-            @RequestParam(value = "keyword") String search) {
+            @RequestParam(value = "keyword", defaultValue = " ") String search) {
         Pageable pageable = PageRequest.of(page, limit);
         Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(search ,Role.builder().id(1).build(), pageable);
         return ResponseEntity.ok(pageCustomer);
@@ -45,10 +32,25 @@ public class UserRestController {
     public ResponseEntity<?> getStaff(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "2") int limit,
-            @RequestParam(value = "keyword") String search
+            @RequestParam(value = "keyword", defaultValue = " ") String search
     ){
         Pageable pageable = PageRequest.of(page, limit);
         Page<UserDTO> pageStaff = userService.findByFullNameAndRole(search ,Role.builder().id(1).build(), pageable);
         return ResponseEntity.ok(pageStaff);
+    }
+
+    @PostMapping("/save/customer")
+    public ResponseEntity<?> saveCustomer(@RequestBody User user){
+        System.out.println(user + " dữ liệu trả về");
+        Map<String, String> validationErrors = userService.validateCustomerData(user);
+        if (!validationErrors.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);
+        }
+        if(user.getPhoneNumber() != null)
+            user.getAddress().forEach(address -> address.setUser(user));
+        user.setRole(Role.builder().id(1).build());
+        User userSave = userService.handleSaveUser(user);
+        UserDTO userDTO = UserDTO.toDTO(userSave);
+        return ResponseEntity.ok(userDTO);
     }
 }

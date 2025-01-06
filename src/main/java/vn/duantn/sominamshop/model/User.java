@@ -35,6 +35,8 @@ public class User {
 
     private LocalDate dateOfBirth;
 
+    private String status;
+
     @OneToOne(mappedBy = "user")
     private Cart cart;
 

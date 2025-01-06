@@ -948,6 +948,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let district = $('#Districts option:selected').text();
         let ward = $('#Wards option:selected').text();
         let gender = $('#gender').val();
+        let dateOfBirth = $('#dob').val();
         const address = [city, district, ward].filter(value => value.trim() !== "").join(", ");
         let addressDetail = $('#addressAddDetail').text();
         if(!validateCustomer(name, phoneNumber, email)){
@@ -958,10 +959,14 @@ document.addEventListener('DOMContentLoaded', function () {
             fullName : name,
             phoneNumber : phoneNumber,
             gender : gender,
+            dateOfBirth : dateOfBirth,
             address:[
                 {
+                    fullName: name,
+                    phoneNumber: phoneNumber,
                     address: address,
-                    streetDetails:addressDetail
+                    streetDetails:addressDetail,
+                    status: true,
                 }
             ]
         }
@@ -970,7 +975,7 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify(data),
-            success: function(data) {
+            success: function() {
                 toggleModal(addCustomerModal,false)
                 notificationAddCusstomer('Thêm thành công', 'success')
                 $('#infoDetail').empty()
@@ -996,13 +1001,11 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#add-customer').on('click', function(e) {
         addCustomer()
     })
-//**************** Voucher **************
-    function fetchVoucher(){
-        $.ajax({
-
-        })
-
-    }
+//**************** Giao hàng **************
+    $('#flexSwitchCheckDefault').on('change', function(e){
+        let modal = document.getElementById('form-customer')
+        toggleModal(modal, true)
+    })
 
 });
 

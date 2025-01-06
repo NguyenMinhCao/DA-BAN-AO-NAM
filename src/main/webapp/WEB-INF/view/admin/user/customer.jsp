@@ -18,7 +18,6 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 </head>
 
 <body class="sb-nav-fixed">
@@ -38,7 +37,7 @@
                     <div class="invoice-container">
                         <div class="status-add">
                             <div class="radio-status">
-                                <button>+Thêm mới khách hàng</button>
+                                <button id="btnNewCustomer">+Thêm mới khách hàng</button>
                             </div>
                             <div class="radio-status">
                                 <input type="radio" name="statusCustomer" checked>
@@ -52,10 +51,14 @@
                                 <input type="radio" name="statusCustomer">
                                 <label>Không hoạt động</label>
                             </div>
+                            <div class="search">
+                                <input type="text" id="search" placeholder="Nhập tên để tìm kiếm" class="form-control">
+                                <button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>
+                            </div>
                         </div>
                         <div class="container-table">
-                            <table id="sampleTable">
-                                <thead>
+                            <table class="table" id="tableSample">
+                                <thead class="table-light">
                                 <tr>
                                     <th>Ảnh</th>
                                     <th>Họ tên</th>
@@ -65,18 +68,11 @@
                                     <th>Tính năng</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody >
                                 </tbody>
                             </table>
                         </div>
-<%--                        modal add khách hàng start--%>
-                        <div>
-                            <div>
-
-                            </div>
-                        </div>
-                        <%--                        modal add khách hàng end--%>
-                        <div></div>
+                        <div id="pagination-customer" class="pagination"></div>
                     </div>
                 </ol>
             </div>
@@ -89,117 +85,7 @@
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-
-<script>
-    let data = [
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        },
-        {
-            image: 'simple',
-            name: 'Vũ Tuấn Phong',
-            sdt: '0328822592',
-            email: 'vutuanphong1782004@gmail.com',
-            status: false
-        }
-    ]
-    for (let i = 0; i < data.length; i++) {
-        let row = `
-        <tr>
-<td>${data[i].image}</td>
-<td>${data[i].name}</td>
-<td>${data[i].sdt}</td>
-<td>${data[i].email}</td>
-<td>${data[i].status}</td>
-</tr>
-        `
-        console.log(row)
-        $('#sampleTable tbody').append(row)
-    }
-    $('#sampleTable').DataTable();
-</script>
+<script src="/admin/js/user/customer.js"></script>
 </body>
 </html>

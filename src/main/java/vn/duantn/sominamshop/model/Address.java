@@ -43,6 +43,7 @@ public class Address {
     @JoinColumn(name = "user_id")
     private User user;
 
+
     @PrePersist
     public void handleBeforeCreate() {
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
