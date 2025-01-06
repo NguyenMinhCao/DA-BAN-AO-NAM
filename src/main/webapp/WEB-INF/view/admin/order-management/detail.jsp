@@ -241,21 +241,23 @@
                                             <div class="order-is-pending pad-20px-4">
                                                 <div class="d-flex justify-content-end">
                                                     <div class="push-transport-btn common-push-btn btn-confirm"
-                                                        id="modalOpenOverlayReceiveMoney">
+                                                        id="modalOpenOverlayPushTransport">
                                                         <span>Đẩy vận chuyển</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </c:if>
-                                        <c:if test="${order.deliveryStatus != 'PENDING'}">
+                                        <c:if test="${order.deliveryStatus == 'DELIVERY'}">
                                             <div class="order-is-delivery pad-20px-4">
                                                 <div class="d-flex justify-content-end">
-                                                    <div class="cancel-delivery-btn common-push-btn btn-cancel d-flex"
+                                                    <div class="cancel-delivery-btn change-status-order common-push-btn btn-cancel d-flex"
                                                         id="cancelDeliveryBtn">
                                                         <span class="align-self-center">Hủy giao hàng</span>
                                                     </div>
-                                                    <div class="confirm-delivery-btn common-push-btn btn-confirm" id="">
-                                                        Xác nhận đã giao</div>
+                                                    <div
+                                                        class="confirm-delivery-btn common-push-btn btn-confirm change-status-order" id="confirmDelivery">
+                                                        <span>Xác nhận đã giao</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </c:if>
@@ -375,76 +377,13 @@
                                             <div class="footer-payment-pending pad-20px-4 sub-font">
                                                 <div class="d-flex justify-content-end">
                                                     <!-- <div class="">sdf</div> -->
-                                                    <div class="receive-money-btn common-push-btn btn-confirm">
+                                                    <div class="receive-money-btn common-push-btn btn-confirm"
+                                                        id="modalOpenOverlayReceiveMoney">
                                                         <span>Nhận tiền</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </c:if>
-                                        <!-- Modal nhận tiền -->
-                                        <div class="modal-overlay-receive-money" id="modalOverlayReceiveMoney">
-                                            <div class="modal-overlay-receive-money-content">
-                                                <div class="header-modal d-flex justify-content-between">
-                                                    <h3>Xác nhận đẩy vận chuyển</h3>
-                                                    <span class="close-modal-icon btn-close-receive-money"><i
-                                                            class="fa-solid fa-xmark"></i></span>
-                                                </div>
-                                                <div
-                                                    class="content-modal-receive-money d-flex flex-column justify-content-between">
-                                                    <div class="box-content-modal">
-                                                        <div class="text-content-modal">
-                                                            <span>Bạn có chắc chắn muốn đẩy đơn hàng cho đơn vị vận
-                                                                chuyển không? Vui lòng chọn hình thức giao hàng cho đơn
-                                                                hàng
-                                                                :</span>
-                                                            <div class="checkbox-content" style="padding: 2px 0;">
-                                                                <div class="">
-                                                                    <div class="" style="padding: 4px 0;">
-                                                                        <input type="radio" name="t"> <span>Giao
-                                                                            hàng</span>
-                                                                    </div>
-
-                                                                    <div class="" style="padding-left: 28px; ">
-                                                                        <select name="cars" id="cars"
-                                                                            style="border: 1px solid rgb(211, 213, 215); height: 36px; width: 315px; border-radius: 4px;outline: none;">
-                                                                            <option value="volvo">Volvo</option>
-                                                                            <option value="saab">Saab</option>
-                                                                            <option value="mercedes">Mercedes
-                                                                            </option>
-                                                                            <option value="audi">Audi</option>
-                                                                        </select>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="" style="padding: 4px 0;">
-                                                                <input type="radio" name="t"> <span>Nhận tại cửa
-                                                                    hàng</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="checked-email" style="margin: 4px 0;">
-                                                        <div class="">
-                                                            <input type="checkbox">
-                                                            <span>Gửi thông báo email đến khách hàng</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="footer-modal">
-                                                    <div class="d-flex justify-content-end">
-                                                        <div
-                                                            class="common-push-btn btn-cancel d-flex btn-close-receive-money">
-                                                            <span class="align-self-center">Hủy</span>
-                                                        </div>
-                                                        <div class="common-push-btn btn-confirm"
-                                                            id="confirmPushShipping">
-                                                            <span>Xác nhận</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <!-- lịch sử đơn hàng -->
                                     <div class="order-history border-outline d-flex flex-column w-100">
@@ -563,9 +502,123 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- modal -->
+                        <!-- Modal đẩy vận chuyển -->
+                        <div class="modal-overlay-push-transport modal-overlay" id="modalOverlayPushTransport">
+                            <div class="modal-overlay-push-transport-content modal-overlay-content">
+                                <div class="header-modal d-flex justify-content-between">
+                                    <h3>Xác nhận đẩy vận chuyển</h3>
+                                    <span class="close-modal-icon btn-close-modal"><i
+                                            class="fa-solid fa-xmark"></i></span>
+                                </div>
+                                <div class="content-modal d-flex flex-column justify-content-between">
+                                    <div class="box-content-modal">
+                                        <div class="text-content-modal">
+                                            <span>Bạn có chắc chắn muốn đẩy đơn hàng cho đơn vị vận
+                                                chuyển không? Vui lòng chọn hình thức giao hàng cho đơn
+                                                hàng
+                                                :
+                                            </span>
+                                            <div class="checkbox-content" style="padding: 2px 0;">
+                                                <div class="">
+                                                    <div class="" style="padding: 4px 0;">
+                                                        <input type="radio" name="t"> <span>Giao
+                                                            hàng</span>
+                                                    </div>
+
+                                                    <div class="" style="padding-left: 28px; ">
+                                                        <select name="cars" id="cars"
+                                                            style="border: 1px solid rgb(211, 213, 215); height: 36px; width: 315px; border-radius: 4px;outline: none;">
+                                                            <option value="volvo">Volvo</option>
+                                                            <option value="saab">Saab</option>
+                                                            <option value="mercedes">Mercedes
+                                                            </option>
+                                                            <option value="audi">Audi</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="" style="padding: 4px 0;">
+                                                <input type="radio" name="t"> <span>Nhận tại cửa
+                                                    hàng</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checked-email" style="margin: 4px 0;">
+                                        <div class="">
+                                            <input type="checkbox">
+                                            <span>Gửi thông báo email đến khách hàng</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="footer-modal">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="common-push-btn btn-cancel d-flex btn-close-modal">
+                                            <span class="align-self-center">Hủy</span>
+                                        </div>
+                                        <div class="common-push-btn btn-confirm change-status-order"
+                                            id="confirmPushShipping">
+                                            <span>Xác nhận</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- modal nhận tiền -->
+                        <div class="modal-overlay-receive-money modal-overlay" id="modalOverlayReceiveMoney">
+                            <div class="modal-overlay-receive-money-content modal-overlay-content">
+                                <div class="header-modal d-flex justify-content-between">
+                                    <h3>Xác nhận đẩy vận chuyển</h3>
+                                    <span class="close-modal-icon btn-close-modal"><i
+                                            class="fa-solid fa-xmark"></i></span>
+                                </div>
+                                <div class="content-modal">
+                                    <div class="box-content-modal d-flex justify-content-between">
+                                        <div class="box-payment-method-select">
+                                            <span>Phương thức thanh toán</span>
+                                            <select name="cars" id="cars"
+                                                style="border: 1px solid rgb(211, 213, 215); height: 36px; width: 315px; border-radius: 4px;outline: none;">
+                                                <option value="volvo">Volvo</option>
+                                                <option value="saab">Saab</option>
+                                                <option value="mercedes">Mercedes
+                                                </option>
+                                                <option value="audi">Audi</option>
+                                            </select>
+                                        </div>
+                                        <div class="box-amount-received">
+                                            <span>Số tiền nhận</span>
+                                            <select name="cars" id="cars"
+                                                style="border: 1px solid rgb(211, 213, 215); height: 36px; width: 315px; border-radius: 4px;outline: none;">
+                                                <option value="volvo">Volvo</option>
+                                                <option value="saab">Saab</option>
+                                                <option value="mercedes">Mercedes
+                                                </option>
+                                                <option value="audi">Audi</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="footer-modal">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="common-push-btn btn-cancel d-flex btn-close-modal">
+                                            <span class="align-self-center">Hủy</span>
+                                        </div>
+                                        <div class="common-push-btn btn-confirm change-status-order"
+                                            id="confirmReceiveMoney">
+                                            <span>Nhận tiền</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <jsp:include page="../layout/footer.jsp" />
                     </div>
-                    </div>
+                    <!-- </div> -->
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                         crossorigin="anonymous"></script>
                     <script src="/admin/js/scripts.js"></script>

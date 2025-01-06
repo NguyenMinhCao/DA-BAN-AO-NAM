@@ -35,7 +35,7 @@ public class OrderHistoryService {
         this.orderHistoryRepository.save(orderHistory);
     }
 
-    public void updateDeliveryStatus(Order order) {
+    public void updateDeliveryStatus(Order order, String status) {
         OrderHistory orderHistory = new OrderHistory();
         orderHistory.setOrder(order);
         String email = SecurityUtil.getCurrentUserLogin().isPresent() == true
@@ -49,8 +49,18 @@ public class OrderHistoryService {
                 orderHistory.setPerformedBy(userByEmail.getFullName());
             }
         }
-        orderHistory.setDescription("Đã xử lý giao hàng cho "
-                + order.getTotalProducts() + " sản phẩm");
+
+        if (status.equals("DELIVERY")) {
+            orderHistory.setDescription("Đã xử lý giao hàng cho "
+                    + order.getTotalProducts() + " sản phẩm");
+        } else if (status.equals("COMPLETED")) {
+            orderHistory.setDescription("Đã xác nhận khoản thanh toán "
+                    + order.getTotalAmount() + " thông qua tiền mặt");
+        } else {
+            orderHistory.setDescription("Đã hủy xử lý giao hàng cho "
+                    + order.getTotalProducts() + " sản phẩm");
+        }
+
         orderHistoryRepository.save(orderHistory);
     }
 

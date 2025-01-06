@@ -347,7 +347,7 @@
 }
 
 
-.modal-overlay-receive-money {
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -358,7 +358,7 @@
     display: none;
 }
 
-.modal-overlay-receive-money-content {
+.modal-overlay-content {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -372,19 +372,19 @@
     z-index: 1001;
 }
 
-.modal-overlay-receive-money-content .header-modal h3 {
+.modal-overlay .header-modal h3 {
     font-size: 20px;
     margin-bottom: 0px;
     text-align: center;
     align-self: center;
 }
 
-.modal-overlay-receive-money-content .header-modal {
+.modal-overlay-content .header-modal {
     padding: 8px 20px;
     border-bottom: 1px solid rgb(232, 234, 235);
 }
 
-.modal-overlay-receive-money-content .close-modal-icon {
+.modal-overlay-content .close-modal-icon {
     padding: 7px;
     width: 20px;
     height: 20px;
@@ -392,22 +392,22 @@
     border-radius: 4px;
 }
 
-.modal-overlay-receive-money-content .close-modal-icon svg {
+.modal-overlay-content .close-modal-icon svg {
     width: 18px;
     height: 18px;
     color: rgb(163, 168, 175);
 }
 
-.modal-overlay-receive-money-content .close-modal-icon:hover {
+.modal-overlay-content .close-modal-icon:hover {
     background-color: rgb(243, 244, 245);
 }
 
-.modal-overlay-receive-money-content .content-modal-receive-money {
+.modal-overlay-content .content-modal {
     padding: 20px;
     border-bottom: 1px solid rgb(232, 234, 235);
 }
 
-.modal-overlay-receive-money-content .footer-modal {
+.modal-overlay-content .footer-modal {
     padding: 20px;
 }
 

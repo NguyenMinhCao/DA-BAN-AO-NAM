@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.dto.request.DataStatusOrderDTO;
 import vn.duantn.sominamshop.model.dto.response.OrderHistoryResponse;
 import vn.duantn.sominamshop.service.OrderHistoryService;
+import vn.duantn.sominamshop.service.OrderManagementService;
 import vn.duantn.sominamshop.service.OrderService;
 
 @Controller
@@ -26,10 +27,12 @@ public class OrderManagementController {
 
     private final OrderService orderService;
     private final OrderHistoryService orderHistoryService;
+    private final OrderManagementService orderManagementService;
 
-    public OrderManagementController(OrderService orderService, OrderHistoryService orderHistoryService) {
+    public OrderManagementController(OrderService orderService, OrderHistoryService orderHistoryService, OrderManagementService orderManagementService) {
         this.orderService = orderService;
         this.orderHistoryService = orderHistoryService;
+        this.orderManagementService = orderManagementService;
     }
 
     @GetMapping("/orders")
@@ -67,12 +70,12 @@ public class OrderManagementController {
     }
 
     @PutMapping("/orders/{id}")
-    public ResponseEntity<Order> updateDeliveryStatusOrder(@PathVariable String id, @RequestBody String statusDelivery) {
+    public ResponseEntity<Order> updateStatusOrder(@PathVariable String id,
+            @RequestBody DataStatusOrderDTO dataStatus) {
         Optional<Order> orderById = this.orderService.findOrderById(Long.valueOf(id));
         if (orderById.isPresent()) {
-            orderById.get().setDeliveryStatus(DeliveryStatus.DELIVERY);
-            this.orderService.saveOrder(orderById.get());
-            this.orderHistoryService.updateDeliveryStatus(orderById.get());
+            Order orderGet = orderById.get();
+            this.orderManagementService.updateStatusOrder(orderGet, dataStatus);
         }
         return ResponseEntity.ok().body(orderById.get());
     }
