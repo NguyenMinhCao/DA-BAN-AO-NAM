@@ -32,11 +32,12 @@ public class Image  extends BaseEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "url_image")
+    @Column(name = "url_image", columnDefinition = "NVARCHAR(MAX)")
     private String urlImage;
 
     @Column(name = "status")
     private Integer status;
+
 
     @JsonIgnore
     @ManyToOne
