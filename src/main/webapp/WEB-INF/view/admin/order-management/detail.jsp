@@ -82,7 +82,7 @@
                                             <c:if
                                                 test="${order.paymentStatus == 'PENDING' && order.deliveryStatus == 'PENDING'}">
                                                 <div class="return">
-                                                    <a href="">
+                                                    <a href="/admin/orders/${order.id}/edit">
                                                         <span>
                                                             <span class="icon"><i class="fa-solid fa-pencil"></i></span>
                                                             <span class="text-black">Sửa đơn</span>
@@ -215,8 +215,10 @@
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            <td><span
-                                                                    class="product-quantity text-center">${orderDetail.quantity}</span>
+                                                            <td>
+                                                                <span
+                                                                    class="product-quantity text-center">${orderDetail.quantity}
+                                                                </span>
                                                             </td>
                                                             <td>
                                                                 <span class="product-price">
@@ -254,8 +256,8 @@
                                                         id="cancelDeliveryBtn">
                                                         <span class="align-self-center">Hủy giao hàng</span>
                                                     </div>
-                                                    <div
-                                                        class="confirm-delivery-btn common-push-btn btn-confirm change-status-order" id="confirmDelivery">
+                                                    <div class="confirm-delivery-btn common-push-btn btn-confirm change-status-order"
+                                                        id="confirmDelivery">
                                                         <span>Xác nhận đã giao</span>
                                                     </div>
                                                 </div>

@@ -3,6 +3,11 @@
     position: relative;
 }
 
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(163, 168, 175) rgb(238, 239, 239);
+}
+
 /* Định vị nút "next" ở bên phải */
 .swiper-button-next {
     position: absolute;

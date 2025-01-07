@@ -29,6 +29,7 @@ import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.OrderHistory;
+import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
@@ -42,6 +43,7 @@ import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.UserDTO;
+import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;
 import vn.duantn.sominamshop.repository.CartRepository;
 import vn.duantn.sominamshop.repository.CounterRepository;
 import vn.duantn.sominamshop.repository.OrderDetailRepository;
@@ -260,6 +262,10 @@ public class OrderService {
         return this.orderRepository.findById(id);
     }
 
+    public Optional<OrderDetail> findOrderDetailById(Long id) {
+        return this.orderDetailRepository.findById(id);
+    }
+
     public void saveOrder(Order order) {
         this.orderRepository.save(order);
     }
@@ -275,6 +281,20 @@ public class OrderService {
 
     public List<Order> getAllOrdersByDeliveryStatusNotNull() {
         return this.orderRepository.findAllOrderByDeliveryStatusNotNull();
+    }
+
+    public void updateOrderDetail(DataUpdateOrderDetailDTO dto, String idOrderD) {
+        Optional<OrderDetail> findOrderDetailById = this.findOrderDetailById(Long.valueOf(idOrderD));
+        if (findOrderDetailById.isPresent()) {
+            OrderDetail orderUnwrap = findOrderDetailById.get();
+            Product productById = this.productService.findProductById(dto.getProductId());
+            orderUnwrap.setQuantity(dto.getQuantity());
+            if (productById != null) {
+                Double newPrice = productById.getPrice() * dto.getQuantity();
+                orderUnwrap.setPrice(newPrice);
+            }
+            this.orderDetailRepository.save(orderUnwrap);
+        }
     }
 
     public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name) {

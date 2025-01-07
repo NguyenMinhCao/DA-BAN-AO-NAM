@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.duantn.sominamshop.model.Order;
+import vn.duantn.sominamshop.model.OrderDetail;
+import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.dto.request.DataStatusOrderDTO;
+import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;
 import vn.duantn.sominamshop.model.dto.response.OrderHistoryResponse;
 import vn.duantn.sominamshop.service.OrderHistoryService;
 import vn.duantn.sominamshop.service.OrderManagementService;
 import vn.duantn.sominamshop.service.OrderService;
+import vn.duantn.sominamshop.service.ProductService;
 
 @Controller
 @RequestMapping("/admin")
@@ -28,11 +32,14 @@ public class OrderManagementController {
     private final OrderService orderService;
     private final OrderHistoryService orderHistoryService;
     private final OrderManagementService orderManagementService;
+    private final ProductService productService;
 
-    public OrderManagementController(OrderService orderService, OrderHistoryService orderHistoryService, OrderManagementService orderManagementService) {
+    public OrderManagementController(OrderService orderService, OrderHistoryService orderHistoryService,
+            OrderManagementService orderManagementService, ProductService productService) {
         this.orderService = orderService;
         this.orderHistoryService = orderHistoryService;
         this.orderManagementService = orderManagementService;
+        this.productService = productService;
     }
 
     @GetMapping("/orders")
@@ -78,6 +85,31 @@ public class OrderManagementController {
             this.orderManagementService.updateStatusOrder(orderGet, dataStatus);
         }
         return ResponseEntity.ok().body(orderById.get());
+    }
+
+    @GetMapping("/orders/product/{id}")
+    public ResponseEntity<String> findProductId(@PathVariable String id) {
+        Product productById = this.productService.findProductById(Long.valueOf(id));
+        if (productById != null) {
+            return ResponseEntity.ok().body(productById.getQuantity().toString());
+        }
+        return null;
+    }
+
+    @GetMapping("/orders/{id}/edit")
+    public String getEditOrders(@PathVariable String id, Model model) {
+        Optional<Order> orderById = this.orderService.findOrderById(Long.valueOf(id));
+        if (orderById.isPresent()) {
+            model.addAttribute("order", orderById.get());
+        }
+        return "admin/order-management/edit";
+    }
+
+    @PutMapping("/orders/{id}/edit")
+    public ResponseEntity<Void> updateQuantityProductOrderDetail(@PathVariable String id,
+            @RequestBody DataUpdateOrderDetailDTO dataUpdate) {
+        this.orderService.updateOrderDetail(dataUpdate, id);
+        return ResponseEntity.ok().body(null);
     }
 
 }
