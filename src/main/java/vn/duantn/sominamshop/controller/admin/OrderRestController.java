@@ -55,11 +55,11 @@ public class OrderRestController {
         return ResponseEntity.ok(orderService.saveInvoiceDetail(request));
     }
 
-    @PutMapping("/update/products")
-    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail) {
-        if (orderDetail != null) {
-            productService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProduct().getId());
-        }
-        return ResponseEntity.ok("Cập nhật thành công");
-    }
+//    @PutMapping("/update/products")
+//    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail) {
+//        if (orderDetail != null) {
+//            productService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProduct().getId());
+//        }
+//        return ResponseEntity.ok("Cập nhật thành công");
+//    }
 }

@@ -29,7 +29,7 @@ public class DasboardController {
         Page<Product> productPage = productService.getAllProducts(pageable);
 
         model.addAttribute("productPage", productPage);
-        return "admin/product/show";
+        return "admin/product/index";
     }
 
 }

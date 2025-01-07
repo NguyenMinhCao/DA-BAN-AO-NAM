@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class PromotionDTO {
     private long id;
     private String promotionCode;
-    private DiscountType discountType;
+    private String discountType;
     private String discountValue;
     private BigDecimal minOrderValue;
     private Integer usageLimit;

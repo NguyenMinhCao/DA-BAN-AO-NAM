@@ -96,7 +96,7 @@ public class OrderService {
                 for (CartDetail cartDetail : lstCartDetail) {
                     OrderDetail orderDetail = new OrderDetail();
                     orderDetail.setOrder(order);
-                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProduct().getPrice());
+//                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProduct().getPrice());
                     orderDetail.setProduct(cartDetail.getProduct());
                     orderDetail.setQuantity(cartDetail.getQuantity());
                     // save order detail

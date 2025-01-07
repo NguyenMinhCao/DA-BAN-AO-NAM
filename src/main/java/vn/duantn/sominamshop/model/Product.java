@@ -1,18 +1,19 @@
 package vn.duantn.sominamshop.model;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jdk.jshell.Snippet;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
@@ -20,30 +21,20 @@ import vn.duantn.sominamshop.util.SecurityUtil;
 @Table(name = "products")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Product extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
 
     @NotBlank(message = "Tên sản phẩm không được để trống!")
     @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
 
-    private Long quantity;
 
-    private Double price;
-
-    @Column(name = "short_desc", columnDefinition = "NVARCHAR(2000)")
-    private String shortDesc;
-
-    @Column(name = "detail_desc", columnDefinition = "NVARCHAR(3000)")
-    private String detailDesc;
-
-    private String createdBy;
-    private String updatedBy;
 
     @ManyToOne
     @JoinColumn(name = "material_id")
@@ -53,13 +44,6 @@ public class Product {
     @JoinColumn(name = "origin_id")
     private Origin origin;
 
-    @ManyToOne
-    @JoinColumn(name = "size_id")
-    private Size size;
-
-    @ManyToOne
-    @JoinColumn(name = "color_id")
-    private Color color;
 
     @ManyToOne
     @JoinColumn(name = "pattern_id")
@@ -69,7 +53,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
     private List<Image> images;
 
     @Column(name = "description", columnDefinition = "NVARCHAR(3000)")
@@ -78,24 +63,33 @@ public class Product {
     @Transient
     private List<MultipartFile> imagesFiles = new ArrayList<>();
 
+    @Column(name = "status")
+    private Integer status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private List<ProductDetail> productDetails;
+
     @ManyToMany
     @JoinTable(name = "Product_Promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
     private List<Promotion> promotions;
 
-    @PrePersist
-    public void handleBeforeCreate() {
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
 
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
 
+//
+//    @PrePersist
+//    public void handleBeforeCreate() {
+//        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+//                ? SecurityUtil.getCurrentUserLogin().get()
+//                : "";
+//    }
+//
+//    @PreUpdate
+//    public void handleBeforeUpdate() {
+//        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+//                ? SecurityUtil.getCurrentUserLogin().get()
+//                : "";
+//    }
 
 
 }
