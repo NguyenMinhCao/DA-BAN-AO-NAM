@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public interface CounterProductProjection {
     Long getId();
     String getName();
-    Long getQuantity();
+    Integer getQuantity();
     String getSizeName();
     String getColorName();
     BigDecimal getPrice();

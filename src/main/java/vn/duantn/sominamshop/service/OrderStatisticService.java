@@ -51,9 +51,9 @@ public class OrderStatisticService {
     }
 
 
-    public Page<Product> getLowStockProducts(Pageable pageable) {
-        return orderRepository.findLowStockProducts(pageable);
-    }
+//    public Page<Product> getLowStockProducts(Pageable pageable) {
+//        return orderRepository.findLowStockProducts(pageable);
+//    }
     public BigDecimal getTotalRevenue() {
         return orderRepository.getTotalRevenue();
     }
@@ -74,9 +74,9 @@ public class OrderStatisticService {
         return orderRepository.getTotalProducts();
     }
 
-    public long getLowStockProductCount() {
-        return orderRepository.getLowStockProductCount();
-    }
+//    public long getLowStockProductCount() {
+//        return orderRepository.getLowStockProductCount();
+//    }
 
     public long getTodayOrderCount() { return orderRepository.getTodayOrderCount(); }
 }

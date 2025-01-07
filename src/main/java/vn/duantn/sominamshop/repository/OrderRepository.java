@@ -57,8 +57,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     BigDecimal getYearlyRevenue();
 
 
-    @Query("SELECT p FROM Product p WHERE p.quantity < 20")
-    Page<Product> findLowStockProducts(Pageable pageable);
+//    @Query("SELECT p FROM Product p WHERE p.quantity < 20")
+//    Page<Product> findLowStockProducts(Pageable pageable);
 
 
     List<Order> findOrderByUser(User user);
@@ -69,8 +69,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT COUNT(p) FROM Product p")
     long getTotalProducts();
 
-    @Query("SELECT COUNT(p) FROM Product p WHERE p.quantity < 20")
-    long getLowStockProductCount();
+//    @Query("SELECT COUNT(p) FROM Product p WHERE p.quantity < 20")
+//    long getLowStockProductCount();
 
 
     @Query("SELECT COUNT(o) FROM Order o " +
