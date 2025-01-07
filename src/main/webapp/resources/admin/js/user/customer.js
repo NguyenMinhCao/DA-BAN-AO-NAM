@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    const tokenGHN = '39546c64-c9e1-11ef-a7a0-fe411cc1f02739546c64-c9e1-11ef-a7a0-fe411cc1f027'
 
     fetchCustomer(0)
     function fetchCustomer(page) {
@@ -101,4 +101,9 @@ $(document).ready(function () {
     $('#btnNewCustomer').on('click', function(){
         window.location.href = "/admin/customer/create";
     })
+
+    //******************** add khách hàng
+    function addCustomer(){
+        let name = $('')
+    }
 });

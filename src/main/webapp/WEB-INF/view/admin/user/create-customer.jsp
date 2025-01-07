@@ -54,7 +54,7 @@
                                 <div class="item-group">
                                     <label for="customerEmail" class="form-label">Email</label>
                                     <input type="email" class="form-control" id="customerEmail"
-                                           placeholder="Nhập họ tên">
+                                           placeholder="Nhập email">
                                 </div>
                                 <div class="item-group">
                                     <label for="customerDob" class="form-label">Ngày sinh</label>
@@ -63,9 +63,8 @@
                             </div>
                             <div class="form-group-wrapper">
                                 <div class="item-group">
-                                    <label for="customerEmail" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="customerEmail"
-                                           placeholder="Nhập họ tên">
+                                    <label class="" for="customerImage">Ảnh</label>
+                                    <input type="file" class="form-control" id="customerImage">
                                 </div>
                                 <div class="item-group gender">
                                     <label for="customerDob" class="form-label">Giới tính</label>
@@ -76,30 +75,30 @@
                             </div>
                         </div>
                         <div class="address-information">
-                            <h4>Địa chỉ nhân hàng</h4>
+                            <h4>Địa chỉ nhận hàng</h4>
                             <div class="form-group-wrapper">
                                 <div class="item-group">
                                     <label for="customerName" class="form-label">Họ tên</label>
-                                    <input type="text" class="form-control" id="customerName"
+                                    <input type="text" class="form-control" id="addressCustomerName"
                                            placeholder="Nhập họ tên">
                                 </div>
                                 <div class="item-group">
                                     <label for="customerPhone" class="form-label">SDT</label>
-                                    <input type="text" class="form-control" id="customerPhone"
+                                    <input type="text" class="form-control" id="addressCustomerPhone"
                                            placeholder="Nhập số điện thoại">
                                 </div>
                             </div>
                             <div class="form-group-wrapper">
                                 <div class="item-group">
-                                    <label for="customerEmail" class="form-label">Tỉnh/Thành</label>
-                                    <select id="customerWard" class="form-select">
-                                        <option disabled>select-ward</option>
+                                    <label for="customerProvince" class="form-label">Tỉnh/Thành</label>
+                                    <select id="customerProvince" class="form-select">
+                                        <option disabled>select-province</option>
                                     </select>
                                 </div>
                                 <div class="item-group">
-                                    <label for="customerDob" class="form-label">Quận/Huyện</label>
-                                    <select id="customerWard" class="form-select">
-                                        <option disabled>select-ward</option>
+                                    <label for="customerDistrict" class="form-label">Quận/Huyện</label>
+                                    <select id="customerDistrict" class="form-select">
+                                        <option disabled>select-district</option>
                                     </select>
                                 </div>
                             </div>
@@ -118,7 +117,7 @@
                             </div>
                         </div>
                         <div class="btn-add">
-                            <button>Lưu</button>
+                            <button id="save">Lưu</button>
                         </div>
                     </div>
                 </ol>
@@ -134,9 +133,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-
-<script>
-    $('#sampleTable').DataTable();
-</script>
+<script src="/admin/js/user/create-customer.js"></script>
 </body>
 </html>

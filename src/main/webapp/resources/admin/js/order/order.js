@@ -964,6 +964,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 {
                     fullName: name,
                     phoneNumber: phoneNumber,
+                    ward: ward,
+                    city : city,
+                    district : district,
                     address: address,
                     streetDetails:addressDetail,
                     status: true,
