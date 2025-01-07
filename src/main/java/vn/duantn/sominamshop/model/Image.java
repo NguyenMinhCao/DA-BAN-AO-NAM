@@ -1,5 +1,6 @@
 package vn.duantn.sominamshop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,47 +11,35 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import vn.duantn.sominamshop.util.SecurityUtil;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "images")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class Image  extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "id")
+    private Integer id;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "is_main")
-    private Boolean isMain; // Ảnh chính
+    @Column(name = "url_image")
+    private String urlImage;
 
+    @Column(name = "status")
+    private Integer status;
+
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
-
-    private String createdBy;
-    private String updatedBy;
-
-    @PrePersist
-    public void handleBeforeCreate() {
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
-
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-    }
 }

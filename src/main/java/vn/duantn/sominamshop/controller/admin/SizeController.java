@@ -17,49 +17,49 @@ import vn.duantn.sominamshop.service.SizeService;
 
 public class SizeController {
 
-    @Autowired
-    private SizeService sizeService;
-
-    @GetMapping
-    public String listColors(
-            @RequestParam(value = "sizeName", required = false, defaultValue = "") String sizeName,
-            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            Model model) {
-
-        Page<Size> sizePage = sizeService.getSize(sizeName, page);
-        model.addAttribute("sizePage", sizePage);
-        model.addAttribute("sizeName", sizeName);
-        return "admin/size/show";
-    }
-
-    @GetMapping("/create")
-    public String showCreateSizeForm(Model model) {
-        model.addAttribute("newSize", new Size());
-        return "admin/size/create";
-    }
-
-    @PostMapping("/create")
-    public String createSize(@ModelAttribute("newSize") Size newSize, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("errorMessage", "Please correct the errors in the form.");
-            return "admin/size/create";
-        }
-        sizeService.addSize(newSize);
-        return "redirect:/admin/size";
-    }
-    @GetMapping("/edit/{id}")
-    public String editSizeForm(@PathVariable Long id, Model model) {
-        Size size = sizeService.getSizeById(id);
-        model.addAttribute("size", size);
-        return "admin/size/edit";
-    }
-
-    @PostMapping("/edit/{id}")
-    public String updateSize(@PathVariable Long id, @ModelAttribute("size") Size size, RedirectAttributes redirectAttributes) {
-        sizeService.updateSize(id, size);
-        redirectAttributes.addFlashAttribute("success", "Kích cỡ đã được cập nhật thành công!");
-        return "redirect:/admin/size";
-    }
+//    @Autowired
+//    private SizeService sizeService;
+//
+//    @GetMapping
+//    public String listColors(
+//            @RequestParam(value = "sizeName", required = false, defaultValue = "") String sizeName,
+//            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+//            Model model) {
+//
+//        Page<Size> sizePage = sizeService.getSize(sizeName, page);
+//        model.addAttribute("sizePage", sizePage);
+//        model.addAttribute("sizeName", sizeName);
+//        return "admin/size/show";
+//    }
+//
+//    @GetMapping("/create")
+//    public String showCreateSizeForm(Model model) {
+//        model.addAttribute("newSize", new Size());
+//        return "admin/size/create";
+//    }
+//
+//    @PostMapping("/create")
+//    public String createSize(@ModelAttribute("newSize") Size newSize, BindingResult result, Model model) {
+//        if (result.hasErrors()) {
+//            model.addAttribute("errorMessage", "Please correct the errors in the form.");
+//            return "admin/size/create";
+//        }
+//        sizeService.addSize(newSize);
+//        return "redirect:/admin/size";
+//    }
+//    @GetMapping("/edit/{id}")
+//    public String editSizeForm(@PathVariable Long id, Model model) {
+//        Size size = sizeService.getSizeById(id);
+//        model.addAttribute("size", size);
+//        return "admin/size/edit";
+//    }
+//
+//    @PostMapping("/edit/{id}")
+//    public String updateSize(@PathVariable Long id, @ModelAttribute("size") Size size, RedirectAttributes redirectAttributes) {
+//        sizeService.updateSize(id, size);
+//        redirectAttributes.addFlashAttribute("success", "Kích cỡ đã được cập nhật thành công!");
+//        return "redirect:/admin/size";
+//    }
 
 
 }

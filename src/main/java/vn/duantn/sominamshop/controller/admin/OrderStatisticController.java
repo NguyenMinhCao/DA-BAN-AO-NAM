@@ -37,29 +37,28 @@ public class OrderStatisticController {
         BigDecimal todayRevenue = orderService.getTodayRevenue();
         BigDecimal yearlyRevenue = orderService.getYearlyRevenue();
         Long totalProduct = orderService.getTotalProducts();
-        Long totalLowProduct = orderService.getLowStockProductCount();
+//        Long totalLowProduct = orderService.getLowStockProductCount();
         Long totalTodayOrderCount = orderService.getTodayOrderCount();
 
-        // Kiểm tra và gán giá trị mặc định là 0 nếu giá trị là null
         totalRevenue = (totalRevenue != null) ? totalRevenue : BigDecimal.ZERO;
         monthlyRevenue = (monthlyRevenue != null) ? monthlyRevenue : BigDecimal.ZERO;
         todayRevenue = (todayRevenue != null) ? todayRevenue : BigDecimal.ZERO;
         yearlyRevenue = (yearlyRevenue != null) ? yearlyRevenue : BigDecimal.ZERO;
         totalProduct = (totalProduct != null) ? totalProduct : 0L;
-        totalLowProduct = (totalLowProduct != null) ? totalLowProduct : 0L;
+//        totalLowProduct = (totalLowProduct != null) ? totalLowProduct : 0L;
         totalTodayOrderCount = (totalTodayOrderCount != null) ? totalTodayOrderCount : 0L;
 
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Product> lowStockProductsPage = orderService.getLowStockProducts(pageable);
+//        Page<Product> lowStockProductsPage = orderService.getLowStockProducts(pageable);
 
         model.addAttribute("totalRevenue", totalRevenue);
         model.addAttribute("monthlyRevenue", monthlyRevenue);
         model.addAttribute("todayRevenue", todayRevenue);
         model.addAttribute("yearlyRevenue", yearlyRevenue);
         model.addAttribute("totalProduct", totalProduct);
-        model.addAttribute("totalLowProduct", totalLowProduct);
-        model.addAttribute("lowStockProductsPage", lowStockProductsPage);
-        model.addAttribute("lowStockProducts", lowStockProductsPage.getContent());
+//        model.addAttribute("totalLowProduct", totalLowProduct);
+//        model.addAttribute("lowStockProductsPage", lowStockProductsPage);
+//        model.addAttribute("lowStockProducts", lowStockProductsPage.getContent());
         model.addAttribute("totalTodayOrderCount", totalTodayOrderCount);
 
         return "admin/order/order-statistics";
