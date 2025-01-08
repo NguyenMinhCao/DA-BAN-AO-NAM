@@ -306,6 +306,9 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    ProductDetailService productDetailService;
+
 
     @Autowired
     CategoryService categoryService;
@@ -330,6 +333,9 @@ public class ProductController {
 
         List<ProductResponse> lists = productService.getAll();
         model.addAttribute("lists", lists);
+
+//        List<ProductDetail> listsDT = productDetailService.getAll();
+//        model.addAttribute("listDT", listsDT);
         return "admin/product/index";
     }
 

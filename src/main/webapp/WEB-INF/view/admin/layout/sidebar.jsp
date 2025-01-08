@@ -31,7 +31,13 @@
                                 data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="/admin/product">Danh sách</a>
-                                    <a class="nav-link" href="/admin/product/create">Thêm sản phẩm</a>
+                                    <a class="nav-link" href="/admin/product/add">Thêm sản phẩm</a>
+                                    <a class="nav-link" href="/admin/product/color">Quản lý màu sắc</a>
+                                    <a class="nav-link" href="/admin/product/size">Quản lý kích thước</a>
+                                    <a class="nav-link" href="/admin/product/material">Quản lý nguồn gốc</a>
+                                    <a class="nav-link" href="/admin/product/pattern">Quản lý chất liệu</a>
+                                    <a class="nav-link" href="/admin/product/category">Quản lý danh mục</a>
+
                                 </nav>
                             </div>
 
@@ -47,40 +53,20 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="layout-static.html">Danh sách</a>
                                     <a class="nav-link" href="layout-sidenav-light.html">Thêm sản phẩm</a>
+                                    <a class="nav-link collapsed" href="/admin/color" data-bs-target="#collapseLayoutsProduct"
+                                       aria-expanded="false" aria-controls="collapseLayoutsProduct">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                        Quản lý màu sắc
+                                    </a>
                                 </nav>
                             </div>
 
-                            <a class="nav-link collapsed" href="/admin/color" data-bs-target="#collapseLayoutsProduct"
-                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Quản lý màu sắc
-                            </a>
-                            <a class="nav-link collapsed" href="/admin/size" data-bs-target="#collapseLayoutsProduct"
-                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Quản lý kích cỡ
-                            </a>
-                            <a class="nav-link collapsed" href="/admin/origin" data-bs-target="#collapseLayoutsProduct"
-                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Quản lý nguồn gốc
-                            </a>
-                            <a class="nav-link collapsed" href="/admin/category" data-bs-target="#collapseLayoutsProduct"
-                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Quản lý danh mục
-                            </a>
-                            <a class="nav-link collapsed" href="/admin/material" data-bs-target="#collapseLayoutsProduct"
-                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Quản lý chất liệu
-                            </a>
+
                             <!-- Khuyến mại -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                data-bs-target="#collapseLayoutsPromotions" aria-expanded="false"
                                aria-controls="collapseLayoutsPromotions">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"> </i></div>
-<%--                                <a href="/admin/promotions/show.jsp"></a>--%>
                                 Quản lý khuyến mại
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
