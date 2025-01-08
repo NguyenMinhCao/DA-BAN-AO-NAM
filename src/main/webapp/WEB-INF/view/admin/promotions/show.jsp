@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--<html xmlns:th="http://www.thymeleaf.org">--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +42,7 @@
                             <th scope="col">Discount Type</th>
                             <th scope="col">Start Date</th>
                             <th scope="col">End Date</th>
+                            <th scope="col">Discount value</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -52,7 +54,9 @@
                                 <td>${km.discountType}</td>
                                 <td>${km.startDate}</td>
                                 <td>${km.endDate}</td>
+                                <td>${km.discountValue}</td>
                                 <td>${km.status}</td>
+<%--                                <td value="${km.status ? '1' : '0'}"></td>--%>
                                 <td>
                                     <a href="/view-updateKM/${km.id}" class="btn btn-success">View</a>
                                     <a href="/view-update/${km.id}" class="btn btn-warning">Update</a>
@@ -62,20 +66,25 @@
                         </c:forEach>
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <c:if test="${listKM != null && listKM.totalPages > 0}">
+                                <c:forEach begin="0" end="${listKM.totalPages - 1}" varStatus="loop">
+                                    <li class="page-item">
+                                        <a class="page-link" href="/hien-thiKM?page=${loop.begin + loop.count - 1}">
+                                                ${loop.begin + loop.count}
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                            </c:if>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </main>
         <jsp:include page="../layout/footer.jsp" />
-        <div class="popup" id="popup">
-            <div class="popup_content">
-                <div class="popup-left">
-                    <h1>Hello</h1>
-                </div>
-                <div class="popup_right">
-                    <h1>Hi</h1>
-                </div>
-            </div>
-        </div>
+
+
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

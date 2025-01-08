@@ -20,12 +20,8 @@ import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;
-import vn.duantn.sominamshop.service.AddressService;
-import vn.duantn.sominamshop.service.CartService;
-import vn.duantn.sominamshop.service.OrderService;
-import vn.duantn.sominamshop.service.ProductService;
-import vn.duantn.sominamshop.service.PromotionService;
-import vn.duantn.sominamshop.service.UserService;
+import vn.duantn.sominamshop.service.*;
+//import vn.duantn.sominamshop.service.PromotionService;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller

@@ -11,13 +11,13 @@ import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.PromotionDTO;
-import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.service.OrderService;
 import vn.duantn.sominamshop.service.ProductService;
 import vn.duantn.sominamshop.service.PromotionService;
 import vn.duantn.sominamshop.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/admin/order")
@@ -36,16 +36,6 @@ public class OrderRestController {
         Pageable pageable = PageRequest.of(page, limit);
         Page<CounterProductProjection> pageProduct = productService.GetAllProductByName(pageable, search);
         return ResponseEntity.ok(pageProduct);
-    }
-
-    @GetMapping("/get/customers")
-    public ResponseEntity<?> getProduct(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "2") int limit,
-            @RequestParam(value = "keyword", defaultValue = "") String search) {
-        Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search);
-        return ResponseEntity.ok(pageCustomer);
     }
 
     @GetMapping("/get/promotions")

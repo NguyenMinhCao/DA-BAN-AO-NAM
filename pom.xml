@@ -138,12 +138,18 @@
 		</dependency> -->
 
 		<!-- Meta model -->
-		<!-- <dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
-			<version>6.4.1.Final</version>
-			<scope>provided</scope>
-		</dependency> -->
+<!--	<dependency>-->
+<!--			<groupId>org.hibernate.orm</groupId>-->
+<!--			<artifactId>hibernate-jpamodelgen</artifactId>-->
+<!--			<version>6.4.1.Final</version>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
+
+		<!--thymleaf-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+<!--		</dependency>-->
 
 	</dependencies>
 

@@ -1,0 +1,141 @@
+[1mdiff --git a/src/main/java/vn/duantn/sominamshop/controller/client/OrderControllerClient.java b/src/main/java/vn/duantn/sominamshop/controller/client/OrderControllerClient.java[m
+[1mindex 6be9e7c..59e9e52 100644[m
+[1m--- a/src/main/java/vn/duantn/sominamshop/controller/client/OrderControllerClient.java[m
+[1m+++ b/src/main/java/vn/duantn/sominamshop/controller/client/OrderControllerClient.java[m
+[36m@@ -20,12 +20,8 @@[m [mimport vn.duantn.sominamshop.model.Order;[m
+ import vn.duantn.sominamshop.model.Promotion;[m
+ import vn.duantn.sominamshop.model.User;[m
+ import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;[m
+[31m-import vn.duantn.sominamshop.service.AddressService;[m
+[31m-import vn.duantn.sominamshop.service.CartService;[m
+[31m-import vn.duantn.sominamshop.service.OrderService;[m
+[31m-import vn.duantn.sominamshop.service.ProductService;[m
+[31m-import vn.duantn.sominamshop.service.PromotionService;[m
+[31m-import vn.duantn.sominamshop.service.UserService;[m
+[32m+[m[32mimport vn.duantn.sominamshop.service.*;[m
+[32m+[m[32m//import vn.duantn.sominamshop.service.PromotionService;[m
+ import org.springframework.web.bind.annotation.RequestBody;[m
+ [m
+ @Controller[m
+[1mdiff --git a/src/main/java/vn/duantn/sominamshop/model/dto/PromotionDTO.java b/src/main/java/vn/duantn/sominamshop/model/dto/PromotionDTO.java[m
+[1mindex 44e885c..ae563d3 100644[m
+[1m--- a/src/main/java/vn/duantn/sominamshop/model/dto/PromotionDTO.java[m
+[1m+++ b/src/main/java/vn/duantn/sominamshop/model/dto/PromotionDTO.java[m
+[36m@@ -38,7 +38,7 @@[m [mpublic class PromotionDTO {[m
+                 .startDate(promotion.getStartDate())[m
+                 .endDate(promotion.getEndDate())[m
+                 .status(promotion.isStatus())[m
+[31m-                .discountType(promotion.getDiscountType())[m
+[32m+[m[32m//                .discountType(promotion.getDiscountType())[m[41m[m
+                 .discountValue(promotion.getDiscountValue())[m
+                 .promotionCode(promotion.getPromotionCode())[m
+                 .usageLimit(promotion.getUsageLimit())[m
+[1mdiff --git a/src/main/java/vn/duantn/sominamshop/repository/PromotionRepository.java b/src/main/java/vn/duantn/sominamshop/repository/PromotionRepository.java[m
+[1mindex d8f1fe2..69ed8bc 100644[m
+[1m--- a/src/main/java/vn/duantn/sominamshop/repository/PromotionRepository.java[m
+[1m+++ b/src/main/java/vn/duantn/sominamshop/repository/PromotionRepository.java[m
+[36m@@ -1,5 +1,7 @@[m
+ package vn.duantn.sominamshop.repository;[m
+ [m
+[32m+[m[32mimport org.springframework.data.domain.Page;[m
+[32m+[m[32mimport org.springframework.data.domain.Pageable;[m
+ import org.springframework.data.jpa.repository.JpaRepository;[m
+ import org.springframework.stereotype.Repository;[m
+ [m
+[1mdiff --git a/src/main/java/vn/duantn/sominamshop/repository/PromotionsRepository.java b/src/main/java/vn/duantn/sominamshop/repository/PromotionsRepository.java[m
+[1mindex 946b434..4e256cf 100644[m
+[1m--- a/src/main/java/vn/duantn/sominamshop/repository/PromotionsRepository.java[m
+[1m+++ b/src/main/java/vn/duantn/sominamshop/repository/PromotionsRepository.java[m
+[36m@@ -1,10 +1,12 @@[m
+ package vn.duantn.sominamshop.repository;[m
+ [m
+[32m+[m[32mimport org.springframework.data.domain.Page;[m
+[32m+[m[32mimport org.springframework.data.domain.Pageable;[m
+ import org.springframework.data.jpa.repository.JpaRepository;[m
+ import org.springframework.stereotype.Repository;[m
+ import vn.duantn.sominamshop.model.Promotion;[m
+ [m
+ @Repository[m
+ public interface PromotionsRepository extends JpaRepository<Promotion, Long> {[m
+[31m-[m
+[32m+[m[32m    Page<Promotion> findAllByTen(Pageable pageable);[m
+ }[m
+* Unmerged path src/main/resources/application.properties
+[1mdiff --git a/src/main/webapp/WEB-INF/view/admin/promotions/createKM.jsp b/src/main/webapp/WEB-INF/view/admin/promotions/createKM.jsp[m
+[1mindex 23f4e2f..0e5b498 100644[m
+[1m--- a/src/main/webapp/WEB-INF/view/admin/promotions/createKM.jsp[m
+[1m+++ b/src/main/webapp/WEB-INF/view/admin/promotions/createKM.jsp[m
+[36m@@ -70,6 +70,10 @@[m
+                                     <b class="bi bi-person-arms-up"> <label>End Date</label></b>[m
+                                     <input type="text" name="endDate" class="form-control">[m
+                                 </div>[m
+[32m+[m[32m                                <div class="form-group">[m
+[32m+[m[32m                                    <b class="bi bi-person-arms-up"> <label>Discount value</label></b>[m
+[32m+[m[32m                                    <input type="number" name="discountValue" class="form-control">[m
+[32m+[m[32m                                </div>[m
+                                 <br>[m
+                                 <br>[m
+                                 <div class="mb-3">[m
+[36m@@ -86,6 +90,7 @@[m
+                                 <br>[m
+                                 <button type="submit" class="btn btn-primary">Add</button>[m
+                             </form>[m
+[32m+[m
+                         </div>[m
+                     </div>[m
+                 </div>[m
+[1mdiff --git a/src/main/webapp/WEB-INF/view/admin/promotions/show.jsp b/src/main/webapp/WEB-INF/view/admin/promotions/show.jsp[m
+[1mindex 97d6e05..a60213e 100644[m
+[1m--- a/src/main/webapp/WEB-INF/view/admin/promotions/show.jsp[m
+[1m+++ b/src/main/webapp/WEB-INF/view/admin/promotions/show.jsp[m
+[36m@@ -41,6 +41,7 @@[m
+                             <th scope="col">Discount Type</th>[m
+                             <th scope="col">Start Date</th>[m
+                             <th scope="col">End Date</th>[m
+[32m+[m[32m                            <th scope="col">Discount value</th>[m
+                             <th scope="col">Status</th>[m
+                             <th scope="col">Action</th>[m
+                         </tr>[m
+[36m@@ -52,6 +53,7 @@[m
+                                 <td>${km.discountType}</td>[m
+                                 <td>${km.startDate}</td>[m
+                                 <td>${km.endDate}</td>[m
+[32m+[m[32m                                <td>${km.discountValue}</td>[m
+                                 <td>${km.status}</td>[m
+                                 <td>[m
+                                     <a href="/view-updateKM/${km.id}" class="btn btn-success">View</a>[m
+[36m@@ -62,20 +64,25 @@[m
+                         </c:forEach>[m
+                         </tbody>[m
+                     </table>[m
+[32m+[m[32m                    <nav aria-label="Page navigation example">[m
+[32m+[m[32m                        <ul class="pagination">[m
+[32m+[m[32m                            <c:if test="${listKM != null && listKM.totalPages > 0}">[m
+[32m+[m[32m                                <c:forEach begin="0" end="${listSanPham.totalPages - 1}" varStatus="loop">[m
+[32m+[m[32m                                    <li class="page-item">[m
+[32m+[m[32m                                        <a class="page-link" href="/hien-thiKM?page=${loop.begin + loop.count - 1}">[m
+[32m+[m[32m                                                ${loop.begin + loop.count}[m
+[32m+[m[32m                                        </a>[m
+[32m+[m[32m                                    </li>[m
+[32m+[m[32m                                </c:forEach>[m
+[32m+[m[32m                            </c:if>[m
+[32m+[m[32m                        </ul>[m
+[32m+[m[32m                    </nav>[m
+                 </div>[m
+             </div>[m
+         </main>[m
+         <jsp:include page="../layout/footer.jsp" />[m
+[31m-        <div class="popup" id="popup">[m
+[31m-            <div class="popup_content">[m
+[31m-                <div class="popup-left">[m
+[31m-                    <h1>Hello</h1>[m
+[31m-                </div>[m
+[31m-                <div class="popup_right">[m
+[31m-                    <h1>Hi</h1>[m
+[31m-                </div>[m
+[31m-            </div>[m
+[31m-        </div>[m
+[32m+[m
+[32m+[m
+     </div>[m
+ </

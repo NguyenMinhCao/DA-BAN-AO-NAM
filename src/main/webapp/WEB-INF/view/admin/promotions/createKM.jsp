@@ -70,6 +70,10 @@
                                     <b class="bi bi-person-arms-up"> <label>End Date</label></b>
                                     <input type="text" name="endDate" class="form-control">
                                 </div>
+                                <div class="form-group">
+                                    <b class="bi bi-person-arms-up"> <label>Discount value</label></b>
+                                    <input type="number" name="discountValue" class="form-control">
+                                </div>
                                 <br>
                                 <br>
                                 <div class="mb-3">
@@ -86,6 +90,7 @@
                                 <br>
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </form>
+
                         </div>
                     </div>
                 </div>

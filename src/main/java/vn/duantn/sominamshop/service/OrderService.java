@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,9 +24,9 @@ import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
+
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.model.dto.AddressDTO;
-import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;
@@ -292,6 +290,8 @@ public class OrderService {
     @Transactional
     public OrderDTO saveInvoice(Order order) {
         order.setOrderSource(false);
+        order.setPaymentStatus(PaymentStatus.PENDING);
+        order.setDeliveryStatus(DeliveryStatus.COMPLETED);
         Order orderCreate = orderRepository.save(order);
         OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
         return orderDTO;
