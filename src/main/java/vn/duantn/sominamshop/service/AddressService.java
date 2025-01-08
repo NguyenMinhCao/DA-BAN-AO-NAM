@@ -1,18 +1,14 @@
 package vn.duantn.sominamshop.service;
 
-import java.net.http.HttpRequest;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.tags.shaded.org.apache.regexp.recompile;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.AddressDTO;
 import vn.duantn.sominamshop.repository.AddressRepository;
-import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Service
 public class AddressService {

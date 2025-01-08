@@ -34,15 +34,6 @@ public class Product extends BaseEntity implements Serializable {
     @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
 
-//    private Integer quantity;
-//
-//    private BigDecimal price;
-
-
-
-//    private String createdBy;
-//    private String updatedBy;
-
     @ManyToOne
     @JoinColumn(name = "material_id")
     private Material material;

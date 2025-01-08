@@ -64,7 +64,7 @@ public class CartController {
         // Lấy ra toàn bộ promotions để hiển thị
         List<Promotion> listPromotions = this.promotionService.findAllPromotion();
 
-        // thiết lập lại trường promotion trong order có status null khi người dùng rời
+        // thiết lập lại trường promotion trong order có delivery-status null khi người dùng rời
         // khỏi trang order
         Order order = this.orderService.findOrderByStatusAndCreatedBy();
         if (order != null) {
@@ -86,9 +86,14 @@ public class CartController {
         session.setAttribute("shippingMethodInOrder", order != null ? order.getShippingMethod() : null);
 
         double shippingPrice = 0;
-        if (order != null && order.getShippingMethod().equals("express")) {
+        String shippingMethodString = "";
+        if (order != null) {
+            shippingMethodString = order.getShippingMethod().toString();
+        }
+      
+        if (order != null && shippingMethodString.equals("EXPRESS")) {
             shippingPrice = 50000;
-        } else if (order != null && order.getShippingMethod().equals("fast")) {
+        } else if (order != null && shippingMethodString.equals("FAST")) {
             shippingPrice = 30000;
         } else {
             shippingPrice = 20000;
@@ -124,7 +129,7 @@ public class CartController {
     }
 
     @PutMapping("/cart/update")
-    public ResponseEntity<Map<String, Object>> putMethodName(@RequestBody CartDetailUpdateRequestDTO dto,
+    public ResponseEntity<Map<String, Object>> updateCart(@RequestBody CartDetailUpdateRequestDTO dto,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
         return ResponseEntity.ok().body(this.cartService.updateCartDetailProductQuantity(dto, session));

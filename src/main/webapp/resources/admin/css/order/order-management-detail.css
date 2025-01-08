@@ -1,0 +1,465 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    max-width: 1200px;
+    padding: 15px 54px;
+    margin: 0 auto;
+}
+
+.container .content {
+    gap: 15px;
+}
+
+
+/* .order-details {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+} */
+
+/* common */
+.text-black {
+    color: #000;
+}
+
+.border-outline {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 1px, rgba(0, 0, 0, 0.15) 0px 1px 2px 0px;
+    outline: transparent solid 1px;
+    border-radius: 6px;
+}
+
+.pad-20px-4 {
+    padding: 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.pad-20px-3 {
+    padding: 20px 20px 0;
+}
+
+.origin-soure {
+    font-weight: 550;
+    margin-left: 8px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.width-70 {
+    width: 70%;
+}
+
+.width-30 {
+    width: 30%;
+}
+
+.mt-8p {
+    margin-top: 8px;
+}
+
+.mb-5p {
+    margin-bottom: 5px;
+}
+
+.mw-88 {
+    min-width: 88px;
+}
+
+.mw-200 {
+    min-width: 251px;
+}
+
+.sub-font {
+    font-size: 14px;
+}
+
+.min-height46 {
+    min-height: 46px;
+}
+
+.font-w450 {
+    font-weight: 500;
+}
+
+.title-font {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+
+#layoutSidenav_content {
+    background-color: rgb(249, 249, 249);
+}
+
+/* header */
+
+.header {
+    display: flex;
+}
+
+.header .header__btn-link {
+    background-color: #fff;
+    border: 1px solid rgb(211, 213, 215);
+    padding: 7px;
+    border-radius: 6px;
+    display: inline-flex;
+    margin-right: 16px;
+}
+
+.header .header__btn-icon {
+    color: #ccc;
+    display: inline-flex;
+}
+
+.header .order {
+    display: flex;
+    flex-direction: column;
+}
+
+.header .header__btn-link:hover {
+    /* opacity: 0.5; */
+}
+
+.header .order__status,
+.order__details {
+    flex-grow: 1;
+}
+
+.header .order__status {
+    display: flex;
+    align-items: center;
+}
+
+.border-status {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    padding: 2px 16px;
+    outline-offset: -1px;
+    border-radius: 20px;
+}
+
+.status-completed {
+    outline: rgb(211, 213, 215) solid 1px;
+    background-color: rgb(243, 244, 245);
+    color: rgb(116, 124, 135);
+}
+
+.status-pending {
+    outline: rgb(255, 223, 155) solid 1px;
+    background-color: rgb(255, 251, 242);
+    color: rgb(228, 156, 6);
+}
+
+
+.header .status span:last-child,
+.header .order__status .status {
+    margin-left: 8px;
+}
+
+.header .order__status .code {
+    font-size: 20px;
+}
+
+.header .order__status .status,
+.header .operation,
+.header .operation__container {
+    display: flex;
+}
+
+.header .operation {
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+.header .operation__container a {
+    padding: 7px 12px;
+    text-decoration: none;
+}
+
+.header .operation__container a:hover {
+    background: rgb(241, 242, 243);
+    border-radius: 6px;
+}
+
+.header .operation__container .cancel-order {
+    margin-right: -14px;
+}
+
+.header .operation__container .icon {
+    color: rgb(163, 168, 175);
+}
+
+/* order details */
+
+.order-details .processing-status {
+    display: flex;
+}
+
+.header-payment .status svg,
+.order-details .status svg {
+    width: 20px;
+    height: 20px;
+    vertical-align: sub;
+}
+
+.order-details .processing-status .status-text span {
+    font-weight: 500;
+}
+
+.order-details .processing-status .confirm-delivery span {
+    font-size: 12px;
+}
+
+
+.order-details .table-order table th {
+    background-color: rgb(244, 246, 248);
+    text-align: center;
+}
+
+.order-details .table-order table th:first-child {
+    text-align: start;
+}
+
+.order-details .table-order td,
+.order-details .table-order th {
+    padding: 14px 14px;
+    font-size: 14px;
+}
+
+.order-details tbody span {
+    display: block;
+    text-align: center;
+}
+
+.order-details tbody tr {
+    border-bottom: 1px solid rgb(232, 234, 235);
+}
+
+.order-details .product-img img {
+    width: 40px;
+    height: 40px;
+}
+
+.order-details .table-order tbody tr:hover {
+    background-color: rgba(243, 244, 245);
+}
+
+.order-details .product-img {
+    border-radius: 2px;
+    border: 1px solid rgb(211, 213, 215);
+}
+
+.order-details .product-order {
+    gap: 12px;
+}
+
+.payment-status .content-payment {
+    padding: 16px 20px;
+}
+
+.payment-status .content-payment span,
+.payment-status .footer-payment span {
+    display: inline-block;
+    min-width: 130px;
+}
+
+.payment-status .content-payment .delivery-fee {
+    padding: 8px 0;
+}
+
+
+.order-details .push-transport-btn {
+    padding: 5px 16px;
+    border: 1px solid transparent;
+    color: rgb(255, 255, 255);
+    background: rgb(0, 136, 255);
+    text-align: center;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.order-details .push-transport-btn:hover,
+.payment-status .receive-money-btn:hover {
+    background: rgb(51, 160, 255);
+    cursor: pointer;
+}
+
+.order-history-customer,
+.contact-information,
+.payment-status .content-payment {
+    border-bottom: 1px solid rgb(211, 213, 215);
+}
+
+.contact-information .header-contact {}
+
+.delivery-address,
+.contact-information {
+    margin-top: 20px;
+}
+
+/* lịch sử đơn hàng */
+
+.order-history .progress-bar-his .jamb {
+    height: 100%;
+    width: 2px;
+    background-color: rgb(0, 136, 255);
+    border-radius: 2px;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    margin: 0 auto;
+}
+
+
+.order-history .progress-bar-his .circle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: rgb(0, 136, 255);
+    border: 2px solid rgb(230, 244, 255);
+    margin: 3px 5px;
+    padding: 5px;
+}
+
+
+.order-history .progress-details {
+    gap: 16px;
+}
+
+.order-history .operation-day {
+    margin-bottom: 15px;
+}
+
+.order-history .describe-process {
+    margin-bottom: 24px;
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+}
+
+.modal-overlay-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 700px;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 6px;
+    z-index: 1001;
+}
+
+.modal-overlay .header-modal h3 {
+    font-size: 20px;
+    margin-bottom: 0px;
+    text-align: center;
+    align-self: center;
+}
+
+.modal-overlay-content .header-modal {
+    padding: 8px 20px;
+    border-bottom: 1px solid rgb(232, 234, 235);
+}
+
+.modal-overlay-content .close-modal-icon {
+    padding: 7px;
+    width: 20px;
+    height: 20px;
+    box-sizing: unset;
+    border-radius: 4px;
+}
+
+.modal-overlay-content .close-modal-icon svg {
+    width: 18px;
+    height: 18px;
+    color: rgb(163, 168, 175);
+}
+
+.modal-overlay-content .close-modal-icon:hover {
+    background-color: rgb(243, 244, 245);
+}
+
+.modal-overlay-content .content-modal {
+    padding: 20px;
+    border-bottom: 1px solid rgb(232, 234, 235);
+}
+
+.modal-overlay-content .footer-modal {
+    padding: 20px;
+}
+
+.common-push-btn {
+    padding: 7px 16px;
+    border-radius: 6px;
+    height: 36px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-cancel {
+    border: 1px solid rgb(0, 136, 255);
+    color: rgb(0, 136, 255);
+}
+
+.btn-confirm {
+    background: rgb(0, 136, 255);
+    color: #fff;
+    margin-left: 15px;
+}
+
+#modalOverlayEditInformation .content-modal .input-text {
+    height: 36px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(211, 213, 215);
+    border-radius: 6px;
+    width: 100%;
+    display: flex;
+}
+
+#modalOverlayEditInformation .input-text input {
+    outline: none;
+    border-radius: 6px;
+    width: 100%;
+    margin: 0px 7px;
+    border: none;
+}
+
+#modalOverlayEditNote .input-text-note {
+    height: 72px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(211, 213, 215);
+    border-radius: 6px;
+}
+
+#modalOverlayEditNote .input-text-note input {
+    height: 100%;
+    width: 100%;
+    margin: 0px 7px;
+    border: none;
+    outline: none;
+    text-align: start;
+}

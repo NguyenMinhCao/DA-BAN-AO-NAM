@@ -89,7 +89,7 @@
                                                     <div class="d-flex-date"
                                                         style="justify-content: space-between; display: flex;">
                                                         <select class="form-select me-2" id="day" name="day">
-                                                            <option>Ngày</option>
+                                                            <!-- <option>Ngày</option> -->
                                                             <c:forEach var="i" begin="1" end="30" step="1">
                                                                 <option value="${i}" <c:if
                                                                     test="${userByEmail.dateOfBirth.dayOfMonth == i}">
@@ -98,7 +98,7 @@
                                                             </c:forEach>
                                                         </select>
                                                         <select class="form-select me-2" id="month" name="month">
-                                                            <option>Tháng</option>
+                                                            <!-- <option>Tháng</option> -->
                                                             <c:forEach var="i" begin="1" end="12" step="1">
                                                                 <option value="${i}" <c:if
                                                                     test="${userByEmail.dateOfBirth.monthValue == i}">
@@ -107,7 +107,7 @@
                                                             </c:forEach>
                                                         </select>
                                                         <select class="form-select" id="year" name="year">
-                                                            <option>Năm</option>
+                                                            <!-- <option>Năm</option> -->
                                                             <c:forEach var="i" begin="1950" end="2024" step="1">
                                                                 <option value="${i}" <c:if
                                                                     test="${userByEmail.dateOfBirth.year == i}">

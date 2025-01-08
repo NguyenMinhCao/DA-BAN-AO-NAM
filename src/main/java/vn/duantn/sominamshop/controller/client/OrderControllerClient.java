@@ -63,9 +63,11 @@ public class OrderControllerClient {
 
         Order order = this.orderService.findOrderByStatusAndCreatedBy();
         double shippingPrice = 0;
-        if (order.getShippingMethod().equals("express")) {
+
+        String shippingMethodString = order.getShippingMethod().toString();
+        if (shippingMethodString.equals("EXPRESS")) {
             shippingPrice = 50000;
-        } else if (order.getShippingMethod().equals("fast")) {
+        } else if (shippingMethodString.equals("FAST")) {
             shippingPrice = 30000;
         } else {
             shippingPrice = 20000;

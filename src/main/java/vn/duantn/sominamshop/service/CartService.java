@@ -15,6 +15,7 @@ import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.model.dto.CartDetailUpdateRequestDTO;
 import vn.duantn.sominamshop.repository.CartDetailRepository;
 import vn.duantn.sominamshop.repository.CartRepository;
@@ -53,8 +54,8 @@ public class CartService {
 
             // tạo mới một order phục vụ cho bên order không liên quan đến cart
             Order order = new Order();
-            order.setPaymentMethod("cash-on-delivery");
-            order.setShippingMethod("fast");
+            order.setPaymentMethod("COD");
+            order.setShippingMethod(ShippingMethod.SAVE);
             List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
             for (Address address : arrAddressByUser) {
                 if (address.isStatus() == true) {
@@ -174,9 +175,9 @@ public class CartService {
         double discountValue = 0;
         double totalPayment = 0;
 
-        if (order.getShippingMethod().equals("express")) {
+        if (order.getShippingMethod().equals("EXPRESS")) {
             shippingPrice = 50000;
-        } else if (order.getShippingMethod().equals("fast")) {
+        } else if (order.getShippingMethod().equals("FAST")) {
             shippingPrice = 30000;
         } else {
             shippingPrice = 20000;

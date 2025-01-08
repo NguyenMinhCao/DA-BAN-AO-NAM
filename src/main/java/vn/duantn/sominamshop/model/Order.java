@@ -2,6 +2,8 @@ package vn.duantn.sominamshop.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -21,7 +23,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.duantn.sominamshop.model.constants.OrderStatus;
+import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.PaymentStatus;
+import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
@@ -35,23 +39,32 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
     @Column(name = "total_products")
     private Integer totalProducts;
 
     @Column(name = "total_amount", precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
-    @Column(name = "shipping_method")
-    private String shippingMethod;
-
     @Column(name = "note", columnDefinition = "NVARCHAR(MAX)")
     private String note;
 
+    @Column(name = "shipping_method")
+    @Enumerated(EnumType.STRING)
+    private ShippingMethod shippingMethod;
+
     @Column(name = "payment_method")
     private String paymentMethod;
+
+    @Column(name = "delivery_status")
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus;
+
+    @Column(name = "payment_status")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    @Column(name = "order_source")
+    private Boolean orderSource;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -74,14 +87,12 @@ public class Order {
     @Column(name = "updated_by")
     private String updatedBy;
 
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @PrePersist
     public void handleBeforeCreate() {
         this.createdAt = LocalDateTime.now();
-
 
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
