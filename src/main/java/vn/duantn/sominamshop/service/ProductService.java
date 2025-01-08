@@ -80,13 +80,13 @@ public class ProductService {
 //        return productRepository.existsByName(name);
 //    }
 //
-//    @Transactional
-//    public void updateQuantityProduct(Long quantity, Long id) {
-//        productRepository.updateQuantityProduct(quantity, id);
-//    }
+    @Transactional
+    public void updateQuantityProduct(Long quantity, Long id) {
+        productDetailRepository.updateQuantityProduct(quantity, id);
+    }
 
     public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name) {
-        Page<CounterProductProjection> pageCounterRespone = productRepository.findAllProductByName(pageable, name);
+        Page<CounterProductProjection> pageCounterRespone = productDetailRepository.findAllProductByName(pageable, name);
         return pageCounterRespone;
     }
 //

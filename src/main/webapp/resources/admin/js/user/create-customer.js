@@ -22,7 +22,6 @@ $(document).ready(function () {
             email : email,
             fullName : name,
             phoneNumber : phone,
-            avatar : file? file : '',
             gender : gender,
             dateOfBirth : dob,
             status : 'Kích hoạt',
@@ -37,11 +36,15 @@ $(document).ready(function () {
                 }
             ]
         }
+        let formData = new FormData();
+        if(file){
+            formData.append('file', file);
+        }
+        formData.append("json", new Blob([JSON.stringify(data)], {type: "application/json"}));
         $.ajax({
-            url: `http://localhost:8080/api/admin/user/save/customer`,
+            url: `http://localhost:8080/api/admin/user/save/customer/multipart`,
             type: 'POST',
-            contentType: "application/json",
-            data: JSON.stringify(data),
+            data: formData,
             success: function() {
                 notificationAddCusstomer('Thêm thành công', 'success')
             },

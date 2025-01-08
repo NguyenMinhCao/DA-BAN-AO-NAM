@@ -485,7 +485,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchProducts(page) {
         const inputSearch = document.getElementById('search-input-product').value
         $.ajax({
-            url: `http://localhost:8080/api/admin/order/get/products?page=${page}&limit=3`,
+            url: `http://localhost:8080/api/admin/order/get/products?page=${page}&limit=5`,
             type: 'GET',
             data: {keyword: inputSearch},
             success: function (response) {
@@ -569,7 +569,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <tr>
                             <td>${index + 1}</td>
                             <td class="product-name" >${product.name}</td>
-                            <td class="product-image"><img src="/images/product/${product.image}" alt="ảnh lỗi" height="100" width="auto"></td>
+                            <td class="product-image"><img src="${product.image}" alt="ảnh lỗi" height="100" width="auto"></td>
                             <td class="product-size">${product.sizeName}</td>
                             <td class="product-quantity">${product.quantity}</td>
                             <td class="product-color">${product.colorName}</td>
@@ -677,7 +677,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     saveInvoiceDetail(response.id)
                 }
             },
-            error: function (error) {
+            error: function (xhr, status,error) {
                 Swal.fire({
                     icon: "error",
                     title: "Có lỗi khi lưu hóa đơn",
@@ -685,6 +685,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     timer: 1500
                 });
                 console.log("Error:", error);
+                console.error('HTTP Status:', xhr.status); // Mã trạng thái HTTP
+                console.error('Response Text:', xhr.responseText); // Nội dung phản hồi
+                console.error('Error:', error); // Mô tả lỗi
             }
         });
     }

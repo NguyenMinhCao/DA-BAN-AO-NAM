@@ -55,8 +55,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                         "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE)")
         BigDecimal getYearlyRevenue();
 
-        @Query("SELECT p FROM Product p WHERE p.quantity < 20")
-        Page<Product> findLowStockProducts(Pageable pageable);
+//        @Query("SELECT p FROM Product p WHERE p.quantity < 20")
+//        Page<Product> findLowStockProducts(Pageable pageable);
 
         List<Order> findOrderByUser(User user);
 

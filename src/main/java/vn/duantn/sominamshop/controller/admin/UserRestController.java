@@ -5,11 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.UserDTO;
+import vn.duantn.sominamshop.service.UploadService;
 import vn.duantn.sominamshop.service.UserService;
 
 import java.util.Map;
@@ -19,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserRestController {
     private final UserService userService;
+    private final UploadService uploadService;
     @GetMapping("/get/customers")
     public ResponseEntity<?> getCustomers(
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -49,6 +53,21 @@ public class UserRestController {
         if(user.getPhoneNumber() != null)
             user.getAddress().forEach(address -> address.setUser(user));
         user.setRole(Role.builder().id(1).build());
+        User userSave = userService.handleSaveUser(user);
+        UserDTO userDTO = UserDTO.toDTO(userSave);
+        return ResponseEntity.ok(userDTO);
+    }
+    @PostMapping(value = "/save/customer/multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> saveCustomerMultipart(@RequestParam User user, @RequestParam(name = "file") MultipartFile file){
+        Map<String, String> validationErrors = userService.validateCustomerData(user);
+        if (!validationErrors.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);
+        }
+        if(user.getPhoneNumber() != null)
+            user.getAddress().forEach(address -> address.setUser(user));
+        user.setRole(Role.builder().id(1).build());
+        String avatar = uploadService.handleSaveAvatar(file, "/resources/images/avatar");
+        user.setAvatar(avatar);
         User userSave = userService.handleSaveUser(user);
         UserDTO userDTO = UserDTO.toDTO(userSave);
         return ResponseEntity.ok(userDTO);
