@@ -28,7 +28,7 @@ public class OrderDTO {
     public static OrderDTO toOrderDTO(Order order) {
         OrderDTO orderDTO = OrderDTO.builder()
                 .id(order.getId())
-                .paymentMethod("COD")
+                .paymentMethod(order.getPaymentMethod())
                 .note(order.getNote())
                 .status(order.getDeliveryStatus())
                 .user(order.getUser())

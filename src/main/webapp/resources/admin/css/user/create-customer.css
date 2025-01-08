@@ -1,0 +1,49 @@
+body {
+    background-color: #f2f1f1 !important;
+}
+
+/* Container tổng */
+.container{
+    width: 100%;
+    /*max-width: 1200px;*/
+    border-radius: 8px;
+    padding: 20px;
+    /* margin: 60px 10px 10px 18%; */
+    background-color: #fff;
+}
+.base-information,
+.address-information{
+    padding: 20px;
+    margin: 30px 0px 30px 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.form-group-wrapper{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+.item-group{
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px;
+}
+.item-group label{
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.btn-add{
+    display: flex;
+    justify-content: end;
+}
+.btn-add button{
+    margin: 0 5px;
+    padding: 8px 16px;
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}

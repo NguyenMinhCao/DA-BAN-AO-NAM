@@ -1,6 +1,7 @@
 package vn.duantn.sominamshop.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -13,8 +14,12 @@ import jakarta.servlet.http.HttpSession;
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.RegisterDTO;
+import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.repository.RoleRepository;
 import vn.duantn.sominamshop.repository.UserRepository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -50,7 +55,6 @@ public class UserService {
             return false;
         }
     }
-
     public User registerDTOtoUser(RegisterDTO registerDTO) {
         User user = new User();
         user.setEmail(registerDTO.getEmail());
@@ -60,6 +64,26 @@ public class UserService {
         user.setRole(this.getRoleByName("USER"));
         return user;
     }
+
+
+
+    public Page<UserDTO> findByFullNameAndRole(String name, Role role, Pageable pageable) {
+        Page<User> pageUser = userRepository.findByFullNameContainingAndRole(name, role, pageable);
+        Page<UserDTO> pageUserDto = pageUser.map(user -> UserDTO.toDTO(user));
+        return pageUserDto;
+    }
+
+    public Map<String, String> validateCustomerData(User user) {
+        Map<String, String> errors = new HashMap<>();
+        if (!user.getPhoneNumber().isEmpty() && userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+            errors.put("phoneNumber", "Phone number already exists.");
+        }
+        if (!user.getEmail().isEmpty()&& this.checkEmailExits(user.getEmail())) {
+            errors.put("email", "Email already exists.");
+        }
+        return errors;
+    }
+
 
     public Optional<User> findUserById(Long id) {
         return this.userRepository.findById(id);
@@ -81,7 +105,15 @@ public class UserService {
         }
     }
 
+
     public Page<User> findUserByFullNameContainingAndRole(String fullName, Role role, Pageable pageable) {
         return this.userRepository.findByFullNameContainingAndRole(fullName, role, pageable);
     }
+    public Page<UserDTO> findByFullNameAndRole(Pageable pageable, String name) {
+        Page<User> pageCustomer = userRepository.findByFullNameContainingAndRole(name, Role.builder().id(1).build(),
+                pageable);
+        Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
+        return pageCustomerDto;
+    }
+
 }

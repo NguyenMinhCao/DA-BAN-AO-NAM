@@ -55,15 +55,28 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                         "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE)")
         BigDecimal getYearlyRevenue();
 
-        @Query("SELECT p FROM Product p WHERE p.quantity < 20")
-        Page<Product> findLowStockProducts(Pageable pageable);
-
         List<Order> findOrderByUser(User user);
+
+//    @Query("SELECT p FROM Product p WHERE p.quantity < 20")
+//    Page<Product> findLowStockProducts(Pageable pageable);
 
         @Query("SELECT o FROM Order o WHERE o.deliveryStatus IS NULL AND o.createdBy = :createdBy")
         Order findOrderByDeliveryStatusAndCreatedBy(@Param("createdBy") String createdBy);
 
         @Query("SELECT o FROM Order o WHERE o.deliveryStatus IS NOT NULL")
         List<Order> findAllOrderByDeliveryStatusNotNull();
+
+    @Query("SELECT COUNT(p) FROM Product p")
+    long getTotalProducts();
+
+//    @Query("SELECT COUNT(p) FROM Product p WHERE p.quantity < 20")
+//    long getLowStockProductCount();
+
+
+    @Query("SELECT COUNT(o) FROM Order o " +
+            "JOIN o.orderDetails od " +
+            "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE) " +
+            "AND FUNCTION('DAY', o.createdAt) = FUNCTION('DAY', CURRENT_DATE)")
+    long getTodayOrderCount();
 
 }

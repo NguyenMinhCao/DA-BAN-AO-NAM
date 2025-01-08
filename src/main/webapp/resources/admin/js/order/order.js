@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const productModal = document.getElementById('product-modal');
     const customerModal = document.getElementById('customer-modal');
     const addCustomerModal = document.getElementById('form-add-customer');
+    const modalChoseVoucher = document.getElementById('modalOverlayAddVoucher')
 
     const chooseProductBtn = document.getElementById('btn-choose-product');
     const chooseCustomerBtn = document.getElementById('btn-choose-customer');
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let deletedInvoiceIDs = [];
     fetchProducts(0, 2)
     fetchCustomers(0)
+    fetchLocation()
     // Hiển thị modal chọn sản phẩm
     chooseProductBtn.addEventListener('click', function () {
         if (invoiceCounter < 1) {
@@ -40,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleModal(productModal, true)
     });
 
+    document.getElementById('openModalBtnAddVoucher').addEventListener('click', function(){
+        toggleModal(modalChoseVoucher, true)
+    })
     // Đóng modal chọn sản phẩm
     closeProductModalBtn.addEventListener('click', () => toggleModal(productModal, false));
 
@@ -101,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#infoDetail').empty()
             customerNameInput.innerText = e.target.getAttribute('data-name');
             customerNameInput.setAttribute('data-customer-id', e.target.getAttribute('customer-id'))
-            var phoneNumber = e.target.getAttribute('data-name');
+            var phoneNumber = e.target.getAttribute('data-sdt');
             var email  = e.target.getAttribute('data-email')
             $('#infoDetail').append('<p>Số điện thoại: ' + phoneNumber + '</p>');
             $('#infoDetail').append('<p>email: ' + email + '</p>');
@@ -116,11 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
         customerNameInput.setAttribute('data-customer-id', '')
         $('#infoDetail').empty()
         $('#btn-delete-customer').prop('disabled', true);
-    })
-
-    //Thêm mới khách hàng
-    document.getElementById('btn-add-customer').addEventListener('click', function(e){
-        toggleModal(addCustomerModal, true);
     })
 
     // Tạo hóa đơn chờ
@@ -261,7 +261,6 @@ document.addEventListener('DOMContentLoaded', function () {
             listProduct.push(product)
         }
         updateTotalPrice();
-        fetchVoucher();
         saveDataToLocalStorage(selectedInvoiceId)
     }
 
@@ -276,7 +275,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
                 saveDataToLocalStorage(selectedInvoiceId)
                 updateTotalPrice();
-                fetchVoucher();
             }
         });
         newRow.querySelector(".increase").addEventListener("click", () => {
@@ -286,7 +284,6 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
             saveDataToLocalStorage(selectedInvoiceId)
             updateTotalPrice();
-            fetchVoucher();
         });
         quantityInput.addEventListener("change", () => {
             if(Number(quantityInput.value) > Number(totalQuantityProduct)){
@@ -304,7 +301,6 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
             saveDataToLocalStorage(selectedInvoiceId)
             updateTotalPrice();
-            fetchVoucher();
         });
         //Xóa sản phẩm trong table
         newRow.querySelector('.delete-btn').addEventListener('click', function() {
@@ -315,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function () {
             saveDataToLocalStorage(selectedInvoiceId)
             newRow.remove();
             updateTotalPrice()
-            fetchVoucher();
         });
     }
     // Tạo hóa đơn mới
@@ -594,7 +589,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchCustomers(page) {
         const inputSearch = document.getElementById('search-input-customer').value
         $.ajax({
-            url: `http://localhost:8080/api/admin/order/get/customers?page=${page}&limit=2`,
+            url: `http://localhost:8080/api/admin/user/get/customers?page=${page}&limit=2`,
             type: 'GET',
             data: {keyword: inputSearch},
             success: function (response) {
@@ -693,29 +688,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    //Lấy voucher
-    function fetchVoucher(){
-        const orderValue = document.getElementById('form-invoice-total-amount')
-        $.ajax({
-            url: `http://localhost:8080/api/admin/order/get/promotions`,
-            type: 'GET',
-            data: {orderValue: orderValue},
-            success: function (response) {
-                if (response.id != null) {
-                    $('#voucher').text(response?.promotionCode || '')
-                }
-            },
-            error: function (error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Có lỗi khi lưu hóa đơn",
-                    showConfirmButton: true,
-                    timer: 1500
-                });
-                console.log("Error:", error);
-            }
-        });
-    }
 
     function saveInvoiceDetail(idInvoice) {
         if (!listProduct || listProduct.length === 0) {
@@ -788,7 +760,7 @@ document.addEventListener('DOMContentLoaded', function () {
         removeInvoice(selectedInvoiceId)
     }
 
-    // function in hóa đơn
+//********************* in hóa đơn **************
     function printInvoice(products) {
         let currentDate = new Date();
         let formattedDate = currentDate.toLocaleDateString('vi-VN');
@@ -857,6 +829,187 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     }
+
+//**************** Thêm mới khách hàng **************
+    //Mở thêm khách hàng
+    document.getElementById('btn-add-customer').addEventListener('click', function(e){
+        toggleModal(addCustomerModal, true);
+        toggleModal(customerModal, false)
+    })
+
+    //đóng form thêm khách hàng
+    document.getElementById('cancel-btn-add-customer').addEventListener('click', ()=> toggleModal(addCustomerModal, false))
+
+    //function cho thông báo
+    function notificationAddCusstomer(message, icon){
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.style.zIndex = 2000;
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: icon,
+            title: message
+        });
+    }
+
+    //fetch địa chỉ cho các ô select
+    function fetchLocation(){
+        const apiUrl = 'https://provinces.open-api.vn/api/p';
+        $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            success: function(data) {
+                console.log(data);
+                data.forEach(function(value) {
+                    $('#area').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching provinces data:', error);
+            }
+        });
+    }
+    function fetchDistricts(districtsCode) {
+        const apiUrlDistricts = `https://provinces.open-api.vn/api/p/${districtsCode}/?depth=2`;
+        $.ajax({
+            url: apiUrlDistricts,
+            method: 'GET',
+            success: function(data) {
+                console.log(data);
+                let districts = data.districts;
+                $('#Districts').empty().append('<option value="">Select District</option>');
+                districts.forEach(function(value) {
+                    $('#Districts').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+    function fetchWards(wardCode) {
+        const apiUrlWards = `https://provinces.open-api.vn/api/d/${wardCode}/?depth=2`;
+        $.ajax({
+            url: apiUrlWards,
+            method: 'GET',
+            success: function(data) {
+                console.log(data);
+                let wards = data.wards;
+                $('#Wards').empty().append('<option value="">Select Ward</option>');
+                wards.forEach(function(value) {
+                    $('#Wards').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching wards data:', error);
+            }
+        });
+    }
+
+    $('#area').on('change', function(e) {
+        fetchDistricts(e.target.value);
+    });
+
+    $('#Districts').on('change', function(e) {
+        fetchWards(e.target.value);
+    });
+    function validateCustomer(name, phoneNumber, email){
+        let emailRegex = /^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        let phoneRegex = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
+        if(!name ||  (!phoneNumber && !email)){
+            notificationAddCusstomer('Tên, số điện thoại hoặc email đang trống!', 'error')
+            return false;
+        }
+        if(email && !emailRegex.test(email)){
+            notificationAddCusstomer('email không hợp lệ!', 'error')
+            return false;
+        }
+        if(phoneNumber && !phoneRegex.test(phoneNumber)){
+            notificationAddCusstomer('Số điện thoại không hợp lệ!', 'error')
+            return false;
+        }
+        return true
+    }
+
+    //add khách hàng
+    function addCustomer(){
+        let name = $("#fullnameCustomer").val()
+        let phoneNumber = $("#phoneNumberAdd").val()
+        let email = $("#emailCustomer").val()
+        let city = $('#area option:selected').text();
+        let district = $('#Districts option:selected').text();
+        let ward = $('#Wards option:selected').text();
+        let gender = $('#gender').val();
+        let dateOfBirth = $('#dob').val();
+        const address = [city, district, ward].filter(value => value.trim() !== "").join(", ");
+        let addressDetail = $('#addressAddDetail').text();
+        if(!validateCustomer(name, phoneNumber, email)){
+            return
+        }
+        let data = {
+            email : email,
+            fullName : name,
+            phoneNumber : phoneNumber,
+            gender : gender,
+            dateOfBirth : dateOfBirth,
+            address:[
+                {
+                    fullName: name,
+                    phoneNumber: phoneNumber,
+                    ward: ward,
+                    city : city,
+                    district : district,
+                    address: address,
+                    streetDetails:addressDetail,
+                    status: true,
+                }
+            ]
+        }
+        $.ajax({
+            url: `http://localhost:8080/api/admin/user/save/customer`,
+            type: 'POST',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function() {
+                toggleModal(addCustomerModal,false)
+                notificationAddCusstomer('Thêm thành công', 'success')
+                $('#infoDetail').empty()
+                customerNameInput.innerText = data.fullName,
+                customerNameInput.setAttribute('data-customer-id',data.id)
+                var phoneNumber = data.phoneNumber;
+                var email  = data.email;
+                $('#infoDetail').append('<p>Số điện thoại: ' + phoneNumber + '</p>');
+                $('#infoDetail').append('<p>email: ' + email + '</p>');
+                $('#btn-delete-customer').prop('disabled', false);
+                toggleModal(customerModal, false);
+                saveDataToLocalStorage(selectedInvoiceId)
+                fetchCustomers()
+            },
+            error: function(xhr, status, error) {
+                let errorMap = JSON.parse(xhr.responseText);
+                let errorMessages = Object.values(errorMap);
+                notificationAddCusstomer(errorMessages, 'error')
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+    $('#add-customer').on('click', function(e) {
+        addCustomer()
+    })
+//**************** Giao hàng **************
+    $('#flexSwitchCheckDefault').on('change', function(e){
+        let modal = document.getElementById('form-customer')
+        toggleModal(modal, true)
+    })
+
 });
 
 function localtt() {

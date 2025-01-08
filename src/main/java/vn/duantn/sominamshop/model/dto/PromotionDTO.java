@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class PromotionDTO {
     private long id;
     private String promotionCode;
-    private DiscountType discountType;
+    private String discountType;
     private String discountValue;
     private BigDecimal minOrderValue;
     private Integer usageLimit;
@@ -38,7 +38,7 @@ public class PromotionDTO {
                 .startDate(promotion.getStartDate())
                 .endDate(promotion.getEndDate())
                 .status(promotion.isStatus())
-                .discountType(promotion.getDiscountType())
+//                .discountType(promotion.getDiscountType())
                 .discountValue(promotion.getDiscountValue())
                 .promotionCode(promotion.getPromotionCode())
                 .usageLimit(promotion.getUsageLimit())

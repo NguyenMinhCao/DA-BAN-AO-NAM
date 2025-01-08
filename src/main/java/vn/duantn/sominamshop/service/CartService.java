@@ -75,7 +75,7 @@ public class CartService {
 
         if (findCartDetail != null) {
             findCartDetail.setQuantity(findCartDetail.getQuantity() + 1);
-            findCartDetail.setPrice(findCartDetail.getQuantity() * product.getPrice());
+//            findCartDetail.setPrice(findCartDetail.getQuantity() * product.getPrice());
             int sum = findLstCartDetail.size();
             session.setAttribute("sum", sum);
             cart.setTotalProducts(sum);
@@ -84,9 +84,9 @@ public class CartService {
         } else {
             CartDetail cartDetail = new CartDetail();
             cartDetail.setCart(cart);
-            cartDetail.setProduct(product);
+            // cartDetail.setProduct(product);
             cartDetail.setQuantity(cartDetail.getQuantity() + 1);
-            cartDetail.setPrice(cartDetail.getQuantity() * product.getPrice());
+//            cartDetail.setPrice(cartDetail.getQuantity() * product.getPrice());
             int sum = cart.getTotalProducts() + 1;
             session.setAttribute("sum", sum);
             cart.setTotalProducts(sum);
@@ -161,7 +161,7 @@ public class CartService {
         CartDetail cartDetailById = this.findCartDetailById(cartDetailId).get();
         if (cartDetailById != null) {
             cartDetailById.setQuantity(quantity);
-            cartDetailById.setPrice(cartDetailById.getProduct().getPrice() * quantity);
+//            cartDetailById.setPrice(cartDetailById.getProduct().getPrice() * quantity);
             this.saveCartDetail(cartDetailById);
         }
 

@@ -30,6 +30,7 @@ public class Origin {
     @Column(name = "updated_at", columnDefinition = "DATETIME DEFAULT GETDATE()")
     private LocalDateTime updatedAt;
 
-
+    @Column(name = "status", columnDefinition = "NVARCHAR(50) DEFAULT 'Hoạt động'")
+    private String status = "Hoạt động";
 
 }

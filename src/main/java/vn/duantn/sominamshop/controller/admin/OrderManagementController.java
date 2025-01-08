@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.dto.request.DataStatusOrderDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;
@@ -91,7 +90,7 @@ public class OrderManagementController {
     public ResponseEntity<String> findProductId(@PathVariable String id) {
         Product productById = this.productService.findProductById(Long.valueOf(id));
         if (productById != null) {
-            return ResponseEntity.ok().body(productById.getQuantity().toString());
+            return ResponseEntity.ok().body(productById.getProductDetails().get(0).toString());
         }
         return null;
     }

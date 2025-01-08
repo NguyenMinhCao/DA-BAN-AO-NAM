@@ -6,7 +6,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="admin/order/order-statistic">
+                            <a class="nav-link" href="/admin/order/order-statistics">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -53,7 +53,6 @@
                                 </nav>
                             </div>
 
-                            <!-- Nhân viên -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                 data-bs-target="#collapseLayoutsNhanVien" aria-expanded="false"
                                 aria-controls="collapseLayouts">
@@ -66,6 +65,48 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="layout-static.html">Danh sách</a>
                                     <a class="nav-link" href="layout-sidenav-light.html">Thêm sản phẩm</a>
+                                </nav>
+                            </div>
+
+                            <a class="nav-link collapsed" href="/admin/color" data-bs-target="#collapseLayoutsProduct"
+                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Quản lý màu sắc
+                            </a>
+                            <a class="nav-link collapsed" href="/admin/size" data-bs-target="#collapseLayoutsProduct"
+                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Quản lý kích cỡ
+                            </a>
+                            <a class="nav-link collapsed" href="/admin/origin" data-bs-target="#collapseLayoutsProduct"
+                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Quản lý nguồn gốc
+                            </a>
+                            <a class="nav-link collapsed" href="/admin/category" data-bs-target="#collapseLayoutsProduct"
+                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Quản lý danh mục
+                            </a>
+                            <a class="nav-link collapsed" href="/admin/material" data-bs-target="#collapseLayoutsProduct"
+                               aria-expanded="false" aria-controls="collapseLayoutsProduct">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Quản lý chất liệu
+                            </a>
+                            <!-- Khuyến mại -->
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayoutsPromotions" aria-expanded="false"
+                               aria-controls="collapseLayoutsPromotions">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"> </i></div>
+<%--                                <a href="/admin/promotions/show.jsp"></a>--%>
+                                Quản lý khuyến mại
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayoutsPromotions" aria-labelledby="headingOne"
+                                 data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/hien-thiKM">Danh sách</a>
+                                    <a class="nav-link" href="/view-add">Thêm khuyến mại</a>
                                 </nav>
                             </div>
 
@@ -119,6 +160,7 @@
                                 Tables
                             </a>
                         </div>
+
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
