@@ -430,3 +430,36 @@
     color: #fff;
     margin-left: 15px;
 }
+
+#modalOverlayEditInformation .content-modal .input-text {
+    height: 36px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(211, 213, 215);
+    border-radius: 6px;
+    width: 100%;
+    display: flex;
+}
+
+#modalOverlayEditInformation .input-text input {
+    outline: none;
+    border-radius: 6px;
+    width: 100%;
+    margin: 0px 7px;
+    border: none;
+}
+
+#modalOverlayEditNote .input-text-note {
+    height: 72px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(211, 213, 215);
+    border-radius: 6px;
+}
+
+#modalOverlayEditNote .input-text-note input {
+    height: 100%;
+    width: 100%;
+    margin: 0px 7px;
+    border: none;
+    outline: none;
+    text-align: start;
+}

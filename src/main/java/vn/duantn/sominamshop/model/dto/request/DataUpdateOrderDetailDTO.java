@@ -8,4 +8,5 @@ import lombok.Setter;
 public class DataUpdateOrderDetailDTO {
     private long productId;
     private long quantity;
+    private boolean updateORemove;
 }

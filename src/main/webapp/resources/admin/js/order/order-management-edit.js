@@ -28,7 +28,21 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     });
 
+    openModalRemove.forEach((button) => {
+        button.addEventListener('click', () => {
+            var productEdit = button.closest('.product-edit');
 
+            if (productEdit) {
+                // Tìm phần tử con có class 'idProduct' trong 'product-edit'
+                const idOrderDetailDiv = productEdit.querySelector('.idOrderDetail')
+                if (idOrderDetailDiv) {
+                    const getId = idOrderDetailDiv.textContent.trim();
+                    getIdOrderDetail = getId;
+                    console.log(getIdOrderDetail)
+                }
+            }
+        })
+    })
 
     openModalEdit.forEach((button) => {
         button.addEventListener('click', () => {
@@ -91,67 +105,86 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
+    //update số lượng
     if (btnConfirmUpdate) {
-        btnConfirmUpdate.onclick = async () => {
-            try {
-                const sentData = {
-                    productId: getProductId,
-                    quantity: inputQuantity.value
-                }
-                const response = await fetch('/admin/orders/' + getIdOrderDetail + '/edit', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(sentData)
-                });
+        btnConfirmUpdate.onclick = () => handleButtonClick(true);
+    }
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
+    //xóa sản phẩm
+    if (confirmRemove) {
+        confirmRemove.onclick = () => {
 
-                window.location.reload(true);
-            } catch (error) {
-                console.error('Error:', error);
+        }
+        confirmRemove.onclick = () => handleButtonClick(false);
+    }
+
+
+    const handleButtonClick = async (isUpdate) => {
+        var isUp = true;
+        if (isUpdate) {
+            isUp = true
+        } else {
+            isUp = false
+        }
+        const sentData = {
+            productId: getProductId,
+            quantity: inputQuantity.value,
+            updateORemove: isUp
+        }
+
+        try {
+            const response = await fetch('/admin/orders/' + getIdOrderDetail + '/edit', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(sentData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
             }
+
+            window.location.reload(true);
+        } catch (error) {
+            console.error('Error:', error);
         }
     }
 
-    // remove product
 
+    // remove product
     openModalRemove.forEach((modalR) => {
         modalR.onclick = () => {
             modalOverlayRemoveProduct.style.display = 'block'
         }
     })
 
-    openModalRemove.forEach((button) => {
-        button.addEventListener('click', () => {
-            var productEdit = button.closest('.product-edit');
+    // openModalRemove.forEach((button) => {
+    //     button.addEventListener('click', () => {
+    //         var productEdit = button.closest('.product-edit');
 
-            if (productEdit) {
-                // Tìm phần tử con có class 'idProduct' trong 'product-edit'
-                const idProductDiv = productEdit.querySelector('.idProduct')
-                const idOrderDetailDiv = productEdit.querySelector('.idOrderDetail')
-                if (idOrderDetailDiv) {
-                    const getId = idOrderDetailDiv.textContent.trim();
-                    getIdOrderDetail = getId;
-                    console.log(getIdOrderDetail)
-                }
+    //         if (productEdit) {
+    //             // Tìm phần tử con có class 'idProduct' trong 'product-edit'
+    //             const idProductDiv = productEdit.querySelector('.idProduct')
+    //             const idOrderDetailDiv = productEdit.querySelector('.idOrderDetail')
+    //             if (idOrderDetailDiv) {
+    //                 const getId = idOrderDetailDiv.textContent.trim();
+    //                 getIdOrderDetail = getId;
+    //                 console.log(getIdOrderDetail)
+    //             }
 
-                if (idProductDiv) {
-                    // Lấy nội dung văn bản của 'idProduct' và loại bỏ khoảng trắng
-                    const productId = idProductDiv.textContent.trim();
+    //             if (idProductDiv) {
+    //                 // Lấy nội dung văn bản của 'idProduct' và loại bỏ khoảng trắng
+    //                 const productId = idProductDiv.textContent.trim();
 
-                    getProductId = productId
-                    console.log('Product ID:', productId);
-                }
-            }
-        })
+    //                 getProductId = productId
+    //                 console.log('Product ID:', productId);
+    //             }
+    //         }
+    //     })
 
-    })
+    // })
 
 
 })

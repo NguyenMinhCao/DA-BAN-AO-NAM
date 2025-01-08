@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //Đẩy vận chuyển
     const modalOpenOverlayPushTransport = document.getElementById('modalOpenOverlayPushTransport');
     const modalOverlayPushTransport = document.getElementById('modalOverlayPushTransport');
+    const modalEditInformation = document.getElementById('modalEditInformation')
+    const modalOverlayEditInformation = document.getElementById('modalOverlayEditInformation')
+    const modalOverlayEditNote = document.getElementById('modalOverlayEditNote')
+    const modalOpenEditNote = document.getElementById('modalOpenEditNote')
 
     if (modalOpenOverlayPushTransport) {
         modalOpenOverlayPushTransport.addEventListener('click', () => {
@@ -19,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+    //Sủa thông tin khách hàng
+    modalOpenEditNote.onclick = () => modalOverlayEditNote.style.display = 'block'
+
+    //Sủa thông tin ghi chú
+    modalOverlayEditNote.click = () => modalOpenEditNote.style.display = 'block'
 
     //close modal
     const getAllCloseModal = document.querySelectorAll('.btn-close-modal');

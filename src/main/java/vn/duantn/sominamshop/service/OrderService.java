@@ -287,14 +287,20 @@ public class OrderService {
         Optional<OrderDetail> findOrderDetailById = this.findOrderDetailById(Long.valueOf(idOrderD));
         if (findOrderDetailById.isPresent()) {
             OrderDetail orderUnwrap = findOrderDetailById.get();
-            Product productById = this.productService.findProductById(dto.getProductId());
-            orderUnwrap.setQuantity(dto.getQuantity());
-            if (productById != null) {
-                Double newPrice = productById.getPrice() * dto.getQuantity();
-                orderUnwrap.setPrice(newPrice);
+            if (dto.isUpdateORemove()) {
+                Product productById = this.productService.findProductById(dto.getProductId());
+                orderUnwrap.setQuantity(dto.getQuantity());
+                if (productById != null) {
+                    Double newPrice = productById.getPrice() * dto.getQuantity();
+                    orderUnwrap.setPrice(newPrice);
+                }
+                this.orderDetailRepository.save(orderUnwrap);
+
+            } else {
+                this.orderDetailRepository.delete(orderUnwrap);
             }
-            this.orderDetailRepository.save(orderUnwrap);
         }
+
     }
 
     public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name) {

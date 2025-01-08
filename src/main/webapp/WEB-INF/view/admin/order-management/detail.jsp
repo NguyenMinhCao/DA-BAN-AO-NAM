@@ -467,7 +467,8 @@
                                             <div class="contact-information">
                                                 <div class="header-contact d-flex justify-content-between">
                                                     <p class="font-w450">Thông tin liên hệ</p>
-                                                    <span><i class="fa-solid fa-pencil"></i></span>
+                                                    <span id="modalEditInformation"><i
+                                                            class="fa-solid fa-pencil"></i></span>
                                                 </div>
                                                 <p class="user-name mb-5p sub-font">${order.user.email}</p>
                                                 <p class="user-phone sub-font">${order.user.phoneNumber}</p>
@@ -492,7 +493,7 @@
                                         <div class="take-notes">
                                             <div class="pad-20px-3 header-notes d-flex justify-content-between">
                                                 <p class="font-w450">Ghi chú</p>
-                                                <span><i class="fa-solid fa-pencil"></i></span>
+                                                <span id="modalOpenEditNote"><i class="fa-solid fa-pencil"></i></span>
                                             </div>
                                             <p class="user-phone sub-font" style="padding: 0 20px;">
                                                 <c:if test="${order.note != null}"><span>${order.note}</span></c:if>
@@ -617,6 +618,82 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <!-- modal nhận tiền -->
+                        <div class="modal-overlay-edit-information modal-overlay" id="modalOverlayEditInformation">
+                            <div class="modal-overlay-edit-information-content modal-overlay-content">
+                                <div class="header-modal d-flex justify-content-between">
+                                    <h3>Sửa thông tin liên hệ</h3>
+                                    <span class="close-modal-icon btn-close-modal"><i
+                                            class="fa-solid fa-xmark"></i></span>
+                                </div>
+                                <div class="content-modal">
+                                    <div class="box-content-modal d-flex flex-column">
+                                        <div class="d-flex " style="gap: 15px;">
+                                            <div class="d-flex flex-column" style="width: 50%;">
+                                                <span>Email</span>
+                                                <div class="input-text">
+                                                    <input type="text" name="" id="">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column" style="width: 50%;">
+                                                <span>Số điện thoại</span>
+                                                <div class="input-text">
+                                                    <input type="text" name="" id="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="" style="margin-top: 15px;">
+                                            <input type="checkbox" name="" id="">
+                                            <span>Cập nhật hồ sơ khách hàng</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="footer-modal">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="common-push-btn btn-cancel d-flex btn-close-modal">
+                                            <span class="align-self-center">Hủy</span>
+                                        </div>
+                                        <div class="common-push-btn btn-confirm change-status-order"
+                                            id="confirmUpdateUser">
+                                            <span>Lưu</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- modal ghi chú -->
+                        <div class="modal-overlay-edit-note modal-overlay" id="modalOverlayEditNote">
+                            <div class="modal-overlay-edit-note-content modal-overlay-content">
+                                <div class="header-modal d-flex justify-content-between">
+                                    <h3>Thêm ghi chú</h3>
+                                    <span class="close-modal-icon btn-close-modal"><i
+                                            class="fa-solid fa-xmark"></i></span>
+                                </div>
+                                <div class="content-modal">
+                                    <div class="">
+                                        <span>Nội dung ghi chú</span>
+                                        <div class="input-text-note">
+                                            <input placeholder="VD: Giao hàng trong giờ hành chính cho khách hàng"
+                                                type="text" name="" id="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer-modal">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="common-push-btn btn-cancel d-flex btn-close-modal">
+                                            <span class="align-self-center">Hủy</span>
+                                        </div>
+                                        <div class="common-push-btn btn-confirm change-status-order"
+                                            id="confirmUpdateUser">
+                                            <span>Lưu</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         <jsp:include page="../layout/footer.jsp" />
                     </div>
