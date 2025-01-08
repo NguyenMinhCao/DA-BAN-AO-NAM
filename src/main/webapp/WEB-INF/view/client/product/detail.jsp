@@ -108,12 +108,46 @@
                                                 <a href="#"> <span>Trạng thái</span> : Còn hàng</a>
                                             </li>
                                         </ul>
-                                        <p>
+                                        <p style="margin-bottom: 20px;">
                                             Mill Oil is an innovative oil filled radiator with the most
                                             modern technology. If you are looking for something that can
                                             make your interior look awesome, and at the same time give you
                                             the pleasant warm feeling during the winter.
                                         </p>
+
+                                        <div class="box-select-variant">
+                                            <div class="box-colors">
+                                                <div class="text-select"><span>Màu sắc</span></div>
+                                                <div class="d-flex" style="gap: 10px;">
+                                                    <div class="select-box-colors d-flex">
+                                                        <div class="box-select">
+                                                            <img class="img-product-detail" src="/images/product/n2.jpg"
+                                                                alt="">
+                                                            <span>Đen</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="select-box-colors d-flex">
+                                                        <div class="box-select">
+                                                            <img class="img-product-detail" src="/images/product/n2.jpg"
+                                                                alt="">
+                                                            <span>Đen</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="box-sizes">
+                                                <div class="text-select"><span>Kích cỡ</span></div>
+                                                <div class="d-flex" style="gap: 10px;">
+                                                    <div class="select-box-sizes">
+                                                        <span class="name-size">37</span>
+                                                    </div>
+                                                    <div class="select-box-sizes">
+                                                        <span class="name-size">37</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="product_count">
                                             <label for="qty">Quantity:</label>
                                             <input type="text" name="qty" id="sst" maxlength="12"
