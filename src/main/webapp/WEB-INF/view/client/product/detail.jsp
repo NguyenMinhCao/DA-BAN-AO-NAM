@@ -62,31 +62,34 @@
                                                 <li data-target="#carouselExampleIndicators" data-slide-to="0"
                                                     class="active">
                                                     <img style="width: 60px;"
-                                                        src="/images/product/${product.images[0].imageUrl}" alt="" />
+                                                        src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
+                                                        alt="" />
                                                 </li>
                                                 <li data-target="#carouselExampleIndicators" data-slide-to="1">
                                                     <img style="width: 60px;"
-                                                        src="/images/product/${product.images[1].imageUrl}" alt="" />
+                                                        src=/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png
+                                                        alt="" />
                                                 </li>
                                                 <li data-target="#carouselExampleIndicators" data-slide-to="2">
                                                     <img style="width: 60px;"
-                                                        src="/images/product/${product.images[2].imageUrl}" alt="" />
+                                                        src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
+                                                        alt="" />
                                                 </li>
                                             </ol>
                                             <div class="carousel-inner">
                                                 <div class="carousel-item active">
                                                     <img class="d-block w-100"
-                                                        src="/images/product/${product.images[0].imageUrl}"
+                                                        src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
                                                         alt="First slide" />
                                                 </div>
                                                 <div class="carousel-item">
                                                     <img class="d-block w-100"
-                                                        src="/images/product/${product.images[1].imageUrl}"
+                                                        src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
                                                         alt="Second slide" />
                                                 </div>
                                                 <div class="carousel-item">
                                                     <img class="d-block w-100"
-                                                        src="/images/product/${product.images[2].imageUrl}"
+                                                        src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
                                                         alt="Third slide" />
                                                 </div>
                                             </div>
@@ -97,7 +100,7 @@
                                     <div class="s_product_text">
                                         <h3>${product.name}</h3>
                                         <h2>
-                                            <fmt:formatNumber type="number" value="${product.price}" /> đ
+                                            <fmt:formatNumber type="number" value="3443.34" /> đ
                                         </h2>
                                         <ul class="list">
                                             <li>
@@ -119,49 +122,48 @@
                                             <div class="box-colors">
                                                 <div class="text-select"><span>Màu sắc</span></div>
                                                 <div class="d-flex" style="gap: 10px;">
-                                                    <div class="select-box-colors d-flex">
-                                                        <div class="box-select">
-                                                            <img class="img-product-detail" src="/images/product/n2.jpg"
-                                                                alt="">
-                                                            <span>Đen</span>
+                                                    <c:forEach items="${lstProductDetail}" var="productDetail">
+                                                        <div class="select-box-colors d-flex">
+                                                            <div class="box-select">
+                                                                <img class="img-product-detail"
+                                                                    src="/images/product/n2.jpg" alt="">
+                                                                <span>${productDetail.color.colorName}</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="select-box-colors d-flex">
-                                                        <div class="box-select">
-                                                            <img class="img-product-detail" src="/images/product/n2.jpg"
-                                                                alt="">
-                                                            <span>Đen</span>
-                                                        </div>
-                                                    </div>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                             <div class="box-sizes">
                                                 <div class="text-select"><span>Kích cỡ</span></div>
                                                 <div class="d-flex" style="gap: 10px;">
-                                                    <div class="select-box-sizes">
-                                                        <span class="name-size">37</span>
-                                                    </div>
-                                                    <div class="select-box-sizes">
-                                                        <span class="name-size">37</span>
-                                                    </div>
+                                                    <c:forEach items="${lstProductDetail}" var="productDetail">
+                                                        <div class="select-box-sizes">
+                                                            <span class="name-size">${productDetail.size.sizeName}
+                                                            </span>
+                                                        </div>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="product_count">
                                             <label for="qty">Quantity:</label>
-                                            <input type="text" name="qty" id="sst" maxlength="12"
-                                                value="${product.quantity}" title="Quantity:" class="input-text qty" />
-                                            <button class="increase items-count" type="button">
+                                            <input type="text" name="qty" id="sst" maxlength="12" value="1"
+                                                title="Quantity:" class="input-text qty" />
+                                            <button
+                                                onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                                class="increase items-count" type="button">
                                                 <i class="lnr lnr-chevron-up"></i>
                                             </button>
-                                            <button class="reduced items-count" type="button">
+                                            <button
+                                                onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 0 ) result.value--; return false;"
+                                                class="reduced items-count" type="button">
                                                 <i class="lnr lnr-chevron-down"></i>
                                             </button>
+
                                         </div>
                                         <div class="card_area">
-                                            <a class="main_btn" href="/add-product-to-cart/${product.id}">Add to
-                                                Cart</a>
+                                            <a class="main_btn" href="#">Add to Cart</a>
                                             <a class="icon_btn" href="#">
                                                 <i class="lnr lnr lnr-diamond"></i>
                                             </a>
