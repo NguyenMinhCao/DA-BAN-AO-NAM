@@ -1,6 +1,5 @@
 package vn.duantn.sominamshop.service;
 
-
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
@@ -19,20 +18,18 @@ import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
+import vn.duantn.sominamshop.model.OrderHistory;
+import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
-
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
-import vn.duantn.sominamshop.model.dto.*;
-import vn.duantn.sominamshop.repository.*;
-
-
 import vn.duantn.sominamshop.model.dto.AddressDTO;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;
+import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;
 import vn.duantn.sominamshop.repository.CartRepository;
 import vn.duantn.sominamshop.repository.OrderDetailRepository;
 import vn.duantn.sominamshop.repository.OrderRepository;
@@ -47,10 +44,12 @@ public class OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final PromotionService promotionService;
     private final AddressService addressService;
+    private final OrderHistoryService orderHistoryService;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
-            PromotionService promotionService, AddressService addressService) {
+            PromotionService promotionService, AddressService addressService,
+            OrderHistoryService orderHistoryService) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
@@ -58,6 +57,7 @@ public class OrderService {
         this.orderDetailRepository = orderDetailRepository;
         this.promotionService = promotionService;
         this.addressService = addressService;
+        this.orderHistoryService = orderHistoryService;
     }
 
     public List<Order> findOrderByUser(User user) {
@@ -97,7 +97,7 @@ public class OrderService {
                     OrderDetail orderDetail = new OrderDetail();
                     orderDetail.setOrder(order);
 //                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProduct().getPrice());
-                    orderDetail.setProduct(cartDetail.getProduct());
+                    orderDetail.setProductDetail(cartDetail.getProductDetail());
                     orderDetail.setQuantity(cartDetail.getQuantity());
                     // save order detail
                     this.orderDetailRepository.save(orderDetail);
@@ -121,7 +121,8 @@ public class OrderService {
 
                 // delete cart
                 this.cartService.deleteCartByUser(userByEmail);
-
+                // save history order
+                this.orderHistoryService.orderCheckoutHistory(order);
             }
         }
     }
@@ -244,6 +245,10 @@ public class OrderService {
         return this.orderRepository.findById(id);
     }
 
+    public Optional<OrderDetail> findOrderDetailById(Long id) {
+        return this.orderDetailRepository.findById(id);
+    }
+
     public void saveOrder(Order order) {
         this.orderRepository.save(order);
     }
@@ -259,6 +264,27 @@ public class OrderService {
 
     public List<Order> getAllOrdersByDeliveryStatusNotNull() {
         return this.orderRepository.findAllOrderByDeliveryStatusNotNull();
+    }
+
+    public void updateOrderDetail(DataUpdateOrderDetailDTO dto, String idOrderD) {
+        Optional<OrderDetail> findOrderDetailById = this.findOrderDetailById(Long.valueOf(idOrderD));
+        if (findOrderDetailById.isPresent()) {
+            OrderDetail orderUnwrap = findOrderDetailById.get();
+            if (dto.isUpdateORemove()) {
+                Product productById = this.productService.findProductById(dto.getProductId());
+                orderUnwrap.setQuantity(dto.getQuantity());
+                if (productById != null) {
+                    // Double newPrice = productById.getPrice() * dto.getQuantity();
+                    Double newPrice = 23.3 * dto.getQuantity();
+                    orderUnwrap.setPrice(newPrice);
+                }
+                this.orderDetailRepository.save(orderUnwrap);
+
+            } else {
+                this.orderDetailRepository.delete(orderUnwrap);
+            }
+        }
+
     }
 
     @Transactional

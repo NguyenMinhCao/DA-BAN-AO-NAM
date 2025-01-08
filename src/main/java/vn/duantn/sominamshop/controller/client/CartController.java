@@ -86,8 +86,11 @@ public class CartController {
         session.setAttribute("shippingMethodInOrder", order != null ? order.getShippingMethod() : null);
 
         double shippingPrice = 0;
-        String shippingMethodString = order.getShippingMethod().toString();
-
+        String shippingMethodString = "";
+        if (order != null) {
+            shippingMethodString = order.getShippingMethod().toString();
+        }
+      
         if (order != null && shippingMethodString.equals("EXPRESS")) {
             shippingPrice = 50000;
         } else if (order != null && shippingMethodString.equals("FAST")) {
@@ -107,26 +110,26 @@ public class CartController {
         return "client/cart/show";
     }
 
-    @GetMapping("/add-product-to-cart/{id}")
-    public String addProductToCart(HttpServletRequest request,
-            @PathVariable("id") long idProduct) {
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        this.cartService.addProductToCart(email, idProduct, session);
-        return "redirect:/";
-    }
+    // @GetMapping("/add-product-to-cart/{id}")
+    // public String addProductToCart(HttpServletRequest request,
+    //         @PathVariable("id") long idProduct) {
+    //     HttpSession session = request.getSession();
+    //     String email = (String) session.getAttribute("email");
+    //     this.cartService.addProductToCart(email, idProduct, session);
+    //     return "redirect:/";
+    // }
 
-    @GetMapping("/remove-product-from-cart/{id}")
-    public String removeProductCart(@PathVariable long id, HttpServletRequest request) {
-        Product product = this.productService.findProductById(id);
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        this.cartService.deleteCartDetailByCartAndProduct(email, product, session);
-        return "redirect:/cart";
-    }
+    // @GetMapping("/remove-product-from-cart/{id}")
+    // public String removeProductCart(@PathVariable long id, HttpServletRequest request) {
+    //     Product product = this.productService.findProductById(id);
+    //     HttpSession session = request.getSession();
+    //     String email = (String) session.getAttribute("email");
+    //     this.cartService.deleteCartDetailByCartAndProduct(email, product, session);
+    //     return "redirect:/cart";
+    // }
 
     @PutMapping("/cart/update")
-    public ResponseEntity<Map<String, Object>> putMethodName(@RequestBody CartDetailUpdateRequestDTO dto,
+    public ResponseEntity<Map<String, Object>> updateCart(@RequestBody CartDetailUpdateRequestDTO dto,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
         return ResponseEntity.ok().body(this.cartService.updateCartDetailProductQuantity(dto, session));

@@ -18,7 +18,6 @@ public class ProductDetailService {
     private final ProductDetailRepository productDetailRepository;
     private final ProductRepository productRepository;
 
-
     public List<ProductDetail> getAllProductDetail() {
         return productDetailRepository.findAll();
     }
@@ -30,16 +29,14 @@ public class ProductDetailService {
     }
 
     public ProductDetail findByProductIdAndColorIdAndSizeId(Integer productId,
-                                                            Integer colorId,
-                                                            Integer sizeId) {
+            Integer colorId,
+            Integer sizeId) {
         return productDetailRepository.findByProductIdAndColorIdAndSizeId(productId, colorId, sizeId);
     }
 
     public ProductDetail findProductDetailById(Long id) {
         return productDetailRepository.findById(id).orElse(null);
     }
-
-
 
     public List<ProductDetail> getProductDetailsByIds(List<Long> id) {
         return productDetailRepository.findAllById(id);
@@ -59,6 +56,10 @@ public class ProductDetailService {
 
     public ProductDetail findById(Long id) {
         return productDetailRepository.findById(id).get();
+    }
+
+    public List<ProductDetail> findProductDetailByProducts(Product product) {
+        return this.productDetailRepository.getAllProductDetailByProductId(product.getId());
     }
 
     public ProductDetail add(ProductDetailRequest productDetailRequest) {

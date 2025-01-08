@@ -34,8 +34,6 @@ public class Product extends BaseEntity implements Serializable {
     @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
 
-
-
     @ManyToOne
     @JoinColumn(name = "material_id")
     private Material material;

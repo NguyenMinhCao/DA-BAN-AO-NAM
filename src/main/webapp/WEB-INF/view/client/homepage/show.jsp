@@ -141,7 +141,8 @@
                                                     </a>
                                                     <div class="mt-3">
                                                         <span class="mr-4">
-                                                            <fmt:formatNumber type="number" value="${product.price}" />
+                                                            <fmt:formatNumber type="number"
+                                                                value="${product.productDetails[0].price}" />
                                                             đ
                                                         </span>
                                                         <del>$35.00</del>
@@ -367,7 +368,8 @@
                                                 </a>
                                                 <div class="mt-3">
                                                     <span class="mr-4">
-                                                        <fmt:formatNumber type="number" value="${product.price}" />
+                                                        <fmt:formatNumber type="number"
+                                                            value="${product.productDetails[0].price}" />
                                                         đ
                                                     </span>
                                                     <del>$35.00</del>
