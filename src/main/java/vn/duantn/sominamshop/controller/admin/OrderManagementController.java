@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.dto.request.DataStatusOrderDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;

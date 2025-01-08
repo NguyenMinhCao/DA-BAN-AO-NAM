@@ -97,7 +97,7 @@ public class OrderService {
                     OrderDetail orderDetail = new OrderDetail();
                     orderDetail.setOrder(order);
 //                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProduct().getPrice());
-                    orderDetail.setProduct(cartDetail.getProduct());
+                    orderDetail.setProductDetail(cartDetail.getProductDetail());
                     orderDetail.setQuantity(cartDetail.getQuantity());
                     // save order detail
                     this.orderDetailRepository.save(orderDetail);

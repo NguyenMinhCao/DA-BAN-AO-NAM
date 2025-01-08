@@ -84,7 +84,7 @@ public class CartService {
         } else {
             CartDetail cartDetail = new CartDetail();
             cartDetail.setCart(cart);
-            cartDetail.setProduct(product);
+            // cartDetail.setProduct(product);
             cartDetail.setQuantity(cartDetail.getQuantity() + 1);
 //            cartDetail.setPrice(cartDetail.getQuantity() * product.getPrice());
             int sum = cart.getTotalProducts() + 1;
