@@ -30,7 +30,7 @@ public class ProductDetail {
     private BigDecimal cost; // TODO giá nhập
 
     @Column(name = "price")
-    private BigDecimal price; // TODO giá bán
+    private double price; // TODO giá bán
 
     @Column(name = "weight")
     private Float weight; // TODO khối lượng của áo
@@ -50,16 +50,11 @@ public class ProductDetail {
     @JoinColumn(name = "color_id", referencedColumnName = "id")
     private Color color;
 
-
     @JsonIgnore
     @OneToMany(mappedBy = "productDetail")
     private List<Image> images;
 
-
-
     @Transient
     private List<MultipartFile> imagesFiles = new ArrayList<>();
-
-
 
 }

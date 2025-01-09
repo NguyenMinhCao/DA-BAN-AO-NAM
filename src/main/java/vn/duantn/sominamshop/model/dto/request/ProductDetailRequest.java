@@ -4,15 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import vn.duantn.sominamshop.model.*;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 public class ProductDetailRequest {
     private Long productId;
     private Long idProductDetail;
     private Integer quantity;
-    private BigDecimal price;
+    private Double price;
     private Integer colorId;
     private Integer sizeId;
     private Integer status;

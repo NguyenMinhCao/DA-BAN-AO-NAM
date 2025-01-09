@@ -14,9 +14,11 @@ import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.model.dto.CartDetailUpdateRequestDTO;
+import vn.duantn.sominamshop.model.dto.request.DataGetProductDetail;
 import vn.duantn.sominamshop.repository.CartDetailRepository;
 import vn.duantn.sominamshop.repository.CartRepository;
 
@@ -30,10 +32,11 @@ public class CartService {
     private final OrderService orderService;
     private final AddressService addressService;
     private final PromotionService promotionService;
+    private final ProductDetailService productDetailService;
 
     public CartService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartDetailRepository cartDetailRepository, @Lazy OrderService orderService, AddressService addressService,
-            PromotionService promotionService) {
+            PromotionService promotionService, ProductDetailService productDetailService) {
         this.productService = productService;
         this.userService = userService;
         this.cartRepository = cartRepository;
@@ -41,59 +44,62 @@ public class CartService {
         this.orderService = orderService;
         this.addressService = addressService;
         this.promotionService = promotionService;
+        this.productDetailService = productDetailService;
     }
 
-//     public void addProductToCart(String email, long idProduct, HttpSession session) {
-//         User user = this.userService.findUserByEmail(email);
-//         Cart cart = this.cartRepository.findCartByUser(user);
-//         if (cart == null) {
-//             cart = new Cart();
-//             cart.setTotalProducts(0);
-//             cart.setUser(user);
-//             this.cartRepository.save(cart);
+    public void addProductDetailToCart(String email, DataGetProductDetail data, HttpSession session) {
+        User user = this.userService.findUserByEmail(email);
+        Cart cart = this.cartRepository.findCartByUser(user);
+        if (cart == null) {
+            cart = new Cart();
+            cart.setTotalProducts(0);
+            cart.setUser(user);
+            this.cartRepository.save(cart);
 
-//             // tạo mới một order phục vụ cho bên order không liên quan đến cart
-//             Order order = new Order();
-//             order.setPaymentMethod("COD");
-//             order.setShippingMethod(ShippingMethod.SAVE);
-//             List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
-//             for (Address address : arrAddressByUser) {
-//                 if (address.isStatus() == true) {
-//                     order.setAddress(address);
-//                 }
-//             }
-//             this.orderService.saveOrder(order);
-//         }
-//         Product product = this.productService.findProductById(idProduct);
+            // tạo mới một order phục vụ cho bên order không liên quan đến cart
+            Order order = new Order();
+            order.setPaymentMethod("COD");
+            order.setShippingMethod(ShippingMethod.SAVE);
+            List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
+            for (Address address : arrAddressByUser) {
+                if (address.isStatus() == true) {
+                    order.setAddress(address);
+                }
+            }
+            this.orderService.saveOrder(order);
+        }
 
-//         // Tìm xem trong cartdetail đã tồn tại cart và product muốn thêm chưa
-//         CartDetail findCartDetail = this.cartDetailRepository.findCartDetailByCartAndProduct(cart,
-//                 product);
+        ProductDetail productDetail = this.productDetailService.findProductDetailBySizeAndColorAndProduct(data);
+        // Product product = this.productService.findProductById(idProduct);
 
-//         // Đếm số sản phẩm để set sum vào cart
-//         List<CartDetail> findLstCartDetail = this.cartDetailRepository.findAllCartDetailByCart(cart);
+        // Tìm xem trong cartdetail đã tồn tại cart và product muốn thêm chưa
+        CartDetail findCartDetail = this.cartDetailRepository.findCartDetailByCartAndProductDetail(cart,
+                productDetail);
 
-//         if (findCartDetail != null) {
-//             findCartDetail.setQuantity(findCartDetail.getQuantity() + 1);
-// //            findCartDetail.setPrice(findCartDetail.getQuantity() * product.getPrice());
-//             int sum = findLstCartDetail.size();
-//             session.setAttribute("sum", sum);
-//             cart.setTotalProducts(sum);
-//             this.cartRepository.save(cart);
-//             this.cartDetailRepository.save(findCartDetail);
-//         } else {
-//             CartDetail cartDetail = new CartDetail();
-//             cartDetail.setCart(cart);
-//             // cartDetail.setProduct(product);
-//             cartDetail.setQuantity(cartDetail.getQuantity() + 1);
-// //            cartDetail.setPrice(cartDetail.getQuantity() * product.getPrice());
-//             int sum = cart.getTotalProducts() + 1;
-//             session.setAttribute("sum", sum);
-//             cart.setTotalProducts(sum);
-//             this.cartRepository.save(cart);
-//             this.cartDetailRepository.save(cartDetail);
-//         }
-//     }
+        // Đếm số sản phẩm để set sum vào cart
+        List<CartDetail> findLstCartDetail = this.cartDetailRepository.findAllCartDetailByCart(cart);
+
+        if (findCartDetail != null) {
+            findCartDetail.setQuantity(findCartDetail.getQuantity() + 1);
+            findCartDetail.setPrice(findCartDetail.getQuantity() * productDetail.getPrice());
+            int sum = findLstCartDetail.size();
+            session.setAttribute("sum", sum);
+            cart.setTotalProducts(sum);
+            this.cartRepository.save(cart);
+            this.cartDetailRepository.save(findCartDetail);
+        } else {
+            CartDetail cartDetail = new CartDetail();
+            cartDetail.setCart(cart);
+            cartDetail.setProductDetail(productDetail);
+            cartDetail.setQuantity(cartDetail.getQuantity() + 1);
+            cartDetail.setPrice(cartDetail.getQuantity() * productDetail.getPrice());
+            int sum = cart.getTotalProducts() + 1;
+            session.setAttribute("sum", sum);
+            cart.setTotalProducts(sum);
+            this.cartRepository.save(cart);
+            this.cartDetailRepository.save(cartDetail);
+        }
+    }
 
     public void deleteCartByUser(User user) {
         Cart cartByUser = this.cartRepository.findCartByUser(user);
@@ -108,25 +114,26 @@ public class CartService {
         this.cartDetailRepository.save(cartDetail);
     }
 
-    // public void deleteCartDetailByCartAndProduct(String email, Product product, HttpSession session) {
-    //     User user = this.userService.findUserByEmail(email);
-    //     Cart cart = this.cartRepository.findCartByUser(user);
-    //     CartDetail cartDetail = this.cartDetailRepository.findCartDetailByCartAndProduct(cart,
-    //             product);
-    //     this.cartDetailRepository.delete(cartDetail);
-    //     List<CartDetail> findLstCartDetail = this.cartDetailRepository.findAllCartDetailByCart(cart);
-    //     int sum = findLstCartDetail.size();
-    //     cart.setTotalProducts(sum);
-    //     this.cartRepository.save(cart);
-    //     if (sum == 0) {
-    //         Order order = this.orderService.findOrderByStatusAndCreatedBy();
-    //         if (order != null) {
-    //             this.orderService.deleteOrder(order);
-    //         }
-    //         this.cartRepository.delete(cart);
-    //     }
-    //     session.setAttribute("sum", sum);
-    // }
+    public void deleteCartDetailByCartAndProduct(String email, ProductDetail productDetail,
+            HttpSession session) {
+        User user = this.userService.findUserByEmail(email);
+        Cart cart = this.cartRepository.findCartByUser(user);
+        CartDetail cartDetail = this.cartDetailRepository.findCartDetailByCartAndProductDetail(cart,
+                productDetail);
+        this.cartDetailRepository.delete(cartDetail);
+        List<CartDetail> findLstCartDetail = this.cartDetailRepository.findAllCartDetailByCart(cart);
+        int sum = findLstCartDetail.size();
+        cart.setTotalProducts(sum);
+        this.cartRepository.save(cart);
+        if (sum == 0) {
+            Order order = this.orderService.findOrderByStatusAndCreatedBy();
+            if (order != null) {
+                this.orderService.deleteOrder(order);
+            }
+            this.cartRepository.delete(cart);
+        }
+        session.setAttribute("sum", sum);
+    }
 
     public List<CartDetail> getAllCartDetailByCart(String email) {
         User user = this.userService.findUserByEmail(email);
@@ -135,7 +142,7 @@ public class CartService {
     }
 
     // public CartDetail findCartDetailByProduct(Product product) {
-    //     return this.cartDetailRepository.findCartDetailByProduct(product);
+    // return this.cartDetailRepository.findCartDetailByProduct(product);
     // }
 
     public Cart findCartByUser(User user) {
@@ -161,7 +168,7 @@ public class CartService {
         CartDetail cartDetailById = this.findCartDetailById(cartDetailId).get();
         if (cartDetailById != null) {
             cartDetailById.setQuantity(quantity);
-//            cartDetailById.setPrice(cartDetailById.getProduct().getPrice() * quantity);
+            // cartDetailById.setPrice(cartDetailById.getProduct().getPrice() * quantity);
             this.saveCartDetail(cartDetailById);
         }
 

@@ -96,7 +96,7 @@ public class OrderService {
                 for (CartDetail cartDetail : lstCartDetail) {
                     OrderDetail orderDetail = new OrderDetail();
                     orderDetail.setOrder(order);
-//                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProduct().getPrice());
+                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProductDetail().getPrice());
                     orderDetail.setProductDetail(cartDetail.getProductDetail());
                     orderDetail.setQuantity(cartDetail.getQuantity());
                     // save order detail
@@ -117,6 +117,16 @@ public class OrderService {
                     order.setPaymentStatus(PaymentStatus.COMPLETED);
                 }
                 order.setOrderSource(true);
+
+                // set address
+                List<Address> addressByUser = this.addressService.findAllAddressByUser(userByEmail);
+                for (Address address : addressByUser) {
+                    if (address.isStatus()) {
+                        order.setAddress(address);
+                    }
+                }
+
+                // save order
                 this.orderRepository.save(order);
 
                 // delete cart

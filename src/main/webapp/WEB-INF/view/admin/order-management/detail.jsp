@@ -207,11 +207,11 @@
                                                                 <div class="product-order d-flex">
                                                                     <div class="product-img">
                                                                         <img alt=""
-                                                                            src="/images/product/${orderDetail.product.images[i.index].imageUrl}">
+                                                                            src="/images/product/${orderDetail.productDetail.images[i.index].urlImage}">
                                                                     </div>
                                                                     <div class="product-name d-flex">
                                                                         <span class="align-self-center"
-                                                                            style="text-align: start;">${orderDetail.product.name}</span>
+                                                                            style="text-align: start;">${orderDetail.productDetail.product.name}</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -223,7 +223,7 @@
                                                             <td>
                                                                 <span class="product-price">
                                                                     <fmt:formatNumber type="number"
-                                                                        value="${orderDetail.product.price}" />
+                                                                        value="${orderDetail.productDetail.price}" />
                                                                     đ
                                                                 </span>
                                                             </td>
@@ -474,7 +474,7 @@
                                                 <p class="user-phone sub-font">${order.user.phoneNumber}</p>
                                             </div>
                                             <div class="delivery-address d-flex flex-grow-1">
-                                                <div class="d-flex flex-column justify-content-between">
+                                                <div class="d-flex flex-column justify-content-between flex-grow-1">
                                                     <div class="header-contact d-flex justify-content-between">
                                                         <p class="font-w450 ">Địa chỉ giao hàng</p>
                                                         <span><i class="fa-solid fa-pencil"></i></span>

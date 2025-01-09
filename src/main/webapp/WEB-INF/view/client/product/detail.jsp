@@ -64,34 +64,34 @@
                                                     <li data-target="#carouselExampleIndicators" data-slide-to="0"
                                                         class="active">
                                                         <img style="width: 60px;"
-                                                            src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
+                                                            src="/images/product/${product.productDetails[0].images[0].urlImage}"
                                                             alt="" />
                                                     </li>
                                                     <li data-target="#carouselExampleIndicators" data-slide-to="1">
                                                         <img style="width: 60px;"
-                                                            src=/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png
+                                                            src="/images/product/${product.productDetails[1].images[0].urlImage}"
                                                             alt="" />
                                                     </li>
                                                     <li data-target="#carouselExampleIndicators" data-slide-to="2">
                                                         <img style="width: 60px;"
-                                                            src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
+                                                            src="/images/product/${product.productDetails[2].images[0].urlImage}"
                                                             alt="" />
                                                     </li>
                                                 </ol>
                                                 <div class="carousel-inner">
                                                     <div class="carousel-item active">
                                                         <img class="d-block w-100"
-                                                            src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
+                                                            src="/images/product/${product.productDetails[0].images[0].urlImage}"
                                                             alt="First slide" />
                                                     </div>
                                                     <div class="carousel-item">
                                                         <img class="d-block w-100"
-                                                            src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
+                                                            src="/images/product/${product.productDetails[1].images[0].urlImage}"
                                                             alt="Second slide" />
                                                     </div>
                                                     <div class="carousel-item">
                                                         <img class="d-block w-100"
-                                                            src="/images/product/0be5d3f9-eef5-4157-a1f1-db1ac564b5f9.png"
+                                                            src="/images/product/${product.productDetails[2].images[0].urlImage}"
                                                             alt="Third slide" />
                                                     </div>
                                                 </div>
@@ -102,7 +102,8 @@
                                         <div class="s_product_text">
                                             <h3>${product.name}</h3>
                                             <h2>
-                                                <fmt:formatNumber type="number" value="3443.34" /> đ
+                                                <fmt:formatNumber type="number" value="${lstProductDetail[0].price}" />
+                                                đ
                                             </h2>
                                             <ul class="list">
                                                 <li>
@@ -128,7 +129,7 @@
                                                             varStatus="i">
                                                             <div class="select-box-colors d-flex"
                                                                 idColorInColor="${color.id}"
-                                                                idProductColor="${color.productDetails[i.index].product.id}">
+                                                                idProductColor="${productIdColor}">
                                                                 <div class="box-select">
                                                                     <img class="img-product-detail"
                                                                         src="/images/product/n2.jpg" alt="">
@@ -141,8 +142,10 @@
                                                 <div class="box-sizes">
                                                     <div class="text-select"><span>Kích cỡ</span></div>
                                                     <div class="d-flex" style="gap: 10px;">
-                                                        <c:forEach items="${lstSizeInProDetail}" var="size">
-                                                            <div class="select-box-sizes" idSizeInSize="${size.id}">
+                                                        <c:forEach items="${lstSizeInProDetail}" var="size"
+                                                            varStatus="i">
+                                                            <div class="select-box-sizes" idSizeInSize="${size.id}"
+                                                                idProductSize="${productIdSize}">
                                                                 <span class="name-size">${size.sizeName}
                                                                 </span>
                                                             </div>
@@ -168,7 +171,7 @@
 
                                             </div>
                                             <div class="card_area">
-                                                <a class="main_btn" href="#">Add to Cart</a>
+                                                <a class="main_btn" id="btnAddProductToCart" href="#">Add to Cart</a>
                                                 <a class="icon_btn" href="#">
                                                     <i class="lnr lnr lnr-diamond"></i>
                                                 </a>
