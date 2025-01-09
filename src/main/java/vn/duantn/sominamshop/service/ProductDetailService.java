@@ -1,5 +1,6 @@
 package vn.duantn.sominamshop.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.duantn.sominamshop.model.Product;
@@ -58,6 +59,8 @@ public class ProductDetailService {
         return productDetailRepository.findById(id).get();
     }
 
+
+    @Transactional
     public List<ProductDetail> findProductDetailByProducts(Product product) {
         return this.productDetailRepository.getAllProductDetailByProductId(product.getId());
     }

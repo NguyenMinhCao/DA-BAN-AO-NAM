@@ -3,18 +3,18 @@ package vn.duantn.sominamshop.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "product_details")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDetail {
@@ -49,6 +49,16 @@ public class ProductDetail {
     @ManyToOne
     @JoinColumn(name = "color_id", referencedColumnName = "id")
     private Color color;
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "productDetail")
+    private List<Image> images;
+
+
+
+    @Transient
+    private List<MultipartFile> imagesFiles = new ArrayList<>();
 
 
 

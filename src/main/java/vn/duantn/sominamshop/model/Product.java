@@ -1,21 +1,13 @@
 package vn.duantn.sominamshop.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jdk.jshell.Snippet;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
 @Table(name = "products")
@@ -29,7 +21,6 @@ public class Product extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotBlank(message = "Tên sản phẩm không được để trống!")
     @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
@@ -42,7 +33,6 @@ public class Product extends BaseEntity implements Serializable {
     @JoinColumn(name = "origin_id")
     private Origin origin;
 
-
     @ManyToOne
     @JoinColumn(name = "pattern_id")
     private Pattern pattern;
@@ -51,15 +41,8 @@ public class Product extends BaseEntity implements Serializable {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "product")
-    private List<Image> images;
-
     @Column(name = "description", columnDefinition = "NVARCHAR(3000)")
     private String description;
-
-    @Transient
-    private List<MultipartFile> imagesFiles = new ArrayList<>();
 
     @Column(name = "status")
     private Integer status;
@@ -71,23 +54,4 @@ public class Product extends BaseEntity implements Serializable {
     @ManyToMany
     @JoinTable(name = "Product_Promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
     private List<Promotion> promotions;
-
-
-
-//
-//    @PrePersist
-//    public void handleBeforeCreate() {
-//        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-//                ? SecurityUtil.getCurrentUserLogin().get()
-//                : "";
-//    }
-//
-//    @PreUpdate
-//    public void handleBeforeUpdate() {
-//        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-//                ? SecurityUtil.getCurrentUserLogin().get()
-//                : "";
-//    }
-
-
 }

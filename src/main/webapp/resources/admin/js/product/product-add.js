@@ -146,7 +146,6 @@ function readURL(input) {
                         console.log(listUrlImage);
                         $("#myfileupload").html('<input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)"/>');
                         $('.Choicefile').css('background', '#14142B');
-                        $('.Choicefile').css('cursor', 'pointer');
                     });
                 }
             };
@@ -157,14 +156,15 @@ function readURL(input) {
     console.log(listUrlImage);
     // Hiển thị các phần tử khi có ảnh
     $(".Choicefile").css('background', '#14142B');
-    $(".Choicefile").css('cursor', 'default');
 }
+
 
 $(document).ready(function () {
     $(".Choicefile").bind('click', function () {
         $("#uploadfile").click();
     });
 })
+
 
 function checkInputShowList(productName, productCategory, productMaterial, productColor, productSize, productDescription) {
     if (productName.trim() === "") {
@@ -409,16 +409,9 @@ function save() {
         contentType: "application/json",
         data: JSON.stringify(dataToSend),
         success: function (response) {
-            console.log("Lưu Sản phẩm thành công!");
             var productId = response.id;
-            if (!saveImage(productId)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi!',
-                    text: 'Có lỗi xảy ra khi lưu ảnh!'
-                });
-                return;
-            }
+
+
             if (!saveProductDetail(productId)) {
                 Swal.fire({
                     icon: 'error',
@@ -470,7 +463,7 @@ function checkDuplicateProduct(productName) {
     return isDuplicateName;
 }
 
-function saveImage(productId) {
+function saveImage(productDetailId) {
     if (!listUrlImage || listUrlImage.length === 0) {
         console.error("Danh sách URL hình ảnh rỗng, không có dữ liệu để gửi.");
         return false;
@@ -478,11 +471,12 @@ function saveImage(productId) {
 
     for (var i = 0; i < listUrlImage.length; i++) {
         var dataToSend = {
-            productId: productId,
+            detailId: productDetailId,
             urlImage: listUrlImage[i],
             status: 0
         };
         console.log("Dữ liệu gửi:", dataToSend);
+        console.log("Dữ liệu gửi:", JSON.stringify(dataToSend)); // In dữ liệu gửi đi trước khi gửi AJAX
 
         $.ajax({
             type: "POST",
@@ -510,6 +504,9 @@ function saveProductDetail(productId) {
             sizeId: listProductDetail[i].sizeId,
             status: 0
         }
+
+        console.log("Dữ liệu gửi:", JSON.stringify(dataToSend)); // In dữ liệu gửi đi trước khi gửi AJAX
+
         // Gửi yêu cầu AJAX
         $.ajax({
             type: "POST",
@@ -517,7 +514,19 @@ function saveProductDetail(productId) {
             contentType: "application/json",
             data: JSON.stringify(dataToSend),
             success: function (response) {
+
                 console.log("Lưu Danh sách biến thể thành công!");
+                    console.log("Lưu Sản phẩm thành công!");
+                    console.log("Phản hồi từ server:", response);
+                    var productId = response.id;
+                    if (!saveImage(productId)) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi lưu ảnh!'
+                        });
+                        return;
+                    }
             },
             error: function (error) {
                 console.error("Lỗi khi lưu sách biến thể:", error);
@@ -527,8 +536,3 @@ function saveProductDetail(productId) {
     }
     return true;
 }
-
-
-
-
-

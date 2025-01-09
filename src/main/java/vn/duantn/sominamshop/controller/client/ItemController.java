@@ -46,7 +46,7 @@ public class ItemController {
 
     @GetMapping("/product/{id}")
     public String getProductDetail(Model model, @PathVariable long id) {
-        Product product = this.productService.findProductByIdWithImg(id);
+        Product product = this.productService.findProductById(id);
         List<ProductDetail> lstProductDetail = this.productDetailService.findProductDetailByProducts(product);
 
         List<Color> lstColorInProDetail = new ArrayList<>();
