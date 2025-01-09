@@ -14,20 +14,24 @@ import java.util.List;
 
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Long> {
+//    List<Image> findByProduct(Product product);
     @Query(value = "SELECT [id]\n" +
-            "      ,[product_id]\n" +
+            "      ,[productDetail]\n" +
             "      ,[name]\n" +
             "      ,[url_image]\n" +
             "      ,[status]\n" +
             "      ,[created_date]\n" +
             "      ,[updated_date]\n" +
             "  FROM [dbo].[images]\n" +
-            "WHERE [product_id] = :id",nativeQuery = true)
+            "WHERE [productDetail] = :id",nativeQuery = true)
     List<Image> getALlByProductId(@Param("id") Integer id);
 
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM [dbo].[images]\n" +
-            "      WHERE [product] = :productId",nativeQuery = true)
+            "      WHERE [product_details] = :productId",nativeQuery = true)
     void deleteAllByProductId(@Param("productId") Integer productId);
 }
+
+
+

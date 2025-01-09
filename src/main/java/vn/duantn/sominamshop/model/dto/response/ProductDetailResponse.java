@@ -8,5 +8,6 @@ public interface ProductDetailResponse {
     String getSizeName();
     Integer getQuantity();
     BigDecimal getPrice();
+    String getImage();
     Integer getStatus();
 }

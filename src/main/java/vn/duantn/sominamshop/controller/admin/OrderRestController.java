@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.duantn.sominamshop.model.*;
+import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.PaymentStatus;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.PromotionDTO;
@@ -27,6 +29,7 @@ public class OrderRestController {
     private final SizeService sizeService;
     private final CategoryService categoryService;
     private final ProductService productService;
+    private final  ProductDetailService productDetailService;
 
     @GetMapping("/get/products")
     public ResponseEntity<?> GetProduct(
@@ -36,6 +39,10 @@ public class OrderRestController {
         Pageable pageable = PageRequest.of(page, limit);
         Page<CounterProductProjection> pageProduct = productService.GetAllProductByName(pageable, search);
         return ResponseEntity.ok(pageProduct);
+    }
+    @GetMapping("/get/orders")
+    public ResponseEntity<?> getOrders(){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderNonPendingAndPos(DeliveryStatus.PENDING, PaymentStatus.PENDING));
     }
 
     @GetMapping("/get/promotions")
@@ -67,11 +74,11 @@ public class OrderRestController {
                 .build()
         );
     }
-//    @PutMapping("/update/products")
-//    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail) {
-//        if (orderDetail != null) {
-//            productService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProduct().getId());
-//        }
-//        return ResponseEntity.ok("Cập nhật thành công");
-//    }
+    @PutMapping("/update/products")
+    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail) {
+        if (orderDetail != null) {
+            productDetailService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProductDetail().getId());
+        }
+        return ResponseEntity.ok("Cập nhật thành công");
+    }
 }

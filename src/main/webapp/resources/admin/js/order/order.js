@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedInvoiceId = 0;
     let listProduct = [];
     let deletedInvoiceIDs = [];
+    let listOrder = []
     fetchProducts(0, 2)
     fetchCustomers(0)
     fetchLocation()
@@ -178,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+
     // Thêm sản phẩm vào danh sách hóa đơn
     function addProductToInvoice(button) {
         let rowCount = productListBody.getElementsByTagName('tr').length;
@@ -221,9 +223,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="product-detail">
                             <span>${name}</span><br>
                             <p class="product-detail-amount">Giá tiền: ${price} VND</p>
-                            <small>Màu sắc: ${size}</small>
+                            <small>Màu sắc: ${color}</small>
                             <br>
-                            <small>Kích cỡ: ${color}</small>
+                            <small>Kích cỡ: ${size}</small>
                         </div>
                     </div>
                 </td>
@@ -254,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 size: size,
                 quantity: 1,
                 price: price,
-                imgSrc: imgSrc,
                 totalPrice : price,
                 toTalQuantityProduct : quantity
             }
@@ -659,13 +660,16 @@ document.addEventListener('DOMContentLoaded', function () {
         let customerID = invoice?.customerID
         let orderNote = invoice?.note
         let totalAmount = invoice?.totalAmount
+        let totalProducts = invoice?.listProduct.reduce((total, item) => total + item.quantity, 0);
+        console.log(totalProducts + " tổng số lượng sản phẩm")
         // let paymentMethod = invoice?.paymentMethod
         let data = {
             status: 1,
             user: customerID ? {id: customerID} : null,
             note: orderNote,
             totalAmount: totalAmount || 0,
-            paymentMethod: 1
+            paymentMethod: 1,
+            totalProducts: totalProducts
         }
         $.ajax({
             url: `http://localhost:8080/api/admin/order/save/invoice`,
@@ -725,7 +729,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let promises = [];
         listProduct.forEach(item => {
             let data = {
-                product: {
+                productDetail: {
                     id: item.product.id
                 },
                 quantity: item.quantity
@@ -752,11 +756,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             promises.push(promise);
         })
+        printInvoice(listProduct);
         customerNameInput.innerText = 'Khách lẻ';
         customerNameInput.setAttribute('data-customer-id', '')
         $('#infoDetail').empty()
         $('#btn-delete-customer').prop('disabled', true);
-        printInvoice(listProduct);
         fetchProducts(0)
         resetInvoice();
         localStorage.removeItem(selectedInvoiceId);
@@ -1007,6 +1011,48 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#add-customer').on('click', function(e) {
         addCustomer()
     })
+
+//*****************Đơn Hàng ***************
+              //lấy đơn hàng
+    fetchOrder()
+    function fetchOrder(){
+        $.ajax({
+            url: `http://localhost:8080/api/admin/order/get/orders`,
+            type: 'GET',
+            success: function(data) {
+                data.forEach(item => {
+                    if(invoiceCounter <= 4){
+                        let newInvoiceID;
+                        if (deletedInvoiceIDs.length > 0) {
+                            // Nếu có hóa đơn đã bị xóa, tái sử dụng ID đã bị xóa
+                            newInvoiceID = deletedInvoiceIDs.pop();
+                        }else {
+                            // Nếu không có ID nào bị xóa, tiếp tục tăng invoiceCounter
+                            newInvoiceID = invoiceCounter;
+                        }
+                        createInvoice(newInvoiceID);
+                    }
+                    let order = {
+                        id : data.id,
+                        user : item.user,
+                        promotion : item.promotion
+                    }
+                    listOrder.push(order)
+                    console.log(listOrder)
+                })
+            },
+            error: function(xhr, status, error) {
+                let errorMap = JSON.parse(xhr.responseText);
+                let errorMessages = Object.values(errorMap);
+                notificationAddCusstomer(errorMessages, 'error')
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+
+    function fetchOrderDetail(){
+
+    }
 //**************** Giao hàng **************
     $('#flexSwitchCheckDefault').on('change', function(e){
         let modal = document.getElementById('form-customer')

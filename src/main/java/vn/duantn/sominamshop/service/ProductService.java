@@ -26,7 +26,7 @@ public class ProductService {
     private final CartDetailRepository cartDetailRepository;
     private final ImageRepository imageRepository;
 
-    private  final ProductDetailRepository productDetailRepository;
+    private final ProductDetailRepository productDetailRepository;
 
     public ProductService(ProductRepository productRepository, UserService userService, CartRepository cartRepository,
                           CartDetailRepository cartDetailRepository, ImageRepository imageRepository, ProductDetailRepository productDetailRepository) {
@@ -52,9 +52,7 @@ public class ProductService {
     }
 
 
-
-
-//    @Transactional
+    //    @Transactional
 //    public Product saveProduct(Product product) {
 //        Product savedProduct = productRepository.save(product);
 //
@@ -71,19 +69,15 @@ public class ProductService {
 //        return prOptional.get();
 //    }
 //
-    public Product findProductByIdWithImg(long id) {
-        Optional<Product> prOptional = this.productRepository.findProductWithImages(id);
-        return prOptional.get();
-    }
-//
+//    public Product findProductByIdWithImg(long id) {
+//        Optional<Product> prOptional = this.productRepository.findProductWithImages(id);
+//        return prOptional.get();
+//    }
+////
 //    public boolean existsByName(String name) {
 //        return productRepository.existsByName(name);
 //    }
 //
-    @Transactional
-    public void updateQuantityProduct(Long quantity, Long id) {
-        productDetailRepository.updateQuantityProduct(quantity, id);
-    }
 
     public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name) {
         Page<CounterProductProjection> pageCounterRespone = productDetailRepository.findAllProductByName(pageable, name);
@@ -105,13 +99,10 @@ public class ProductService {
 //    }
 
 
-
-
-
-
     public List<ProductResponse> getAll() {
         return productRepository.getAll();
     }
+
 
     public Product findById(Long id) {
         return productRepository.findById(id).get();
@@ -149,13 +140,14 @@ public class ProductService {
     }
 
     public Integer quantityByColorId(Integer productId, Integer colorId) {
-        return productRepository.quantityByColorId(productId,colorId);
+        return productRepository.quantityByColorId(productId, colorId);
     }
 
 
     public Integer quantityBySizeId(Integer productId, Integer colorId) {
-        return productRepository.quantityBySizeId(productId,colorId);
+        return productRepository.quantityBySizeId(productId, colorId);
     }
+
     public int countOrder() {
         return productRepository.countOrder();
     }

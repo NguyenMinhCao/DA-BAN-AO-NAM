@@ -17,7 +17,15 @@ body {
     border-radius: 8px;
 }
 
-/* Cải thiện tiêu đề trang */
+.anh img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover; /* Đảm bảo ảnh hiển thị cân đối */
+    border: 1px solid #ddd; /* Tùy chọn: thêm viền cho ảnh */
+    border-radius: 5px; /* Tùy chọn: bo tròn góc */
+    padding: 5px; /* Tùy chọn: khoảng cách xung quanh ảnh */
+}
+
 
 
 .app-breadcrumb {

@@ -8,6 +8,7 @@ import java.util.List;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ import vn.duantn.sominamshop.model.constants.PaymentStatus;
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.model.dto.AddressDTO;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
+import vn.duantn.sominamshop.model.dto.OrderDetailDTO;
 import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;
 import vn.duantn.sominamshop.repository.CartRepository;
@@ -301,5 +303,13 @@ public class OrderService {
     public List<OrderDetail> saveInvoiceDetail(List<OrderDetail> list) {
         return orderDetailRepository.saveAll(list);
     }
+    public List<OrderDTO> getOrderNonPendingAndPos(DeliveryStatus deliveryStatus, PaymentStatus paymentStatus){
+        List<Order> listOrder = orderRepository.getAllOrderNonPendingAndPos(deliveryStatus, paymentStatus);
+        List<OrderDTO> listOrderDTO = listOrder.stream().map(OrderDTO :: toOrderDTO).collect(Collectors.toList());
+        return listOrderDTO;
+    }
 
+//    public List<OrderDetailDTO> getOrderDetailByOrderId(Long id){
+//
+//    }
 }

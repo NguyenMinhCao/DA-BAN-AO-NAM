@@ -19,11 +19,12 @@ public class OrderDTO {
 
     private long id;
     private DeliveryStatus status;
-    private User user;
-    private Promotion promotion;
+    private UserDTO user;
+    private PromotionDTO promotion;
     private String note;
     private BigDecimal totalAmount;
     private String paymentMethod;
+    private Integer totalProducts;
 
     public static OrderDTO toOrderDTO(Order order) {
         OrderDTO orderDTO = OrderDTO.builder()
@@ -31,8 +32,9 @@ public class OrderDTO {
                 .paymentMethod(order.getPaymentMethod())
                 .note(order.getNote())
                 .status(order.getDeliveryStatus())
-                .user(order.getUser())
+                .user(UserDTO.toDTO(order.getUser()))
                 .totalAmount(order.getTotalAmount())
+                .totalProducts(order.getTotalProducts())
                 .build();
         return orderDTO;
     }

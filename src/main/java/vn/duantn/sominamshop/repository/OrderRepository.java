@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.PaymentStatus;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -83,4 +85,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "AND FUNCTION('DAY', o.createdAt) = FUNCTION('DAY', CURRENT_DATE)")
     long getTodayOrderCount();
 
+    @Query("select od from Order od where od.deliveryStatus = :deliveryStatus and od.orderSource = false and od.paymentStatus = :paymentStatus limit 5")
+    List<Order> getAllOrderNonPendingAndPos(@Param("deliveryStatus") DeliveryStatus deliveryStatus, @Param("paymentStatus") PaymentStatus paymentStatus);
 }

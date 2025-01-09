@@ -1,21 +1,13 @@
 package vn.duantn.sominamshop.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jdk.jshell.Snippet;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Entity
 @Table(name = "products")
@@ -51,15 +43,11 @@ public class Product extends BaseEntity implements Serializable {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "product")
-    private List<Image> images;
+
 
     @Column(name = "description", columnDefinition = "NVARCHAR(3000)")
     private String description;
 
-    @Transient
-    private List<MultipartFile> imagesFiles = new ArrayList<>();
 
     @Column(name = "status")
     private Integer status;
@@ -74,20 +62,7 @@ public class Product extends BaseEntity implements Serializable {
 
 
 
-//
-//    @PrePersist
-//    public void handleBeforeCreate() {
-//        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-//                ? SecurityUtil.getCurrentUserLogin().get()
-//                : "";
-//    }
-//
-//    @PreUpdate
-//    public void handleBeforeUpdate() {
-//        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-//                ? SecurityUtil.getCurrentUserLogin().get()
-//                : "";
-//    }
+
 
 
 }

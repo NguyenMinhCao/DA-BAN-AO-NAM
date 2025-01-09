@@ -18,9 +18,9 @@ import vn.duantn.sominamshop.model.dto.response.ProductResponse;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.images WHERE p.id = :productId")
-    Optional<Product> findProductWithImages(@Param("productId") Long productId);
-//
+//    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.images WHERE p.id = :productId")
+//    Optional<Product> findProductWithImages(@Param("productId") Long productId);
+    //
 //    @Query("SELECT p FROM Product p " +
 //            "JOIN FETCH p.category " +
 //            "JOIN FETCH p.color " +
@@ -55,19 +55,21 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "    p.name AS name,\n" +
             "    COALESCE(i.url_image, '') AS image,\n" +
             "    p.description AS description,\n" +
-            "    SUM(pd.quantity) AS quantity,\n" +
-            "    p.status AS status\n" +
-            "FROM\n" +
-            "    products p\n" +
-            "LEFT JOIN\n" +
-            "    product_details pd ON p.id = pd.product_id\n" +
-            "LEFT JOIN\n" +
-            "    images i ON p.id = i.product_id\n" +
-            "        AND i.id = (SELECT MIN(id) FROM images WHERE product_id = p.id)\n" +
+                    "    SUM(pd.quantity) AS quantity,\n" +
+                    "    p.status AS status\n" +
+                    "FROM\n" +
+                    "    products p\n" +
+                    "LEFT JOIN\n" +
+                    "    product_details pd ON p.id = pd.product_id\n" +
+                    "LEFT JOIN\n" +
+                    "    images i ON pd.id = i.product_detail_id\n" +
             "GROUP BY\n" +
             "    p.id, p.name, p.description, p.status, i.url_image\n" +
             "ORDER BY p.id", nativeQuery = true)
     List<ProductResponse> getAll();
+
+
+
 
     @Query(value = "SELECT SUM(dbo.product_details.quantity)\n" +
             "FROM     dbo.colors INNER JOIN\n" +
@@ -91,6 +93,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getListProduct();
     @Query("select c from Product c where c.name like %:name% and c.status = 0")
     List<Product> searchProductByName(@Param("name") String name);
+
+
+
 
 //    @Query(value = """
 //        SELECT
@@ -119,7 +124,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 //            p.id
 //        """)
 //    Page<ProductResponseClient> pageProductResponse(Pageable pageable);
-
 
 
 }

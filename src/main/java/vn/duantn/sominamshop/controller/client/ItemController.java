@@ -38,13 +38,11 @@ public class ItemController {
         return "client/blog/show";
     }
 
-    @GetMapping("/product/{id}")
-    public String getProductDetail(Model model, @PathVariable long id) {
-        Product product = this.productService.findProductByIdWithImg(id);
-        List<ProductDetail> lstProductDetail = this.productDetailService.findProductDetailByProducts(product);
-        model.addAttribute("product", product);
-        model.addAttribute("lstProductDetail", lstProductDetail);
-        return "client/product/detail";
-    }
+//    @GetMapping("/product/{id}")
+//    public String getProductDetail(Model model, @PathVariable long id) {
+//        Product product = this.productService.findProductByIdWithImg(id);
+//        model.addAttribute("product", product);
+//        return "client/product/detail";
+//    }
 
 }

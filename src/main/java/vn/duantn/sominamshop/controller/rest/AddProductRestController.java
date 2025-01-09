@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.duantn.sominamshop.model.Color;
+import vn.duantn.sominamshop.model.Image;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.Size;
 import vn.duantn.sominamshop.model.dto.request.ProductRequest;
 import vn.duantn.sominamshop.model.dto.rest.ProductRestRequest;
 import vn.duantn.sominamshop.repository.ColorRepository;
+import vn.duantn.sominamshop.repository.ImageRepository;
 import vn.duantn.sominamshop.repository.SizeRepository;
 import vn.duantn.sominamshop.service.ProductService;
 
@@ -23,6 +25,9 @@ public class AddProductRestController {
 
     @Autowired
     ColorRepository colorRepository;
+
+    @Autowired
+    ImageRepository imageRepository;
 
     @Autowired
     ProductService productService;
@@ -41,6 +46,7 @@ public class AddProductRestController {
     public ResponseEntity<?> getAll(){
         List<Color> listColor = colorRepository.getAllActive();
         List<Size> listSize = sizeRepository.getAllActive();
+
 
         ProductRestRequest productRestRequest = new ProductRestRequest(listColor,listSize);
 
