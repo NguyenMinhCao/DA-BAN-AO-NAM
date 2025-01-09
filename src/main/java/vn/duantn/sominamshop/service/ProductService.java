@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
 import vn.duantn.sominamshop.model.*;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.request.ProductRequest;
@@ -17,7 +16,6 @@ import vn.duantn.sominamshop.model.dto.response.ProductResponse;
 import vn.duantn.sominamshop.repository.*;
 
 @Service
-
 
 public class ProductService {
     private final ProductRepository productRepository;
@@ -29,7 +27,8 @@ public class ProductService {
     private final ProductDetailRepository productDetailRepository;
 
     public ProductService(ProductRepository productRepository, UserService userService, CartRepository cartRepository,
-                          CartDetailRepository cartDetailRepository, ImageRepository imageRepository, ProductDetailRepository productDetailRepository) {
+            CartDetailRepository cartDetailRepository, ImageRepository imageRepository,
+            ProductDetailRepository productDetailRepository) {
         this.productRepository = productRepository;
         this.userService = userService;
         this.cartRepository = cartRepository;
@@ -46,67 +45,65 @@ public class ProductService {
         return this.productRepository.findAll();
     }
 
-
     public Product handleSaveProduct(Product product) {
         return this.productRepository.save(product);
     }
 
-
-    //    @Transactional
-//    public Product saveProduct(Product product) {
-//        Product savedProduct = productRepository.save(product);
-//
-//        if (product.getVariants() != null) {
-//            for (ProductDetail variant : product.getVariants()) {
-//                variant.setProduct(savedProduct);
-//                productDetailRepository.save(variant);
-//            }
-//        }
-//        return savedProduct;
-//    }
-//    public Product findProductById(long id) {
-//        Optional<Product> prOptional = this.productRepository.findById(id);
-//        return prOptional.get();
-//    }
-//
-//    public Product findProductByIdWithImg(long id) {
-//        Optional<Product> prOptional = this.productRepository.findProductWithImages(id);
-//        return prOptional.get();
-//    }
-////
-//    public boolean existsByName(String name) {
-//        return productRepository.existsByName(name);
-//    }
-//
-//    @Transactional
-//    public void updateQuantityProduct(Long quantity, Long id) {
-//        productRepository.updateQuantityProduct(quantity, id);
-//    }
+    // @Transactional
+    // public Product saveProduct(Product product) {
+    // Product savedProduct = productRepository.save(product);
+    //
+    // if (product.getVariants() != null) {
+    // for (ProductDetail variant : product.getVariants()) {
+    // variant.setProduct(savedProduct);
+    // productDetailRepository.save(variant);
+    // }
+    // }
+    // return savedProduct;
+    // }
+    // public Product findProductById(long id) {
+    // Optional<Product> prOptional = this.productRepository.findById(id);
+    // return prOptional.get();
+    // }
+    //
+    // public Product findProductByIdWithImg(long id) {
+    // Optional<Product> prOptional =
+    // this.productRepository.findProductWithImages(id);
+    // return prOptional.get();
+    // }
+    ////
+    // public boolean existsByName(String name) {
+    // return productRepository.existsByName(name);
+    // }
+    //
+    // @Transactional
+    // public void updateQuantityProduct(Long quantity, Long id) {
+    // productRepository.updateQuantityProduct(quantity, id);
+    // }
 
     public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name) {
         Page<CounterProductProjection> pageCounterRespone = productRepository.findAllProductByName(pageable, name);
         return pageCounterRespone;
     }
-//
-//
-//    public Page<Product> searchByName(String name, Pageable pageable) {
-//        return productRepository.findByNameContaining(name, pageable);
-//    }
-//
-//    public Page<Product> getProductsByColor(Long colorId, Pageable pageable) {
-//        return productRepository.findByColorId(colorId, pageable);
-//    }
-//
-//
-//    public String generateSku(Product product, Size size, Color color) {
-//        return product.getId() + "-" + size.getSizeName() + "-" + color.getColorName();
-//    }
-
+    //
+    //
+    // public Page<Product> searchByName(String name, Pageable pageable) {
+    // return productRepository.findByNameContaining(name, pageable);
+    // }
+    //
+    // public Page<Product> getProductsByColor(Long colorId, Pageable pageable) {
+    // return productRepository.findByColorId(colorId, pageable);
+    // }
+    //
+    //
+    // public String generateSku(Product product, Size size, Color color) {
+    // return product.getId() + "-" + size.getSizeName() + "-" +
+    // color.getColorName();
+    // }
 
     public List<ProductResponse> getAll() {
         return productRepository.getAll();
     }
-
 
     public Product findById(Long id) {
         return productRepository.findById(id).get();
@@ -147,7 +144,6 @@ public class ProductService {
         return productRepository.quantityByColorId(productId, colorId);
     }
 
-
     public Integer quantityBySizeId(Integer productId, Integer colorId) {
         return productRepository.quantityBySizeId(productId, colorId);
     }
@@ -160,7 +156,6 @@ public class ProductService {
     public List<Object> listHotSelling(int num) {
         return productRepository.hotSelling(num);
     }
-
 
     public List<Product> getListProduct() {
         return productRepository.getListProduct();
@@ -193,13 +188,7 @@ public class ProductService {
         return new PageImpl<>(list, pageable, searchProductName(keyWord).size());
     }
 
-//    public Page<ProductResponseClient> pageProductResponse(Pageable pageable) {
-//        return productRepository.pageProductResponse(pageable);
-//    }
+    // public Page<ProductResponseClient> pageProductResponse(Pageable pageable) {
+    // return productRepository.pageProductResponse(pageable);
+    // }
 }
-
-
-
-
-
-

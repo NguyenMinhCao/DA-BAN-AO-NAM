@@ -881,3 +881,71 @@ textarea {
     -moz-user-select: none;
     user-select: none;
 }
+
+/* detail product */
+.s_product_text .box-select-variant {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.s_product_text .box-select-variant .box-colors,
+.s_product_text .box-select-variant .box-sizes {
+    display: flex;
+    gap: 20px;
+}
+
+.s_product_text .select-box-sizes,
+.s_product_text .select-box-colors {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .09);
+    min-height: 38px;
+    cursor: pointer;
+}
+
+.s_product_text .box-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    flex-grow: 1;
+}
+
+.s_product_text .box-select img {
+    width: 24px;
+    height: 24px;
+}
+
+.s_product_text .select-box-sizes {
+    width: 70px;
+    height: 38px;
+    display: flex;
+}
+
+.name-size {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.text-select {
+    width: 54px;
+}
+
+
+/* enabled select box */
+.enabled {
+    border: 1px solid #71cd14 !important;
+    color: #71cd14;
+}
+
+/* disabled select box */
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed !important;
+    background-color: #fafafa;
+    color: rgba(0, 0, 0, .26);
+}
