@@ -76,10 +76,10 @@ public class ItemController {
         return "client/product/detail";
     }
 
-    @GetMapping("")
-    public String findProductDetailByColor() {
-        return new String();
-    }
+    // @GetMapping("")
+    // public String findProductDetailByColor() {
+    //     return new String();
+    // }
 
     // @GetMapping("/product/{id}")
     // public String getProductDetail(@RequestParam String param) {
