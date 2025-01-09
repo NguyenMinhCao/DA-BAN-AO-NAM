@@ -122,7 +122,8 @@
                                             <div class="single-product">
                                                 <div class="product-img">
                                                     <img class="img-fluid w-100"
-                                                        src="images/product/${product.images[0].imageUrl}" alt="" />
+                                                        src="images/product/${product.productDetails[0].images[0].urlImage}"
+                                                        alt="" />
                                                     <div class="p_icon">
                                                         <a href="/product/${product.id}">
                                                             <i class="ti-eye"></i>
@@ -141,7 +142,7 @@
                                                     </a>
                                                     <div class="mt-3">
                                                         <span class="mr-4">
-                                                            <fmt:formatNumber type="number" value="${product.price}" />
+                                                            <fmt:formatNumber type="number" value="3444" />
                                                             đ
                                                         </span>
                                                         <del>$35.00</del>

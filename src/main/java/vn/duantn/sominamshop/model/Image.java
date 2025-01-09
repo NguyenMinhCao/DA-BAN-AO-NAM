@@ -1,16 +1,7 @@
 package vn.duantn.sominamshop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
@@ -32,14 +23,14 @@ public class Image  extends BaseEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "url_image")
+    @Column(name = "url_image", columnDefinition = "NVARCHAR(MAX)")
     private String urlImage;
 
     @Column(name = "status")
     private Integer status;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    @JoinColumn(name = "product_detail_id", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.MERGE) // hoặc CascadeType.ALL nếu muốn quản lý toàn bộ
+    private ProductDetail productDetail;
 }

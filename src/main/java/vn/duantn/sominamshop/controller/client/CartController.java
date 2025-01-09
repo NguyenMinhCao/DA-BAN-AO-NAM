@@ -110,23 +110,23 @@ public class CartController {
         return "client/cart/show";
     }
 
-    @GetMapping("/add-product-to-cart/{id}")
-    public String addProductToCart(HttpServletRequest request,
-            @PathVariable("id") long idProduct) {
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        this.cartService.addProductToCart(email, idProduct, session);
-        return "redirect:/";
-    }
+    // @GetMapping("/add-product-to-cart/{id}")
+    // public String addProductToCart(HttpServletRequest request,
+    //         @PathVariable("id") long idProduct) {
+    //     HttpSession session = request.getSession();
+    //     String email = (String) session.getAttribute("email");
+    //     this.cartService.addProductToCart(email, idProduct, session);
+    //     return "redirect:/";
+    // }
 
-    @GetMapping("/remove-product-from-cart/{id}")
-    public String removeProductCart(@PathVariable long id, HttpServletRequest request) {
-        Product product = this.productService.findProductById(id);
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        this.cartService.deleteCartDetailByCartAndProduct(email, product, session);
-        return "redirect:/cart";
-    }
+    // @GetMapping("/remove-product-from-cart/{id}")
+    // public String removeProductCart(@PathVariable long id, HttpServletRequest request) {
+    //     Product product = this.productService.findProductById(id);
+    //     HttpSession session = request.getSession();
+    //     String email = (String) session.getAttribute("email");
+    //     this.cartService.deleteCartDetailByCartAndProduct(email, product, session);
+    //     return "redirect:/cart";
+    // }
 
     @PutMapping("/cart/update")
     public ResponseEntity<Map<String, Object>> updateCart(@RequestBody CartDetailUpdateRequestDTO dto,

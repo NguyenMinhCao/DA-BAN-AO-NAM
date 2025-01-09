@@ -211,7 +211,7 @@ body, html {
 }
 
 .content {
-    margin-left: 150px; /* Chừa khoảng trống bằng với chiều rộng sidebar */
+    margin-left: 100px; /* Chừa khoảng trống bằng với chiều rộng sidebar */
     padding: 20px; /* Khoảng cách nội dung */
     min-height: 100vh; /* Chiều cao tối thiểu */
     background-color: #f9f9f9; /* Màu nền */
