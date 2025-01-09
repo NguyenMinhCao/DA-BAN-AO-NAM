@@ -40,11 +40,13 @@ $(document).ready(function () {
         if(file){
             formData.append('file', file);
         }
-        formData.append("json", new Blob([JSON.stringify(data)], {type: "application/json"}));
+        formData.append("user", new Blob([JSON.stringify(data)], {type: "application/json"}));
         $.ajax({
             url: `http://localhost:8080/api/admin/user/save/customer/multipart`,
             type: 'POST',
             data: formData,
+            processData: false,
+            contentType: false,
             success: function() {
                 notificationAddCusstomer('Thêm thành công', 'success')
             },

@@ -66,8 +66,8 @@ public class UserService {
     }
 
 
-    public Page<UserDTO> findByFullNameAndRole(String name, Role role, Pageable pageable) {
-        Page<User> pageUser = userRepository.findByFullNameContainingAndRole(name, role, pageable);
+    public Page<UserDTO> findByFullNameAndRole(String name, Pageable pageable) {
+        Page<User> pageUser = userRepository.findByFullNameContainingAndRole(name, pageable);
         Page<UserDTO> pageUserDto = pageUser.map(user -> UserDTO.toDTO(user));
         return pageUserDto;
     }

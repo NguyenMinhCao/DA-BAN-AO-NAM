@@ -1,5 +1,9 @@
 package vn.duantn.sominamshop.controller.admin;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +31,9 @@ public class UserRestController {
     public ResponseEntity<?> getCustomers(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "2") int limit,
-            @RequestParam(value = "keyword", defaultValue = " ") String search) {
+            @RequestParam(value = "keyword") String search) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(search ,Role.builder().id(1).build(), pageable);
+        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(search, pageable);
         return ResponseEntity.ok(pageCustomer);
     }
     @GetMapping("/get/staffs")
@@ -39,7 +43,7 @@ public class UserRestController {
             @RequestParam(value = "keyword", defaultValue = " ") String search
     ){
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageStaff = userService.findByFullNameAndRole(search ,Role.builder().id(1).build(), pageable);
+        Page<UserDTO> pageStaff = userService.findByFullNameAndRole(search, pageable);
         return ResponseEntity.ok(pageStaff);
     }
 
@@ -57,8 +61,13 @@ public class UserRestController {
         UserDTO userDTO = UserDTO.toDTO(userSave);
         return ResponseEntity.ok(userDTO);
     }
-    @PostMapping(value = "/save/customer/multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> saveCustomerMultipart(@RequestParam User user, @RequestParam(name = "file") MultipartFile file){
+    @PostMapping(value = "/save/customer/multipart")
+    public ResponseEntity<?> saveCustomerMultipart(
+            @RequestPart(name = "user") String userJson,
+            @RequestPart(name = "file") MultipartFile file) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        User user = objectMapper.readValue(userJson, User.class);
         Map<String, String> validationErrors = userService.validateCustomerData(user);
         if (!validationErrors.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);

@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 $('#btn-delete-customer').prop('disabled', false);
                 toggleModal(customerModal, false);
                 saveDataToLocalStorage(selectedInvoiceId)
-                fetchCustomers()
+                fetchCustomers(0)
             },
             error: function(xhr, status, error) {
                 let errorMap = JSON.parse(xhr.responseText);

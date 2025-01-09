@@ -4,17 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.OrderDetail;
+import vn.duantn.sominamshop.model.*;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.PromotionDTO;
-import vn.duantn.sominamshop.service.OrderService;
-import vn.duantn.sominamshop.service.ProductService;
-import vn.duantn.sominamshop.service.PromotionService;
-import vn.duantn.sominamshop.service.UserService;
+import vn.duantn.sominamshop.model.dto.rest.FilterRequest;
+import vn.duantn.sominamshop.service.*;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +23,9 @@ import java.util.Map;
 public class OrderRestController {
     private final PromotionService promotionService;
     private final OrderService orderService;
-    private final UserService userService;
+    private final ColorService colorService;
+    private final SizeService sizeService;
+    private final CategoryService categoryService;
     private final ProductService productService;
 
     @GetMapping("/get/products")
@@ -55,6 +55,18 @@ public class OrderRestController {
         return ResponseEntity.ok(orderService.saveInvoiceDetail(request));
     }
 
+    @GetMapping("/get/filter")
+    public ResponseEntity<?> getFilter(){
+        List<Category> listCate = categoryService.getAllActive();
+        List<Color> listColor = colorService.getAllActive();
+        List<Size> listSize = sizeService.getAllActive();
+        return ResponseEntity.status(HttpStatus.OK).body(FilterRequest.builder()
+                .categories(listCate)
+                .colors(listColor)
+                .sizes(listSize)
+                .build()
+        );
+    }
 //    @PutMapping("/update/products")
 //    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail) {
 //        if (orderDetail != null) {
