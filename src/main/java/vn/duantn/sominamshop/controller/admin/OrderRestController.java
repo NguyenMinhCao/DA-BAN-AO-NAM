@@ -42,7 +42,18 @@ public class OrderRestController {
     }
     @GetMapping("/get/orders")
     public ResponseEntity<?> getOrders(){
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderNonPendingAndPos(DeliveryStatus.PENDING, PaymentStatus.PENDING));
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderNonPendingAndPos(DeliveryStatus.COMPLETED, PaymentStatus.PENDING));
+    }
+
+    @GetMapping("/get/order/{id}")
+    public ResponseEntity<?> getOrderByID(
+            @PathVariable(name = "id") Long id
+    ){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderById(id));
+    }
+    @GetMapping("/get/orderdetails")
+    public ResponseEntity<?> getOrdersDetailByIdOrder(@RequestParam(name="id", defaultValue = "") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderDetailByOrderId(id));
     }
 
     @GetMapping("/get/promotions")
@@ -58,8 +69,18 @@ public class OrderRestController {
     }
 
     @PostMapping("/save/invoice/details")
-    public ResponseEntity<List<OrderDetail>> saveInvoice(@RequestBody List<OrderDetail> request) {
-        return ResponseEntity.ok(orderService.saveInvoiceDetail(request));
+    public ResponseEntity<List<OrderDetail>> saveInvoiceDetails(@RequestBody List<OrderDetail> request) {
+        return ResponseEntity.ok(orderService.saveInvoiceDetails(request));
+    }
+
+    @PostMapping("/save/invoice/detail")
+    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail){
+        return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetail));
+    }
+
+    @PutMapping("/update/invoice/detail")
+    public ResponseEntity<?> updateInvoiceDetial(@RequestBody OrderDetail orderDetail){
+        return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetail));
     }
 
     @GetMapping("/get/filter")
@@ -75,10 +96,11 @@ public class OrderRestController {
         );
     }
     @PutMapping("/update/products")
-    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail) {
+    public ResponseEntity<?> updateProduct(@RequestBody OrderDetail orderDetail) {
         if (orderDetail != null) {
             productDetailService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProductDetail().getId());
         }
         return ResponseEntity.ok("Cập nhật thành công");
     }
+
 }

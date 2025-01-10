@@ -10,6 +10,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -300,16 +304,31 @@ public class OrderService {
     }
 
     @Transactional
-    public List<OrderDetail> saveInvoiceDetail(List<OrderDetail> list) {
+    public List<OrderDetail> saveInvoiceDetails(List<OrderDetail> list) {
         return orderDetailRepository.saveAll(list);
     }
+    @Transactional
+    public Map<String, Long> saveInvoiceDetail(OrderDetail orderDetail) {
+        OrderDetail orderDetail1 = orderDetailRepository.save(orderDetail);
+        Map<String, Long> map = new HashMap<>();
+        map.put("id", orderDetail1.getId());
+        return map;
+    }
     public List<OrderDTO> getOrderNonPendingAndPos(DeliveryStatus deliveryStatus, PaymentStatus paymentStatus){
-        List<Order> listOrder = orderRepository.getAllOrderNonPendingAndPos(deliveryStatus, paymentStatus);
+        Pageable pageable = PageRequest.of(0,5);
+        List<Order> listOrder = orderRepository.getAllOrderNonPendingAndPos(deliveryStatus, paymentStatus, pageable);
         List<OrderDTO> listOrderDTO = listOrder.stream().map(OrderDTO :: toOrderDTO).collect(Collectors.toList());
         return listOrderDTO;
     }
 
-//    public List<OrderDetailDTO> getOrderDetailByOrderId(Long id){
-//
-//    }
+    public List<OrderDetailDTO> getOrderDetailByOrderId(Long id){
+        List<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailByOrderId(id);
+        List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO :: toOrderDetailDTO).collect(Collectors.toList());
+        return orderDetailDTOS;
+    }
+    public OrderDTO getOrderById(Long id){
+        Order order = orderRepository.getAllOrderById(id).orElse(null);
+        OrderDTO orderDTO = OrderDTO.toOrderDTO(order);
+        return orderDTO;
+    }
 }

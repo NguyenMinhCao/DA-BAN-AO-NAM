@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/common/toast.css">
 </head>
 
 <body class="sb-nav-fixed">
@@ -530,7 +531,9 @@
             </div>
         </main>
         <jsp:include page="../layout/footer.jsp"/>
-        <button onclick="localtt()">Xóa</button>
+        <button id="xemlisst">Xóa</button>
+        <div id="toast">
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -540,6 +543,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/admin/js/order/order.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script src="/common/toast.js"></script>
 </body>
 
 </html>

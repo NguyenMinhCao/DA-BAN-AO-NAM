@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
@@ -85,6 +87,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "AND FUNCTION('DAY', o.createdAt) = FUNCTION('DAY', CURRENT_DATE)")
     long getTodayOrderCount();
 
-    @Query("select od from Order od where od.deliveryStatus = :deliveryStatus and od.orderSource = false and od.paymentStatus = :paymentStatus limit 5")
-    List<Order> getAllOrderNonPendingAndPos(@Param("deliveryStatus") DeliveryStatus deliveryStatus, @Param("paymentStatus") PaymentStatus paymentStatus);
+    @Query("select od from Order od where od.deliveryStatus = :deliveryStatus and od.orderSource = false and od.paymentStatus = :paymentStatus")
+    List<Order> getAllOrderNonPendingAndPos(@Param("deliveryStatus") DeliveryStatus deliveryStatus, @Param("paymentStatus") PaymentStatus paymentStatus, Pageable pageable);
+
+    @Query(value = "SELECT * FROM orders o " +
+            "LEFT JOIN users u on u.id = o.user_id " +
+            "LEFT JOIN promotions p on p.id = o.promotion_id " +
+            "WHERE o.id = :id "
+            , nativeQuery = true)
+    Optional<Order> getAllOrderById(@Param("id") Long id);
 }

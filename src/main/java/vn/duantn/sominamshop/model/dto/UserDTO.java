@@ -25,6 +25,9 @@ public class UserDTO {
     private List<AddressDTO> address;
 
     public static UserDTO toDTO(User user){
+        if(user == null){
+            return null;
+        }
         List<AddressDTO> addressDTOs = user.getAddress()
                 .stream()
                 .map(a -> new AddressDTO(a.getId(), a.getFullName(), a.getPhoneNumber(), a.getAddress(),a.getStreetDetails(), a.isStatus()))

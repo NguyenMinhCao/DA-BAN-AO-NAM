@@ -147,10 +147,10 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
                                   @Param("sizeId") Integer sizeId);
 
     @Query(value = """
-            with imagesOrder AS (Select product_id, url_image, ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY (select null)) AS STT from images)
+            with imagesOrder AS (Select product_detail_id, url_image, ROW_NUMBER() OVER (PARTITION BY product_detail_id ORDER BY (select null)) AS STT from images)
             SELECT pd.id, p.name, pd.quantity, sz.size_name, cl.color_name, pd.price, imagesOrder.url_image as image from product_details pd
             left join products p on p.id = pd.product_id
-            left join imagesOrder on p.id = imagesOrder.product_id AND imagesOrder.STT = 1
+            left join imagesOrder on pd.id = imagesOrder.product_detail_id AND imagesOrder.STT = 1
             left join colors cl on pd.color_id = cl.id
             left join sizes sz on pd.size_id = sz.id
             WHERE

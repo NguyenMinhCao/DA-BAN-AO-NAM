@@ -1,13 +1,8 @@
 package vn.duantn.sominamshop.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+
 import lombok.*;
 import vn.duantn.sominamshop.model.*;
-import vn.duantn.sominamshop.model.dto.request.ImageRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,30 +18,34 @@ public class ProductDetailDTO {
     private Long id;
     private Integer quantity;
     private BigDecimal cost;
-
+    private String productName;
     private BigDecimal price;
 
     private Float weight;
 
     private Integer status;
 
-    private Size size;
+    private String sizeName;
 
-    private Color color;
+    private String colorName;
 
 
     private List<ImageDTO> images;
 
     public static ProductDetailDTO toProductDetailDTO(ProductDetail product) {
+        if(product == null){
+            return null;
+        }
         return ProductDetailDTO.builder()
                 .id(product.getId())
                 .quantity(product.getQuantity())
                 .cost(product.getCost())
+                .productName(product.getProduct().getName())
                 .price(product.getPrice())
                 .weight(product.getWeight())
                 .status(product.getStatus())
-                .size(product.getSize())
-                .color(product.getColor())
+                .sizeName(product.getSize().getSizeName())
+                .colorName(product.getColor().getColorName())
                 .images(product.getImages() != null ? product.getImages().stream()
                         .map(ImageDTO::toImageDTO)
                         .collect(Collectors.toList()) : null)
