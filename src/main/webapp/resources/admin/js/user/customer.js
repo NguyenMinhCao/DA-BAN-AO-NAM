@@ -31,13 +31,13 @@ $(document).ready(function () {
                         <td>${data.email}</td>
                         <td>${data.status}</td>
                         <td>
-                            <button>
+                            <button title="Vị chí">
                                 <i class="fa-solid fa-location-dot"></i>
                             </button>
-                            <button>
+                            <button title="Chỉnh sửa">
                                 <i class="fa-solid fa-wrench"></i>
                             </button>
-                            <button>
+                            <button  title="Thông tin chi tiết">
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
                         </td> 

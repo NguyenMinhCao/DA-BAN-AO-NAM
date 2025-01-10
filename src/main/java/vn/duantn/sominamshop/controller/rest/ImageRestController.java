@@ -14,7 +14,7 @@ public class ImageRestController {
 
     @GetMapping("/findByProductId/{productId}")
     public ResponseEntity<?> findByProductId(@PathVariable("productId") Integer id){
-        return ResponseEntity.ok(imageService.getALlByProducctDetailId(id));
+        return ResponseEntity.ok(imageService.getALlByProducctId(id));
     }
 
     @PostMapping("/add")

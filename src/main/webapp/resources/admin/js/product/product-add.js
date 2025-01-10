@@ -4,6 +4,7 @@ var selectColor, selectSize;
 var listUrlImage = [];
 var listProductDetail = [];
 
+
 $(document).ready(function () {
     //Mở form add
     $('#quick_edit').click(function () {
@@ -112,46 +113,64 @@ function quickEdit() {
 function readURL(input) {
     if (input.files && input.files.length > 0) {
         for (var i = 0; i < input.files.length; i++) {
-            var reader = new FileReader();
+            var formData = new FormData();
+            formData.append("file", input.files[i]);
 
-            reader.onload = function (e) {
-                // Kiểm tra xem ảnh đã tồn tại trong mảng listUrlImage chưa
-                var isDuplicate = listUrlImage.some(function (img) {
-                    return img === e.target.result;
-                });
+            // Gửi ảnh lên server
+            $.ajax({
+                url: '/upload/image',  // Địa chỉ endpoint xử lý tải ảnh
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Nhận URL ảnh trả về từ server
+                    var imageUrl = response.imageUrl;  // URL ảnh từ server
+                    console.log("Image URL:", imageUrl); // Kiểm tra URL trả về
 
-                if (!isDuplicate) {
-                    // Tạo một container cho ảnh và nút xóa
-                    var imageContainer = $(
-                        '<div class="image-product-container">' +
-                        '   <img src="' + e.target.result + '" alt="Thumb image" class="thumbimage"/>' +
-                        '   <a class="removeimg" href="javascript:" style="display: inline"></a>' +
-                        '</div>'
-                    );
-
-                    // Thêm container vào thumbbox
-                    $("#thumbbox").append(imageContainer);
-
-                    // Lưu đường dẫn ảnh vào biến listUrlImage
-                    listUrlImage.push(e.target.result);
-
-                    // Sự kiện click cho nút xóa
-                    imageContainer.find(".removeimg").on("click", function () {
-                        var removedImage = $(this).closest(".image-product-container").find("img").attr("src");
-                        // Xóa ảnh khỏi biến listUrlImage
-                        listUrlImage = listUrlImage.filter(function (img) {
-                            return img !== removedImage;
-                        });
-                        $(this).closest(".image-product-container").remove();
-                        console.log(listUrlImage);
-                        $("#myfileupload").html('<input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)"/>');
-                        $('.Choicefile').css('background', '#14142B');
+                    // Kiểm tra nếu ảnh chưa có trong listUrlImage
+                    var isDuplicate = listUrlImage.some(function (img) {
+                        return img === imageUrl;
                     });
+
+                    if (!isDuplicate) {
+                        // Thêm URL vào danh sách
+                        listUrlImage.push(imageUrl);
+                        console.log("List of Images:", listUrlImage); // Kiểm tra danh sách URL
+
+                        // Tạo một phần tử hiển thị ảnh
+                        var imageContainer = $(
+                            '<div class="image-product-container">' +
+                            '   <img src="' + imageUrl + '" alt="Thumb image" class="thumbimage"/>' +
+                            '   <a class="removeimg" href="javascript:" style="display: inline"></a>' +
+                            '</div>'
+                        );
+
+                        // Thêm vào thẻ #thumbbox
+                        $("#thumbbox").append(imageContainer);
+
+                        // Sự kiện click để xóa ảnh
+                        imageContainer.find(".removeimg").on("click", function () {
+                            var removedImage = $(this).closest(".image-product-container").find("img").attr("src");
+                            listUrlImage = listUrlImage.filter(function (img) {
+                                return img !== removedImage;
+                            });
+                            console.log("Updated List of Images:", listUrlImage); // Kiểm tra sau khi xóa
+                            $(this).closest(".image-product-container").remove();
+                        });
+                    }
+                },
+                error: function() {
+                    alert("Có lỗi khi tải ảnh lên.");
                 }
-            };
-            reader.readAsDataURL(input.files[i]);
+            });
         }
     }
+
+    // Thay đổi giao diện khi có ảnh
+    $(".Choicefile").css('background', '#14142B');
+
+
 
     console.log(listUrlImage);
     // Hiển thị các phần tử khi có ảnh

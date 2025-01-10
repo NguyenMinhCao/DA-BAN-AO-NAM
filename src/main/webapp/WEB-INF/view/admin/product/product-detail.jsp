@@ -52,10 +52,9 @@
                             <label>${product.name}</label>
                         </div>
 
-                        <!-- Ảnh Sản Phẩm -->
                         <div class="col-md-12">
                             <label class="control-label">Ảnh sản phẩm:</label>
-                            <div id="thumbbox" class="d-flex"></div>
+                            <div id="thumbbox" class="d-flex flex-wrap"></div>
                         </div>
 
                         <!-- Số lượng -->
@@ -224,6 +223,20 @@
 
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        // Lấy giá trị productId từ backend
+        var productId = "${product.id}";
+
+        if (!productId) {
+            console.error("Product ID is not available.");
+            return;
+        }
+
+        // Gọi hàm lấy danh sách URL ảnh
+        getListURL(productId);
+    });
+</script>
 <script src="${pageContext.request.contextPath}/admin/js/product/product-detail.js"></script>
 <script src="${pageContext.request.contextPath}/admin/js/category/category.js"></script>
 <script src="${pageContext.request.contextPath}/admin/js/color/color.js"></script>

@@ -112,8 +112,8 @@ public class ImageService {
     ImageRepository imageRepository;
 
 
-    public List<Image> getALlByProducctDetailId(Integer id) {
-        return imageRepository.getALlByProductId(id);
+    public List<Image> getALlByProducctId(Integer id) {
+        return imageRepository.getAllByProductId(id);
     }
 
 

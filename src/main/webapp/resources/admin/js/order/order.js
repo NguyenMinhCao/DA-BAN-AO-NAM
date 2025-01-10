@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <img src="${imgSrc}" alt="Sản phẩm">
                         <div class="product-detail">
                             <span>${name}</span><br>
-                            <p class="product-detail-amount">Giá tiền: ${price} VND</p>
+                            <p class="product-detail-amount">Giá tiền: ${(Number(price)).toLocaleString('vi-VN')} VND</p>
                             <small>Màu sắc: ${color}</small>
                             <br>
                             <small>Kích cỡ: ${size}</small>
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </td>
 
-                <td><span class="product-price" product-id="${productId}">${Number(quantityBy?.value || 1) * Number(price)} </span> VND</td>
+                <td><span class="product-price" product-id="${productId}">${(Number(quantityBy?.value || 1) * Number(price)).toLocaleString('vi-VN')} </span> VND</td>
                 <td>
                     <button class="action-btn delete-btn" id="productListBody">Xóa</button>
                 </td>
@@ -433,18 +433,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    // function saveDataToLocalStorage(tabIndex) {
-    //     let customerID = document.getElementById('customer-name')?.getAttribute('data-customer-id')
-    //     let totalAmount = document.getElementById('total-payment').innerText
-    //     let orderExist = JSON.parse(localStorage.getItem(tabIndex)) || {}
-    //     let cleanedStr = totalAmount?.replace(/VND/g, '').replace(/\./g, '');
-    //     let number = parseInt(cleanedStr, 10);
-    //     orderExist.listProduct = listProduct;
-    //     orderExist.customerID = customerID;
-    //     orderExist.totalAmount = number;
-    //     localStorage.setItem(tabIndex, JSON.stringify(orderExist))
-    // }
-
     // Lấy sản phẩm trong list và hiện lên bảng
     function generatedProductFromInvoice(productAtInvoice) {
         if (productAtInvoice != null) {
@@ -458,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <img src="${productAtInvoice[i]?.productDetail.images[0].urlImage}" alt="Sản phẩm">
                         <div class="product-detail">
                             <span>${productAtInvoice[i]?.productDetail.productName}</span><br>
-                            <p class="product-detail-amount">Giá tiền: ${productAtInvoice[i]?.productDetail.price} VND</p>
+                            <p class="product-detail-amount">Giá tiền: ${(productAtInvoice[i]?.productDetail.price).toLocaleString('vi-VN')} VND</p>
                             <small>Màu sắc: ${productAtInvoice[i]?.productDetail.colorName}</small>
                             <br>
                             <small>Kích cỡ: ${productAtInvoice[i]?.productDetail.sizeName}</small>
@@ -473,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </td>
 
-                <td><span class="product-price" product-id="${productAtInvoice[i]?.productDetail.id}">${Number(productAtInvoice[i].quantity || 1) * Number(productAtInvoice[i]?.productDetail.price)} </span> VND</td>
+                <td><span class="product-price" product-id="${productAtInvoice[i]?.productDetail.id}">${(Number(productAtInvoice[i].quantity || 1) * Number(productAtInvoice[i]?.productDetail.price)).toLocaleString('vi-VN')} </span> VND</td>
                 <td>
                     <button class="action-btn delete-btn">Xóa</button>
                 </td>
@@ -566,7 +554,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <td class="product-size">${product.sizeName}</td>
                             <td class="product-quantity">${product.quantity}</td>
                             <td class="product-color">${product.colorName}</td>
-                            <td class="product-price" data-product-price="${product.price}">${product.price} VND</td>
+                            <td class="product-price" data-product-price="${product.price}">${(Number(product.price)).toLocaleString('vi-VN')} VND</td>
                             <td>
                                 <button class="btn-add-product" product-id='${product.id}'>Chọn</button>
                             </td>
@@ -582,7 +570,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchCustomers(page) {
         const inputSearch = document.getElementById('search-input-customer').value
         $.ajax({
-            url: `/api/admin/user/get/customers?page=${page}&limit=2`,
+            url: `/api/admin/user/get/customers?page=${page}&limit=8`,
             type: 'GET',
             data: {keyword: inputSearch},
             success: function (response) {
@@ -1066,6 +1054,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
     // sửa hóa đơn
     function updateOrderDetail(data){
         $.ajax({

@@ -7,6 +7,7 @@
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/admin/ckeditor/ckeditor.js"></script>
     <link href="/admin/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="/admin/css/product/product.css">
@@ -142,7 +143,7 @@
                                     <label class="toggle">
                                         <input type="checkbox" onclick="toggleStatus(this)"
                                                data-product-id="${product.id}"
-                                               id="${product.id}" ${product.status == 1 ? 'checked' : ''}>
+                                               id="${product.id}" ${product.status == 0 ? 'checked' : ''}>
                                         <span class="slider"></span>
                                     </label>
                                 </td>
@@ -154,6 +155,7 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
                                 </td>
+
                             </tr>
                         </c:forEach>
 

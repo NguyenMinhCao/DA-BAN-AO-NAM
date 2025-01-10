@@ -94,7 +94,6 @@
                             </div>
                         </div>
 
-                        <!-- Thêm ảnh -->
                         <div class="form-group col-md-12">
                             <label class="control-label">Ảnh sản phẩm</label>
                             <div id="myfileupload">
@@ -106,6 +105,7 @@
                                 <p style="clear:both"></p>
                             </div>
                         </div>
+
 
                         <div class="form-group col-md-12">
                             <label class="control-label">Mô tả sản phẩm</label>
