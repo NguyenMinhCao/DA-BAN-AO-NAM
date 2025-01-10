@@ -57,7 +57,18 @@ public class OriginService {
 
         return originRepository.save(existingOrigin);
     }
-
+    public Origin setStatus(Long id) {
+        Origin searchOrigin = originRepository.findById(id).get();
+        if (searchOrigin != null) {
+            if (searchOrigin.getStatus() == 1) {
+                searchOrigin.setStatus(0);
+            } else {
+                searchOrigin.setStatus(1);
+            }
+            return originRepository.save(searchOrigin);
+        }
+        return null;
+    }
 
 
 }

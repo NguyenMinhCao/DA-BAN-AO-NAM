@@ -191,3 +191,26 @@ function toggleStatus(checkbox) {
         }
     });
 }
+$.ajax({
+    type: "POST",
+    url: "/admin/rest/color/setStatus/" + colorId,
+    beforeSend: function () {
+        console.log("Gửi yêu cầu cập nhật trạng thái cho colorId:", colorId);
+    },
+    success: function (response) {
+        console.log("Cập nhật trạng thái thành công:", response);
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công!',
+            text: 'Trạng thái đã được cập nhật thành công!'
+        });
+    },
+    error: function (error) {
+        console.error("Lỗi khi cập nhật trạng thái:", error.responseText);
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Có lỗi xảy ra khi cập nhật trạng thái.'
+        });
+    }
+});

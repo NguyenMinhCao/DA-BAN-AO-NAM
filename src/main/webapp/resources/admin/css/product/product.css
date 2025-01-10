@@ -188,11 +188,8 @@ input:checked + .slider:before {
     100% { transform: rotate(360deg); }
 }
 
-/* Cải thiện các icon */
-.fas, .fa-solid {
-    font-size: 16px;
-    color: #2196F3;
-}
+
+
 
 /* Responsiveness */
 @media (max-width: 768px) {

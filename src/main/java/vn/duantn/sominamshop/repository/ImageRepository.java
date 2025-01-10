@@ -15,16 +15,20 @@ import java.util.List;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Long> {
 //    List<Image> findByProduct(Product product);
-    @Query(value = "SELECT [id]\n" +
-            "      ,[productDetail]\n" +
-            "      ,[name]\n" +
-            "      ,[url_image]\n" +
-            "      ,[status]\n" +
-            "      ,[created_date]\n" +
-            "      ,[updated_date]\n" +
-            "  FROM [dbo].[images]\n" +
-            "WHERE [productDetail] = :id",nativeQuery = true)
-    List<Image> getALlByProductId(@Param("id") Integer id);
+@Query(value = "SELECT img.[id], " +
+        "       img.[product_detail_id], " +
+        "       pd.[product_id], " +
+        "       img.[name], " +
+        "       img.[url_image], " +
+        "       img.[status], " +
+        "       img.[created_date], " +
+        "       img.[updated_date] " +
+        "FROM [dbo].[images] img " +
+        "JOIN [dbo].[product_details] pd ON img.[product_detail_id] = pd.[id] " +
+        "WHERE pd.[product_id] = :id",
+        nativeQuery = true)
+List<Image> getAllByProductId(@Param("id") Integer id);
+
 
     @Transactional
     @Modifying

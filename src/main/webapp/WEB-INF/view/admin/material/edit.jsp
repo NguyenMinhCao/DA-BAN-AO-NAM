@@ -52,8 +52,8 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Trạng thái</label>
                                 <select id="status" name="status" class="form-select">
-                                    <option value="Hoạt động" ${material.status == 'Hoạt động' ? 'selected' : ''}>Hoạt động</option>
-                                    <option value="Không hoạt động" ${material.status == 'Không hoạt động' ? 'selected' : ''}>Không hoạt động</option>
+                                    <option value="0" ${material.status == '0' ? 'selected' : ''}>Hoạt động</option>
+                                    <option value="1" ${material.status == '1' ? 'selected' : ''}>Không hoạt động</option>
                                 </select>
                             </div>
 

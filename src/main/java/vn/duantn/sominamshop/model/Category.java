@@ -33,4 +33,18 @@ public class Category extends BaseEntity implements Serializable {
     private Integer status;
 
 
+    public Integer getStatus() {
+        if (status == null) {
+            return 0; // Gán mặc định khi là null
+        }
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        if (status == null) {
+            this.status = 0; // Gán giá trị 0 nếu status là null
+        } else {
+            this.status = status;
+        }
+    }
 }

@@ -9,8 +9,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Dashboard - Quản lý màu</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="/admin/ckeditor/ckeditor.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="/admin/css/styles.css" rel="stylesheet" />
+    <link href="/admin/css/material/material.css" rel="stylesheet" />
+
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -35,7 +40,7 @@
                 <h1 class="mt-4">Quản lý chất Liệu</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">
-                        <a href="/admin" style="text-decoration: none;">Dashboard</a> / Size
+                        <a href="/admin" style="text-decoration: none;">Dashboard</a> / Chất liệu
                     </li>
                 </ol>
 
@@ -82,8 +87,14 @@
                             <tr>
                                 <th scope="row">${material.id}</th>
                                 <td>${material.materialName}</td>
-                                <td>${material.status}</td>
-                                <td>
+                                <td class="trang_thai">
+                                    <label class="toggle">
+                                        <input type="checkbox" onclick="toggleStatus(this)"
+                                               data-material-id="${material.id}"
+                                               id="${material.id}" ${material.status == 0 ? 'checked' : ''}>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>                                <td>
                                     <a href="/admin/material/detail/${material.id}" class="btn btn-success" title="Xem chi tiết">
                                         <i class="fas fa-eye"></i>
                                     </a>
@@ -130,6 +141,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="/admin/js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/admin/js/material/material.js"></script>
 </body>
 </html>

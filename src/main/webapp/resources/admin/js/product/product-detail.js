@@ -133,53 +133,55 @@ function getQuantityBySize(selectElement) {
 }
 
 function getListURL(productId) {
-    listUrlImage = [];
     $.ajax({
         type: "GET",
         url: "/admin/rest/image/findByProductId/" + productId,
         success: function (response) {
-            console.log("Lấy ảnh thành công!");
-            for (var i = 0; i < response.length; i++) {
-                listUrlImage.push(response[i].urlImage);
-            }
-            // Gọi hàm writeURL để hiển thị ảnh
-            writeURL();
+            console.log("Dữ liệu trả về từ API:", response);
+
+            // Kiểm tra dữ liệu trả về và lấy đúng trường chứa URL
+            listUrlImage = response.map(item => item.urlImage); // Lấy trường `urlImage` từ từng phần tử
+            console.log("Danh sách URL ảnh:", listUrlImage);
+
+            // Gọi hàm hiển thị ảnh
+            displayImages(listUrlImage);
         },
         error: function (error) {
-            console.log('Error fetching image data:', error);
-            // Xử lý lỗi nếu cần
+            console.error("Lỗi khi lấy danh sách ảnh:", error);
         }
-    })
-}
-
-function writeURL() {
-    // Lặp qua mảng listUrlImage và hiển thị từng ảnh
-    listUrlImage.forEach(function (url) {
-        var imageContainer = $(
-            '<div class="image-product-container">' +
-            '   <img src="' + url + '" alt="Thumb image" class="thumbimage"/>' +
-            '   <a class="removeimg" href="javascript:" style="display: inline"></a>' +
-            '</div>'
-        );
-
-        // Thêm container vào thumbbox
-        $("#thumbbox").append(imageContainer);
-
-        // Sự kiện click cho nút xóa
-        imageContainer.find(".removeimg").on("click", function () {
-            var removedImage = $(this).closest(".image-product-container").find("img").attr("src");
-            // Xóa ảnh khỏi biến listUrlImage
-            listUrlImage = listUrlImage.filter(function (img) {
-                return img !== removedImage;
-            });
-            $(this).closest(".image-product-container").remove();
-            console.log(listUrlImage);
-            $("#myfileupload").html('<input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)"/>');
-            $('.Choicefile').css('background', '#14142B');
-        });
     });
-    console.log('writeURL');
 }
+
+
+function displayImages(listUrlImage) {
+    // Xóa sạch nội dung cũ
+    $("#thumbbox").empty();
+
+    // Lấy base URL (http://localhost:8080)
+    var baseUrl = window.location.origin;
+
+    // Lặp qua danh sách URL để thêm ảnh
+    listUrlImage.forEach(function (url) {
+        // Tạo đường dẫn đầy đủ
+        var fullUrl = baseUrl + url;
+
+        // Thêm ảnh vào thumbbox
+        var imageElement = `
+            <div class="image-product-container">
+                <img src="${fullUrl}" alt="Product Image" class="thumbimage" />
+            </div>
+        `;
+        $("#thumbbox").append(imageElement); // Thêm ảnh vào #thumbbox
+    });
+    console.log("Đã hiển thị ảnh:", listUrlImage);
+}
+
+
+// Gọi hàm khi tài liệu sẵn sàng
+$(document).ready(function () {
+    var productId = 1; // Thay bằng ID sản phẩm thực tế
+    getListURL(productId); // Gọi hàm lấy URL ảnh
+});
 
 function updateProductDetailForm(element) {
     var productDetailId = element.getAttribute("data-product-detail-id")
