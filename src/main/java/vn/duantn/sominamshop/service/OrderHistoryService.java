@@ -19,16 +19,20 @@ import vn.duantn.sominamshop.model.OrderHistory;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.response.OrderHistoryResponse;
 import vn.duantn.sominamshop.repository.OrderHistoryRepository;
+import vn.duantn.sominamshop.repository.OrderRepository;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Service
 public class OrderHistoryService {
     private final OrderHistoryRepository orderHistoryRepository;
     private final UserService userService;
+    private final OrderRepository orderRepository;
 
-    public OrderHistoryService(OrderHistoryRepository orderHistoryRepository, UserService userService) {
+    public OrderHistoryService(OrderHistoryRepository orderHistoryRepository, UserService userService,
+            OrderRepository orderRepository) {
         this.orderHistoryRepository = orderHistoryRepository;
         this.userService = userService;
+        this.orderRepository = orderRepository;
     }
 
     public void saveOrderHistory(OrderHistory orderHistory) {
@@ -108,6 +112,31 @@ public class OrderHistoryService {
         }
     }
 
+    public void updateReturnProduct(int saveTypeText, int productNumber, Order order) {
+        OrderHistory orderHis = new OrderHistory();
+        orderHis.setOrder(order);
+
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        if (email != null) {
+            User userByEmail = this.userService.findUserByEmail(email);
+            if (userByEmail.getRole().getName().equals("USER")) {
+                orderHis.setPerformedBy("Hệ thống");
+            } else {
+                orderHis.setPerformedBy(userByEmail.getFullName());
+            }
+        }
+
+        if (saveTypeText == 0) {
+            orderHis.setDescription("Đã hoàn trả " + productNumber + " sản phẩm");
+        } else {
+            orderHis.setDescription("Đã loại bỏ " + productNumber + " sản phẩm khỏi đơn hàng");
+        }
+
+        this.orderHistoryRepository.save(orderHis);
+    }
+
     public List<OrderHistoryResponse> getAllOrderHistoryByOrder(Order order) {
         // Danh sách tất cả thời gian hành động
         List<LocalDateTime> lstTimes = this.orderHistoryRepository.findAllTimeByOrder(order);
@@ -164,4 +193,5 @@ public class OrderHistoryService {
     // public List<OrderHistory> getAllOrderHistoryByOrder(Order order) {
     // return this.orderHistoryRepository.findAllByOrderSortedDesc(order);
     // }
+
 }

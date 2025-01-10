@@ -164,11 +164,12 @@ if (btnAddProductToCart) {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
 
-            const data = await response.json();
-            console.log("Response Data:", data);
+            // const data = await response.json();
+            // console.log("Response Data:", data);
             // if (inputQuantity) {
             //     inputQuantity.value = currentQuantity;
             // }
+            window.location.reload(true);
         } catch (error) {
             console.error('Error:', error);
         }
