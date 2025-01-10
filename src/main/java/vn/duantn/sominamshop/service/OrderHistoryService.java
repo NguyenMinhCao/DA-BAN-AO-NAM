@@ -130,8 +130,10 @@ public class OrderHistoryService {
 
         if (saveTypeText == 0) {
             orderHis.setDescription("Đã hoàn trả " + productNumber + " sản phẩm");
-        } else {
+        } else if (saveTypeText == 1) {
             orderHis.setDescription("Đã loại bỏ " + productNumber + " sản phẩm khỏi đơn hàng");
+        } else {
+            orderHis.setDescription("Đơn hàng #" + order.getId() + " đã bị hủy");
         }
 
         this.orderHistoryRepository.save(orderHis);

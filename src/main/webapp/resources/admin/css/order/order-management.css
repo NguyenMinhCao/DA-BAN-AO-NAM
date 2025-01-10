@@ -466,7 +466,7 @@ ul.tablist-order {
     display: inline-flex;
     -webkit-box-align: center;
     align-items: center;
-    padding: 4px 16px;
+    padding: 0px 10px;
     outline: rgb(255, 223, 155) solid 1px;
     outline-offset: -1px;
     border-radius: 20px;

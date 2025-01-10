@@ -1,3 +1,4 @@
+
 //Show form
 $(document).ready(function () {
     $('#showFormSize').click(function () {
@@ -21,7 +22,7 @@ function saveSize() {
     var sizeId = $("#sizeForm").attr("size-id-update");
 
     // Check thông tin
-    if (!checkInputSize(sizeName,sizeShirtLength,sizeShirtWidth)) {
+    if (!checkInputSize(sizeName, sizeShirtLength, sizeShirtWidth)) {
         return;
     }
 
@@ -62,6 +63,7 @@ function saveSize() {
         success: function (response) {
             console.log("Lưu kích thước thành công!");
 
+
             Swal.fire({
                 icon: 'success',
                 title: 'Thành công!',
@@ -84,7 +86,7 @@ function saveSize() {
 }
 
 // Check thông tin
-function checkInputSize(sizeName,sizeShirtLength,sizeShirtWidth) {
+function checkInputSize(sizeName, sizeShirtLength, sizeShirtWidth) {
     // Kiểm tra xem các trường có rỗng không
     if (sizeName === "" || sizeShirtLength === "" || sizeShirtWidth === "") {
         Swal.fire({
@@ -107,7 +109,7 @@ function checkInputSize(sizeName,sizeShirtLength,sizeShirtWidth) {
     }
 
     var lengAndWidthRegex = /^\d+$/;
-    if(sizeShirtLength <= 0 || sizeShirtWidth <= 0){
+    if (sizeShirtLength <= 0 || sizeShirtWidth <= 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -136,7 +138,7 @@ function checkDuplicateSize(sizeName) {
         type: "POST",
         url: "/admin/rest/size/checkDuplicateName",
         contentType: "application/json",
-        data: JSON.stringify({name: sizeName}),
+        data: JSON.stringify({ name: sizeName }),
         async: false,
         success: function (response) {
             isDuplicateName = response.isDuplicateName;

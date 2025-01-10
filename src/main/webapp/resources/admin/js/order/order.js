@@ -35,11 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hiển thị modal chọn sản phẩm
     chooseProductBtn.addEventListener('click', function () {
         if (invoiceCounter < 1) {
-            Swal.fire({
-                icon: "error",
-                title: "Hãy tạo hóa đơn trước khi chọn sản phẩm",
-                showConfirmButton: true,
-            });
+            notificationAddCusstomer('Thất bại!', "Hãy tạo hóa đơn trước khi chọn sản phẩm", 'error')
             return
         }
         toggleModal(productModal, true)
@@ -54,11 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hiển thị modal chọn khách hàng
     chooseCustomerBtn.addEventListener('click', function () {
         if (invoiceCounter < 1) {
-            Swal.fire({
-                icon: "error",
-                title: "Hãy tạo hóa đơn trước khi chọn khách hàng",
-                showConfirmButton: true,
-            });
+            notificationAddCusstomer('Thất bại!', "Hãy tạo hóa đơn trước khi chọn khách hàng", 'error')
             return;
         }
         toggleModal(customerModal, true)
@@ -612,21 +604,11 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(totalPayment + " tổng tiền phải trả")
         // let InvoiceExists = document.
         if (customerPayment < Number(totalPayment.replace(/VND/g, '').replace(/\./g, ''))) {
-            Swal.fire({
-                icon: "error",
-                title: "Số tiền khách trả còn thiếu",
-                showConfirmButton: true,
-                timer: 1500
-            });
+            notificationAddCusstomer('Thất bại!', "Số tiền khách trả còn thiếu", 'error')
             check = false
         }
         if (listProduct == null) {
-            Swal.fire({
-                icon: "error",
-                title: "Hóa đơn chưa có sản phẩm nào",
-                showConfirmButton: true,
-                timer: 1500
-            });
+            notificationAddCusstomer('Thất bại!', "Hóa đơn chưa có sản phẩm nào", 'error')
             check = false
         }
         return check
@@ -661,12 +643,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             },
             error: function (xhr, status,error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Có lỗi khi lưu hóa đơn",
-                    showConfirmButton: true,
-                    timer: 1500
-                });
+                notificationAddCusstomer('Thất bại!', "Có lỗi khi lưu hóa đơn", 'error')
                 console.log("Error:", error);
                 console.error('HTTP Status:', xhr.status); // Mã trạng thái HTTP
                 console.error('Response Text:', xhr.responseText); // Nội dung phản hồi
@@ -827,22 +804,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cancel-btn-add-customer').addEventListener('click', ()=> toggleModal(addCustomerModal, false))
 
     //function cho thông báo
-    function notificationAddCusstomer(message, icon){
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.style.zIndex = 2000;
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        Toast.fire({
-            icon: icon,
-            title: message
+    function notificationAddCusstomer(title, message, type){
+        toast({
+            title: title,
+            message: message,
+            type: type,
+            duration: 2500
         });
     }
 
@@ -911,15 +878,15 @@ document.addEventListener('DOMContentLoaded', function () {
         let emailRegex = /^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         let phoneRegex = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
         if(!name ||  (!phoneNumber && !email)){
-            notificationAddCusstomer('Tên, số điện thoại hoặc email đang trống!', 'error')
+            notificationAddCusstomer('Thất bại!','Tên, số điện thoại hoặc email đang trống!', 'error')
             return false;
         }
         if(email && !emailRegex.test(email)){
-            notificationAddCusstomer('email không hợp lệ!', 'error')
+            notificationAddCusstomer('Thất bại!', 'email không hợp lệ!', 'error')
             return false;
         }
         if(phoneNumber && !phoneRegex.test(phoneNumber)){
-            notificationAddCusstomer('Số điện thoại không hợp lệ!', 'error')
+            notificationAddCusstomer('Thất bại!', 'Số điện thoại không hợp lệ!', 'error')
             return false;
         }
         return true
@@ -982,7 +949,7 @@ document.addEventListener('DOMContentLoaded', function () {
             error: function(xhr, status, error) {
                 let errorMap = JSON.parse(xhr.responseText);
                 let errorMessages = Object.values(errorMap);
-                notificationAddCusstomer(errorMessages, 'error')
+                notificationAddCusstomer('Thất bại!', errorMessages, 'error')
                 console.error('Error fetching districts data:', error);
             }
         });
@@ -1077,6 +1044,8 @@ document.addEventListener('DOMContentLoaded', function () {
             orderSource : 0,
             paymentStatus : 'PENDING',
             deliveryStatus : 'COMPLETED',
+            orderStatus : 'PENDING_INVOICE',
+            totalAmount : 0
         }
         $.ajax({
             url: `http://localhost:8080/api/admin/order/save/invoice`,
