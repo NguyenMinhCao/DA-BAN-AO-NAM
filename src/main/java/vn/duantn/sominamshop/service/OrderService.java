@@ -21,7 +21,7 @@ import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.OrderHistory;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.ProductDetail;
-import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
@@ -154,7 +154,7 @@ public class OrderService {
 
         Map<String, Object> response = new HashMap<>();
 
-        Optional<Promotion> promotionById = null;
+        Optional<Coupon> promotionById = null;
         Order order = this.findOrderByStatusAndCreatedBy();
 
         if (order != null) {

@@ -19,7 +19,7 @@ import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.ProductDetail;
-import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.CartDetailUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.request.DataGetProductDetail;
@@ -70,7 +70,7 @@ public class CartController {
         }
 
         // Lấy ra toàn bộ promotions để hiển thị
-        List<Promotion> listPromotions = this.promotionService.findAllPromotion();
+        List<Coupon> listPromotions = this.promotionService.findAllPromotion();
 
         // thiết lập lại trường promotion trong order có delivery-status null khi người
         // dùng rời

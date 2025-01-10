@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 
@@ -20,7 +20,7 @@ public class OrderDTO {
     private long id;
     private DeliveryStatus status;
     private User user;
-    private Promotion promotion;
+    private Coupon promotion;
     private String note;
     private BigDecimal totalAmount;
     private String paymentMethod;

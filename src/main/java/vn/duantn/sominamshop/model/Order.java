@@ -84,7 +84,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "promotion_id")
-    private Promotion promotion;
+    private Coupon promotion;
 
     @Column(name = "created_by")
     private String createdBy;

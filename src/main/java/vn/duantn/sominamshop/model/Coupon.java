@@ -1,44 +1,40 @@
 package vn.duantn.sominamshop.model;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.*;
 
-import org.springframework.format.annotation.DateTimeFormat;
+
 import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "promotions")
+@Table(name = "coupons")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Promotion {
+public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "promotion_code")
-    private String promotionCode;
+    @Column(name = "coupon_code")
+    private String couponCode;
 
     @Column(name = "discount_type")
-//    @Enumerated(EnumType.STRING)
-    private String discountType;
+    @Enumerated(EnumType.STRING)
+    private DiscountType discountType;
 
     @Column(name = "discount_value")
     private String discountValue;
@@ -57,10 +53,6 @@ public class Promotion {
 
     @Column(name = "status")
     private boolean status;
-
-
-    @ManyToMany(mappedBy = "promotions")
-    private List<Product> products;
 
     private String createdBy;
     private String updatedBy;

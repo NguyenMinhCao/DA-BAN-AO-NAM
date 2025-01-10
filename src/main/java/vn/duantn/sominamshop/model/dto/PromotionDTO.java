@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.constants.DiscountType;
 
 import java.math.BigDecimal;
@@ -25,6 +25,7 @@ public class PromotionDTO {
     private String startDate;
     private String endDate;
     private boolean status;
+
     public LocalDate getStartDateAsLocalDate() {
         return LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
@@ -32,15 +33,16 @@ public class PromotionDTO {
     public LocalDate getEndDateAsLocalDate() {
         return LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
-    public static PromotionDTO toPromotionDTO(Promotion promotion) {
+
+    public static PromotionDTO toPromotionDTO(Coupon promotion) {
         PromotionDTO promotionDTO = PromotionDTO.builder()
                 .id(promotion.getId())
                 .startDate(promotion.getStartDate())
                 .endDate(promotion.getEndDate())
                 .status(promotion.isStatus())
-//                .discountType(promotion.getDiscountType())
+                // .discountType(promotion.getDiscountType())
                 .discountValue(promotion.getDiscountValue())
-                .promotionCode(promotion.getPromotionCode())
+                // .promotionCode(promotion.getPromotionCode())
                 .usageLimit(promotion.getUsageLimit())
                 .minOrderValue(promotion.getMinOrderValue())
                 .build();
