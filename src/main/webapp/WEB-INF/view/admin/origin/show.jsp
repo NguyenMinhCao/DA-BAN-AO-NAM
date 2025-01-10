@@ -1,6 +1,7 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,9 +9,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Dashboard - Quản lý màu</title>
+    <title>Dashboard - Quản lý nguồn gốc</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="/admin/ckeditor/ckeditor.js"></script>
+    z
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="/admin/css/styles.css" rel="stylesheet" />
+    <link href="/admin/css/origin/origin.css" rel="stylesheet" />
+
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -35,7 +41,7 @@
                 <h1 class="mt-4">Quản lý nguồn gốc</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">
-                        <a href="/admin" style="text-decoration: none;">Dashboard</a> / Color
+                        <a href="/admin" style="text-decoration: none;">Dashboard</a> / Nguồn gốc
                     </li>
                 </ol>
 
@@ -82,7 +88,14 @@
                             <tr>
                                 <th scope="row">${origin.originId}</th>
                                 <td>${origin.originName}</td>
-                                <td>${origin.status}</td>
+                                <td class="trang_thai">
+                                    <label class="toggle">
+                                        <input type="checkbox" onclick="toggleStatus(this)"
+                                               data-origin-id="${origin.originId}"
+                                               id="${origin.originId}" ${origin.status == 0 ? 'checked' : ''}>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
                                 <td>
                                     <a href="/admin/origin/detail/${origin.originId}" class="btn btn-success" title="Xem chi tiết">
                                         <i class="fas fa-eye"></i>
@@ -98,13 +111,7 @@
 
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
-                            <c:if test="${not empty originPage}">
-                                <c:if test="${originPage.hasPrevious()}">
-                                    <li class="page-item">
-                                        <a class="page-link" href="/admin/origin?originName=${originName}&page=${originPage.number - 1}">&laquo;</a>
-                                    </li>
-                                </c:if>
-
+                            <c:if test="${originPage.totalPages > 0}">
                                 <c:forEach var="i" begin="0" end="${originPage.totalPages - 1}">
                                     <li class="page-item ${originPage.number == i ? 'active' : ''}">
                                         <a class="page-link" href="/admin/origin?originName=${originName}&page=${i}">
@@ -112,13 +119,12 @@
                                         </a>
                                     </li>
                                 </c:forEach>
-
-                                <c:if test="${originPage.hasNext()}">
-                                    <li class="page-item">
-                                        <a class="page-link" href="/admin/origin?originName=${originName}&page=${originPage.number + 1}">&raquo;</a>
-                                    </li>
-                                </c:if>
                             </c:if>
+                            <c:if test="${originPage.totalPages == 0}">
+                                <!-- Hiển thị thông báo hoặc xử lý khi không có trang -->
+                                <li class="page-item disabled"><span class="page-link">Không có kết quả</span></li>
+                            </c:if>
+
                         </ul>
                     </nav>
                 </div>
@@ -131,5 +137,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="/admin/js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/admin/js/origin/origin.js"></script>
+
 </body>
 </html>

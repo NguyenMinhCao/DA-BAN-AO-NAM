@@ -54,4 +54,20 @@ public class Product extends BaseEntity implements Serializable {
     @ManyToMany
     @JoinTable(name = "Product_Promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
     private List<Promotion> promotions;
+
+    public Integer getStatus() {
+        if (status == null) {
+            return 0;
+        }
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        if (status == null) {
+            this.status = 0;
+        } else {
+            this.status = status;
+        }
+    }
+
 }
