@@ -168,7 +168,7 @@ public class CartService {
         CartDetail cartDetailById = this.findCartDetailById(cartDetailId).get();
         if (cartDetailById != null) {
             cartDetailById.setQuantity(quantity);
-            // cartDetailById.setPrice(cartDetailById.getProduct().getPrice() * quantity);
+            cartDetailById.setPrice(cartDetailById.getProductDetail().getPrice() * quantity);
             this.saveCartDetail(cartDetailById);
         }
 

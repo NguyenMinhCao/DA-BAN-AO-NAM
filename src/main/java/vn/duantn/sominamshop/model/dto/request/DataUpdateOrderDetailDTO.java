@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DataUpdateOrderDetailDTO {
-    private long productId;
+    private long productDetailId;
     private long quantity;
     private boolean updateORemove;
 }

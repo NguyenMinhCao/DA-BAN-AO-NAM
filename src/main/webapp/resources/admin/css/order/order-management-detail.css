@@ -463,3 +463,70 @@
     outline: none;
     text-align: start;
 }
+
+
+#modalOverlayPushTransport .input-note {
+    height: 72px;
+    /* background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(211, 213, 215); */
+    border-radius: 6px;
+    margin: 7px 0;
+    /* text-align: start; */
+}
+
+#modalOverlayPushTransport #messageNote {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    outline: none;
+    padding: 6px 0px 0px 6px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(211, 213, 215);
+}
+
+.order-details .text-return {
+    text-align: start;
+    font-size: 14px;
+    cursor: pointer;
+    color: rgb(0, 136, 255);
+}
+
+.order-details .text-return:hover {
+    text-decoration: underline;
+}
+
+.order-details .product-img {
+    height: 41.3px;
+}
+
+#modalOverlayReturn .modal-overlay-return-content {
+    width: 500px;
+}
+
+#textReasonReturn {
+    width: 100%;
+}
+
+#modalOverlayReturn .box-quantity-return input,
+#textReasonReturn {
+    outline: none;
+    border: 1px solid rgb(211, 213, 215);
+}
+
+#modalOverlayReturn .box-quantity-return input {
+    width: 200px;
+    padding: 2px 5px;
+}
+
+#modalOverlayReturn .box-quantity-return span,
+#modalOverlayReturn .box-text-reason span {
+    margin-bottom: 5px;
+}
+
+#modalOverlayReturn .box-quantity-return {
+    margin-bottom: 10px;
+}
+
+#textReasonReturn {
+    padding: 5px;
+}

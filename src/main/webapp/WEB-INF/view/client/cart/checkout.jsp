@@ -208,7 +208,7 @@
                                             <div class="place-detail-one">
                                                 <div class="PzGLCh" id="fullNameAndPhoneNumber">
                                                     ${address.fullName}
-                                                    ${address.phoneNumber}
+                                                    ${address.phoneNumber} 
                                                 </div>
                                                 <div class="a9c4OR" style="margin-left: 20px; display: inline-block;"
                                                     id="streetDetailsAndAdress">
@@ -276,7 +276,6 @@
                                                         <div class="h44KA2 ZnXbv2">
                                                             <div class="glTVDN">
                                                                 <div class="ieb1A9">${address.streetDetails}</div>
-                                                                <div class="ieb1A9">${address.address}</div>
                                                             </div>
                                                         </div>
                                                         <div class="p2Hy8c MM8UDO"></div>

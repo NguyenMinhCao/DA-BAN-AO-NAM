@@ -71,18 +71,23 @@
                                                                     <div class="product-edit d-flex">
                                                                         <div class="product-img">
                                                                             <img alt=""
-                                                                                src="/images/product/${orderDetail.product.images[i.index].imageUrl}">
+                                                                                src="/images/product/${orderDetail.productDetail.images[i.index].urlImage}">
                                                                         </div>
                                                                         <!-- data -->
                                                                         <div class="idProduct" style="display: none;">
-                                                                            ${orderDetail.product.id}</div>
+                                                                            ${orderDetail.productDetail.id}</div>
                                                                         <div class="idOrderDetail"
                                                                             style="display: none;">${orderDetail.id}
                                                                         </div>
                                                                         <!-- data -->
                                                                         <div class="product-name d-flex flex-column">
-                                                                            <span class="align-self-center"
-                                                                                style="text-align: start;">${orderDetail.product.name}
+                                                                            <span class="align-self-start"
+                                                                                style="text-align: start;">
+                                                                                ${orderDetail.productDetail.product.name}
+                                                                                <span
+                                                                                    style="text-align: start; font-size: 12px; color: rgb(116, 124, 135);;">${orderDetail.productDetail.color.colorName},
+                                                                                    ${orderDetail.productDetail.size.sizeName}
+                                                                                </span>
                                                                             </span>
                                                                             <div class="edit-order-btn sub-font d-flex">
                                                                                 <span class="openModalEdit">Chỉnh số
@@ -99,7 +104,7 @@
                                                                 <td>
                                                                     <span class="product-price">
                                                                         <fmt:formatNumber type="number"
-                                                                            value="${orderDetail.product.price}" />
+                                                                            value="${orderDetail.productDetail.price}" />
                                                                         đ
                                                                     </span>
                                                                 </td>

@@ -193,30 +193,34 @@
                                                                     ${cartDetail.productDetail.size.sizeName}
                                                                 </span>
                                                             </div>
-
                                                         </td>
                                                         <td style="text-align: center;">
-                                                            <h5>
+                                                            <h5 class="product-price">
                                                                 <fmt:formatNumber type="number"
                                                                     value="${cartDetail.productDetail.price}" />
                                                                 đ
                                                             </h5>
                                                         </td>
+                                                        <!-- tăng giảm số lượng sản phẩm giỏ hàng -->
                                                         <td style="text-align: center;">
                                                             <div class="product_count">
-                                                                <input type="text" name="qty" id="sst" maxlength="12"
+                                                                <input type="text" name="qty"
                                                                     value="${cartDetail.quantity}" title="Quantity:"
-                                                                    class="input-text qty" />
-                                                                <button class="increase items-count" type="button">
+                                                                    class="input-text qty"
+                                                                    data-cart-detail-id="${cartDetail.id}"
+                                                                    data-cart-detail-price="${cartDetail.productDetail.price}" />
+                                                                <button class="increase btn-plus items-count"
+                                                                    type="button">
                                                                     <i class="lnr lnr-chevron-up"></i>
                                                                 </button>
-                                                                <button class="reduced items-count" type="button">
+                                                                <button class="reduced btn-minus items-count"
+                                                                    type="button">
                                                                     <i class="lnr lnr-chevron-down"></i>
                                                                 </button>
                                                             </div>
                                                         </td>
                                                         <td style="text-align: center;">
-                                                            <h5>
+                                                            <h5 data-cart-detail-id="${cartDetail.id}">
                                                                 <fmt:formatNumber type="number"
                                                                     value="${cartDetail.price}" />
                                                                 đ
@@ -286,7 +290,7 @@
                                     <%=pageContext.getAttribute("sumInCart")%> sản
                                         phẩm):
                                 </h5>
-                                <h5 style="color: #71cd14;display: inline-block;">
+                                <h5 style="color: #71cd14;display: inline-block;" data-cart-total-price="${totalPrice}">
                                     <fmt:formatNumber type="number" value="${totalPrice}" />
                                     đ
                                 </h5>

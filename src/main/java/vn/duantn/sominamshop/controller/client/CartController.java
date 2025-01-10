@@ -120,12 +120,12 @@ public class CartController {
     }
 
     @PostMapping("/add-product-to-cart")
-    public String addProductToCart(HttpServletRequest request,
+    public ResponseEntity<Void> addProductToCart(HttpServletRequest request,
             @RequestBody DataGetProductDetail data) {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         this.cartService.addProductDetailToCart(email, data, session);
-        return null;
+        return ResponseEntity.ok().body(null);
     }
 
     @GetMapping("/remove-product-from-cart/{id}")

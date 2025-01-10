@@ -66,6 +66,10 @@ public class ProductDetailService {
         return this.productDetailRepository.findById(id);
     }
 
+    public void saveProductDetail(ProductDetail productDetail) {
+        this.productDetailRepository.save(productDetail);
+    }
+
     public List<Long> findProductDetailByColor(DataGetProductDetail dto) {
         List<ProductDetail> lstPDetail = this.productDetailRepository
                 .findProductDetailByColorAndProduct(dto.getIdColor(), dto.getIdProduct());

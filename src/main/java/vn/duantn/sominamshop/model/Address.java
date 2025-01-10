@@ -40,8 +40,6 @@ public class Address {
     @Column(name = "city")
     private String city;
 
-    @Column(columnDefinition = "NVARCHAR(1500)")
-    private String address;
     @Column(name = "street_details", columnDefinition = "NVARCHAR(1500)")
     private String streetDetails;
     private boolean status;
@@ -51,7 +49,6 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
 
     @PrePersist
     public void handleBeforeCreate() {
