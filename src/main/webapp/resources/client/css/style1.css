@@ -934,3 +934,18 @@ textarea {
 .text-select {
     width: 54px;
 }
+
+
+/* enabled select box */
+.enabled {
+    border: 1px solid #71cd14 !important;
+    color: #71cd14;
+}
+
+/* disabled select box */
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed !important;
+    background-color: #fafafa;
+    color: rgba(0, 0, 0, .26);
+}

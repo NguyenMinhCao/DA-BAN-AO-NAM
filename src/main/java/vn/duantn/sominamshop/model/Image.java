@@ -29,12 +29,8 @@ public class Image  extends BaseEntity implements Serializable {
     @Column(name = "status")
     private Integer status;
 
-
     @JsonIgnore
     @JoinColumn(name = "product_detail_id", referencedColumnName = "id")
     @ManyToOne(cascade = CascadeType.MERGE) // hoặc CascadeType.ALL nếu muốn quản lý toàn bộ
     private ProductDetail productDetail;
-
-
-
 }

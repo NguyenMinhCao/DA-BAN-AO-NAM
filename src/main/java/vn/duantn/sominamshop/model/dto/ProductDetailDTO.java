@@ -19,7 +19,7 @@ public class ProductDetailDTO {
     private Integer quantity;
     private BigDecimal cost;
     private String productName;
-    private BigDecimal price;
+    private double price;
 
     private Float weight;
 

@@ -83,6 +83,36 @@
                             border-color: #71cd14;
                             color: #71cd14;
                         }
+
+                        .table-responsive table th {
+                            text-align: center;
+                        }
+
+                        .table-responsive table th:first-child {
+                            text-align: start;
+                        }
+
+                        .table-responsive table th:nth-child(2) {
+                            text-align: center;
+                        }
+
+                        .table-responsive table th:nth-child(3) {
+                            text-align: center;
+                            width: 130px;
+                        }
+
+                        .table-responsive table th:nth-child(4) {
+                            text-align: center;
+                            width: 100px;
+                        }
+
+                        .table-responsive table th:nth-child(5) {
+                            width: 200px;
+                        }
+
+                        .table-responsive table th:nth-child(6) {
+                            width: 100px;
+                        }
                     </style>
                 </head>
 
@@ -133,60 +163,73 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Sản phẩm</th>
-                                                    <th scope="col">Giá</th>
-                                                    <th scope="col">Số lượng</th>
-                                                    <th scope="col">Tổng tiền</th>
-                                                    <th scope="col">Thao tác</th>
+                                                    <th scope="col"><span>Phân loại hàng</span></th>
+                                                    <th scope="col"><span>Giá</span></th>
+                                                    <th scope="col"><span>Số lượng</span></th>
+                                                    <th scope="col"><span>Tổng tiền</span></th>
+                                                    <th scope="col"><span>Thao tác</span></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <c:set var="sumInCart" value="0" />
-                                                <c:forEach items="${lstCartDetail}" var="cartDetail">
+                                                <c:forEach items="${lstCartDetail}" var="cartDetail" varStatus="i">
                                                     <tr>
                                                         <td>
                                                             <div class="media">
                                                                 <div class="d-flex">
                                                                     <img style="height: 98px; width: 106px; border: none;"
-                                                                        src="images/product/${cartDetail.product.images[0].imageUrl}"
+                                                                        src="images/product/${cartDetail.productDetail.images[i.index].urlImage}"
                                                                         alt="" />
                                                                 </div>
                                                                 <div class="media-body">
-                                                                    <p>${cartDetail.product.name}</p>
+                                                                    <p>${cartDetail.productDetail.product.name}</p>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>
-                                                            <h5>
+                                                        <td style="text-align: center;">
+                                                            <div class="">
+                                                                <span>
+                                                                    ${cartDetail.productDetail.color.colorName},
+                                                                    ${cartDetail.productDetail.size.sizeName}
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                        <td style="text-align: center;">
+                                                            <h5 class="product-price">
                                                                 <fmt:formatNumber type="number"
-                                                                    value="${cartDetail.product.price}" />
+                                                                    value="${cartDetail.productDetail.price}" />
                                                                 đ
                                                             </h5>
                                                         </td>
-                                                        <td>
+                                                        <!-- tăng giảm số lượng sản phẩm giỏ hàng -->
+                                                        <td style="text-align: center;">
                                                             <div class="product_count">
-                                                                <input type="text" name="qty" id="sst" maxlength="12"
+                                                                <input type="text" name="qty"
                                                                     value="${cartDetail.quantity}" title="Quantity:"
-                                                                    class="input-text qty" />
-                                                                <button class="increase items-count" type="button">
+                                                                    class="input-text qty"
+                                                                    data-cart-detail-id="${cartDetail.id}"
+                                                                    data-cart-detail-price="${cartDetail.productDetail.price}" />
+                                                                <button class="increase btn-plus items-count"
+                                                                    type="button">
                                                                     <i class="lnr lnr-chevron-up"></i>
                                                                 </button>
-                                                                <button class="reduced items-count" type="button">
+                                                                <button class="reduced btn-minus items-count"
+                                                                    type="button">
                                                                     <i class="lnr lnr-chevron-down"></i>
                                                                 </button>
                                                             </div>
                                                         </td>
-                                                        <td>
-                                                            <h5>
+                                                        <td style="text-align: center;">
+                                                            <h5 data-cart-detail-id="${cartDetail.id}">
                                                                 <fmt:formatNumber type="number"
                                                                     value="${cartDetail.price}" />
                                                                 đ
                                                             </h5>
                                                         </td>
-
-                                                        <td>
+                                                        <td style="text-align: center;">
                                                             <div>
-                                                                <a href="/remove-product-from-cart/${cartDetail.product.id}"
-                                                                    style="display: block;margin-left: 15px; color: #71cd14;">Xóa</a>
+                                                                <a href="/remove-product-from-cart/${cartDetail.productDetail.id}"
+                                                                    style="display: block; color: #71cd14;">Xóa</a>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -194,12 +237,13 @@
                                                 </c:forEach>
 
                                                 <tr class="shipping_area">
-                                                    <td colspan="3" style="vertical-align:top;">
+                                                    <td colspan="4" style="vertical-align:top;">
                                                         <h5>Chọn đơn vị vận chuyển</h5>
                                                     </td>
                                                     <td colspan="2">
                                                         <div class="shipping_box">
-                                                            <ul class="list">
+                                                            <ul class="list"
+                                                                style="display: inline-block; margin-right: 19px;">
                                                                 <li>
                                                                     <p style="display: inline;margin-right: 14px;"> Giao
                                                                         hàng hỏa tốc: đ50.000 </p>
@@ -230,7 +274,7 @@
                     </tr>
 
                     <tr>
-                        <td class="td-voucher-add" colspan="3">
+                        <td class="td-voucher-add" colspan="4">
                             <p><i style="color: orange; font-size: 11px;" class="ti-layout-width-default"></i></p>
                             <p style="margin-left: 5px;">Voucher</p>
                             <p style="font-weight: bold;">
@@ -241,14 +285,17 @@
                         </td>
                         <!-- <td colspan="1"></td> -->
                         <td colspan="2">
-                            <h5 style="display: inline-block;">Tổng thanh toán (
-                                <%=pageContext.getAttribute("sumInCart")%> sản
-                                    phẩm):
-                            </h5>
-                            <h5 style="color: #71cd14;display: inline-block;">
-                                <fmt:formatNumber type="number" value="${totalPrice}" />
-                                đ
-                            </h5>
+                            <div class="" style="margin-left: -19px;">
+                                <h5 style="display: inline-block;">Tổng thanh toán (
+                                    <%=pageContext.getAttribute("sumInCart")%> sản
+                                        phẩm):
+                                </h5>
+                                <h5 style="color: #71cd14;display: inline-block;" data-cart-total-price="${totalPrice}">
+                                    <fmt:formatNumber type="number" value="${totalPrice}" />
+                                    đ
+                                </h5>
+                            </div>
+
                             <div class="modal-overlay-add-voucher" id="modalOverlayAddVoucher">
                                 <!-- Nội dung modal -->
                                 <div class="modal-content-add-voucher">
@@ -317,8 +364,8 @@
                     </tr>
                     <tr class="out_button_area">
                         <td colspan="1"></td>
-                        <td colspan="4">
-                            <div style="margin-left: 195px; display: inline-block; width: 300px;">
+                        <td colspan="5">
+                            <div style="margin-left: 465px; display: inline-block; width: 300px;">
                                 <div style="display: flex; justify-content: space-between; height: 27px;">
                                     <span>Tổng tiền hàng :</span>
                                     <p data-cart-total-price="${totalPrice}">
@@ -357,7 +404,7 @@
 
                     <tr class="out_button_area">
                         <td colspan="2"></td>
-                        <td colspan="3">
+                        <td colspan="4">
                             <div class="checkout_btn_inner">
                                 <a class="gray_btn" href="/products">Tiếp tục mua sắm</a>
                                 <a class="main_btn" href="/order">Đi đến thanh toán</a>

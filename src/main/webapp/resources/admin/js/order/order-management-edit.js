@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnConfirmUpdate = document.getElementById('confirmEdit')
     const confirmRemove = document.getElementById('confirmRemove')
     var getIdOrderDetail = '';
-    var getProductId = '';
+    var getProductDetailId = '';
 
     openModalEdit.forEach((modalEdit) => {
         modalEdit.onclick = () => {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (productEdit) {
                 // Tìm phần tử con có class 'idProduct' trong 'product-edit'
-                const idProductDiv = productEdit.querySelector('.idProduct')
+                const idProductDetailDiv = productEdit.querySelector('.idProduct')
                 const idOrderDetailDiv = productEdit.querySelector('.idOrderDetail')
                 if (idOrderDetailDiv) {
                     const getId = idOrderDetailDiv.textContent.trim();
@@ -58,9 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log(getIdOrderDetail)
                 }
 
-                if (idProductDiv) {
+                if (idProductDetailDiv) {
                     // Lấy nội dung văn bản của 'idProduct' và loại bỏ khoảng trắng
-                    const productId = idProductDiv.textContent.trim();
+                    const productDetailId = idProductDetailDiv.textContent.trim();
                     const trElement = productEdit.closest('tr');
                     if (trElement) {
                         // Tìm phần tử có class 'quantity-pro-order' bên trong <tr>
@@ -71,18 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
-                    displayQuanProduct(productId)
-                    getProductId = productId
-                    console.log('Product ID:', productId);
+                    displayQuanProductDetail(productDetailId)
+                    getProductDetailId = productDetailId
+                    console.log('ProductDetail ID:', productDetailId);
                 }
             }
         })
     })
 
     //Hiển thị số lượng trong kho
-    async function displayQuanProduct(idProduct) {
+    async function displayQuanProductDetail(getProductDetailId) {
         try {
-            const response = await fetch('/admin/orders/product/' + idProduct, {
+            const response = await fetch('/admin/orders/product-detail/' + getProductDetailId, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isUp = false
         }
         const sentData = {
-            productId: getProductId,
+            productDetailId: getProductDetailId,
             quantity: inputQuantity.value,
             updateORemove: isUp
         }
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //         if (productEdit) {
     //             // Tìm phần tử con có class 'idProduct' trong 'product-edit'
-    //             const idProductDiv = productEdit.querySelector('.idProduct')
+    //             const idProductDetailDiv = productEdit.querySelector('.idProduct')
     //             const idOrderDetailDiv = productEdit.querySelector('.idOrderDetail')
     //             if (idOrderDetailDiv) {
     //                 const getId = idOrderDetailDiv.textContent.trim();
@@ -174,11 +174,11 @@ document.addEventListener('DOMContentLoaded', () => {
     //                 console.log(getIdOrderDetail)
     //             }
 
-    //             if (idProductDiv) {
+    //             if (idProductDetailDiv) {
     //                 // Lấy nội dung văn bản của 'idProduct' và loại bỏ khoảng trắng
-    //                 const productId = idProductDiv.textContent.trim();
+    //                 const productId = idProductDetailDiv.textContent.trim();
 
-    //                 getProductId = productId
+    //                 getProductDetailId = productId
     //                 console.log('Product ID:', productId);
     //             }
     //         }

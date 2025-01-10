@@ -33,7 +33,7 @@ public class UserRestController {
             @RequestParam(name = "limit", defaultValue = "2") int limit,
             @RequestParam(value = "keyword") String search) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(search, pageable);
+        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search);
         return ResponseEntity.ok(pageCustomer);
     }
     @GetMapping("/get/staffs")
@@ -43,7 +43,7 @@ public class UserRestController {
             @RequestParam(value = "keyword", defaultValue = " ") String search
     ){
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageStaff = userService.findByFullNameAndRole(search, pageable);
+        Page<UserDTO> pageStaff = userService.findByFullNameAndRole(pageable, search);
         return ResponseEntity.ok(pageStaff);
     }
 

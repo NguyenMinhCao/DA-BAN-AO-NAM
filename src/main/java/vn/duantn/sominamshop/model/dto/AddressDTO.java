@@ -16,8 +16,6 @@ public class AddressDTO {
 
     private String phoneNumber;
 
-    private String address;
-
     private String streetDetails;
 
     private boolean status;

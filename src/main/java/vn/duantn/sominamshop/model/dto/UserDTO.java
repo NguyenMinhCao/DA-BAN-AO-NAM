@@ -30,7 +30,7 @@ public class UserDTO {
         }
         List<AddressDTO> addressDTOs = user.getAddress()
                 .stream()
-                .map(a -> new AddressDTO(a.getId(), a.getFullName(), a.getPhoneNumber(), a.getAddress(),a.getStreetDetails(), a.isStatus()))
+                .map(a -> new AddressDTO(a.getId(), a.getFullName(), a.getPhoneNumber() ,a.getStreetDetails(), a.isStatus()))
                 .collect(Collectors.toList());
         return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getAvatar(), user.getGender(), addressDTOs);
     }

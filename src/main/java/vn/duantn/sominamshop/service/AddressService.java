@@ -24,7 +24,7 @@ public class AddressService {
         Address addressNew = new Address();
         addressNew.setFullName(dto.getFullName());
         addressNew.setPhoneNumber(dto.getPhoneNumber());
-        addressNew.setAddress(dto.getAddress());
+        // addressNew.setAddress(dto.getAddress());
         addressNew.setUser(user);
         addressNew.setStreetDetails(dto.getStreetDetails());
         if (dto.isStatus() == true) {
@@ -57,7 +57,7 @@ public class AddressService {
         dto.setIdAddress(addressById.getId());
         dto.setFullName(addressById.getFullName());
         dto.setPhoneNumber(addressById.getPhoneNumber());
-        dto.setAddress(addressById.getAddress());
+        // dto.setAddress(addressById.getAddress());
         dto.setStreetDetails(addressById.getStreetDetails());
         dto.setStatus(dto.isStatus());
         return dto;
@@ -65,7 +65,7 @@ public class AddressService {
 
     public Address updateAddress(AddressDTO dto, User user) {
         Address addressById = this.addressRepository.findById(Long.valueOf(dto.getIdAddress())).get();
-        addressById.setAddress(dto.getAddress());
+        // addressById.setAddress(dto.getAddress());
         addressById.setFullName(dto.getFullName());
         addressById.setPhoneNumber(dto.getPhoneNumber());
         addressById.setStreetDetails(dto.getStreetDetails());

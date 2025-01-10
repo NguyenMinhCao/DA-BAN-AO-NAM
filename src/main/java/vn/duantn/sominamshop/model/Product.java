@@ -21,7 +21,6 @@ public class Product extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotBlank(message = "Tên sản phẩm không được để trống!")
     @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
@@ -34,7 +33,6 @@ public class Product extends BaseEntity implements Serializable {
     @JoinColumn(name = "origin_id")
     private Origin origin;
 
-
     @ManyToOne
     @JoinColumn(name = "pattern_id")
     private Pattern pattern;
@@ -43,11 +41,8 @@ public class Product extends BaseEntity implements Serializable {
     @JoinColumn(name = "category_id")
     private Category category;
 
-
-
     @Column(name = "description", columnDefinition = "NVARCHAR(3000)")
     private String description;
-
 
     @Column(name = "status")
     private Integer status;
@@ -59,10 +54,4 @@ public class Product extends BaseEntity implements Serializable {
     @ManyToMany
     @JoinTable(name = "Product_Promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
     private List<Promotion> promotions;
-
-
-
-
-
-
 }

@@ -45,7 +45,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
             "    [product_id] = :productId\n" +
             "ORDER BY\n" +
             "    [colors].[color_name],\n" +
-            "    RankedSizes.sizeRank;",nativeQuery = true)
+            "    RankedSizes.sizeRank;", nativeQuery = true)
     List<ProductDetailResponse> getAllByProductId(@Param("productId") Long productId);
 
     @Query(value = "SELECT sizes.id, \n" +
@@ -59,8 +59,9 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
             "          FROM product_details\n" +
             "          WHERE color_id = :colorId\n" +
             "              AND size_id = sizes.id\n" +
-            "              AND product_id = :productId)",nativeQuery = true)
-    List<SizeResponse> getListSizeAddProductDetail(@Param("productId") Integer productId, @Param("colorId") Integer colorId);
+            "              AND product_id = :productId)", nativeQuery = true)
+    List<SizeResponse> getListSizeAddProductDetail(@Param("productId") Integer productId,
+            @Param("colorId") Integer colorId);
 
     @Query("Select Count(p.id) From ProductDetail p Where p.quantity < :number")
     int countProduct(int number);
@@ -70,35 +71,37 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
     @Query("SELECT p FROM ProductDetail p WHERE p.product.status = 0 AND p.quantity > 0")
     List<ProductDetail> getListProduct();
+
     @Query("select c from ProductDetail c where c.product.id =:productId")
     List<ProductDetail> getAllProductDetailByProductId(@Param("productId") Long productId);
 
     @Query(value = """
-            SELECT
-                pd.*
-            FROM
-                product_details pd
-                INNER JOIN
-                    products p ON pd.product_id = p.id
-                INNER JOIN
-                    colors c ON pd.color_id = c.id
-                INNER JOIN
-                    sizes s ON pd.size_id = s.id
-                LEFT JOIN (
-                    SELECT product_id, MIN(id) AS min_image_id
-                    FROM images
-                    GROUP BY product_id
-                ) AS min_images ON pd.product_id = min_images.product_id
-                LEFT JOIN
-                    images i ON min_images.min_image_id = i.id
-                WHERE
-                    p.id =:productId AND p.status = 0
-                    AND pd.size_id =:sizeId AND s.status = 0
-                    AND pd.color_id =:colorId AND c.status = 0;
-        """, nativeQuery = true)
+                SELECT
+                    pd.*
+                FROM
+                    product_details pd
+                    INNER JOIN
+                        products p ON pd.product_id = p.id
+                    INNER JOIN
+                        colors c ON pd.color_id = c.id
+                    INNER JOIN
+                        sizes s ON pd.size_id = s.id
+                    LEFT JOIN (
+                        SELECT product_id, MIN(id) AS min_image_id
+                        FROM images
+                        GROUP BY product_id
+                    ) AS min_images ON pd.product_id = min_images.product_id
+                    LEFT JOIN
+                        images i ON min_images.min_image_id = i.id
+                    WHERE
+                        p.id =:productId AND p.status = 0
+                        AND pd.size_id =:sizeId AND s.status = 0
+                        AND pd.color_id =:colorId AND c.status = 0;
+            """, nativeQuery = true)
     ProductDetail findByProductIdAndColorIdAndSizeId(@Param("productId") Integer productId,
-                                                     @Param("sizeId") Integer sizeId,
-                                                     @Param("colorId") Integer colorId);
+            @Param("sizeId") Integer sizeId,
+            @Param("colorId") Integer colorId);
+
     @Query("select pd from ProductDetail pd where pd.id = :productDetailId")
     ProductDetail findByProductDetailId(@Param("productDetailId") Integer productDetailId);
 
@@ -127,24 +130,24 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
                     AND c.id = :colorId
             """, nativeQuery = true)
     ProductDetail showQuantity(@Param("productId") Integer productId,
-                               @Param("colorId") Integer colorId,
-                               @Param("sizeId") Integer sizeId);
+            @Param("colorId") Integer colorId,
+            @Param("sizeId") Integer sizeId);
 
     @Query(value = """
-        SELECT 
-            ROUND(dbo.product_details.price, 0) AS discounted_price
-        FROM 
-            dbo.product_details 
-        INNER JOIN 
-            dbo.products ON dbo.product_details.product_id = dbo.products.id
-        WHERE 
-            product_id = :productId AND 
-            product_details.color_id = :colorId AND 
-            product_details.size_id = :sizeId
-        """, nativeQuery = true)
+            SELECT
+                ROUND(dbo.product_details.price, 0) AS discounted_price
+            FROM
+                dbo.product_details
+            INNER JOIN
+                dbo.products ON dbo.product_details.product_id = dbo.products.id
+            WHERE
+                product_id = :productId AND
+                product_details.color_id = :colorId AND
+                product_details.size_id = :sizeId
+            """, nativeQuery = true)
     Float getPriceByProductDetail(@Param("productId") Integer productId,
-                                  @Param("colorId") Integer colorId,
-                                  @Param("sizeId") Integer sizeId);
+            @Param("colorId") Integer colorId,
+            @Param("sizeId") Integer sizeId);
 
     @Query(value = """
             with imagesOrder AS (Select product_detail_id, url_image, ROW_NUMBER() OVER (PARTITION BY product_detail_id ORDER BY (select null)) AS STT from images)
@@ -180,4 +183,12 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
     Page<ProductDetail> findByColorId(Long colorId, Pageable pageable);
 
+    @Query("select pd from ProductDetail pd where pd.color.id =:idColor and pd.product.id = :idProduct")
+    List<ProductDetail> findProductDetailByColorAndProduct(long idColor, long idProduct);
+
+    @Query("select pd from ProductDetail pd where pd.size.id =:idSize and pd.product.id = :idProduct")
+    List<ProductDetail> findProductDetailBySizeAndProduct(long idSize, long idProduct);
+
+    @Query("select pd from ProductDetail pd where pd.size.id =:idSize and pd.color.id =:idColor and pd.product.id=:idProduct")
+    ProductDetail findProductDetailBySizeAndColorAndProduct(long idSize, long idColor, long idProduct);
 }

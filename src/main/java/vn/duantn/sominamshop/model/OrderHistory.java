@@ -34,6 +34,12 @@ public class OrderHistory {
     @Column(name = "performed_by", columnDefinition = "NVARCHAR(255)")
     private String performedBy;
 
+    @Column(name = "note", columnDefinition = "NVARCHAR(1500)")
+    private String note;
+
+    @Column(name = "reason_return", columnDefinition = "NVARCHAR(1500)")
+    private String reasonReturn;
+
     @Column(name = "action_time")
     private LocalDateTime actionTime;
 

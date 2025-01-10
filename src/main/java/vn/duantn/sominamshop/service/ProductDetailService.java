@@ -5,13 +5,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.ProductDetail;
+import vn.duantn.sominamshop.model.dto.request.DataGetProductDetail;
 import vn.duantn.sominamshop.model.dto.request.ProductDetailRequest;
 import vn.duantn.sominamshop.model.dto.response.ProductDetailResponse;
 import vn.duantn.sominamshop.model.dto.response.SizeResponse;
 import vn.duantn.sominamshop.repository.ProductDetailRepository;
 import vn.duantn.sominamshop.repository.ProductRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +62,46 @@ public class ProductDetailService {
         return productDetailRepository.findById(id).get();
     }
 
+    public Optional<ProductDetail> findProductDetailById(long id) {
+        return this.productDetailRepository.findById(id);
+    }
+
+    public void saveProductDetail(ProductDetail productDetail) {
+        this.productDetailRepository.save(productDetail);
+    }
+
+    public List<Long> findProductDetailByColor(DataGetProductDetail dto) {
+        List<ProductDetail> lstPDetail = this.productDetailRepository
+                .findProductDetailByColorAndProduct(dto.getIdColor(), dto.getIdProduct());
+        List<Long> listSizeId = new ArrayList<>();
+        for (ProductDetail pd : lstPDetail) {
+            listSizeId.add(pd.getSize().getId());
+        }
+        return listSizeId;
+    }
+
+    public List<Long> findProductDetailBySize(DataGetProductDetail dto) {
+
+        List<ProductDetail> lstPDetail = this.productDetailRepository.findProductDetailBySizeAndProduct(dto.getIdSize(),
+                dto.getIdProduct());
+        List<Long> listColorId = new ArrayList<>();
+        for (ProductDetail pd : lstPDetail) {
+            listColorId.add(pd.getColor().getId());
+        }
+        return listColorId;
+    }
+
+    public ProductDetail findProductDetailBySizeAndColorAndProduct(DataGetProductDetail data) {
+        ProductDetail findProductDetail = this.productDetailRepository
+                .findProductDetailBySizeAndColorAndProduct(data.getIdSize(), data.getIdColor(), data.getIdProduct());
+        if (findProductDetail != null) {
+            return findProductDetail;
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional
     public List<ProductDetail> findProductDetailByProducts(Product product) {
         return this.productDetailRepository.getAllProductDetailByProductId(product.getId());
     }

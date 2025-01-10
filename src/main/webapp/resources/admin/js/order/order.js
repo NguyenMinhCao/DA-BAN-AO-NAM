@@ -420,9 +420,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (quantityProduct <= quantityAddToCart) {
             toast({
                 title: "Thất bại!",
-                message: "Sản phẩm không đử",
+                message: "Sản phẩm không đủ",
                 type: "error",
-                duration: 5000
+                duration: 2500
             });
             return false;
         } else if (quantityAddToCart <= 0) {

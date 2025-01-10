@@ -16,6 +16,7 @@
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
                         rel="stylesheet">
                     <link href="/admin/css/order/order-management-detail.css" rel="stylesheet" />
+                    <link rel="stylesheet" href="/common/toast.css">
                 </head>
 
                 <body class="sb-nav-fixed">
@@ -62,8 +63,16 @@
                                             </div>
                                         </div>
                                         <div class="order__details">
-                                            <span class="order__date sub-font">28/12/2024 14:02</span>
-                                            <span class="order__store sub-font">Đặt hàng tại Cửa hàng chính</span>
+                                            <span class="order__date sub-font">${formattedDateCreate}</span>
+
+                                            <span class="order__store sub-font">
+                                                <c:if test="${order.orderSource == true}">
+                                                    Đặt hàng tại Website
+                                                </c:if>
+                                                <c:if test="${order.orderSource == false}">
+                                                    Đặt hàng tại Cửa hàng chính
+                                                </c:if>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="operation sub-font">
@@ -172,22 +181,52 @@
                                                     </div>
                                                 </c:if>
                                             </div>
-                                            <div class="delivery-date d-flex mt-8p">
-                                                <div class="text-delivery mw-88 sub-font">
-                                                    Ngày giao
+                                            <!-- nếu đơn hàng đang trong trạng thái chưa xử lý -->
+                                            <c:if test="${order.deliveryStatus == 'PENDING'}">
+                                                <div class="delivery-date d-flex mt-8p">
+                                                    <div class="text-delivery mw-88 sub-font">
+                                                        Ngày giao
+                                                    </div>
+                                                    <div class="text-date sub-font">
+                                                        : 29/12/2024 16:03:05
+                                                    </div>
                                                 </div>
-                                                <div class="text-date sub-font">
-                                                    : 29/12/2024 16:03:05
+                                                <div class="transport d-flex mt-8p">
+                                                    <div class="text-transport mw-88 sub-font">
+                                                        Vận chuyển
+                                                    </div>
+                                                    <div class="text-transport sub-font">
+                                                        <c:if test="${order.shippingMethod == 'SAVE'}">
+                                                            : Giao hàng tiết kiệm
+                                                        </c:if>
+                                                        <c:if test="${order.shippingMethod == 'FAST'}">
+                                                            : Giao hàng nhanh
+                                                        </c:if>
+                                                        <c:if test="${order.shippingMethod == 'EXPRESS'}">
+                                                            : Giao hàng hỏa tốc
+                                                        </c:if>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="transport d-flex mt-8p">
-                                                <div class="text-transport mw-88 sub-font">
-                                                    Vận chuyển
+                                            </c:if>
+                                            <!-- nếu đơn hàng đang trong trạng thái giao hàng -->
+                                            <c:if test="${order.deliveryStatus == 'DELIVERY'}">
+                                                <div class="delivery-date d-flex mt-8p">
+                                                    <div class="text-delivery mw-88 sub-font">
+                                                        Ngày giao
+                                                    </div>
+                                                    <div class="text-date sub-font">
+                                                        : 29/12/2024 16:03:05
+                                                    </div>
                                                 </div>
-                                                <div class="text-transport sub-font">
-                                                    : 29/12/2024 16:03:05
+                                                <div class="transport d-flex mt-8p">
+                                                    <div class="text-transport mw-88 sub-font">
+                                                        Vận chuyển
+                                                    </div>
+                                                    <div class="text-transport sub-font">
+                                                        : 29/12/2024 16:03:05
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </c:if>
                                         </div>
                                         <div class="table-order">
                                             <table class="w-100">
@@ -202,28 +241,38 @@
                                                 <tbody>
                                                     <c:forEach items="${order.orderDetails}" var="orderDetail"
                                                         varStatus="i">
-                                                        <tr>
+                                                        <tr id-product-detail="${orderDetail.productDetail.id}"
+                                                            quantity-productD-current="${orderDetail.quantity}"
+                                                            order-detail-id="${orderDetail.id}">
                                                             <td>
                                                                 <div class="product-order d-flex">
                                                                     <div class="product-img">
                                                                         <img alt=""
-                                                                            src="/images/product/${orderDetail.product.images[i.index].imageUrl}">
+                                                                            src="/images/product/${orderDetail.productDetail.images[i.index].urlImage}">
                                                                     </div>
-                                                                    <div class="product-name d-flex">
+                                                                    <div class="product-name d-flex flex-column">
                                                                         <span class="align-self-center"
-                                                                            style="text-align: start;">${orderDetail.product.name}</span>
+                                                                            style="text-align: start;">${orderDetail.productDetail.product.name}
+                                                                        </span>
+                                                                        <span
+                                                                            style="text-align: start; font-size: 12px; color: rgb(116, 124, 135);">${orderDetail.productDetail.color.colorName},
+                                                                            ${orderDetail.productDetail.size.sizeName}
+                                                                        </span>
+                                                                        <span class="text-return">Trả
+                                                                            hàng
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <span
-                                                                    class="product-quantity text-center">${orderDetail.quantity}
+                                                                <span class="product-quantity
+                                                                            text-center">${orderDetail.quantity}
                                                                 </span>
                                                             </td>
                                                             <td>
                                                                 <span class="product-price">
                                                                     <fmt:formatNumber type="number"
-                                                                        value="${orderDetail.product.price}" />
+                                                                        value="${orderDetail.productDetail.price}" />
                                                                     đ
                                                                 </span>
                                                             </td>
@@ -474,7 +523,7 @@
                                                 <p class="user-phone sub-font">${order.user.phoneNumber}</p>
                                             </div>
                                             <div class="delivery-address d-flex flex-grow-1">
-                                                <div class="d-flex flex-column justify-content-between">
+                                                <div class="d-flex flex-column justify-content-between flex-grow-1">
                                                     <div class="header-contact d-flex justify-content-between">
                                                         <p class="font-w450 ">Địa chỉ giao hàng</p>
                                                         <span><i class="fa-solid fa-pencil"></i></span>
@@ -483,7 +532,7 @@
                                                     <p class="user-phone mb-5p sub-font">${order.address.phoneNumber}
                                                     </p>
                                                     <p class="user-name mb-5p sub-font">${order.address.streetDetails}
-                                                        ${order.address.address}</p>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -506,7 +555,48 @@
                             </div>
                         </div>
 
-                        <!-- modal -->
+
+
+                        <!-- modal trả hàng -->
+                        <div class="modal-overlay-return modal-overlay" id="modalOverlayReturn">
+                            <div class="modal-overlay-return-content modal-overlay-content">
+                                <div class="header-modal d-flex justify-content-between">
+                                    <h3>Xác nhận trả hàng</h3>
+                                    <span class="close-modal-icon btn-close-modal"><i
+                                            class="fa-solid fa-xmark"></i></span>
+                                </div>
+                                <div class="content-modal">
+                                    <div class="box-content-modal d-flex flex-column">
+                                        <div class="box-quantity-return d-flex flex-column">
+                                            <span>Số lượng:</span>
+                                            <input type="text" id="quantityReturn">
+                                        </div>
+                                        <div class="box-text-reason d-flex flex-column">
+                                            <span>Lý do trả hàng:</span>
+                                            <div class="input-reason">
+                                                <textarea id-order-current="${order.id}" id="textReasonReturn" rows="3"
+                                                    cols="50" placeholder="Nhập lý do trả hàng..."></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="box-product-restocking" style="margin-top: 5px;">
+                                            <input type="checkbox" id="productRestocking">
+                                            <span>Hoàn kho sản phẩm</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="footer-modal">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="common-push-btn btn-cancel d-flex btn-close-modal">
+                                            <span class="align-self-center">Hủy</span>
+                                        </div>
+                                        <div class="common-push-btn btn-confirm" id="confirmReturnProduct">
+                                            <span>Xác nhận</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Modal đẩy vận chuyển -->
                         <div class="modal-overlay-push-transport modal-overlay" id="modalOverlayPushTransport">
                             <div class="modal-overlay-push-transport-content modal-overlay-content">
@@ -519,34 +609,42 @@
                                     <div class="box-content-modal">
                                         <div class="text-content-modal">
                                             <span>Bạn có chắc chắn muốn đẩy đơn hàng cho đơn vị vận
-                                                chuyển không? Vui lòng chọn hình thức giao hàng cho đơn
-                                                hàng
-                                                :
+                                                chuyển không?
                                             </span>
-                                            <div class="checkbox-content" style="padding: 2px 0;">
+                                            <!-- <div class="checkbox-content" style="padding: 2px 0;">
                                                 <div class="">
                                                     <div class="" style="padding: 4px 0;">
-                                                        <input type="radio" name="t"> <span>Giao
+                                                        <input type="radio" name="t" checked> <span>Giao
                                                             hàng</span>
                                                     </div>
 
-                                                    <div class="" style="padding-left: 28px; ">
-                                                        <select name="cars" id="cars"
-                                                            style="border: 1px solid rgb(211, 213, 215); height: 36px; width: 315px; border-radius: 4px;outline: none;">
-                                                            <option value="volvo">Volvo</option>
-                                                            <option value="saab">Saab</option>
-                                                            <option value="mercedes">Mercedes
+                                                    <div shipping-method-customer="${order.shippingMethod}"
+                                                        class="select-box" style="padding-left: 28px; ">
+                                                        <select name="" id="shippingMethodSelect" style="border: 1px solid rgb(211, 213, 215); height: 36px;
+                                                            width: 315px; border-radius: 4px;outline: none;">
+                                                            <option value="SAVE" <c:if
+                                                                test="${order.shippingMethod == 'SAVE'}">selected</c:if>
+                                                                >Tiết kiệm
                                                             </option>
-                                                            <option value="audi">Audi</option>
+                                                            <option value="FAST" <c:if
+                                                                test="${order.shippingMethod == 'FAST'}">selected</c:if>
+                                                                >Nhanh</option>
+                                                            <option value="EXPRESS" <c:if
+                                                                test="${order.shippingMethod == 'EXPRESS'}">selected
+                                                                </c:if>
+                                                                >Hỏa tốc</option>
                                                         </select>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <div class="" style="padding: 4px 0;">
                                                 <input type="radio" name="t"> <span>Nhận tại cửa
                                                     hàng</span>
-                                            </div>
+                                            </div> -->
+                                            <!-- <div class="input-note">
+                                                <textarea id="messageNote" name="message" rows="3" cols="50"
+                                                    placeholder="Nhập ghi chú"></textarea>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="checked-email" style="margin: 4px 0;">
@@ -575,14 +673,14 @@
                         <div class="modal-overlay-receive-money modal-overlay" id="modalOverlayReceiveMoney">
                             <div class="modal-overlay-receive-money-content modal-overlay-content">
                                 <div class="header-modal d-flex justify-content-between">
-                                    <h3>Xác nhận đẩy vận chuyển</h3>
+                                    <h3>Nhận tiền</h3>
                                     <span class="close-modal-icon btn-close-modal"><i
                                             class="fa-solid fa-xmark"></i></span>
                                 </div>
                                 <div class="content-modal">
-                                    <div class="box-content-modal d-flex justify-content-between">
-                                        <div class="box-payment-method-select">
-                                            <span>Phương thức thanh toán</span>
+                                    <!-- <div class="box-content-modal d-flex justify-content-between">
+                                        <div class="box-payment-method-select" style="width: 50%;">
+                                            <span style="margin-bottom: 5px;">Phương thức thanh toán</span>
                                             <select name="cars" id="cars"
                                                 style="border: 1px solid rgb(211, 213, 215); height: 36px; width: 315px; border-radius: 4px;outline: none;">
                                                 <option value="volvo">Volvo</option>
@@ -592,16 +690,18 @@
                                                 <option value="audi">Audi</option>
                                             </select>
                                         </div>
-                                        <div class="box-amount-received">
-                                            <span>Số tiền nhận</span>
-                                            <select name="cars" id="cars"
-                                                style="border: 1px solid rgb(211, 213, 215); height: 36px; width: 315px; border-radius: 4px;outline: none;">
-                                                <option value="volvo">Volvo</option>
-                                                <option value="saab">Saab</option>
-                                                <option value="mercedes">Mercedes
-                                                </option>
-                                                <option value="audi">Audi</option>
-                                            </select>
+                                        <div class="box-amount-received d-flex flex-column justify-content-between"
+                                            style="width: 50%;">
+                                            <span style="margin-bottom: 5px;">Số tiền nhận</span>
+                                            <span style="margin-left: 10px;"><span>${order.totalAmount}</span></span>
+                                        </div>
+                                    </div> -->
+                                    <div class="box-content-modal d-flex justify-content-between">
+
+                                        <div class="box-amount-received" style="">
+                                            <span style="margin-bottom: 5px;">Bạn có xác nhận số tiền : </span>
+                                            <span style="margin-left: 10px;"><span>${order.totalAmount} thông qua hình
+                                                    thức ${order.paymentMethod} ?</span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -613,13 +713,13 @@
                                         </div>
                                         <div class="common-push-btn btn-confirm change-status-order"
                                             id="confirmReceiveMoney">
-                                            <span>Nhận tiền</span>
+                                            <span>Xác nhận</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- modal nhận tiền -->
+                        <!-- modal Sửa thông tin liên -->
                         <div class="modal-overlay-edit-information modal-overlay" id="modalOverlayEditInformation">
                             <div class="modal-overlay-edit-information-content modal-overlay-content">
                                 <div class="header-modal d-flex justify-content-between">
@@ -633,13 +733,16 @@
                                             <div class="d-flex flex-column" style="width: 50%;">
                                                 <span>Email</span>
                                                 <div class="input-text">
-                                                    <input type="text" name="" id="">
+                                                    <input type="text" name="" id="emailUserInput"
+                                                        value="${order.user.email}"
+                                                        email-old-user="${order.user.email}">
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-column" style="width: 50%;">
                                                 <span>Số điện thoại</span>
                                                 <div class="input-text">
-                                                    <input type="text" name="" id="">
+                                                    <input type="text" name="" id="phoneNumberInput"
+                                                        value="${order.user.phoneNumber}">
                                                 </div>
                                             </div>
                                         </div>
@@ -655,8 +758,7 @@
                                         <div class="common-push-btn btn-cancel d-flex btn-close-modal">
                                             <span class="align-self-center">Hủy</span>
                                         </div>
-                                        <div class="common-push-btn btn-confirm change-status-order"
-                                            id="confirmUpdateUser">
+                                        <div class="common-push-btn btn-confirm" id="confirmUpdateUser">
                                             <span>Lưu</span>
                                         </div>
                                     </div>
@@ -696,11 +798,13 @@
 
                         </div>
                         <jsp:include page="../layout/footer.jsp" />
+                        <div id="toast"></div>
                     </div>
                     <!-- </div> -->
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                         crossorigin="anonymous"></script>
                     <script src="/admin/js/scripts.js"></script>
+                    <script src="/common/toast.js"></script>
                     <script src="/admin/js/order/order-management.js"></script>
                 </body>
 

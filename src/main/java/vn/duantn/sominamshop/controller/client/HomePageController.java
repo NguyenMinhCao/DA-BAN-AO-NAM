@@ -37,7 +37,7 @@ public class HomePageController {
     public String getHomePage(@RequestParam(defaultValue = "0") int page, Model model) {
         // Phân trang với 6 sản phẩm mỗi trang
         List<Product> productPage = this.productService.getAllProduct();
-        BigDecimal ddf = productPage.get(0).getProductDetails().get(0).getPrice();
+        // BigDecimal ddf = productPage.get(0).getProductDetails().get(0).getPrice();
         model.addAttribute("listProducts", productPage); // Truyền Page<Product> cho JSP
         return "client/homepage/show"; // Chuyển đến trang hiển thị
     }

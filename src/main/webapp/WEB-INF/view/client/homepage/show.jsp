@@ -122,7 +122,8 @@
                                             <div class="single-product">
                                                 <div class="product-img">
                                                     <img class="img-fluid w-100"
-                                                        src="images/product/${product.images[0].imageUrl}" alt="" />
+                                                        src="images/product/${product.productDetails[0].images[0].urlImage}"
+                                                        alt="" />
                                                     <div class="p_icon">
                                                         <a href="/product/${product.id}">
                                                             <i class="ti-eye"></i>
@@ -349,7 +350,8 @@
                                         <div class="single-product">
                                             <div class="product-img">
                                                 <img class="img-fluid w-100"
-                                                    src="images/product/${product.images[0].imageUrl}" alt="" />
+                                                    src="images/product/${product.productDetails[0].images[0].urlImage}"
+                                                    alt="" />
                                                 <div class="p_icon">
                                                     <a href="/product/${product.id}">
                                                         <i class="ti-eye"></i>

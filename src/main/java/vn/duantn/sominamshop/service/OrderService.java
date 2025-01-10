@@ -1,7 +1,7 @@
 package vn.duantn.sominamshop.service;
 
 import java.math.BigDecimal;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +25,7 @@ import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.OrderHistory;
 import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
@@ -51,11 +52,12 @@ public class OrderService {
     private final PromotionService promotionService;
     private final AddressService addressService;
     private final OrderHistoryService orderHistoryService;
+    private final ProductDetailService productDetailService;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
             PromotionService promotionService, AddressService addressService,
-            OrderHistoryService orderHistoryService) {
+            OrderHistoryService orderHistoryService, ProductDetailService productDetailService) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
@@ -64,6 +66,7 @@ public class OrderService {
         this.promotionService = promotionService;
         this.addressService = addressService;
         this.orderHistoryService = orderHistoryService;
+        this.productDetailService = productDetailService;
     }
 
     public List<Order> findOrderByUser(User user) {
@@ -102,7 +105,7 @@ public class OrderService {
                 for (CartDetail cartDetail : lstCartDetail) {
                     OrderDetail orderDetail = new OrderDetail();
                     orderDetail.setOrder(order);
-//                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProduct().getPrice());
+                    orderDetail.setPrice(cartDetail.getQuantity() * cartDetail.getProductDetail().getPrice());
                     orderDetail.setProductDetail(cartDetail.getProductDetail());
                     orderDetail.setQuantity(cartDetail.getQuantity());
                     // save order detail
@@ -123,6 +126,19 @@ public class OrderService {
                     order.setPaymentStatus(PaymentStatus.COMPLETED);
                 }
                 order.setOrderSource(true);
+
+                // set address
+                List<Address> addressByUser = this.addressService.findAllAddressByUser(userByEmail);
+                for (Address address : addressByUser) {
+                    if (address.isStatus()) {
+                        order.setAddress(address);
+                    }
+                }
+
+                // save time create order
+                order.setCreatedAt(LocalDateTime.now());
+
+                // save order
                 this.orderRepository.save(order);
 
                 // delete cart
@@ -152,7 +168,7 @@ public class OrderService {
                 Address addressById = this.addressService.findAddressById(addressId);
                 order.setAddress(addressById);
                 AddressDTO dto = new AddressDTO();
-                dto.setAddress(addressById.getAddress());
+                // dto.setAddress(addressById.getAddress());
                 dto.setFullName(addressById.getFullName());
                 dto.setPhoneNumber(addressById.getPhoneNumber());
                 dto.setStreetDetails(addressById.getStreetDetails());
@@ -263,6 +279,10 @@ public class OrderService {
         this.orderRepository.delete(order);
     }
 
+    public void deleteOrderDetail(long idOrderDetail, long productDetailId) {
+        this.orderDetailRepository.deleteByOrderDetailIdAndProductDetailId(idOrderDetail, productDetailId);
+    }
+
     public Order findOrderByStatusAndCreatedBy() {
         String createdBy = SecurityUtil.getCurrentUserLogin().get();
         return this.orderRepository.findOrderByDeliveryStatusAndCreatedBy(createdBy);
@@ -277,11 +297,11 @@ public class OrderService {
         if (findOrderDetailById.isPresent()) {
             OrderDetail orderUnwrap = findOrderDetailById.get();
             if (dto.isUpdateORemove()) {
-                Product productById = this.productService.findProductById(dto.getProductId());
+                Optional<ProductDetail> productDetailById = this.productDetailService
+                        .findProductDetailById(dto.getProductDetailId());
                 orderUnwrap.setQuantity(dto.getQuantity());
-                if (productById != null) {
-                    // Double newPrice = productById.getPrice() * dto.getQuantity();
-                    Double newPrice = 23.3 * dto.getQuantity();
+                if (productDetailById.isPresent()) {
+                    Double newPrice = productDetailById.get().getPrice() * dto.getQuantity();
                     orderUnwrap.setPrice(newPrice);
                 }
                 this.orderDetailRepository.save(orderUnwrap);

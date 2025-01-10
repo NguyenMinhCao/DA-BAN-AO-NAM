@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import vn.duantn.sominamshop.model.Cart;
 import vn.duantn.sominamshop.model.CartDetail;
 import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.ProductDetail;
 
 @Repository
 public interface CartDetailRepository extends JpaRepository<CartDetail, Long> {
@@ -16,7 +17,7 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Long> {
 
     List<CartDetail> findAllCartDetailByCart(Cart cart);
 
-    // CartDetail findCartDetailByCartAndProduct(Cart cart, Product product);
+    CartDetail findCartDetailByCartAndProductDetail(Cart cart, ProductDetail productDetail);
 
     // CartDetail findCartDetailByProduct(Product product);
 

@@ -76,6 +76,26 @@
                             border-color: #71cd14;
                             color: #71cd14;
                         }
+
+                        .table-responsive .table th {
+                            text-align: center;
+                        }
+
+                        .table-responsive .table th:first-child {
+                            text-align: start;
+                        }
+
+                        .table-responsive .table th:nth-child(2) {
+                            text-align: center;
+                        }
+
+                        .table-responsive .table th:nth-child(3) {
+                            text-align: center;
+                        }
+
+                        .table-responsive .table th:last-child {
+                            text-align: center;
+                        }
                     </style>
 
                     <link rel="stylesheet" href="css/style1.css" />
@@ -186,11 +206,14 @@
                                     <div class="place-detail">
                                         <div>
                                             <div class="place-detail-one">
-                                                <div class="PzGLCh" id="fullNameAndPhoneNumber">${address.fullName}
-                                                    ${address.phoneNumber}</div>
+                                                <div class="PzGLCh" id="fullNameAndPhoneNumber">
+                                                    ${address.fullName}
+                                                    ${address.phoneNumber} 
+                                                </div>
                                                 <div class="a9c4OR" style="margin-left: 20px; display: inline-block;"
                                                     id="streetDetailsAndAdress">
-                                                    ${address.streetDetails}, ${address.address}
+                                                    ${address.streetDetails}, ${address.ward}, ${address.district},
+                                                    ${address.city}
                                                 </div>
                                                 <c:choose>
                                                     <c:when test="${address.status == true}">
@@ -253,7 +276,6 @@
                                                         <div class="h44KA2 ZnXbv2">
                                                             <div class="glTVDN">
                                                                 <div class="ieb1A9">${address.streetDetails}</div>
-                                                                <div class="ieb1A9">${address.address}</div>
                                                             </div>
                                                         </div>
                                                         <div class="p2Hy8c MM8UDO"></div>
@@ -295,7 +317,7 @@
 
                             <!-- Bắt đầu nội dung box thêm địa chỉ -->
                             <div class="modal-overlay-add-address" id="modalOverlayAddAddress">
-                                <div class="modal-content-add-address">
+                                <!-- <div class="modal-content-add-address">
                                     <div class="header-add-address">
                                         <h3 style="font-size: 20px;font-weight: 500;">Thêm địa chỉ</h3>
                                     </div>
@@ -370,14 +392,14 @@
                                         </div>
                                     </div>
 
-                                </div>
+                                </div> -->
                             </div>
                             <!-- Kết thúc nội dung box thêm địa chỉ -->
 
 
                             <!-- Bắt đầu nội dung box cập nhật địa chỉ -->
                             <div class="modal-overlay-update-address" id="modalOverlayUpdateAddress">
-                                <div class="modal-content-update-address">
+                                <!-- <div class="modal-content-update-address">
                                     <div class="header-update-address">
                                         <h3 style="font-size: 20px;font-weight: 500;">Cập nhật địa chỉ</h3>
                                     </div>
@@ -456,7 +478,7 @@
                                                 NHẬN</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <!-- Kết thúc nội dung box cập nhật địa chỉ -->
 
@@ -466,9 +488,9 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">Sản phẩm</th>
-                                                <th scope="col">Giá</th>
-                                                <th scope="col">Số lượng</th>
-                                                <th scope="col">Tổng tiền</th>
+                                                <th scope="col"><span>Giá</span></th>
+                                                <th scope="col"><span>Số lượng</span></th>
+                                                <th scope="col"><span>Tổng tiền</span></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -480,28 +502,28 @@
                                                         <div class="media">
                                                             <div class="d-flex">
                                                                 <img style="height: 98px; width: 106px; border: none;"
-                                                                    src="images/product/${cartDetail.product.images[0].imageUrl}"
+                                                                    src="images/product/${cartDetail.productDetail.images[0].urlImage}"
                                                                     alt="" />
                                                             </div>
                                                             <div class="media-body">
-                                                                <p>${cartDetail.product.name}</p>
+                                                                <p>${cartDetail.productDetail.product.name}</p>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td style="text-align: center;">
                                                         <h5 class="product-price">
                                                             <fmt:formatNumber type="number"
-                                                                value="${cartDetail.product.price}" />
+                                                                value="${cartDetail.productDetail.price}" />
                                                             đ
                                                         </h5>
                                                     </td>
                                                     <!-- tăng giảm số lượng sản phẩm giỏ hàng -->
-                                                    <td>
+                                                    <td style="text-align: center;">
                                                         <div class="product_count">
                                                             <input type="text" name="qty" value="${cartDetail.quantity}"
                                                                 title="Quantity:" class="input-text qty"
                                                                 data-cart-detail-id="${cartDetail.id}"
-                                                                data-cart-detail-price="${cartDetail.product.price}" />
+                                                                data-cart-detail-price="${cartDetail.productDetail.price}" />
                                                             <button class="increase btn-plus items-count" type="button">
                                                                 <i class="lnr lnr-chevron-up"></i>
                                                             </button>
@@ -510,7 +532,7 @@
                                                             </button>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td style="text-align: center;">
                                                         <h5 data-cart-detail-id="${cartDetail.id}">
                                                             <fmt:formatNumber type="number"
                                                                 value="${cartDetail.price}" />
@@ -529,7 +551,8 @@
                                                 </td>
                                                 <td colspan="2">
                                                     <div class="shipping_box">
-                                                        <ul class="list">
+                                                        <ul class="list"
+                                                            style="display: inline-block; margin-right: 40px;">
                                                             <li>
                                                                 <p style="display: inline;margin-right: 14px;"> Giao
                                                                     hàng hỏa tốc: đ50.000 </p>
@@ -579,15 +602,18 @@
                                                     </p>
                                                 </td>
                                                 <td colspan="2">
-                                                    <h5 style="display: inline-block;">Tổng số tiền (
-                                                        <%=pageContext.getAttribute("sumInCart")%> sản
-                                                            phẩm):
-                                                    </h5>
-                                                    <h5 style="color: #71cd14;display: inline-block;"
-                                                        data-cart-total-price="${totalPrice}">
-                                                        <fmt:formatNumber type="number" value="${totalPrice}" />
-                                                        đ
-                                                    </h5>
+                                                    <div class="" style="text-align: end; margin-right: 42px;">
+                                                        <h5 style="display: inline-block;">Tổng số tiền (
+                                                            <%=pageContext.getAttribute("sumInCart")%> sản
+                                                                phẩm):
+                                                        </h5>
+                                                        <h5 style="color: #71cd14;display: inline-block;"
+                                                            data-cart-total-price="${totalPrice}">
+                                                            <fmt:formatNumber type="number" value="${totalPrice}" />
+                                                            đ
+                                                        </h5>
+                                                    </div>
+
                                                     <div class="modal-overlay-add-voucher" id="modalOverlayAddVoucher">
                                                         <!-- Nội dung modal -->
                                                         <div class="modal-content-add-voucher">
