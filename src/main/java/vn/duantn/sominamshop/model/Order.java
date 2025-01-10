@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.util.SecurityUtil;
@@ -62,6 +63,10 @@ public class Order {
     @Column(name = "payment_status")
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
+
+    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     @Column(name = "order_source")
     private Boolean orderSource;

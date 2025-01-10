@@ -130,7 +130,6 @@ public class OrderManagementController {
         boolean isInStock = this.orderManagementService.checkQuantityProduct(dto);
 
         return ResponseEntity.ok().body(isInStock);
-
     }
 
     @PutMapping("/orders/return-product")

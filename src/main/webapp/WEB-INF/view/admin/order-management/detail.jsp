@@ -89,7 +89,7 @@
                                                 </div>
                                             </c:if>
                                             <c:if
-                                                test="${order.paymentStatus == 'PENDING' && order.deliveryStatus == 'PENDING'}">
+                                                test="${order.paymentStatus == 'PENDING' && order.deliveryStatus == 'PENDING' && order.orderStatus != 'CANCELED'}">
                                                 <div class="return">
                                                     <a href="/admin/orders/${order.id}/edit">
                                                         <span>
@@ -288,7 +288,8 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <c:if test="${order.deliveryStatus == 'PENDING'}">
+                                        <c:if
+                                            test="${order.deliveryStatus == 'PENDING' && order.orderStatus != 'CANCELED'}">
                                             <div class="order-is-pending pad-20px-4">
                                                 <div class="d-flex justify-content-end">
                                                     <div class="push-transport-btn common-push-btn btn-confirm"
@@ -424,7 +425,8 @@
                                                 </div>
                                             </div>
                                         </c:if>
-                                        <c:if test="${order.paymentStatus == 'PENDING'}">
+                                        <c:if
+                                            test="${order.deliveryStatus == 'PENDING' && order.orderStatus != 'CANCELED'}">
                                             <div class="footer-payment-pending pad-20px-4 sub-font">
                                                 <div class="d-flex justify-content-end">
                                                     <!-- <div class="">sdf</div> -->
@@ -647,12 +649,12 @@
                                             </div> -->
                                         </div>
                                     </div>
-                                    <div class="checked-email" style="margin: 4px 0;">
+                                    <!-- <div class="checked-email" style="margin: 4px 0;">
                                         <div class="">
                                             <input type="checkbox">
                                             <span>Gửi thông báo email đến khách hàng</span>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <div class="footer-modal">

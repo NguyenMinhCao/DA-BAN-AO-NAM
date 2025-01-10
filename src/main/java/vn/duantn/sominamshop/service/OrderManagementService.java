@@ -9,6 +9,7 @@ import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 import vn.duantn.sominamshop.model.dto.request.CheckQuantityProductDeDTO;
 import vn.duantn.sominamshop.model.dto.request.DataStatusOrderDTO;
@@ -66,6 +67,7 @@ public class OrderManagementService {
     public Boolean returnProduct(CheckQuantityProductDeDTO dto) {
         int saveTypeText = 0;
         int productNumber = 0;
+        Optional<Order> orderById = this.orderService.findOrderById(dto.getOrderDetailId());
         Optional<OrderDetail> orderDetailById = this.orderDetailRepository.findById(dto.getOrderDetailId());
         if (orderDetailById.isPresent()) {
             OrderDetail orderDetail = orderDetailById.get();
@@ -75,7 +77,11 @@ public class OrderManagementService {
             orderDetail.getProductDetail().setQuantity(newQuantity);
             this.productDetailService.saveProductDetail(orderDetail.getProductDetail());
 
-            if (orderDetail.getQuantity() == dto.getQuantityValue()) {
+            if (orderById.get().getOrderDetails().size() == 1 && orderDetail.getQuantity() == dto.getQuantityValue()) {
+                this.orderService.deleteOrderDetail(dto.getOrderDetailId(), dto.getProductDetailID());  
+                orderById.get().setOrderStatus(OrderStatus.CANCELED);
+                saveTypeText = 3;
+            } else if (orderDetail.getQuantity() == dto.getQuantityValue()) {
                 productNumber = (int) (dto.getQuantityValue());
                 this.orderService.deleteOrderDetail(dto.getOrderDetailId(), dto.getProductDetailID());
                 saveTypeText = 1;
@@ -86,7 +92,6 @@ public class OrderManagementService {
                 saveTypeText = 0;
             }
             this.orderDetailRepository.save(orderDetail);
-            Optional<Order> orderById = this.orderService.findOrderById(dto.getOrderDetailId());
 
             if (orderById.isPresent()) {
                 this.orderHistoryService.updateReturnProduct(saveTypeText, productNumber, orderById.get());

@@ -255,7 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (quantityProductCurrent >= quantityInputP) {
                 returnProduct()
-
             } else {
                 toast({
                     title: "Thất bại!",
