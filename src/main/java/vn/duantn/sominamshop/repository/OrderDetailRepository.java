@@ -38,4 +38,8 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     @Query("DELETE FROM OrderDetail od WHERE od.id = :idOrderDetail AND od.productDetail.id = :productDetailId")
     void deleteByOrderDetailIdAndProductDetailId(long idOrderDetail, long productDetailId);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM OrderDetail od WHERE od.id = :idOrderDetail")
+    void deleteByOrderDetailIdAndProductDetailId(long idOrderDetail);
 }

@@ -1,6 +1,8 @@
 package vn.duantn.sominamshop.controller.admin;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -68,6 +70,10 @@ public class OrderRestController {
         return ResponseEntity.ok(orderService.saveInvoice(order));
     }
 
+    @PutMapping("/update/invoice")
+    public ResponseEntity<OrderDTO> updateInvoice(@RequestBody Order order){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateInvoice(order));
+    }
     @PostMapping("/save/invoice/details")
     public ResponseEntity<List<OrderDetail>> saveInvoiceDetails(@RequestBody List<OrderDetail> request) {
         return ResponseEntity.ok(orderService.saveInvoiceDetails(request));
@@ -79,10 +85,22 @@ public class OrderRestController {
     }
 
     @PutMapping("/update/invoice/detail")
-    public ResponseEntity<?> updateInvoiceDetial(@RequestBody OrderDetail orderDetail){
+    public ResponseEntity<?> updateInvoiceDetail(@RequestBody OrderDetail orderDetail){
         return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetail));
     }
 
+    @DeleteMapping("/delete/invoice/detail/{id}")
+    public ResponseEntity<?> deleteInvoiceDetail(@PathVariable Long id){
+        try {
+            orderService.deleteInvoiceDetail(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Xóa thành công");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Chi tiết hóa đơn không tồn tại");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi trong quá trình xóa: " + e.getMessage());
+        }
+    }
     @GetMapping("/get/filter")
     public ResponseEntity<?> getFilter(){
         List<Category> listCate = categoryService.getAllActive();

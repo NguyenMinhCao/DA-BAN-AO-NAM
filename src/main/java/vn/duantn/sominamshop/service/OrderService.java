@@ -29,6 +29,7 @@ import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.Promotion;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
@@ -318,7 +319,24 @@ public class OrderService {
         order.setOrderSource(false);
         order.setPaymentStatus(PaymentStatus.PENDING);
         order.setDeliveryStatus(DeliveryStatus.COMPLETED);
+        order.setOrderStatus(OrderStatus.PENDING_INVOICE);
         Order orderCreate = orderRepository.save(order);
+        OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
+        return orderDTO;
+    }
+    @Transactional
+    public OrderDTO updateInvoice(Order order) {
+        Order order1 = orderRepository.findById(order.getId()).orElse(null);
+        if(order1 == null){
+            return null;
+        }
+        order1.setPaymentStatus(PaymentStatus.COMPLETED);
+        order1.setPromotion(order.getPromotion());
+        order1.setNote(order.getNote());
+        order1.setTotalAmount(order.getTotalAmount());
+        order1.setTotalProducts(order.getTotalProducts());
+        order1.setUser(order.getUser());
+        Order orderCreate = orderRepository.save(order1);
         OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
         return orderDTO;
     }
@@ -333,6 +351,10 @@ public class OrderService {
         Map<String, Long> map = new HashMap<>();
         map.put("id", orderDetail1.getId());
         return map;
+    }
+    @Transactional
+    public void deleteInvoiceDetail(Long id){
+        orderDetailRepository.deleteByOrderDetailIdAndProductDetailId(id);
     }
     public List<OrderDTO> getOrderNonPendingAndPos(DeliveryStatus deliveryStatus, PaymentStatus paymentStatus){
         Pageable pageable = PageRequest.of(0,5);

@@ -83,17 +83,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Xóa sản phẩm khỏi danh sách
-    productListBody.addEventListener('click', function (e) {
-        if (e.target.classList.contains('btn-delete-product')) {
-            let idProduct = e.target.closest('tr').getAttribute("data-product-id");
-            const index = listProduct.findIndex(product => product.id === idProduct);
-            if (index !== -1) {
-                listProduct.splice(index, 1);
-            }
-            e.target.closest('tr').remove()
-            updateTotalPrice();
-        }
-    });
+    // productListBody.addEventListener('click', function (e) {
+    //     if (e.target.classList.contains('btn-delete-product')) {
+    //         let idProduct = e.target.closest('tr').getAttribute("data-product-id");
+    //         const index = listProduct.findIndex(product => product.id === idProduct);
+    //         if (index !== -1) {
+    //             listProduct.splice(index, 1);
+    //         }
+    //         e.target.closest('tr').remove()
+    //         updateTotalPrice();
+    //         deleteOrderDetail(idProduct.id)
+    //     }
+    // });
 
     // Chọn khách hàng từ modal
     document.getElementById('customer-list').addEventListener('click', function (e) {
@@ -214,13 +215,17 @@ document.addEventListener('DOMContentLoaded', function () {
             // cập nhật số lượng tại input
             quantityProductCart.value = parseInt(quantityProductCart.value) + 1;
             // Cập nhật số lượng trong list
-            let productToUpdate = listProduct.find(item => item.product?.id === productId)
-            console.log(productToUpdate.quantity + ": số lượng sản phẩm cũ")
+            let productToUpdate = listProduct.find(item => item.productDetail?.id == productId)
+            console.log(productId + ": id của sản phẩm")
+            console.log(productToUpdate.order.id + ": id của hóa đơn")
+            listProduct.forEach(item => console.log(item))
+            // console.log(productToUpdate.quantity + ": số lượng sản phẩm cũ")
             if (productToUpdate) {
                 productToUpdate.quantity = quantityProductCart.value
-                console.log(productToUpdate.quantity + ": số lượng sản phẩm")
-                let totalAmount = (Number(quantityProductCart.value)) * Number(price);
+                console.log(productToUpdate.quantity + ": số lượng sản phẩm mới")
+                let totalAmount = ((Number(quantityProductCart.value)) * Number(price)).toLocaleString('vi-VN');
                 totalPriceProductCart.innerHTML = (totalAmount).toString()
+                updateOrderDetail(productToUpdate)
             }
         } else {
             // tạo 1 row mới ở table #product-table-cart
@@ -313,11 +318,14 @@ document.addEventListener('DOMContentLoaded', function () {
         //Xóa sản phẩm trong table
         newRow.querySelector('.delete-btn').addEventListener('click', function() {
             console.log(productId + " id sản phẩm")
-            const updatedProducts = listProduct.filter(product => product.product?.id !== productId);
-            updatedProducts.forEach(item => console.log(item.name +' Tên của sản phẩm'))
+            let productDelete = listProduct.find(product => product.productDetail?.id === productId);
+            const updatedProducts = listProduct.filter(product => product.productDetail?.id !== productId);
             listProduct = updatedProducts
             newRow.remove();
             updateTotalPrice()
+            if(productDelete){
+                deleteOrderDetail(productDelete.id)
+            }
         });
     }
     // Tạo hóa đơn mới
@@ -435,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${i + 1}</td>
                 <td>
                     <div class="product-in-table">
-                        <img src="${productAtInvoice[i]?.productDetail.images[0].urlImage}" alt="Sản phẩm">
+                        <img src="${productAtInvoice[i]?.productDetail.images[0]?.urlImage}" alt="Sản phẩm">
                         <div class="product-detail">
                             <span>${productAtInvoice[i]?.productDetail.productName}</span><br>
                             <p class="product-detail-amount">Giá tiền: ${(productAtInvoice[i]?.productDetail.price).toLocaleString('vi-VN')} VND</p>
@@ -452,7 +460,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         <button class="quantity-btn increase">+</button>
                     </div>
                 </td>
-
                 <td><span class="product-price" product-id="${productAtInvoice[i]?.productDetail.id}">${(Number(productAtInvoice[i].quantity || 1) * Number(productAtInvoice[i]?.productDetail.price)).toLocaleString('vi-VN')} </span> VND</td>
                 <td>
                     <button class="action-btn delete-btn">Xóa</button>
@@ -1001,7 +1008,7 @@ document.addEventListener('DOMContentLoaded', function () {
 //***** lấy đơn hàng chi tiết
     function fetchOrderDetail(orderID){
         $.ajax({
-            url: `/api/admin/order/get/orderdetails?id=1`,
+            url: `/api/admin/order/get/orderdetails?id=${orderID}`,
             type: 'GET',
             success: function(data) {
                 listProduct = []
@@ -1025,9 +1032,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // sửa hóa đơn
     function updateOrderDetail(data){
         $.ajax({
-            url: `/api/admin/order/get/orderdetails?id=1`,
+            url: `/api/admin/order/update/invoice/detail`,
             type: 'PUT',
             contentType: "application/json",
+            data: JSON.stringify(data),
             success: function(data) {
 
             },
@@ -1048,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalAmount : 0
         }
         $.ajax({
-            url: `http://localhost:8080/api/admin/order/save/invoice`,
+            url: `/api/admin/order/save/invoice`,
             type: 'POST',
             contentType: "application/json",
             data : JSON.stringify(data),
@@ -1065,7 +1073,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function createdOrderDetail(data, productId){
         $.ajax({
-            url: `/api/admin/order/get/orderdetails?id=1`,
+            url: `/api/admin/order/save/invoice/detail`,
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify(data),
@@ -1074,6 +1082,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (orderDetail) {
                     orderDetail.id = data.id
+                    console.log("sản phẩm thêm mới " + orderDetail.id)
                 }
             },
             error: function(xhr, status, error) {
@@ -1083,6 +1092,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    //Xóa hóa đơn chi tiết
+    function deleteOrderDetail(IdOrderDetail){
+        $.ajax({
+            url:`/api/admin/order/delete/invoice/detail/${IdOrderDetail}`,
+            type: 'DELETE',
+            success: function(data){
+
+            },
+            error: function(xhr, status, error) {
+                let errorMap = JSON.parse(xhr.responseText);
+                console.error('Error fetching districts data:', error);
+            }
+        })
+    }
     $('#xemlisst').on('click', function(){
         console.log(listProduct)
     })
