@@ -59,8 +59,6 @@ public class Promotion {
     private boolean status;
 
 
-    @ManyToMany(mappedBy = "promotions")
-    private List<Product> products;
 
     private String createdBy;
     private String updatedBy;

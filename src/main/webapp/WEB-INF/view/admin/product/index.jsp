@@ -148,11 +148,20 @@
                                     </label>
                                 </td>
                                 <td class="table-td-center tinh_nang">
-                                    <button class="btn btn-primary" data-product-id="${product.id}" onclick="getListProductDetail(this)">
-                                        <i class="fa-solid fa-eye" style="color: #6626fd;"></i>
+                                    <button
+                                            class="btn btn-info btn-sm"
+                                            title="Chi tiết"
+                                            data-product-id="${product.id}"
+                                            onclick="getListProductDetail(this)">
+                                        <i class="fa-solid fa-eye"></i> Xem
                                     </button>
-                                    <button class="btn btn-primary btn-sm edit" type="button" data-product-id="${product.id}" onclick="updateProductForm(this)">
-                                        <i class="fas fa-edit"></i>
+
+                                    <button
+                                            class="btn btn-warning btn-sm edit"
+                                            title="Chỉnh sửa"
+                                            data-product-id="${product.id}"
+                                            onclick="updateProductForm(this)">
+                                        <i class="fas fa-edit"></i> Sửa
                                     </button>
                                 </td>
 
@@ -178,7 +187,7 @@
 
 
     $(document).ready(function() {
-        $('#sampleTable').DataTable();  // Khởi tạo DataTable cho bảng có id là "sampleTable"
+        $('#sampleTable').DataTable();
     });
 </script>
 <script src="/admin/js/product/product.js"></script>

@@ -1,7 +1,5 @@
 package vn.duantn.sominamshop.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,10 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.Product;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+
 import java.util.Date;
 import java.util.List;
 import vn.duantn.sominamshop.model.User;

@@ -11,6 +11,9 @@
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/common/toast.css">
+
+
 
     <script>
         $(document).ready(() => {
@@ -67,7 +70,7 @@
 
                                         <div class="d-flex justify-content-between">
                                             <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-save"></i> Save
+                                                <i class="fas fa-save" ></i> Save
                                             </button>
                                             <a href="/admin/color" class="btn btn-warning">
                                                 <i class="fas fa-arrow-left"></i> Back
@@ -82,8 +85,10 @@
             </div>
         </main>
         <jsp:include page="../layout/footer.jsp"/>
+        <div id="toast"></div>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+<script src="/common/toast.js"></script>
 </body>
 </html>
