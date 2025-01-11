@@ -42,19 +42,19 @@
                                 <div class="item-group">
                                     <label for="customerName" class="form-label">Họ tên</label>
                                     <input type="text" class="form-control" id="customerName"
-                                           placeholder="Nhập họ tên">
+                                           placeholder="Nhập họ tên" autocomplete="on">
                                 </div>
                                 <div class="item-group">
                                     <label for="customerPhone" class="form-label">SDT</label>
                                     <input type="text" class="form-control" id="customerPhone"
-                                           placeholder="Nhập số điện thoại">
+                                           placeholder="Nhập số điện thoại" autocomplete="on">
                                 </div>
                             </div>
                             <div class="form-group-wrapper">
                                 <div class="item-group">
                                     <label for="customerEmail" class="form-label">Email</label>
                                     <input type="email" class="form-control" id="customerEmail"
-                                           placeholder="Nhập email">
+                                           placeholder="Nhập email" autocomplete="on">
                                 </div>
                                 <div class="item-group">
                                     <label for="customerDob" class="form-label">Ngày sinh</label>
@@ -68,9 +68,8 @@
                                 </div>
                                 <div class="item-group gender">
                                     <label for="customerDob" class="form-label">Giới tính</label>
-                                    <input type="radio" name="customerGender" class="form-check-input">Nam
-                                    <input type="radio" name="customerGender" class="form-check-input">Nữ
-                                    <input type="radio" name="customerGender" class="form-check-input">Khác
+                                    <input type="radio" name="customerGender" class="form-check-input" value="true">Nam
+                                    <input type="radio" name="customerGender" class="form-check-input" value="false">Nữ
                                 </div>
                             </div>
                         </div>

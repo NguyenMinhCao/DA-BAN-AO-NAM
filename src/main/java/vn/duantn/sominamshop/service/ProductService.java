@@ -49,40 +49,36 @@ public class ProductService {
         return this.productRepository.save(product);
     }
 
-    // @Transactional
-    // public Product saveProduct(Product product) {
-    // Product savedProduct = productRepository.save(product);
-    //
-    // if (product.getVariants() != null) {
-    // for (ProductDetail variant : product.getVariants()) {
-    // variant.setProduct(savedProduct);
-    // productDetailRepository.save(variant);
-    // }
-    // }
-    // return savedProduct;
-    // }
-    // public Product findProductById(long id) {
-    // Optional<Product> prOptional = this.productRepository.findById(id);
-    // return prOptional.get();
-    // }
-    //
-    // public Product findProductByIdWithImg(long id) {
-    // Optional<Product> prOptional =
-    // this.productRepository.findProductWithImages(id);
-    // return prOptional.get();
-    // }
-    ////
-    // public boolean existsByName(String name) {
-    // return productRepository.existsByName(name);
-    // }
-    //
-    // @Transactional
-    // public void updateQuantityProduct(Long quantity, Long id) {
-    // productRepository.updateQuantityProduct(quantity, id);
-    // }
+
+    //    @Transactional
+//    public Product saveProduct(Product product) {
+//        Product savedProduct = productRepository.save(product);
+//
+//        if (product.getVariants() != null) {
+//            for (ProductDetail variant : product.getVariants()) {
+//                variant.setProduct(savedProduct);
+//                productDetailRepository.save(variant);
+//            }
+//        }
+//        return savedProduct;
+//    }
+//    public Product findProductById(long id) {
+//        Optional<Product> prOptional = this.productRepository.findById(id);
+//        return prOptional.get();
+//    }
+//
+//    public Product findProductByIdWithImg(long id) {
+//        Optional<Product> prOptional = this.productRepository.findProductWithImages(id);
+//        return prOptional.get();
+//    }
+////
+//    public boolean existsByName(String name) {
+//        return productRepository.existsByName(name);
+//    }
+//
 
     public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name) {
-        Page<CounterProductProjection> pageCounterRespone = productRepository.findAllProductByName(pageable, name);
+        Page<CounterProductProjection> pageCounterRespone = productDetailRepository.findAllProductByName(pageable, name);
         return pageCounterRespone;
     }
     //

@@ -62,7 +62,7 @@ body {
 }
 .container-table table{
     min-height: 300px;
-    max-height: 400px;
+    max-height: 800px;
 }
 .pagination {
     display: flex;

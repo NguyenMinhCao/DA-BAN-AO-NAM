@@ -9,10 +9,15 @@ import java.util.List;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+
+import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,11 +33,13 @@ import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.model.dto.AddressDTO;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
+import vn.duantn.sominamshop.model.dto.OrderDetailDTO;
 import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;
 import vn.duantn.sominamshop.model.dto.response.ResOrderDTO;
@@ -365,14 +372,58 @@ public class OrderService {
         order.setOrderSource(false);
         order.setPaymentStatus(PaymentStatus.PENDING);
         order.setDeliveryStatus(DeliveryStatus.COMPLETED);
+        order.setOrderStatus(OrderStatus.PENDING_INVOICE);
         Order orderCreate = orderRepository.save(order);
+        OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
+        return orderDTO;
+    }
+    @Transactional
+    public OrderDTO updateInvoice(Order order) {
+        Order order1 = orderRepository.findById(order.getId()).orElse(null);
+        if(order1 == null){
+            return null;
+        }
+        order1.setPaymentStatus(PaymentStatus.COMPLETED);
+        order1.setPromotion(order.getPromotion());
+        order1.setNote(order.getNote());
+        order1.setTotalAmount(order.getTotalAmount());
+        order1.setTotalProducts(order.getTotalProducts());
+        order1.setUser(order.getUser());
+        Order orderCreate = orderRepository.save(order1);
         OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
         return orderDTO;
     }
 
     @Transactional
-    public List<OrderDetail> saveInvoiceDetail(List<OrderDetail> list) {
+    public List<OrderDetail> saveInvoiceDetails(List<OrderDetail> list) {
         return orderDetailRepository.saveAll(list);
     }
+    @Transactional
+    public Map<String, Long> saveInvoiceDetail(OrderDetail orderDetail) {
+        OrderDetail orderDetail1 = orderDetailRepository.save(orderDetail);
+        Map<String, Long> map = new HashMap<>();
+        map.put("id", orderDetail1.getId());
+        return map;
+    }
+    @Transactional
+    public void deleteInvoiceDetail(Long id){
+        orderDetailRepository.deleteByOrderDetailIdAndProductDetailId(id);
+    }
+    public List<OrderDTO> getOrderNonPendingAndPos(DeliveryStatus deliveryStatus, PaymentStatus paymentStatus){
+        Pageable pageable = PageRequest.of(0,5);
+        List<Order> listOrder = orderRepository.getAllOrderNonPendingAndPos(deliveryStatus, paymentStatus, pageable);
+        List<OrderDTO> listOrderDTO = listOrder.stream().map(OrderDTO :: toOrderDTO).collect(Collectors.toList());
+        return listOrderDTO;
+    }
 
+    public List<OrderDetailDTO> getOrderDetailByOrderId(Long id){
+        List<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailByOrderId(id);
+        List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO :: toOrderDetailDTO).collect(Collectors.toList());
+        return orderDetailDTOS;
+    }
+    public OrderDTO getOrderById(Long id){
+        Order order = orderRepository.getAllOrderById(id).orElse(null);
+        OrderDTO orderDTO = OrderDTO.toOrderDTO(order);
+        return orderDTO;
+    }
 }

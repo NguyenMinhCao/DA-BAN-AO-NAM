@@ -1,7 +1,7 @@
 package vn.duantn.sominamshop.repository;
 import java.util.List;
 
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,11 @@ import vn.duantn.sominamshop.model.Order;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.PaymentStatus;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
@@ -51,13 +55,17 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
                         "WHERE FUNCTION('YEAR', o.createdAt) = FUNCTION('YEAR', CURRENT_DATE)")
         BigDecimal getYearlyRevenue();
 
+
+
+
+        @Query("SELECT o FROM Order o WHERE o.deliveryStatus IS NULL AND o.createdBy = :createdBy")
+        Order findOrderByDeliveryStatusAndCreatedBy(@Param("createdBy") String createdBy);
+
         List<Order> findOrderByUser(User user);
 
         // @Query("SELECT p FROM Product p WHERE p.quantity < 20")
         // Page<Product> findLowStockProducts(Pageable pageable);
 
-        @Query("SELECT o FROM Order o WHERE o.deliveryStatus IS NULL AND o.createdBy = :createdBy")
-        Order findOrderByDeliveryStatusAndCreatedBy(@Param("createdBy") String createdBy);
 
         @Query("SELECT o FROM Order o WHERE o.deliveryStatus IS NOT NULL")
         List<Order> findAllOrderByDeliveryStatusNotNull();
@@ -77,4 +85,13 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
         @Query(value = "SELECT * FROM orders WHERE CAST(id AS VARCHAR) LIKE CONCAT(:prefix, '%')", nativeQuery = true)
         List<Order> findByIdStartingWith(@Param("prefix") String prefix);
 
+    @Query("select od from Order od where od.deliveryStatus = :deliveryStatus and od.orderSource = false and od.paymentStatus = :paymentStatus")
+    List<Order> getAllOrderNonPendingAndPos(@Param("deliveryStatus") DeliveryStatus deliveryStatus, @Param("paymentStatus") PaymentStatus paymentStatus, Pageable pageable);
+
+    @Query(value = "SELECT * FROM orders o " +
+            "LEFT JOIN users u on u.id = o.user_id " +
+            "LEFT JOIN promotions p on p.id = o.promotion_id " +
+            "WHERE o.id = :id "
+            , nativeQuery = true)
+    Optional<Order> getAllOrderById(@Param("id") Long id);
 }

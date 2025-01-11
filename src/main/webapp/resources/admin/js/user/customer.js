@@ -25,19 +25,19 @@ $(document).ready(function () {
                 $('#tableSample tbody').append(
                     `
                     <tr>
-                        <td><img src="/images/avatar/anhmau.jpg" height="100px" width="auto" alt="lỗi ảnh"></td>
+                        <td><img src="/images/avatar/${data.avatar}" height="100px" width="auto" alt="lỗi ảnh"></td>
                         <td>${data.fullName}</td>
                         <td>${data.phoneNumber}</td>
                         <td>${data.email}</td>
                         <td>${data.status}</td>
                         <td>
-                            <button>
+                            <button title="Vị chí">
                                 <i class="fa-solid fa-location-dot"></i>
                             </button>
-                            <button>
+                            <button title="Chỉnh sửa">
                                 <i class="fa-solid fa-wrench"></i>
                             </button>
-                            <button>
+                            <button  title="Thông tin chi tiết">
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
                         </td> 
