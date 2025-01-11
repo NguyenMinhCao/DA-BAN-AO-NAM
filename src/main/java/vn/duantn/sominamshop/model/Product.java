@@ -51,10 +51,6 @@ public class Product extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "product")
     private List<ProductDetail> productDetails;
 
-    @ManyToMany
-    @JoinTable(name = "Product_Promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
-    private List<Promotion> promotions;
-
     public Integer getStatus() {
         if (status == null) {
             return 0;

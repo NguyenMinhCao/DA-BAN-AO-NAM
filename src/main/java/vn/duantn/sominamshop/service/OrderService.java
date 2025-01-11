@@ -2,6 +2,7 @@ package vn.duantn.sominamshop.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +11,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.aspectj.weaver.ast.Or;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,7 +29,7 @@ import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.OrderHistory;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.ProductDetail;
-import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.OrderStatus;
@@ -38,6 +41,8 @@ import vn.duantn.sominamshop.model.dto.OrderDTO;
 import vn.duantn.sominamshop.model.dto.OrderDetailDTO;
 import vn.duantn.sominamshop.model.dto.OrderUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateOrderDetailDTO;
+import vn.duantn.sominamshop.model.dto.response.ResOrderDTO;
+import vn.duantn.sominamshop.model.dto.response.ResultPaginationDTO;
 import vn.duantn.sominamshop.repository.CartRepository;
 import vn.duantn.sominamshop.repository.OrderDetailRepository;
 import vn.duantn.sominamshop.repository.OrderRepository;
@@ -161,7 +166,7 @@ public class OrderService {
 
         Map<String, Object> response = new HashMap<>();
 
-        Optional<Promotion> promotionById = null;
+        Optional<Coupon> promotionById = null;
         Order order = this.findOrderByStatusAndCreatedBy();
 
         if (order != null) {
@@ -272,6 +277,26 @@ public class OrderService {
         return this.orderDetailRepository.findById(id);
     }
 
+    public ResultPaginationDTO fetchAllOrders(Specification<Order> spec, Pageable pageable) {
+        Page<Order> page = this.orderRepository.findAll(spec, pageable);
+
+        List<Order> lstOrders = page.getContent();
+
+        List<ResOrderDTO> orderRs = convertOrderToOrderSearchResponse(lstOrders);
+
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
+        mt.setPage(pageable.getPageNumber() + 1);
+        mt.setPageSize(page.getSize());
+        mt.setPages(page.getTotalPages());
+        mt.setTotal(page.getTotalElements());
+        mt.setCurrentPageElements(page.getNumberOfElements());
+        
+        rs.setMeta(mt);
+        rs.setResult(orderRs);
+        return rs;
+    }
+
     public void saveOrder(Order order) {
         this.orderRepository.save(order);
     }
@@ -289,8 +314,31 @@ public class OrderService {
         return this.orderRepository.findOrderByDeliveryStatusAndCreatedBy(createdBy);
     }
 
-    public List<Order> getAllOrdersByDeliveryStatusNotNull() {
-        return this.orderRepository.findAllOrderByDeliveryStatusNotNull();
+    public List<ResOrderDTO> getAllOrdersByDeliveryStatusNotNull() {
+        return convertOrderToOrderSearchResponse(this.orderRepository.findAllOrderByDeliveryStatusNotNull());
+    }
+
+    public List<ResOrderDTO> convertOrderToOrderSearchResponse(List<Order> lstOrder) {
+        List<ResOrderDTO> orderSRes = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        for (Order order : lstOrder) {
+            ResOrderDTO newOrderRes = new ResOrderDTO();
+            newOrderRes.setDeliveryStatus(order.getDeliveryStatus());
+            newOrderRes.setId(order.getId());
+            newOrderRes.setFullName(
+                    order.getUser() != null ? order.getUser().getFullName() : "Không tồn tại");
+            newOrderRes.setTotalAmount(order.getTotalAmount());
+            newOrderRes.setOrderSource(order.getOrderSource() == true ? "Website" : "Tại quầy");
+            String formattedDateCreate = order.getCreatedAt().format(formatter);
+            newOrderRes.setCreateAt(formattedDateCreate);
+            newOrderRes.setOrderStatus(order.getOrderStatus());
+            newOrderRes.setPaymentStatus(order.getPaymentStatus());
+            orderSRes.add(newOrderRes);
+        }
+
+        return orderSRes;
     }
 
     public void updateOrderDetail(DataUpdateOrderDetailDTO dto, String idOrderD) {
@@ -312,6 +360,10 @@ public class OrderService {
             }
         }
 
+    }
+
+    public List<Order> getOrdersByIdPrefix(String prefix) {
+        return orderRepository.findByIdStartingWith(prefix);
     }
 
     @Transactional

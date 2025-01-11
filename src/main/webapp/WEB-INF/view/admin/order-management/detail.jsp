@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="order">
                                         <div class="order__status">
-                                            <div class="code align-self-start">#1005</div>
+                                            <div class="code align-self-start">#${order.id}</div>
                                             <div class="status align-self-center">
                                                 <c:if test="${order.paymentStatus == 'PENDING'}">
                                                     <span class="payment-status--unpaid border-status status-pending">

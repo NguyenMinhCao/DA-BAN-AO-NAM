@@ -116,4 +116,7 @@ public class UserService {
         Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
         return pageCustomerDto;
     }
+    public List<User> findUserByPhone(String phone) {
+        return this.userRepository.findByPhoneNumberStartingWith(phone);
+    }
 }

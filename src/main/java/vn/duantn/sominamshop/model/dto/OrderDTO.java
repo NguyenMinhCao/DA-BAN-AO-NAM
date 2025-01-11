@@ -1,18 +1,17 @@
 package vn.duantn.sominamshop.model.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vn.duantn.sominamshop.model.*;
+import vn.duantn.sominamshop.model.Order;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Data
 @NoArgsConstructor
@@ -21,12 +20,12 @@ import java.util.List;
 public class OrderDTO {
 
     private long id;
-
     private Integer totalProducts;
 
-    private BigDecimal totalAmount;
-
+    private DeliveryStatus status;
+    private Coupon promotion;
     private String note;
+    private BigDecimal totalAmount;
 
     private ShippingMethod shippingMethod;
 
@@ -39,8 +38,6 @@ public class OrderDTO {
     private Boolean orderSource;
 
     private UserDTO user;
-
-    private Promotion promotion;
 
     public static OrderDTO toOrderDTO(Order order) {
         OrderDTO orderDTO = OrderDTO.builder()

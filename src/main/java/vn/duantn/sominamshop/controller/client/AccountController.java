@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.OrderService;

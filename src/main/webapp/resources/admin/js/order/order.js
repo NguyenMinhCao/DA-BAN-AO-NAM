@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
             quantityProductCart.value = parseInt(quantityProductCart.value) + 1;
             // Cập nhật số lượng trong list
             let productToUpdate = listProduct.find(item => item.productDetail?.id == productId)
-            console.log(productId + ": id của sản phẩm")
+            // console.log(productToUpdate.productDetail + ": id của sản phẩm")
             console.log(productToUpdate.order.id + ": id của hóa đơn")
             listProduct.forEach(item => console.log(item))
             // console.log(productToUpdate.quantity + ": số lượng sản phẩm cũ")
