@@ -124,4 +124,8 @@ public class UserService {
         return pageCustomerDto;
     }
 
+    public List<User> findUserByPhone(String phone) {
+        return this.userRepository.findByPhoneNumberStartingWith(phone);
+    }
+
 }

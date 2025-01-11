@@ -32,7 +32,7 @@
                             <div class="collapse" id="collapseLayoutsInvoiceManagement" aria-labelledby="headingOne"
                                 data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/admin/orders">Danh sách</a>
+                                    <a class="nav-link" href="/admin/orders?page=1&size=10">Danh sách</a>
                                 </nav>
                             </div>
 
@@ -76,14 +76,14 @@
 
                             <!-- Khuyến mại -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                               data-bs-target="#collapseLayoutsPromotions" aria-expanded="false"
-                               aria-controls="collapseLayoutsPromotions">
+                                data-bs-target="#collapseLayoutsPromotions" aria-expanded="false"
+                                aria-controls="collapseLayoutsPromotions">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"> </i></div>
                                 Quản lý khuyến mại
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayoutsPromotions" aria-labelledby="headingOne"
-                                 data-bs-parent="#sidenavAccordion">
+                                data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="/hien-thiKM">Danh sách</a>
                                     <a class="nav-link" href="/view-add">Thêm khuyến mại</a>
