@@ -106,6 +106,7 @@ public class ProductDetailService {
         return this.productDetailRepository.getAllProductDetailByProductId(product.getId());
     }
 
+    @Transactional
     public ProductDetail add(ProductDetailRequest productDetailRequest) {
         ProductDetail productDetail = productDetailRequest.map(new ProductDetail());
         return productDetailRepository.save(productDetail);
@@ -153,5 +154,10 @@ public class ProductDetailService {
 
     public Float getPriceByProductDetail(Integer productId, Integer colorId, Integer sizeId) {
         return productDetailRepository.getPriceByProductDetail(productId, colorId, sizeId);
+    }
+
+    @Transactional
+    public void updateQuantityProduct(Long quantity, Long id) {
+        productDetailRepository.updateQuantityProduct(quantity, id);
     }
 }

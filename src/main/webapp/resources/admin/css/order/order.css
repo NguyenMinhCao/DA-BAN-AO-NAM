@@ -125,8 +125,8 @@ body {
 }
 
 .product-in-table img {
-    height: 100px;
-    width: 100px;
+    height: 90px;
+    width: auto;
 }
 
 .product-customer {
@@ -373,7 +373,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 1000px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     /* Mờ nền */
@@ -386,14 +386,42 @@ body {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    width: 80%;
-    max-width: 800px;
+    width: 800px;
+    max-width: 1000px;
     text-align: center;
 }
 
+.search-bar-product{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-search button{
+    margin-top: 10px;
+    font-size: 16px;
+    padding: 8px 12px;
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.group-search-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.group-search-item label {
+    margin-bottom: 0;
+}
 
 .search-bar input {
-    width: 70%;
+    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -652,7 +680,9 @@ btn-pay-note{
 /*phần input và select ở thông tin hóa đơn start */
 #payMethod,
 #voucher,
-#customer-payment
+#customer-payment,
+.group-search-item input,
+.group-search-item select
  {
     /*font-size: 16px;*/
     padding: 5px 8px;
@@ -669,6 +699,8 @@ btn-pay-note{
 #payMethod:focus,
 #voucher:focus,
 #customer-payment:focus
+.group-search-item input:focus,
+.group-search-item select:focus
 {
     border-color: #4a90e2;
     outline: none;

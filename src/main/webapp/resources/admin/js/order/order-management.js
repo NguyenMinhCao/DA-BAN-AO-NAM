@@ -30,11 +30,22 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+    if (openModalEditInformation) {
+        openModalEditInformation.addEventListener('click', () => {
+            modalOverlayEditInformation.style.display = 'block'
+        })
+    }
     //Sủa thông tin khách hàng
-    openModalEditInformation.onclick = () => modalOverlayEditInformation.style.display = 'block'
+    // openModalEditInformation.onclick = () => modalOverlayEditInformation.style.display = 'block'
+
 
     //Sủa thông tin ghi chú
-    modalOpenEditNote.onclick = () => modalOverlayEditNote.style.display = 'block'
+    // modalOpenEditNote.onclick = () => modalOverlayEditNote.style.display = 'block'
+    if (modalOpenEditNote) {
+        modalOpenEditNote.addEventListener('click', () => {
+            modalOverlayEditNote.style.display = 'block'
+        })
+    }
 
     //close modal
     const getAllCloseModal = document.querySelectorAll('.btn-close-modal');
@@ -255,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (quantityProductCurrent >= quantityInputP) {
                 returnProduct()
-
             } else {
                 toast({
                     title: "Thất bại!",

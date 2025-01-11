@@ -1,10 +1,14 @@
 package vn.duantn.sominamshop.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.duantn.sominamshop.model.ProductDetail;
+import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.response.ProductDetailResponse;
 import vn.duantn.sominamshop.model.dto.response.SizeResponse;
 
@@ -144,6 +148,40 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
     Float getPriceByProductDetail(@Param("productId") Integer productId,
             @Param("colorId") Integer colorId,
             @Param("sizeId") Integer sizeId);
+
+    @Query(value = """
+            with imagesOrder AS (Select product_detail_id, url_image, ROW_NUMBER() OVER (PARTITION BY product_detail_id ORDER BY (select null)) AS STT from images)
+            SELECT pd.id, p.name, pd.quantity, sz.size_name, cl.color_name, pd.price, imagesOrder.url_image as image from product_details pd
+            left join products p on p.id = pd.product_id
+            left join imagesOrder on pd.id = imagesOrder.product_detail_id AND imagesOrder.STT = 1
+            left join colors cl on pd.color_id = cl.id
+            left join sizes sz on pd.size_id = sz.id
+            WHERE
+            (p.name like CONCAT('%', :name,'%')
+            or sz.size_name like CONCAT('%', :name,'%')
+            or cl.color_name like CONCAT('%', :name,'%'))
+            and pd.quantity > 0
+            GROUP BY pd.id, p.name, pd.quantity, sz.size_name, cl.color_name, pd.price, imagesOrder.url_image
+            """,
+            countQuery = """
+            SELECT COUNT(*)
+            FROM product_details pd
+            left join products p on p.id = pd.product_id
+            left join colors cl ON pd.color_id = cl.id
+            left join sizes sz ON pd.size_id = sz.id
+            WHERE
+            (p.name like CONCAT('%', :name,'%')
+            or sz.size_name like CONCAT('%', :name,'%')
+            or cl.color_name like CONCAT('%', :name,'%'))
+            and pd.quantity > 0
+            """,nativeQuery = true)
+    Page<CounterProductProjection> findAllProductByName(Pageable pageable, @Param(value = "name") String name);
+
+    @Modifying
+    @Query("UPDATE ProductDetail p set p.quantity = p.quantity - :quantity WHERE p.id = :id")
+    void updateQuantityProduct(@Param("quantity") Long quantity, @Param("id") Long id);
+
+    Page<ProductDetail> findByColorId(Long colorId, Pageable pageable);
 
     @Query("select pd from ProductDetail pd where pd.color.id =:idColor and pd.product.id = :idProduct")
     List<ProductDetail> findProductDetailByColorAndProduct(long idColor, long idProduct);

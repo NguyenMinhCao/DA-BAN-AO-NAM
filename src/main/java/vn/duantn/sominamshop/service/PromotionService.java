@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import vn.duantn.sominamshop.model.Promotion;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.dto.PromotionDTO;
 import vn.duantn.sominamshop.repository.PromotionRepository;
 
@@ -19,11 +19,11 @@ public class PromotionService {
         this.promotionRepository = promotionRepository;
     }
 
-    public List<Promotion> findAllPromotion() {
+    public List<Coupon> findAllPromotion() {
         return this.promotionRepository.findAll();
     }
 
-    public Optional<Promotion> findPromotionById(Long id) {
+    public Optional<Coupon> findPromotionById(Long id) {
         return this.promotionRepository.findById(id);
     }
 

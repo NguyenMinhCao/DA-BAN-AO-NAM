@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/common/toast.css">
 </head>
 
 <body class="sb-nav-fixed">
@@ -224,12 +225,33 @@
                     <div id="product-modal" class="modal">
                         <div class="modal-content">
                             <h2>Danh sách sản phẩm</h2>
-                            <div class="search-bar">
-                                <input type="text" id="search-input-product"
-                                       placeholder="Tìm kiếm sản phẩm...">
-                                <button id="btn-search-product" class="btn-search-product">Tìm
-                                    kiếm
-                                </button>
+                            <div class="search-bar-product">
+                                <div class="group-search-item search-name">
+                                    <label>Tên sản phẩm</label>
+                                    <input type="text" id="search-input-product" placeholder="Tìm kiếm sản phẩm...">
+                                </div>
+                                <div class="group-search-item search-size">
+                                    <label>Kích cỡ</label>
+                                    <select id="search-input-size">
+                                        <option disabled selected>Chọn kích cỡ</option>
+                                    </select>
+                                </div>
+                                <div class="group-search-item search-color">
+                                    <label>Màu sắc</label>
+                                    <select id="search-input-color">
+                                        <option disabled selected>Chọn màu sắc</option>
+                                    </select>
+                                </div>
+                                <div class="group-search-item search-category">
+                                    <label>Danh mục</label>
+                                    <select id="search-input-category">
+                                        <option disabled selected>Chọn danh mục</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="btn-search">
+                                <button id="btn-search-product">Tìm kiếm</button>
+                                <button>Làm mới</button>
                             </div>
                             <div class="select-product">
                                 <table>
@@ -509,6 +531,9 @@
             </div>
         </main>
         <jsp:include page="../layout/footer.jsp"/>
+        <button id="xemlisst">Xóa</button>
+        <div id="toast">
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -518,6 +543,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/admin/js/order/order.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script src="/common/toast.js"></script>
 </body>
 
 </html>

@@ -67,6 +67,8 @@ public class UserService {
         return user;
     }
 
+
+
     public void updateUserInOrder(DataUpdateUserOrderDTO dto) {
         User userByEmail = this.findUserByEmail(dto.getOldEmailUser());
         if (userByEmail != null) {
@@ -74,12 +76,6 @@ public class UserService {
             userByEmail.setPhoneNumber(dto.getPhoneNumber());
             this.userRepository.save(userByEmail);
         }
-    }
-
-    public Page<UserDTO> findByFullNameAndRole(String name, Role role, Pageable pageable) {
-        Page<User> pageUser = userRepository.findByFullNameContainingAndRole(name, role, pageable);
-        Page<UserDTO> pageUserDto = pageUser.map(user -> UserDTO.toDTO(user));
-        return pageUserDto;
     }
 
     public Map<String, String> validateCustomerData(User user) {
@@ -113,15 +109,17 @@ public class UserService {
         }
     }
 
-    public Page<User> findUserByFullNameContainingAndRole(String fullName, Role role, Pageable pageable) {
-        return this.userRepository.findByFullNameContainingAndRole(fullName, role, pageable);
-    }
 
     public Page<UserDTO> findByFullNameAndRole(Pageable pageable, String name) {
-        Page<User> pageCustomer = userRepository.findByFullNameContainingAndRole(name, Role.builder().id(1).build(),
+        Page<User> pageCustomer = userRepository.findByFullNameContainingAndRole(name,
                 pageable);
         Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
         return pageCustomerDto;
+    }
+
+
+    public List<User> findUserByPhone(String phone) {
+        return this.userRepository.findByPhoneNumberStartingWith(phone);
     }
 
 }
