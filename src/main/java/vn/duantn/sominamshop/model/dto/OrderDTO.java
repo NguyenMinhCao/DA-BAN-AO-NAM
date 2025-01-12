@@ -21,10 +21,9 @@ public class OrderDTO {
 
     private long id;
     private Integer totalProducts;
-
-    private DeliveryStatus status;
-    private Coupon promotion;
+    private CouponDTO promotion;
     private String note;
+
     private BigDecimal totalAmount;
 
     private ShippingMethod shippingMethod;

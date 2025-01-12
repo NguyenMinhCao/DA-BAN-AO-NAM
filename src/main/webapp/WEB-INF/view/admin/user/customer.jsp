@@ -73,6 +73,33 @@
                             </table>
                         </div>
                         <div id="pagination-customer" class="pagination"></div>
+
+<%--                        // modal vị trí--%>
+                        <div class="container-modal">
+                            <div class="content">
+                                <div>
+                                    <button >Thêm mới</button>
+                                </div>
+                                <div class="container-table">
+                                    <table class="table" id="tableCustomer">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>SĐT</th>
+                                            <th>Họ tên</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Trạng thái</th>
+                                            <th>Tính năng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody >
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                    <button>đóng</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </ol>
             </div>

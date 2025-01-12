@@ -90,10 +90,10 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
     @Query("select od from Order od where od.deliveryStatus = :deliveryStatus and od.orderSource = false and od.paymentStatus = :paymentStatus")
     List<Order> getAllOrderNonPendingAndPos(@Param("deliveryStatus") DeliveryStatus deliveryStatus, @Param("paymentStatus") PaymentStatus paymentStatus, Pageable page);
 
-    @Query(value = "SELECT * FROM orders o " +
-            "LEFT JOIN users u on u.id = o.user_id " +
-            "LEFT JOIN promotions p on p.id = o.promotion_id " +
+    @Query(value = "SELECT o FROM Order o " +
+            "LEFT JOIN User u on u.id = o.user.id " +
+            "LEFT JOIN Coupon cp on cp.id = o.promotion.id "+
             "WHERE o.id = :id "
-            , nativeQuery = true)
+    )
     Optional<Order> getAllOrderById(@Param("id") Long id);
 }

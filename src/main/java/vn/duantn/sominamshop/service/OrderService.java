@@ -377,20 +377,27 @@ public class OrderService {
         return orderDTO;
     }
     @Transactional
-    public OrderDTO updateInvoice(Order order) {
-        Order order1 = orderRepository.findById(order.getId()).orElse(null);
-        if(order1 == null){
+    public OrderDTO updateInvoice(OrderDTO orderDTO) {
+        Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
+        if(order == null){
             return null;
         }
-        order1.setPaymentStatus(PaymentStatus.COMPLETED);
-        order1.setPromotion(order.getPromotion());
-        order1.setNote(order.getNote());
-        order1.setTotalAmount(order.getTotalAmount());
-        order1.setTotalProducts(order.getTotalProducts());
-        order1.setUser(order.getUser());
-        Order orderCreate = orderRepository.save(order1);
-        OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
-        return orderDTO;
+        if(orderDTO.getPaymentStatus() == PaymentStatus.COMPLETED){
+            order.setPaymentStatus(PaymentStatus.COMPLETED);
+        }
+        if(orderDTO.getPromotion() !=null){
+            order.setPromotion(Coupon.builder().id(orderDTO.getPromotion().getId()).build());
+        }
+        order.setNote(orderDTO.getNote());
+        order.setTotalAmount(orderDTO.getTotalAmount());
+        order.setTotalProducts(orderDTO.getTotalProducts());
+        order.setPaymentMethod(orderDTO.getPaymentMethod());
+        if(orderDTO.getUser() != null){
+            order.setUser(User.builder().id(orderDTO.getUser().getId()).build());
+        }
+        Order orderCreate = orderRepository.save(order);
+        OrderDTO orderDTO2 = OrderDTO.toOrderDTO(orderCreate);
+        return orderDTO2;
     }
 
     @Transactional
@@ -398,7 +405,14 @@ public class OrderService {
         return orderDetailRepository.saveAll(list);
     }
     @Transactional
-    public Map<String, Long> saveInvoiceDetail(OrderDetail orderDetail) {
+    public Map<String, Long> saveInvoiceDetail(OrderDetailDTO orderDetailDTO) {
+        OrderDetail orderDetail = OrderDetail.builder()
+                .order(Order.builder().id(orderDetailDTO.getOrderId()).build())
+                .id(orderDetailDTO.getId())
+                .productDetail(ProductDetail.builder().id(orderDetailDTO.getProductDetail().getId()).build())
+                .price(orderDetailDTO.getPrice())
+                .quantity(orderDetailDTO.getQuantity())
+                .build();
         OrderDetail orderDetail1 = orderDetailRepository.save(orderDetail);
         Map<String, Long> map = new HashMap<>();
         map.put("id", orderDetail1.getId());
@@ -417,6 +431,7 @@ public class OrderService {
 
     public List<OrderDetailDTO> getOrderDetailByOrderId(Long id){
         List<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailByOrderId(id);
+        orderDetails.forEach(item -> System.out.println(item.getProductDetail().getPrice() + ": giá sản phẩm trong này"));
         List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO :: toOrderDetailDTO).collect(Collectors.toList());
         return orderDetailDTOS;
     }

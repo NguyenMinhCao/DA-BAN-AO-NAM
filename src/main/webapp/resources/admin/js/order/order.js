@@ -82,32 +82,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Xóa sản phẩm khỏi danh sách
-    // productListBody.addEventListener('click', function (e) {
-    //     if (e.target.classList.contains('btn-delete-product')) {
-    //         let idProduct = e.target.closest('tr').getAttribute("data-product-id");
-    //         const index = listProduct.findIndex(product => product.id === idProduct);
-    //         if (index !== -1) {
-    //             listProduct.splice(index, 1);
-    //         }
-    //         e.target.closest('tr').remove()
-    //         updateTotalPrice();
-    //         deleteOrderDetail(idProduct.id)
-    //     }
-    // });
 
     // Chọn khách hàng từ modal
     document.getElementById('customer-list').addEventListener('click', function (e) {
         if (e.target.classList.contains('btn-add-customer')) {
             $('#infoDetail').empty()
+            let idCustomer = e.target.getAttribute('customer-id')
             customerNameInput.innerText = e.target.getAttribute('data-name');
-            customerNameInput.setAttribute('data-customer-id', e.target.getAttribute('customer-id'))
+            customerNameInput.setAttribute('data-customer-id', idCustomer)
             var phoneNumber = e.target.getAttribute('data-sdt');
             var email  = e.target.getAttribute('data-email')
             $('#infoDetail').append('<p>Số điện thoại: ' + phoneNumber + '</p>');
             $('#infoDetail').append('<p>email: ' + email + '</p>');
             $('#btn-delete-customer').prop('disabled', false);
             toggleModal(customerModal, false);
+            console.log("Id của khách hàng " + e.target.getAttribute('customer-id'))
+            let orderUpdate = listOrder.find(item => item.id == idOrderSelect)
+            console.log(orderUpdate.id + ": order muốn thêm kh")
+            if(!orderUpdate.user){
+                orderUpdate.user = {
+                    id : idCustomer
+                };
+            }else{
+                orderUpdate.user.id = idCustomer
+            }
+            updateOrder(orderUpdate)
         }
     });
     //Xóa khách hàng
@@ -212,19 +211,15 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!checkQuantityProduct(Number(quantity), Number(quantityProductCart?.value))) {
                 return
             }
-            // cập nhật số lượng tại input
             quantityProductCart.value = parseInt(quantityProductCart.value) + 1;
-            // Cập nhật số lượng trong list
             let productToUpdate = listProduct.find(item => item.productDetail?.id == productId)
-            // console.log(productToUpdate.productDetail + ": id của sản phẩm")
-            console.log(productToUpdate.order.id + ": id của hóa đơn")
-            listProduct.forEach(item => console.log(item))
-            // console.log(productToUpdate.quantity + ": số lượng sản phẩm cũ")
             if (productToUpdate) {
                 productToUpdate.quantity = quantityProductCart.value
                 console.log(productToUpdate.quantity + ": số lượng sản phẩm mới")
-                let totalAmount = ((Number(quantityProductCart.value)) * Number(price)).toLocaleString('vi-VN');
-                totalPriceProductCart.innerHTML = (totalAmount).toString()
+                let totalAmount = ((Number(quantityProductCart.value)) * Number(price));
+                productToUpdate.price = totalAmount
+                console.log(totalAmount + ": tổng tiền muốn lưu")
+                totalPriceProductCart.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
                 updateOrderDetail(productToUpdate)
             }
         } else {
@@ -266,14 +261,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 id: null,
                 price: price,
                 quantity: 1,
-                order: {
-                    id : idOrderSelect
-                },
+                orderId: idOrderSelect,
                 productDetail:{
                     id : productId,
+                    price: price
                 }
             }
             listProduct.push(orderDetail)
+            console.log("id của hóa đơn muốn lưu " + idOrderSelect)
             createdOrderDetail(orderDetail, productId)
         }
         updateTotalPrice();
@@ -285,29 +280,34 @@ document.addEventListener('DOMContentLoaded', function () {
         const totalPrice = newRow.querySelector(".product-price");
         newRow.querySelector(".decrease").addEventListener("click", () => {
             if (quantityInput.value > 1) {
-                let productToUpdate = listProduct.find(item => item.id === productId)
+                let productToUpdate = listProduct.find(item => item.productDetail?.id === productId)
                 quantityInput.value--;
                 productToUpdate.quantity = quantityInput.value
-                totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
+                let totalAmount = (Number(quantityInput.value) * Number(price))
+                totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
+                productToUpdate.price = totalAmount
                 updateTotalPrice();
+                updateOrderDetail(productToUpdate)
             }
         });
         newRow.querySelector(".increase").addEventListener("click", () => {
-            let productToUpdate = listProduct.find(item => item.product?.id === productId)
+            if(Number(quantityInput.value) >= Number(totalQuantityProduct)){
+                notificationAddCusstomer('Cảnh báo', 'Số lượng sản phẩm đạt giới hạn', 'error')
+                return;
+            }
+            let productToUpdate = listProduct.find(item => item.productDetail?.id === productId)
             quantityInput.value++;
             productToUpdate.quantity = quantityInput.value
-            totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
+            let totalAmount = (Number(quantityInput.value) * Number(price))
+            totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
+            productToUpdate.price = totalAmount
             updateTotalPrice();
+            updateOrderDetail(productToUpdate)
         });
         quantityInput.addEventListener("change", () => {
-            if(Number(quantityInput.value) > Number(totalQuantityProduct)){
+            if(Number(quantityInput.value) >= Number(totalQuantityProduct)){
                 quantityInput.value = totalQuantityProduct
-                Swal.fire({
-                    icon: "error",
-                    title: "Số lượng vượt quá giới hạn",
-                    showConfirmButton: true,
-                    // timer: 1500
-                });
+                notificationAddCusstomer('Cảnh báo', 'Số lượng sản phẩm đạt giới hạn', 'error')
             }
             if (quantityInput.value < 1) quantityInput.value = 1;
             let productToUpdate = listProduct.find(item => item.product?.id === productId)
@@ -377,6 +377,12 @@ document.addEventListener('DOMContentLoaded', function () {
         idOrderSelect = button.getAttribute('data-order-id');
         activateTab(selectedInvoiceId)
         resetInvoice()
+        let orderSelect = listOrder.find(item => item.id == idOrderSelect)
+        if(orderSelect && orderSelect.user){
+            $('#infoDetail').append('<p>Số điện thoại: ' + orderSelect.user?.phoneNumber  + '</p>');
+            $('#infoDetail').append('<p>email: ' + orderSelect.user?.email + '</p>');
+            $('#btn-delete-customer').prop('disabled', false);
+        }
         fetchOrderDetail(idOrderSelect)
     }
 
@@ -468,7 +474,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
                 productListBody.appendChild(newRow);
                 // Thêm sự kiện tăng/giảm số lượng cho input
-                changeQuantityInput(newRow, productAtInvoice[i]?.productDetail.id, productAtInvoice[i]?.productDetail.price, productAtInvoice[i].quantity)
+                changeQuantityInput(newRow, productAtInvoice[i]?.productDetail.id, productAtInvoice[i]?.productDetail.price, productAtInvoice[i].productDetail?.quantity)
             }
         }
     }
@@ -622,32 +628,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function saveInvoice(index) {
+        let note = $('#description').val()
+        let orderDetailSave = listProduct.filter(item => item.orderId == idOrderSelect)
+        let totalAmount = orderDetailSave.reduce((sum, item) => sum + Number(item.price), 0);
+        let totalProducts = orderDetailSave.reduce((sum, item) => sum + Number(item.quantity), 0);
+        console.log(totalProducts + ": số sản phẩm muốn lưu")
+        let paymentMethod = $('#payMethod').val()
+        console.log("số tiền muốn lưu :" + totalAmount)
         if (!checkBeforeSaving()) {
             return
         }
-        let invoice = JSON.parse(localStorage.getItem(index))
-        let customerID = invoice?.customerID
-        let orderNote = invoice?.note
-        let totalAmount = invoice?.totalAmount
-        let totalProducts = invoice?.listProduct.reduce((total, item) => total + item.quantity, 0);
         let data = {
             id: idOrderSelect,
-            status: 1,
-            user: customerID ? {id: customerID} : null,
-            note: orderNote,
+            note: note,
             totalAmount: totalAmount || 0,
-            paymentMethod: 1,
-            totalProducts: totalProducts
+            paymentMethod: paymentMethod,
+            paymentStatus : 'COMPLETED',
+            totalProducts: totalProducts,
         }
         $.ajax({
-            url: `http://localhost:8080/api/admin/order/save/invoice`,
-            type: 'POST',
+            url: `http://localhost:8080/api/admin/order/update/invoice`,
+            type: 'PUT',
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (response) {
-                if (response.id != null) {
-                    saveInvoiceDetail(response.id)
-                }
+                updateQuantity()
             },
             error: function (xhr, status,error) {
                 notificationAddCusstomer('Thất bại!', "Có lỗi khi lưu hóa đơn", 'error')
@@ -659,41 +664,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function saveInvoiceDetail(idInvoice) {
-        if (!listProduct || listProduct.length === 0) {
-            return;
-        }
-        listProduct.forEach(item => {
-            item.order = {
-                id: idInvoice
-            };
-        });
-        $.ajax({
-            url: `http://localhost:8080/api/admin/order/save/invoice/details`,
-            type: 'POST',
-            contentType: "application/json",
-            data: JSON.stringify(listProduct),
-            success: function (response) {
-                updateQuantity()
-            },
-            error: function (error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Có lỗi khi lưu hóa đơn chi tiết",
-                    showConfirmButton: true,
-                    timer: 1500
-                });
-                console.log("Error:", error);
-            }
-        });
-    }
-
     function updateQuantity() {
         let promises = [];
         listProduct.forEach(item => {
             let data = {
                 productDetail: {
-                    id: item.product.id
+                    id: item.productDetail?.id
                 },
                 quantity: item.quantity
             }
@@ -725,9 +701,8 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#infoDetail').empty()
         $('#btn-delete-customer').prop('disabled', true);
         fetchProducts(0)
-        resetInvoice();
-        localStorage.removeItem(selectedInvoiceId);
-        removeInvoice(selectedInvoiceId)
+        // resetInvoice();
+        // removeInvoice(selectedInvoiceId)
     }
 
 //********************* in hóa đơn **************
@@ -742,12 +717,12 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#table_print').append(`
                         <tr>
                             <tr>
-                                <td colspan="4"><strong>${product.name}</strong></td>
+                                <td colspan="4"><strong>${product.productDetail?.productName}</strong></td>
                             </tr>
                         <tr>
-                            <td>Đơn Giá: ${(product.price).toLocaleString()} VND</td>
+                            <td>Đơn Giá: ${(product.productDetail?.price).toLocaleString()} VND</td>
                             <td>Số Lượng: ${product.quantity}</td>
-                            <td colspan="2">Tổng: ${product.price * product.quantity} VND</td>
+                            <td colspan="2">Tổng: ${product.productDetail?.price * product.quantity} VND</td>
                         </tr>
             `);
         })
@@ -977,22 +952,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     if(invoiceCounter <= 4){
                         let newInvoiceID;
                         if (deletedInvoiceIDs.length > 0) {
-                            // Nếu có hóa đơn đã bị xóa, tái sử dụng ID đã bị xóa
                             newInvoiceID = deletedInvoiceIDs.pop();
                         }else {
-                            // Nếu không có ID nào bị xóa, tiếp tục tăng invoiceCounter
                             newInvoiceID = invoiceCounter;
                         }
                         console.log('Id hóa đơn :'+ item.id)
                         createInvoice(newInvoiceID, item.id);
                     }
-                    let order = {
-                        id : item.id,
-                        user : item.user,
-                        promotion : item.promotion
-                    }
-                    listOrder.push(order)
-                    // console.log(listOrder)
+                    listOrder.push(item)
                 })
             },
             error: function(xhr, status, error) {
@@ -1046,6 +1013,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function updateOrder(data){
+        $.ajax({
+            url: `/api/admin/order/update/invoice`,
+            type: 'PUT',
+            contentType: "application/json",
+            data : JSON.stringify(data),
+            success: function(respone) {
+            },
+            error: function(xhr, status, error) {
+                let errorMap = JSON.parse(xhr.responseText);
+                let errorMessages = Object.values(errorMap);
+                notificationAddCusstomer(errorMessages, 'error')
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+
     // Tạo hóa đơn mới
     function createOrderNewTabOrder(newInvoiceID){
         let data = {
@@ -1071,12 +1055,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    function createdOrderDetail(data, productId){
+    function createdOrderDetail(dataOrderDetail, productId){
         $.ajax({
             url: `/api/admin/order/save/invoice/detail`,
             type: 'POST',
             contentType: "application/json",
-            data: JSON.stringify(data),
+            data: JSON.stringify(dataOrderDetail),
             success: function(data) {
                 let orderDetail = listProduct.find(item => item.productDetail.id === productId);
 

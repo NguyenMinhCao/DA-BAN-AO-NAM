@@ -68,8 +68,8 @@
                             <div class="collapse" id="collapseLayoutsNhanVien" aria-labelledby="headingOne"
                                 data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Danh sách</a>
-
+                                    <a class="nav-link" href="/admin/staff">Danh sách</a>
+                                    <a class="nav-link" href="/admin/staff/create">Thêm mới nhân viên</a>
                                 </nav>
                             </div>
 

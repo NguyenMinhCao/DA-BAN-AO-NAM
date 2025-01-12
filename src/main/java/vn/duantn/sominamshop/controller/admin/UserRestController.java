@@ -31,7 +31,7 @@ public class UserRestController {
     public ResponseEntity<?> getCustomers(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "2") int limit,
-            @RequestParam(value = "keyword") String search) {
+            @RequestParam(value = "keyword", defaultValue = " ") String search) {
         Pageable pageable = PageRequest.of(page, limit);
         Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search);
         return ResponseEntity.ok(pageCustomer);
@@ -56,7 +56,7 @@ public class UserRestController {
         }
         if(user.getPhoneNumber() != null)
             user.getAddress().forEach(address -> address.setUser(user));
-        user.setRole(Role.builder().id(1).build());
+        user.setRole(Role.builder().id(2).build());
         User userSave = userService.handleSaveUser(user);
         UserDTO userDTO = UserDTO.toDTO(userSave);
         return ResponseEntity.ok(userDTO);

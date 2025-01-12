@@ -2,7 +2,6 @@ package vn.duantn.sominamshop.controller.admin;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,12 +13,12 @@ import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
-import vn.duantn.sominamshop.model.dto.PromotionDTO;
+import vn.duantn.sominamshop.model.dto.OrderDetailDTO;
+import vn.duantn.sominamshop.model.dto.CouponDTO;
 import vn.duantn.sominamshop.model.dto.rest.FilterRequest;
 import vn.duantn.sominamshop.service.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/admin/order")
@@ -55,13 +54,14 @@ public class OrderRestController {
     }
     @GetMapping("/get/orderdetails")
     public ResponseEntity<?> getOrdersDetailByIdOrder(@RequestParam(name="id", defaultValue = "") Long id){
+        List<OrderDetailDTO> orderDetailDTOS = orderService.getOrderDetailByOrderId(id);
+        orderDetailDTOS.forEach(item -> System.out.println(item.getProductDetail().getProductName()));
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderDetailByOrderId(id));
     }
 
-    @GetMapping("/get/promotions")
-    public ResponseEntity<List<PromotionDTO>> getPromotion(
-            @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue) {
-        List<PromotionDTO> promotionDTOList = promotionService.getPromotion(orderValue);
+    @GetMapping("/get/coupons")
+    public ResponseEntity<List<CouponDTO>> getPromotion() {
+        List<CouponDTO> promotionDTOList = promotionService.findValidCoupons();
         return ResponseEntity.ok(promotionDTOList);
     }
 
@@ -71,8 +71,8 @@ public class OrderRestController {
     }
 
     @PutMapping("/update/invoice")
-    public ResponseEntity<OrderDTO> updateInvoice(@RequestBody Order order){
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateInvoice(order));
+    public ResponseEntity<?> updateInvoice(@RequestBody OrderDTO orderDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateInvoice(orderDTO));
     }
     @PostMapping("/save/invoice/details")
     public ResponseEntity<List<OrderDetail>> saveInvoiceDetails(@RequestBody List<OrderDetail> request) {
@@ -80,13 +80,14 @@ public class OrderRestController {
     }
 
     @PostMapping("/save/invoice/detail")
-    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail){
+    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetailDTO orderDetail){
+        System.out.println(orderDetail.getOrderId() + ": id của orderdetailDto controller");
         return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetail));
     }
 
     @PutMapping("/update/invoice/detail")
-    public ResponseEntity<?> updateInvoiceDetail(@RequestBody OrderDetail orderDetail){
-        return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetail));
+    public ResponseEntity<?> updateInvoiceDetail(@RequestBody OrderDetailDTO orderDetailDTO){
+        return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetailDTO));
     }
 
     @DeleteMapping("/delete/invoice/detail/{id}")

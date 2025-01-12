@@ -108,62 +108,64 @@
                                 </div>
                                 <hr>
                                 <div class="form-customer-invoice">
-
-                                    <div class="form-customer">
-                                        <div class="form-customer-item btn-choose-local">
-                                            <h4>Thông tin khách hàng</h4>
-                                            <button>Chọn địa chỉ</button>
-                                        </div>
-                                        <div class="form-customer-item logo-ghn">
-                                            <img src="/img/Logo-GHN-Blue-Orange.webp" height="40px" width="auto">
-                                        </div>
-                                        <div class="form-customer-item name-customer">
-                                            <div class="item">
-                                                <label>Họ tên khách hàng</label>
-                                                <input type="text" id="name" value="Nguyễn Thị Thùy Dương">
+                                    <div style="width: 60%">
+                                        <div style="width: 100%" class="form-customer modal">
+                                            <div class="form-customer-item btn-choose-local">
+                                                <h4>Thông tin khách hàng</h4>
+                                                <button>Chọn địa chỉ</button>
                                             </div>
-                                            <div class="item">
-                                                <label>SDT</label>
-                                                <input type="text" id="phone" value="0473029182">
+                                            <div class="form-customer-item logo-ghn">
+                                                <img src="/img/Logo-GHN-Blue-Orange.webp" height="40px" width="auto">
                                             </div>
-                                        </div>
-                                        <div class="form-customer-item address-customer">
-                                            <div class="item">
-                                                <label>Địa chỉ chi tiết</label>
-                                                <input type="text" id="address" value="Địa chỉ 12">
+                                            <div class="form-customer-item name-customer">
+                                                <div class="item">
+                                                    <label>Họ tên khách hàng</label>
+                                                    <input type="text" id="name" value="Nguyễn Thị Thùy Dương">
+                                                </div>
+                                                <div class="item">
+                                                    <label>SDT</label>
+                                                    <input type="text" id="phone" value="0473029182">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-customer-item cty-customer">
-                                            <div class="item">
-                                                <label for="city">Tỉnh/thành phố</label>
-                                                <select id="city">
-                                                    <option>Sơn La</option>
-                                                    <!-- Add other cities as options -->
-                                                </select>
+                                            <div class="form-customer-item address-customer">
+                                                <div class="item">
+                                                    <label>Địa chỉ chi tiết</label>
+                                                    <input type="text" id="address" value="Địa chỉ 12">
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <label for="district">Quận/huyện</label>
-                                                <select id="district">
-                                                    <option>Huyện Quỳnh Nhai</option>
-                                                    <!-- Add other districts -->
-                                                </select>
+                                            <div class="form-customer-item cty-customer">
+                                                <div class="item">
+                                                    <label for="city">Tỉnh/thành phố</label>
+                                                    <select id="city">
+                                                        <option>Sơn La</option>
+                                                        <!-- Add other cities as options -->
+                                                    </select>
+                                                </div>
+                                                <div class="item">
+                                                    <label for="district">Quận/huyện</label>
+                                                    <select id="district">
+                                                        <option>Huyện Quỳnh Nhai</option>
+                                                        <!-- Add other districts -->
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-customer-item subdistrict-customer">
-                                            <div class="item">
-                                                <label for="subdistrict">Xã/phường/thị
-                                                    trấn</label>
-                                                <select id="subdistrict">
-                                                    <option>Xã Mường Giôn</option>
-                                                    <!-- Add other subdistricts -->
-                                                </select>
+                                            <div class="form-customer-item subdistrict-customer">
+                                                <div class="item">
+                                                    <label for="subdistrict">Xã/phường/thị
+                                                        trấn</label>
+                                                    <select id="subdistrict">
+                                                        <option>Xã Mường Giôn</option>
+                                                        <!-- Add other subdistricts -->
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
 
+
                                     <div class="form-invoice">
-                                        <div class="form-check form-switch">
+                                        <div class="form-check form-switch modal">
                                             <input class="form-check-input" type="checkbox" role="switch"
                                                    id="flexSwitchCheckDefault">
                                             <label class="form-check-label"
@@ -177,9 +179,9 @@
                                             <strong>Phương thức thanh toán:</strong>
                                             <div>
                                                 <select id="payMethod">
-                                                    <option value="">Tiền mặt</option>
-                                                    <option>Chuyển khoản</option>
-                                                    <option>Tiền mặt và chuyển khoản</option>
+                                                    <option value="CASH">Tiền mặt</option>
+                                                    <option value="CARD">Chuyển khoản</option>
+                                                    <option value="CASH_AND_CARD">Tiền mặt và chuyển khoản</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -531,7 +533,6 @@
             </div>
         </main>
         <jsp:include page="../layout/footer.jsp"/>
-        <button id="xemlisst">Xóa</button>
         <div id="toast">
         </div>
     </div>

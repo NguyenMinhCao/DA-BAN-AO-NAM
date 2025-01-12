@@ -86,3 +86,64 @@ body {
 .pagination .page-item:hover {
     background-color: #f0f0f0;
 }
+/* Căn chỉnh icon trong nút */
+button.btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 8px;
+    margin: 2px;
+    border-radius: 5px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    font-size: 18px; /* Kích thước icon */
+}
+
+/* Hiệu ứng hover */
+button.btn:hover {
+    transform: scale(1.1);
+    background-color: #f0f0f0; /* Màu nền khi hover */
+}
+
+/* Màu sắc theo chức năng */
+button.btn-location {
+    color: #007bff; /* Màu xanh cho vị trí */
+}
+
+button.btn-location:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+button.btn-edit {
+    color: #28a745; /* Màu xanh lá cho chỉnh sửa */
+}
+
+button.btn-edit:hover {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+button.btn-info {
+    color: #17a2b8; /* Màu xanh biển nhạt cho thông tin */
+}
+
+button.btn-info:hover {
+    background-color: rgba(23, 162, 184, 0.1);
+}
+.container-modal{
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /*z-index: 2000;*/
+}
+.content{
+    padding: 22px;
+    width: 600px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
