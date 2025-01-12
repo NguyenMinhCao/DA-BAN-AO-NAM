@@ -28,7 +28,6 @@ public class Pattern extends BaseEntity implements Serializable {
   @Column(name = "pattern_name", columnDefinition = "NVARCHAR(255)")
   private String patternName;
 
-
   @Column(name = "status")
   private Integer status;
 

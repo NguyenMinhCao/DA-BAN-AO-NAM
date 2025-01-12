@@ -186,7 +186,19 @@ $(document).ready(function () {
 
 
 function checkInputShowList(productName, productCategory, productMaterial, productColor, productSize, productDescription, productPattern, productOrigin) {
-    if (productName.trim() === "") {
+    console.log("Kiểm tra đầu vào:", {
+        productName,
+        productCategory,
+        productMaterial,
+        productColor,
+        productSize,
+        productDescription,
+        productPattern,
+        productOrigin
+    });
+
+    // Kiểm tra tên sản phẩm
+    if (!productName || productName.trim() === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -194,15 +206,9 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         });
         return false;
     }
-    if (!checkDuplicateProduct(productName)) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Tên Sản phẩm đã tồn tại!'
-        });
-        return false;
-    }
-    if (productCategory === null) {
+
+    // Kiểm tra danh mục
+    if (!productCategory || productCategory.trim() === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -211,7 +217,8 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         return false;
     }
 
-    if (productMaterial === null) {
+    // Kiểm tra chất liệu
+    if (!productMaterial || productMaterial.trim() === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -219,7 +226,8 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         });
         return false;
     }
-    if (productColor.length === 0) {
+    // Kiểm tra màu sắc
+    if (!productColor || !Array.isArray(productColor) || productColor.length === 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -227,7 +235,9 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         });
         return false;
     }
-    if (productSize.length === 0) {
+
+    // Kiểm tra kích thước
+    if (!productSize || !Array.isArray(productSize) || productSize.length === 0) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -235,17 +245,7 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         });
         return false;
     }
-
-    if (productPattern.length === 0) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Vui lòng chọn Mẫu sản phẩm!'
-        });
-        return false;
-    }
-
-    if (productOrigin.length === 0) {
+    if (!productOrigin || productOrigin.trim() === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -254,16 +254,26 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         return false;
     }
 
-    if (listUrlImage.length === 0) {
+    // Kiểm tra mẫu sản phẩm (kiểm tra đúng)
+    if (!productPattern || productPattern.trim() === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
-            text: 'Vui lòng nhập chọn Ảnh!'
+            text: 'Vui lòng chọn Mẫu sản phẩm!'
         });
         return false;
     }
-
-    if (productDescription.trim() === "") {
+    // Kiểm tra ảnh sản phẩm
+    if (!listUrlImage || listUrlImage.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng chọn Ảnh sản phẩm!'
+        });
+        return false;
+    }
+    // Kiểm tra mô tả sản phẩm (kiểm tra đúng)
+    if (!productDescription || productDescription.trim() === "") {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi!',
@@ -271,27 +281,27 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         });
         return false;
     }
+
+    // Kiểm tra nguồn gốc
+
+
+
+
+
+    // Tất cả kiểm tra đều hợp lệ
     return true;
 }
 
-// Hàm để lấy danh sách sản phẩm chi tiết từ các mục đã chọn
 function showListProductDetail() {
     // Clear listProductDetail
     listProductDetail = [];
 
-    // Lấy giá trị của ô nhập liệu Tên sản phẩm
     var productName = $("#input-product-name").val();
-
     var productCategory = $("#select-category").val();
-
-    var productPattern = $("#select-pattern").val();
-
+    var productPattern = $("#select-pattern").val();  // Kiểm tra lại đây để không bị nhầm
     var productOrigin = $("#select-origin").val();
-
-
-    var productMaterial = $("#select-material").val();
-
-    var productDescription = CKEDITOR.instances['input-product-description'].getData();
+    var productMaterial = $("#select-material").val();  // Kiểm tra lại giá trị đúng của chất liệu
+    var productDescription = CKEDITOR.instances['input-product-description'].getData();  // Kiểm tra mô tả chính xác
 
     // Lấy thông tin chi tiết về các mục đã chọn từ dropdown màu sắc
     var selectedColorItems = selectColor[0].selectize.items.map(function (item) {
@@ -305,12 +315,14 @@ function showListProductDetail() {
         return {id: item, name: option.text()};
     });
 
-    if (!checkInputShowList(productName, productCategory, productMaterial, selectedColorItems, selectedSizeItems, productDescription)) {
+    // Kiểm tra đầu vào
+    if (!checkInputShowList(productName, productCategory, productMaterial, selectedColorItems, selectedSizeItems, productDescription, productPattern, productOrigin)) {
         return;
     } else {
         renderListProductDetail(selectedColorItems, selectedSizeItems, 10, 1000000);
     }
 }
+
 
 function renderListProductDetail(selectedColorItems, selectedSizeItems, quantity, price) {
     // Biến đếm STT
@@ -428,7 +440,6 @@ function save() {
 
     var productCategory = $("#select-category").val();
 
-
     var productMaterial = $("#select-material").val();
 
     var productOrigin = $("#select-origin").val();
@@ -445,7 +456,7 @@ function save() {
         categoryId: productCategory,
         materialId: productMaterial,
         originId: productOrigin,
-        pattern: productPattern,
+        patternId: productPattern,
         status: productStatus
     }
 
