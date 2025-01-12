@@ -16,6 +16,7 @@ import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.model.dto.CartDetailUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.request.DataGetProductDetail;
@@ -60,6 +61,7 @@ public class CartService {
             Order order = new Order();
             order.setPaymentMethod("COD");
             order.setShippingMethod(ShippingMethod.SAVE);
+            order.setOrderStatus(OrderStatus.PENDING_INVOICE);
             List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
             for (Address address : arrAddressByUser) {
                 if (address.isStatus() == true) {

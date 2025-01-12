@@ -12,7 +12,6 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.*;
 
-
 import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
