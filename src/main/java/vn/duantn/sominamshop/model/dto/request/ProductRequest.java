@@ -2,9 +2,8 @@ package vn.duantn.sominamshop.model.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
-import vn.duantn.sominamshop.model.Category;
-import vn.duantn.sominamshop.model.Material;
-import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.*;
+
 @Getter
 @Setter
 public class ProductRequest {
@@ -12,6 +11,8 @@ public class ProductRequest {
     private String description;
     private Integer categoryId;
     private Integer materialId;
+    private Integer patternId;
+    private Integer originId;
     private Integer status;
 
     public Product map(Product product) {
@@ -19,6 +20,8 @@ public class ProductRequest {
         product.setDescription(this.description);
         product.setCategory(Category.builder().id(this.categoryId).build());
         product.setMaterial(Material.builder().id(this.materialId).build());
+        product.setPattern(Pattern.builder().id(this.patternId).build());
+        product.setOrigin(Origin.builder().originId(this.originId).build());
         product.setStatus(this.status);
         return product;
     }

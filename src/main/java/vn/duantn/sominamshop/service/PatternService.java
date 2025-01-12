@@ -1,6 +1,7 @@
 package vn.duantn.sominamshop.service;
 
 import org.springframework.stereotype.Service;
+import vn.duantn.sominamshop.model.Origin;
 import vn.duantn.sominamshop.model.Pattern;
 import vn.duantn.sominamshop.repository.PatternRepository;
 
@@ -17,5 +18,10 @@ public class PatternService {
     public List<Pattern> getAllPatterns() {
         return this.patternRepository.findAll();
     }
+
+    public List<Pattern> getAllActive() {
+        return patternRepository.getAllActive();
+    }
+
 
 }

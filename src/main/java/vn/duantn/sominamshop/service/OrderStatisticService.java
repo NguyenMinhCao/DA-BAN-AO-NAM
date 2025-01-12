@@ -5,7 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.dto.OrderStaticDTO;
+import vn.duantn.sominamshop.model.dto.ProductDetailDTO;
+import vn.duantn.sominamshop.model.dto.request.LowStockProductDTO;
 import vn.duantn.sominamshop.repository.OrderDetailRepository;
 import vn.duantn.sominamshop.repository.OrderRepository;
 
@@ -51,9 +54,9 @@ public class OrderStatisticService {
     }
 
 
-//    public Page<Product> getLowStockProducts(Pageable pageable) {
-//        return orderRepository.findLowStockProducts(pageable);
-//    }
+    public Page<LowStockProductDTO> getLowStockProducts(Pageable pageable) {
+        return orderRepository.findLowStockProductsWithName(pageable);
+    }
     public BigDecimal getTotalRevenue() {
         return orderRepository.getTotalRevenue();
     }
@@ -74,9 +77,9 @@ public class OrderStatisticService {
         return orderRepository.getTotalProducts();
     }
 
-//    public long getLowStockProductCount() {
-//        return orderRepository.getLowStockProductCount();
-//    }
+    public long getLowStockProductCount() {
+        return orderRepository.getLowStockProductCount();
+    }
 
     public long getTodayOrderCount() { return orderRepository.getTodayOrderCount(); }
 }

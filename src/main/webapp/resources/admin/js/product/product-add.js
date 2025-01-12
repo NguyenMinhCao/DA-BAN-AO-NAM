@@ -185,7 +185,7 @@ $(document).ready(function () {
 })
 
 
-function checkInputShowList(productName, productCategory, productMaterial, productColor, productSize, productDescription) {
+function checkInputShowList(productName, productCategory, productMaterial, productColor, productSize, productDescription, productPattern, productOrigin) {
     if (productName.trim() === "") {
         Swal.fire({
             icon: 'error',
@@ -236,6 +236,24 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         return false;
     }
 
+    if (productPattern.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng chọn Mẫu sản phẩm!'
+        });
+        return false;
+    }
+
+    if (productOrigin.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng chọn Nguồn gốc!'
+        });
+        return false;
+    }
+
     if (listUrlImage.length === 0) {
         Swal.fire({
             icon: 'error',
@@ -265,6 +283,10 @@ function showListProductDetail() {
     var productName = $("#input-product-name").val();
 
     var productCategory = $("#select-category").val();
+
+    var productPattern = $("#select-pattern").val();
+
+    var productOrigin = $("#select-origin").val();
 
 
     var productMaterial = $("#select-material").val();
@@ -409,6 +431,10 @@ function save() {
 
     var productMaterial = $("#select-material").val();
 
+    var productOrigin = $("#select-origin").val();
+
+    var productPattern = $("#select-pattern").val();
+
     var productDescription = CKEDITOR.instances['input-product-description'].getData();
 
     var productStatus = 0;
@@ -418,6 +444,8 @@ function save() {
         description: productDescription,
         categoryId: productCategory,
         materialId: productMaterial,
+        originId: productOrigin,
+        pattern: productPattern,
         status: productStatus
     }
 

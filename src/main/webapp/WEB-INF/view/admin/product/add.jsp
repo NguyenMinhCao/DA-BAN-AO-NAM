@@ -106,6 +106,32 @@
                             </div>
                         </div>
 
+                        <div class="form-group col-md-3">
+                            <label for="select-origin" class="control-label">Nguồn gốc</label>
+                            <div class="d-flex">
+                                <select class="form-control" id="select-origin">
+                                    <option value="" disabled selected hidden>-- Chọn nguồn gốc --</option>
+                                    <c:forEach var="origin" items="${listOrigin}">
+                                        <option value="${origin.originId}">${origin.originName}</option>
+                                    </c:forEach>
+                                </select>
+<%--                                <button id="showFormCategory" class="btn add-button" type="button"><i class="fa-solid fa-plus fa-2xl add-icon"></i></button>--%>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="select-pattern" class="control-label">Mẫu sản phẩm</label>
+                            <div class="d-flex">
+                                <select class="form-control" id="select-pattern">
+                                    <option value="" disabled selected hidden>-- Chọn mẫu --</option>
+                                    <c:forEach var="pattern" items="${listPattern}">
+                                        <option value="${pattern.id}">${pattern.originName}</option>
+                                    </c:forEach>
+                                </select>
+                                <%--                                <button id="showFormCategory" class="btn add-button" type="button"><i class="fa-solid fa-plus fa-2xl add-icon"></i></button>--%>
+                            </div>
+                        </div>
+
 
                         <div class="form-group col-md-12">
                             <label class="control-label">Mô tả sản phẩm</label>
