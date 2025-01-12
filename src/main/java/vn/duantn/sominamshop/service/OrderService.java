@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -127,6 +126,7 @@ public class OrderService {
                 // update order
                 order.setOrderDetails(lstOrderDetails);
                 order.setDeliveryStatus(DeliveryStatus.PENDING);
+                order.setOrderStatus(OrderStatus.PENDING);
                 if (order.getPaymentMethod().toString().equalsIgnoreCase("COD")) {
                     order.setPaymentStatus(PaymentStatus.PENDING);
                 } else {
@@ -292,7 +292,7 @@ public class OrderService {
         mt.setPages(page.getTotalPages());
         mt.setTotal(page.getTotalElements());
         mt.setCurrentPageElements(page.getNumberOfElements());
-        
+
         rs.setMeta(mt);
         rs.setResult(orderRs);
         return rs;
@@ -325,18 +325,21 @@ public class OrderService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         for (Order order : lstOrder) {
-            ResOrderDTO newOrderRes = new ResOrderDTO();
-            newOrderRes.setDeliveryStatus(order.getDeliveryStatus());
-            newOrderRes.setId(order.getId());
-            newOrderRes.setFullName(
-                    order.getUser() != null ? order.getUser().getFullName() : "Không tồn tại");
-            newOrderRes.setTotalAmount(order.getTotalAmount());
-            newOrderRes.setOrderSource(order.getOrderSource() == true ? "Website" : "Tại quầy");
-            String formattedDateCreate = order.getCreatedAt().format(formatter);
-            newOrderRes.setCreateAt(formattedDateCreate);
-            newOrderRes.setOrderStatus(order.getOrderStatus());
-            newOrderRes.setPaymentStatus(order.getPaymentStatus());
-            orderSRes.add(newOrderRes);
+            if (order.getOrderStatus() != OrderStatus.PENDING_INVOICE) {
+                ResOrderDTO newOrderRes = new ResOrderDTO();
+                newOrderRes.setDeliveryStatus(order.getDeliveryStatus());
+                newOrderRes.setId(order.getId());
+                newOrderRes.setFullName(
+                        order.getUser() != null ? order.getUser().getFullName() : "Không tồn tại");
+                newOrderRes.setTotalAmount(order.getTotalAmount());
+                newOrderRes.setOrderSource(order.getOrderSource() == true ? "Website" : "Tại quầy");
+                String formattedDateCreate = order.getCreatedAt().format(formatter);
+                newOrderRes.setCreateAt(formattedDateCreate);
+                newOrderRes.setOrderStatus(order.getOrderStatus());
+                newOrderRes.setPaymentStatus(order.getPaymentStatus());
+                orderSRes.add(newOrderRes);
+            }
+
         }
 
         return orderSRes;
@@ -377,10 +380,11 @@ public class OrderService {
         OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
         return orderDTO;
     }
+
     @Transactional
     public OrderDTO updateInvoice(Order order) {
         Order order1 = orderRepository.findById(order.getId()).orElse(null);
-        if(order1 == null){
+        if (order1 == null) {
             return null;
         }
         order1.setPaymentStatus(PaymentStatus.COMPLETED);
@@ -398,6 +402,7 @@ public class OrderService {
     public List<OrderDetail> saveInvoiceDetails(List<OrderDetail> list) {
         return orderDetailRepository.saveAll(list);
     }
+
     @Transactional
     public Map<String, Long> saveInvoiceDetail(OrderDetail orderDetail) {
         OrderDetail orderDetail1 = orderDetailRepository.save(orderDetail);
@@ -405,23 +410,27 @@ public class OrderService {
         map.put("id", orderDetail1.getId());
         return map;
     }
+
     @Transactional
-    public void deleteInvoiceDetail(Long id){
+    public void deleteInvoiceDetail(Long id) {
         orderDetailRepository.deleteByOrderDetailIdAndProductDetailId(id);
     }
-    public List<OrderDTO> getOrderNonPendingAndPos(DeliveryStatus deliveryStatus, PaymentStatus paymentStatus){
-        Pageable pageable = PageRequest.of(0,5);
+
+    public List<OrderDTO> getOrderNonPendingAndPos(DeliveryStatus deliveryStatus, PaymentStatus paymentStatus) {
+        Pageable pageable = PageRequest.of(0, 5);
         List<Order> listOrder = orderRepository.getAllOrderNonPendingAndPos(deliveryStatus, paymentStatus, pageable);
-        List<OrderDTO> listOrderDTO = listOrder.stream().map(OrderDTO :: toOrderDTO).collect(Collectors.toList());
+        List<OrderDTO> listOrderDTO = listOrder.stream().map(OrderDTO::toOrderDTO).collect(Collectors.toList());
         return listOrderDTO;
     }
 
-    public List<OrderDetailDTO> getOrderDetailByOrderId(Long id){
+    public List<OrderDetailDTO> getOrderDetailByOrderId(Long id) {
         List<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailByOrderId(id);
-        List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO :: toOrderDetailDTO).collect(Collectors.toList());
+        List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO::toOrderDetailDTO)
+                .collect(Collectors.toList());
         return orderDetailDTOS;
     }
-    public OrderDTO getOrderById(Long id){
+
+    public OrderDTO getOrderById(Long id) {
         Order order = orderRepository.getAllOrderById(id).orElse(null);
         OrderDTO orderDTO = OrderDTO.toOrderDTO(order);
         return orderDTO;
