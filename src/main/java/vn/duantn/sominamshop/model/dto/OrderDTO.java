@@ -48,6 +48,7 @@ public class OrderDTO {
                 .totalAmount(order.getTotalAmount())
                 .totalProducts(order.getTotalProducts())
                 .paymentStatus(order.getPaymentStatus())
+                .promotion(CouponDTO.toDTO(order.getPromotion()))
                 .build();
         return orderDTO;
     }

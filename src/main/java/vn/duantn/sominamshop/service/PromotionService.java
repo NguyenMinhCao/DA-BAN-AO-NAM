@@ -35,6 +35,10 @@ public class PromotionService {
         List<CouponDTO> couponDTOList = couponList.stream().map(CouponDTO :: toDTO).collect(Collectors.toList());
         return couponDTOList;
     }
-
+    public CouponDTO updateUsageLimitCoupon(Integer quantity, Long id){
+       Coupon coupon = promotionRepository.updateQuantity(quantity, id);
+       CouponDTO couponDTO = CouponDTO.toDTO(coupon);
+       return couponDTO;
+    }
 //    public
 }

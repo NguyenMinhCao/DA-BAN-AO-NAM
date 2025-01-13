@@ -20,4 +20,6 @@ public interface PromotionRepository extends JpaRepository<Coupon, Long> {
     @Query("SELECT c FROM Coupon c WHERE c.startDate <= :currentDate AND c.endDate >= :currentDate AND c.status = true")
     List<Coupon> findValidCoupons(@Param("currentDate") LocalDateTime currentDate);
 
+    @Query("Update Coupon c set c.usageLimit = c.usageLimit - :quantity where c.id = :id AND c.status = true")
+    Coupon updateQuantity(@Param("quantity") Integer quantity, @Param("id") Long id );
 }

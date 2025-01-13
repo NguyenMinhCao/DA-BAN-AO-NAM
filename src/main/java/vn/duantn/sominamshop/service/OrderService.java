@@ -385,8 +385,10 @@ public class OrderService {
         if(orderDTO.getPaymentStatus() == PaymentStatus.COMPLETED){
             order.setPaymentStatus(PaymentStatus.COMPLETED);
         }
-        if(orderDTO.getPromotion() !=null){
-            order.setPromotion(Coupon.builder().id(orderDTO.getPromotion().getId()).build());
+        if(orderDTO.getPromotion() != null ){
+            if(orderDTO.getPromotion().getId() != 0){
+                order.setPromotion(Coupon.builder().id(orderDTO.getPromotion().getId()).build());
+            }
         }
         order.setNote(orderDTO.getNote());
         order.setTotalAmount(orderDTO.getTotalAmount());

@@ -23,12 +23,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let totalPayment = 0;
     let invoiceCounter = 0;
+    let invoiceNumber = 0;
     let selectedInvoiceId = 0;
     let listProduct = [];
     let deletedInvoiceIDs = [];
     let listOrder = []
     let idOrderSelect = null;
     let listCoupons = []
+    let idCoupon = null
+
     fetchProducts(0, 2)
     fetchCustomers(0)
     fetchLocation()
@@ -141,16 +144,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Tạo hóa đơn chờ
     createInvoiceBtn.addEventListener('click', () => {
         if(invoiceCounter <= 4){
-            let newInvoiceID;
-            if (deletedInvoiceIDs.length > 0) {
-                // Nếu có hóa đơn đã bị xóa, tái sử dụng ID đã bị xóa
-                newInvoiceID = deletedInvoiceIDs.pop();
-            }else {
-                // Nếu không có ID nào bị xóa, tiếp tục tăng invoiceCounter
-                newInvoiceID = invoiceCounter;
-            }
             $('#infoDetail').empty()
-            createOrderNewTabOrder(newInvoiceID)
+            createOrderNewTabOrder(invoiceNumber)
         }
         else {
             Swal.fire({
@@ -356,6 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Tạo hóa đơn mới
     function createInvoice(index, orderID) {
         invoiceCounter++;
+        invoiceNumber++;
         selectedInvoiceId = index
         idOrderSelect = orderID
         const newTab = document.createElement('button');
@@ -368,17 +364,25 @@ document.addEventListener('DOMContentLoaded', function () {
         // Tạo nội dung mới cho tab
         activateTab(index);
         resetInvoice();
+        resetCoupon()
     }
     // Xóa hóa đơn
     function removeInvoice(index) {
         const tabToRemove = document.querySelector(`.tab[data-invoice-id="${index}"]`); // Tìm tab dựa trên thuộc tính data-invoice-id
+        const numberTab = tabToRemove.getAttribute('data-invoice-id')
         if (tabToRemove) {
             tabToRemove.remove();  // Xóa tab khỏi DOM
             deletedInvoiceIDs.push(index);
             invoiceCounter--
             if(invoiceCounter >= 0){
-                selectedInvoiceId =  invoiceCounter
-                activateTab(selectedInvoiceId);
+                if(numberTab >= invoiceNumber){
+                    selectedInvoiceId = invoiceNumber-1
+                    activateTab(selectedInvoiceId);
+                }else{
+                    selectedInvoiceId = invoiceNumber
+                    activateTab(selectedInvoiceId);
+                }
+
             }
         }
     }
@@ -401,6 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
         idOrderSelect = button.getAttribute('data-order-id');
         activateTab(selectedInvoiceId)
         resetInvoice()
+        resetCoupon()
         let orderSelect = listOrder.find(item => item.id == idOrderSelect)
         if(orderSelect && orderSelect.user && !orderSelect.user.id == 0){
             customerNameInput.innerText = orderSelect.user.fullName,
@@ -430,9 +435,38 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#total-price-table-invoice').text(totalPayment.toLocaleString() + ' VND')
         $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' VND')
         document.getElementById('form-invoice-total-amount').setAttribute('totalPayment', totalPayment)
-        console.log(document.getElementById('form-invoice-total-amount').getAttribute('totalPayment') + ": số tiền trong hóa đơn")
         calculateCustomerMoney();
         renderCoupons(listCoupons)
+    }
+    function updateTotalPriceWithCoupons(value, discount, type) {
+        totalPayment = 0;
+        const quantityProductCart = document.querySelectorAll(`.product-quantity-cart`);
+        quantityProductCart.forEach(function (input) {
+            const quantity = input.value;
+            const price = input.getAttribute('data-price');
+            totalPayment += quantity * price;
+        });
+        if(value && discount && type){
+            if(type == 'PERCENTAGE'){
+                totalPayment = totalPayment - (totalPayment * (Number(discount)/100))
+            }else{
+                totalPayment = totalPayment - Number(discount)
+            }
+        }
+        $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' VND')
+        document.getElementById('form-invoice-total-amount').setAttribute('totalPayment', totalPayment)
+        console.log(document.getElementById('form-invoice-total-amount').getAttribute('totalPayment') + ": số tiền trong hóa đơn")
+        calculateCustomerMoney();
+    }
+
+    function resetCoupon(){
+        const radios = document.querySelectorAll('input[name="voucher-select"]');
+        radios.forEach(radio => {
+            radio.checked = false;
+        });
+        idCoupon = null
+        updateTotalPriceWithCoupons()
+        $('#voucher').val('')
     }
 
     // Tính tiền trả lại và còn thiếu
@@ -675,10 +709,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return check
     }
 
-    function saveInvoice(index) {
+    function saveInvoice() {
         let note = $('#description').val()
         let orderDetailSave = listProduct.filter(item => item.orderId == idOrderSelect)
-        let totalAmount = orderDetailSave.reduce((sum, item) => sum + Number(item.price), 0);
+        let totalAmount = document.getElementById('form-invoice-total-amount').getAttribute('totalPayment')
         let totalProducts = orderDetailSave.reduce((sum, item) => sum + Number(item.quantity), 0);
         let paymentMethod = $('#payMethod').val()
         if (!checkBeforeSaving()) {
@@ -691,6 +725,9 @@ document.addEventListener('DOMContentLoaded', function () {
             paymentMethod: paymentMethod,
             paymentStatus : 'COMPLETED',
             totalProducts: totalProducts,
+            promotion: {
+                id : idCoupon
+            }
         }
         $.ajax({
             url: `http://localhost:8080/api/admin/order/update/invoice`,
@@ -748,6 +785,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#btn-delete-customer').prop('disabled', true);
         fetchProducts(0)
         resetInvoice();
+        resetCoupon()
         removeInvoice(selectedInvoiceId)
     }
 
@@ -995,14 +1033,8 @@ document.addEventListener('DOMContentLoaded', function () {
             success: function(data) {
                 data.forEach(item => {
                     if(invoiceCounter <= 4){
-                        let newInvoiceID;
-                        if (deletedInvoiceIDs.length > 0) {
-                            newInvoiceID = deletedInvoiceIDs.pop();
-                        }else {
-                            newInvoiceID = invoiceCounter;
-                        }
                         console.log('Id hóa đơn :'+ item.id)
-                        createInvoice(newInvoiceID, item.id);
+                        createInvoice(invoiceNumber, item.id);
                     }
                     listOrder.push(item)
                 })
@@ -1154,7 +1186,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // lấy danh sách giảm giá
     $('#closeModalBtnBackVouCher').on('click', function(){
+        resetCoupon()
         toggleModal(modalChoseVoucher, false)
+    })
+    // chọn giảm giá
+    $('#closeModalBtnAddVouCher').on('click', function(){
+        const checkedInput = document.querySelector('input[name="voucher-select"]:checked');
+            const value = checkedInput?.value;
+            const discount = checkedInput?.dataset.discount;
+            const type = checkedInput?.dataset.type
+            const code = checkedInput?.dataset.code
+            console.log(`Đã chọn: Voucher ID = ${value}, Discount = ${discount} ` + type);
+        updateTotalPriceWithCoupons(value, discount, type)
+        toggleModal(modalChoseVoucher, false)
+        idCoupon = value
+        $('#voucher').val(code)
     })
     fecthCoupons()
     function fecthCoupons(){
@@ -1165,6 +1211,22 @@ document.addEventListener('DOMContentLoaded', function () {
                response.forEach(item => listCoupons.push(item))
                renderCoupons(listCoupons)
            },
+            error: function(){
+                let errorMap = JSON.parse(xhr.responseText);
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+    function updateCoupon(data){
+        $.ajax({
+            url: '/api/admin/order/get/coupons',
+            type: 'PUT',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function(response){
+                response.forEach(item => listCoupons.push(item))
+                renderCoupons(listCoupons)
+            },
             error: function(){
                 let errorMap = JSON.parse(xhr.responseText);
                 console.error('Error fetching districts data:', error);
@@ -1194,7 +1256,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="voucher-exp">Đơn tối thiểu: ${item.minOrderValue}₫<br>HSD: ${formattedDate}</div>
                 </div>
                 <div class="voucher-checkbox" style="padding-right: 15px;">
-                    <input type="radio" name="voucher-select" value="${item.id}" data-discount="${item.discountValue}"/>
+                    <input type="radio" name="voucher-select" value="${item.id}" data-discount="${item.discountValue}" data-type="${item.discountType}" data-code="${item.couponCode}"/>
                 </div>
             </div>
            
