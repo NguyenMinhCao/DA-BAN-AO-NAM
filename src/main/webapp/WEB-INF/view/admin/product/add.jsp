@@ -119,20 +119,6 @@
                                 <%--                                <button id="showFormCategory" class="btn add-button" type="button"><i class="fa-solid fa-plus fa-2xl add-icon"></i></button>--%>
                             </div>
                         </div>
-
-                        <div class="form-group col-md-12">
-                            <label class="control-label">Ảnh sản phẩm</label>
-                            <div id="myfileupload">
-                                <input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)" />
-                            </div>
-                            <div id="thumbbox" class="d-flex"></div>
-                            <div id="boxchoice">
-                                <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
-                                <p style="clear:both"></p>
-                            </div>
-                        </div>
-
-
                         <div class="form-group col-md-12">
                             <label class="control-label">Mô tả sản phẩm</label>
                             <textarea class="form-control ckeditor" id="input-product-description"></textarea>
@@ -161,6 +147,7 @@
                                     <th class="ten_san_pham">Tên Sản Phẩm</th>
                                     <th class="mau_sac" width="120">Màu Sắc</th>
                                     <th class="kich_thuoc" width="90">Kích Thước</th>
+                                    <th class="anh_san_pham" width="90">Ảnh</th>
                                     <th class="so_luong" width="130">Số Lượng</th>
                                     <th class="gia_ban" width="220">Giá Bán</th>
                                     <th class="tinh_nang" width="110">Tính Năng</th>

@@ -55,18 +55,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "    p.name AS name,\n" +
             "    COALESCE(i.url_image, '') AS image,\n" +
             "    p.description AS description,\n" +
-                    "    SUM(pd.quantity) AS quantity,\n" +
-                    "    p.status AS status\n" +
-                    "FROM\n" +
-                    "    products p\n" +
-                    "LEFT JOIN\n" +
-                    "    product_details pd ON p.id = pd.product_id\n" +
-                    "LEFT JOIN\n" +
-                    "    images i ON pd.id = i.product_detail_id\n" +
+            "    SUM(pd.quantity) AS quantity,\n" +
+            "    p.status AS status\n" +
+            "FROM\n" +
+            "    products p\n" +
+            "LEFT JOIN\n" +
+            "    product_details pd ON p.id = pd.product_id\n" +
+            "LEFT JOIN\n" +
+            "    images i ON pd.id = i.product_detail_id AND i.is_main = 1\n" +
             "GROUP BY\n" +
-            "    p.id, p.name, p.description, p.status, i.url_image\n" +
-            "ORDER BY p.id", nativeQuery = true)
+                    "    p.id, p.name, p.description, p.status, i.url_image\n" +
+                    "ORDER BY p.id", nativeQuery = true)
     List<ProductResponse> getAll();
+
 
 
 
