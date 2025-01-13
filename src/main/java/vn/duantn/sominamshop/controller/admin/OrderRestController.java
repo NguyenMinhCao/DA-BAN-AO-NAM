@@ -36,9 +36,14 @@ public class OrderRestController {
     public ResponseEntity<?> GetProduct(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "5") int limit,
-            @RequestParam(value = "keyword", defaultValue = "") String search) {
+            @RequestParam(value = "keyword", defaultValue = "") String search,
+            @RequestParam(value = "color", defaultValue = "") Long idColor,
+            @RequestParam(value = "size", defaultValue = "") Long idSize,
+            @RequestParam(value = "category", defaultValue = "") Long idCategory
+    ) {
+        System.out.println(idColor + " color" + idCategory + " idcate" + idSize + " idsize");
         Pageable pageable = PageRequest.of(page, limit);
-        Page<CounterProductProjection> pageProduct = productService.GetAllProductByName(pageable, search);
+        Page<CounterProductProjection> pageProduct = productService.GetAllProductByName(pageable, search, idSize, idColor, idCategory);
         return ResponseEntity.ok(pageProduct);
     }
     @GetMapping("/get/orders")

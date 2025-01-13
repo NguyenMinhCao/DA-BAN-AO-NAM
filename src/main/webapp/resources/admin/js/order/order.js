@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let deletedInvoiceIDs = [];
     let listOrder = []
     let idOrderSelect = null;
+    let listCoupons = []
     fetchProducts(0, 2)
     fetchCustomers(0)
     fetchLocation()
@@ -55,6 +56,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         toggleModal(customerModal, true)
     });
+    $('#btn-reset-product').on('click', function () {
+        $('#search-input-color').prop("selectedIndex", 0);
+        $('#search-input-size').prop("selectedIndex", 0);
+        $('#search-input-category').prop("selectedIndex", 0);
+        $('#search-input-product').text('')
+        fetchProducts(0)
+    })
 
     // Đóng modal chọn khách hàng
     closeCustomerModalBtn.addEventListener('click', () => toggleModal(customerModal, false));
@@ -88,7 +96,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.classList.contains('btn-add-customer')) {
             $('#infoDetail').empty()
             let idCustomer = e.target.getAttribute('customer-id')
-            customerNameInput.innerText = e.target.getAttribute('data-name');
+            let customerName = e.target.getAttribute('data-name')
+            customerNameInput.innerText = customerName;
             customerNameInput.setAttribute('data-customer-id', idCustomer)
             var phoneNumber = e.target.getAttribute('data-sdt');
             var email  = e.target.getAttribute('data-email')
@@ -98,15 +107,19 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleModal(customerModal, false);
             console.log("Id của khách hàng " + e.target.getAttribute('customer-id'))
             let orderUpdate = listOrder.find(item => item.id == idOrderSelect)
-            console.log(orderUpdate.id + ": order muốn thêm kh")
-            if(!orderUpdate.user){
-                orderUpdate.user = {
-                    id : idCustomer
-                };
-            }else{
-                orderUpdate.user.id = idCustomer
+            console.log(orderUpdate)
+            if (!orderUpdate) {
+                console.error(`Không tìm thấy đơn hàng với id: ${idOrderSelect}`);
+            } else {
+                if (!orderUpdate.user) {
+                    orderUpdate.user = {};
+                }
+                orderUpdate.user.id = idCustomer;
+                orderUpdate.user.fullName = customerName;
+                orderUpdate.user.phoneNumber = phoneNumber
+                orderUpdate.user.email = email;
+                updateOrder(orderUpdate)
             }
-            updateOrder(orderUpdate)
         }
     });
     //Xóa khách hàng
@@ -115,6 +128,14 @@ document.addEventListener('DOMContentLoaded', function () {
         customerNameInput.setAttribute('data-customer-id', '')
         $('#infoDetail').empty()
         $('#btn-delete-customer').prop('disabled', true);
+        let orderUpdate = listOrder.find(item => item.id == idOrderSelect)
+        if(orderUpdate && orderUpdate.user){
+            orderUpdate.user.id = 0
+            orderUpdate.user.email = ''
+            orderUpdate.user.fullName = ''
+            orderUpdate.user.phoneNumber = ''
+        }
+        updateOrder(orderUpdate)
     })
 
     // Tạo hóa đơn chờ
@@ -128,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Nếu không có ID nào bị xóa, tiếp tục tăng invoiceCounter
                 newInvoiceID = invoiceCounter;
             }
+            $('#infoDetail').empty()
             createOrderNewTabOrder(newInvoiceID)
         }
         else {
@@ -310,10 +332,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 notificationAddCusstomer('Cảnh báo', 'Số lượng sản phẩm đạt giới hạn', 'error')
             }
             if (quantityInput.value < 1) quantityInput.value = 1;
-            let productToUpdate = listProduct.find(item => item.product?.id === productId)
+            let productToUpdate = listProduct.find(item => item.productDetail?.id === productId)
             productToUpdate.quantity = quantityInput.value
-            totalPrice.innerHTML = (Number(quantityInput.value) * Number(price)).toString()
+            let totalAmount = (Number(quantityInput.value) * Number(price))
+            totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
+            productToUpdate.price = totalAmount
             updateTotalPrice();
+            updateOrderDetail(productToUpdate)
         });
         //Xóa sản phẩm trong table
         newRow.querySelector('.delete-btn').addEventListener('click', function() {
@@ -359,7 +384,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     //chuyển tabs
     function activateTab(index) {
-
         let tab;
         let tabs = document.querySelectorAll('.tab');
         tabs.forEach((t) => {
@@ -378,10 +402,17 @@ document.addEventListener('DOMContentLoaded', function () {
         activateTab(selectedInvoiceId)
         resetInvoice()
         let orderSelect = listOrder.find(item => item.id == idOrderSelect)
-        if(orderSelect && orderSelect.user){
+        if(orderSelect && orderSelect.user && !orderSelect.user.id == 0){
+            customerNameInput.innerText = orderSelect.user.fullName,
+                customerNameInput.setAttribute('data-customer-id',orderSelect.user?.id)
+            $('#infoDetail').empty()
             $('#infoDetail').append('<p>Số điện thoại: ' + orderSelect.user?.phoneNumber  + '</p>');
             $('#infoDetail').append('<p>email: ' + orderSelect.user?.email + '</p>');
             $('#btn-delete-customer').prop('disabled', false);
+        }else{
+            customerNameInput.innerText = 'Khách lẻ',
+                customerNameInput.setAttribute('data-customer-id','')
+            $('#infoDetail').empty()
         }
         fetchOrderDetail(idOrderSelect)
     }
@@ -398,7 +429,10 @@ document.addEventListener('DOMContentLoaded', function () {
         totalPaymentElement.textContent = totalPayment.toLocaleString() + ' VND';
         $('#total-price-table-invoice').text(totalPayment.toLocaleString() + ' VND')
         $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' VND')
-        // calculateCustomerMoney();
+        document.getElementById('form-invoice-total-amount').setAttribute('totalPayment', totalPayment)
+        console.log(document.getElementById('form-invoice-total-amount').getAttribute('totalPayment') + ": số tiền trong hóa đơn")
+        calculateCustomerMoney();
+        renderCoupons(listCoupons)
     }
 
     // Tính tiền trả lại và còn thiếu
@@ -419,6 +453,8 @@ document.addEventListener('DOMContentLoaded', function () {
         listProduct = []
         productListBody.innerHTML = '';
         totalPayment = 0;
+        $('#description').val('')
+        $('#customer-payment').val('')
         updateTotalPrice();
     }
 
@@ -481,11 +517,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Hiểm thị sản phẩm
     function fetchProducts(page) {
+        let optionColor = $('#search-input-color').val()
+        let optionSize = $('#search-input-size').val()
+        let optionCategory = $('#search-input-category').val()
         const inputSearch = document.getElementById('search-input-product').value
+        console.log(optionColor + " optionColor")
+        console.log(optionSize + " optionSize")
+        console.log(optionCategory + " optionCategory")
         $.ajax({
-            url: `http://localhost:8080/api/admin/order/get/products?page=${page}&limit=8`,
+            url: `/api/admin/order/get/products?page=${page}&limit=8`,
             type: 'GET',
-            data: {keyword: inputSearch},
+            data: {
+                keyword: inputSearch,
+                color:optionColor,
+                size: optionSize,
+                category: optionCategory
+            },
             success: function (response) {
                 renderProductListFromSearch(response.content);
                 renderPagination(response.totalPages, response.number + 1, 'pagination-product');
@@ -551,6 +598,7 @@ document.addEventListener('DOMContentLoaded', function () {
         listContainer.innerHTML = '';
         if (products.length > 0) {
             products.forEach((product, index) => {
+                console.log('ảnh của sản phẩm :' + product.image)
                 $('#product-table').append(`
                         <tr>
                             <td>${index + 1}</td>
@@ -615,12 +663,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let customerPayment = document.getElementById('customer-payment')?.value
         let totalPayment = document.getElementById('form-invoice-total-amount')?.innerHTML
         console.log(totalPayment + " tổng tiền phải trả")
-        // let InvoiceExists = document.
         if (customerPayment < Number(totalPayment.replace(/VND/g, '').replace(/\./g, ''))) {
             notificationAddCusstomer('Thất bại!', "Số tiền khách trả còn thiếu", 'error')
             check = false
         }
-        if (listProduct == null) {
+        console.log(listProduct[0].id + " id của orderdetail")
+        if (listProduct[0]?.id == null) {
             notificationAddCusstomer('Thất bại!', "Hóa đơn chưa có sản phẩm nào", 'error')
             check = false
         }
@@ -632,9 +680,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let orderDetailSave = listProduct.filter(item => item.orderId == idOrderSelect)
         let totalAmount = orderDetailSave.reduce((sum, item) => sum + Number(item.price), 0);
         let totalProducts = orderDetailSave.reduce((sum, item) => sum + Number(item.quantity), 0);
-        console.log(totalProducts + ": số sản phẩm muốn lưu")
         let paymentMethod = $('#payMethod').val()
-        console.log("số tiền muốn lưu :" + totalAmount)
         if (!checkBeforeSaving()) {
             return
         }
@@ -701,8 +747,8 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#infoDetail').empty()
         $('#btn-delete-customer').prop('disabled', true);
         fetchProducts(0)
-        // resetInvoice();
-        // removeInvoice(selectedInvoiceId)
+        resetInvoice();
+        removeInvoice(selectedInvoiceId)
     }
 
 //********************* in hóa đơn **************
@@ -925,7 +971,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 $('#infoDetail').append('<p>email: ' + email + '</p>');
                 $('#btn-delete-customer').prop('disabled', false);
                 toggleModal(customerModal, false);
-                saveDataToLocalStorage(selectedInvoiceId)
                 fetchCustomers(0)
             },
             error: function(xhr, status, error) {
@@ -970,6 +1015,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }).always(function() {
             fetchOrderDetail(idOrderSelect)
+            let orderSelect = listOrder.find(item => item.id == idOrderSelect)
+            if(orderSelect && orderSelect?.user){
+                if(orderSelect && orderSelect.user){
+                    customerNameInput.innerText = orderSelect.user?.fullName,
+                    customerNameInput.setAttribute('data-customer-id',orderSelect.user?.id)
+                    $('#infoDetail').empty()
+                    $('#infoDetail').append('<p>Số điện thoại: ' + orderSelect.user?.phoneNumber  + '</p>');
+                    $('#infoDetail').append('<p>email: ' + orderSelect.user?.email + '</p>');
+                    $('#btn-delete-customer').prop('disabled', false);
+                }
+            }
         });
     }
 //***** lấy đơn hàng chi tiết
@@ -1045,6 +1101,7 @@ document.addEventListener('DOMContentLoaded', function () {
             contentType: "application/json",
             data : JSON.stringify(data),
             success: function(respone) {
+                listOrder.push(respone)
                 createInvoice(newInvoiceID, respone.id);
             },
             error: function(xhr, status, error) {
@@ -1093,10 +1150,56 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#xemlisst').on('click', function(){
         console.log(listProduct)
     })
-//**************** Giao hàng **************
-    $('#flexSwitchCheckDefault').on('change', function(e){
-        let modal = document.getElementById('form-customer')
-        toggleModal(modal, true)
-    })
+//**************** Giảm giá **************
 
+    // lấy danh sách giảm giá
+    $('#closeModalBtnBackVouCher').on('click', function(){
+        toggleModal(modalChoseVoucher, false)
+    })
+    fecthCoupons()
+    function fecthCoupons(){
+        $.ajax({
+           url: '/api/admin/order/get/coupons',
+           type: 'GET',
+           success: function(response){
+               response.forEach(item => listCoupons.push(item))
+               renderCoupons(listCoupons)
+           },
+            error: function(){
+                let errorMap = JSON.parse(xhr.responseText);
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+    function renderCoupons(coupons){
+        let contentCoupons = $('#contentCoupons')
+        let toTalPrice = document.getElementById('form-invoice-total-amount').getAttribute('totalPayment')
+        contentCoupons.empty()
+        let listCouponsActive = coupons.filter(item => item.minOrderValue <= Number(toTalPrice))
+        coupons.filter(item => console.log(item.minOrderValue + ": hóa đơn tối thiểu"))
+        listCouponsActive.forEach(item => {
+            let endDate = item.endDate
+            let date = new Date(endDate[0], endDate[1] - 1, endDate[2], endDate[3], endDate[4]);
+            let formattedDate = date.toISOString().slice(0, 16).replace("T", " ");
+            let newCoupons =
+                `
+            <div class="voucher-item">
+                <div class="hhiiii" style="display: flex; justify-content: center; align-items: center; position: relative; background-color: #71cd14;">
+                    <div class="vm3TF0" style="display: flex; justify-content: center; align-items: center; width: 90px; height: 90px;">
+                        <img class="e52C78 nh7RxM" style="width: 45px; height: 45px; border-radius: 50%;" src="/img/voucher.png" alt="Logo">
+                    </div>
+                </div>
+
+                <div class="voucher-details">
+                    <div class="voucher-exp">Đơn tối thiểu: ${item.minOrderValue}₫<br>HSD: ${formattedDate}</div>
+                </div>
+                <div class="voucher-checkbox" style="padding-right: 15px;">
+                    <input type="radio" name="voucher-select" value="${item.id}" data-discount="${item.discountValue}"/>
+                </div>
+            </div>
+           
+        `
+            $('#contentCoupons').append(newCoupons)
+        })
+    }
 });

@@ -98,7 +98,6 @@
                                 </div>
                                 <div class="customer-select">
                                     <div id="infoCustomer">
-                                        <strong>Tên khách hàng:</strong>
                                         <div id="infoDetail">
                                         </div>
                                     </div>
@@ -188,7 +187,7 @@
                                         <div class="form-invoice-item">
                                             <strong>Phiếu giảm giá:</strong>
                                             <div class="choose-voucher">
-                                                <input id="voucher" type="text" placeholder="Giảm giá">
+                                                <input id="voucher" type="text" placeholder="Giảm giá" disabled>
                                                 <button id="openModalBtnAddVoucher">Chọn</button>
                                             </div>
                                         </div>
@@ -235,25 +234,25 @@
                                 <div class="group-search-item search-size">
                                     <label>Kích cỡ</label>
                                     <select id="search-input-size">
-                                        <option disabled selected>Chọn kích cỡ</option>
+                                        <option selected value="">Chọn kích cỡ</option>
                                     </select>
                                 </div>
                                 <div class="group-search-item search-color">
                                     <label>Màu sắc</label>
                                     <select id="search-input-color">
-                                        <option disabled selected>Chọn màu sắc</option>
+                                        <option selected value="">Chọn màu sắc</option>
                                     </select>
                                 </div>
                                 <div class="group-search-item search-category">
                                     <label>Danh mục</label>
                                     <select id="search-input-category">
-                                        <option disabled selected>Chọn danh mục</option>
+                                        <option selected value="">Chọn danh mục</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="btn-search">
                                 <button id="btn-search-product">Tìm kiếm</button>
-                                <button>Làm mới</button>
+                                <button id="btn-reset-product">Làm mới</button>
                             </div>
                             <div class="select-product">
                                 <table>
@@ -474,53 +473,20 @@
                                 </div>
                                 <div class="voucher-list">
                                     <div style="margin: 10px 0;">
-                                        <p
-                                                style="margin-bottom: 0px; font-weight: bold;">
+                                        <p style="margin-bottom: 0px; font-weight: bold;">
                                             Danh Sách Mã
                                         </p>
                                         <small>Có thể chọn một voucher</small>
                                     </div>
-                                    <c:forEach items="${listPromotions}" var="pro">
-                                        <div class="voucher-item">
-                                            <div class="hhiiii"
-                                                 style="display: flex; justify-content: center; align-items: center; position: relative; background-color: #71cd14;">
-                                                <div class="vm3TF0"
-                                                     style="display: flex; justify-content: center; align-items: center; width: 90px; height: 90px;">
-                                                    <img class="e52C78 nh7RxM"
-                                                         style="width: 45px; height: 45px; border-radius: 50%;"
-                                                         src="/img/voucher.png"
-                                                         alt="Logo">
-                                                </div>
-                                            </div>
+                                    <div id="contentCoupons">
 
-                                            <div class="voucher-details">
-                                                <div class="voucher-exp">Giảm tối đa
-                                                        ${pro.discountValue}k | Đơn tối
-                                                    thiểu 0₫<br>HSD:
-                                                    27.11.2024
-                                                </div>
-                                            </div>
-                                            <div class="voucher-checkbox"
-                                                 style="padding-right: 15px;">
-                                                <input type="radio"
-                                                       name="voucher-select"
-                                                       value="${pro.id}"
-                                                       data-discount="${pro.discountValue}"
-                                                        <c:if
-                                                                test="${promotionInOrder.id == pro.id}">
-                                                            checked
-                                                        </c:if>/>
-                                            </div>
-                                        </div>
-                                        <!-- <c:set var="discountValue"
-                                                    value="${listPromotions[0].discountValue}"/> -->
-                                    </c:forEach>
+                                    </div>
                                 </div>
 
                             </div>
                             <div class="footer-voucher">
                                 <button class="close-btn-add-voucher"
-                                        id="closeModalBtnAddVouCher">TRỞ LẠI
+                                        id="closeModalBtnBackVouCher">TRỞ LẠI
                                 </button>
                                 <button class="OK-btn-add-voucher"
                                         id="closeModalBtnAddVouCher">OK

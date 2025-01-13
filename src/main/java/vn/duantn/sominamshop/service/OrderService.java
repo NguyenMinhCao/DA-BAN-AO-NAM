@@ -393,7 +393,11 @@ public class OrderService {
         order.setTotalProducts(orderDTO.getTotalProducts());
         order.setPaymentMethod(orderDTO.getPaymentMethod());
         if(orderDTO.getUser() != null){
-            order.setUser(User.builder().id(orderDTO.getUser().getId()).build());
+            if(orderDTO.getUser().getId() == 0){
+                order.setUser(null);
+            }else{
+                order.setUser(User.builder().id(orderDTO.getUser().getId()).build());
+            }
         }
         Order orderCreate = orderRepository.save(order);
         OrderDTO orderDTO2 = OrderDTO.toOrderDTO(orderCreate);
