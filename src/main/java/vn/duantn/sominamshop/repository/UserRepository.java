@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import java.util.List;
@@ -17,7 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
 
-
     Page<User> findByFullNameContainingAndRole(String fullName, Role role, Pageable pageable);
 
     @Query("SELECT u from User u " +
@@ -25,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "left join Role rl on u.role.id = rl.id " +
             "where u.fullName like concat('%', :fullName, '%') and rl.id = 1")
     Page<User> findByFullNameContainingAndRole(@Param("fullName") String fullName, Pageable pageable);
-    
+
     boolean existsByPhoneNumber(String phone);
 
     List<User> findByPhoneNumberStartingWith(String prefix);

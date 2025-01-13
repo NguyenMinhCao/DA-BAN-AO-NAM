@@ -1,6 +1,12 @@
 package vn.duantn.sominamshop.controller.admin;
 
 import org.springframework.ui.Model;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -8,13 +14,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.dto.request.AddressUpdateRequest;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateUserOrderDTO;
+import vn.duantn.sominamshop.model.dto.request.EmailRequest;
+import vn.duantn.sominamshop.model.dto.response.ResAddressUser;
 import vn.duantn.sominamshop.service.UploadService;
 import vn.duantn.sominamshop.service.UserService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -71,4 +82,27 @@ public class UserController {
     public String showIndexPageStaffCreate() {
         return "admin/user/create-customer";
     }
+
+    // @PostMapping("/admin/user/find-by-email")
+    // public ResponseEntity<List<ResAddressUser>> getUserEmail(@RequestBody EmailRequest email) {
+    //     User userByEmail = this.userService.findUserByEmailRequest(email);
+
+    //     List<ResAddressUser> listResAddress = new ArrayList<>();
+    //     if (userByEmail != null) {
+    //         for (Address address : userByEmail.getAddress()) {
+    //             ResAddressUser resAdd = new ResAddressUser();
+    //             resAdd.setId(address.getId());
+    //             resAdd.setCity(address.getCity());
+    //             resAdd.setDistrict(address.getDistrict());
+    //             resAdd.setFullName(address.getFullName());
+    //             resAdd.setWard(address.getWard());
+    //             resAdd.setPhoneNumber(address.getPhoneNumber());
+    //             resAdd.setStreetDetails(address.getStreetDetails());
+    //             listResAddress.add(resAdd);
+    //         }
+
+    //         return ResponseEntity.ok().body(listResAddress);
+    //     }
+    //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    // }
 }

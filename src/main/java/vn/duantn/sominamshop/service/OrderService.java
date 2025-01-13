@@ -138,6 +138,12 @@ public class OrderService {
                 List<Address> addressByUser = this.addressService.findAllAddressByUser(userByEmail);
                 for (Address address : addressByUser) {
                     if (address.isStatus()) {
+                        order.setCity(address.getCity());
+                        order.setPhoneNumber(address.getPhoneNumber());
+                        order.setDistrict(address.getDistrict());
+                        order.setWard(address.getWard());
+                        order.setRecipientName(address.getFullName());
+                        order.setStreetDetails(address.getStreetDetails());
                         order.setAddress(address);
                     }
                 }
@@ -348,19 +354,28 @@ public class OrderService {
     public void updateOrderDetail(DataUpdateOrderDetailDTO dto, String idOrderD) {
         Optional<OrderDetail> findOrderDetailById = this.findOrderDetailById(Long.valueOf(idOrderD));
         if (findOrderDetailById.isPresent()) {
-            OrderDetail orderUnwrap = findOrderDetailById.get();
+            OrderDetail orderDUnwrap = findOrderDetailById.get();
             if (dto.isUpdateORemove()) {
                 Optional<ProductDetail> productDetailById = this.productDetailService
                         .findProductDetailById(dto.getProductDetailId());
-                orderUnwrap.setQuantity(dto.getQuantity());
+                orderDUnwrap.setQuantity(dto.getQuantity());
                 if (productDetailById.isPresent()) {
                     Double newPrice = productDetailById.get().getPrice() * dto.getQuantity();
-                    orderUnwrap.setPrice(newPrice);
+                    orderDUnwrap.setPrice(newPrice);
                 }
-                this.orderDetailRepository.save(orderUnwrap);
+                this.orderDetailRepository.save(orderDUnwrap);
 
             } else {
-                this.orderDetailRepository.delete(orderUnwrap);
+                Optional<ProductDetail> productDetailById = this.productDetailService
+                        .findProductDetailById(dto.getProductDetailId());
+                if (dto.isRestocking()) {
+                    long newPrice = productDetailById.get().getQuantity() + orderDUnwrap.getQuantity();
+                    int intPrice = (int) newPrice;
+                    productDetailById.get().setQuantity(intPrice);
+                    this.productDetailService.saveProductDetail(productDetailById.get());
+                }
+
+                this.orderDetailRepository.delete(orderDUnwrap);
             }
         }
 

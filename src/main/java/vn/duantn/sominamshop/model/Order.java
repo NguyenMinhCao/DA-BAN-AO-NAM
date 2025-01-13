@@ -78,6 +78,24 @@ public class Order {
     @Column(name = "order_source")
     private Boolean orderSource;
 
+    @Column(name = "recipient_name")
+    private String recipientName;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "ward")
+    private String ward;
+
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "street_details", columnDefinition = "NVARCHAR(1500)")
+    private String streetDetails;
+
     @ManyToOne
     private User user;
 

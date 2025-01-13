@@ -76,15 +76,19 @@ public class OrderManagementService {
     public Boolean returnProduct(CheckQuantityProductDeDTO dto) {
         int saveTypeText = 0;
         int productNumber = 0;
+        boolean isRestocking = false;
         Optional<Order> orderById = this.orderService.findOrderById(dto.getOrderDetailId());
         Optional<OrderDetail> orderDetailById = this.orderDetailRepository.findById(dto.getOrderDetailId());
         if (orderDetailById.isPresent()) {
             OrderDetail orderDetail = orderDetailById.get();
 
             // cộng sản phẩm vào productDetail
-            int newQuantity = (int) (orderDetail.getProductDetail().getQuantity() + dto.getQuantityValue());
-            orderDetail.getProductDetail().setQuantity(newQuantity);
-            this.productDetailService.saveProductDetail(orderDetail.getProductDetail());
+            if (dto.isRestocking()) {
+                int newQuantity = (int) (orderDetail.getProductDetail().getQuantity() + dto.getQuantityValue());
+                orderDetail.getProductDetail().setQuantity(newQuantity);
+                this.productDetailService.saveProductDetail(orderDetail.getProductDetail());
+                isRestocking = true;
+            }
 
             if (orderById.get().getOrderDetails().size() == 1 && orderDetail.getQuantity() == dto.getQuantityValue()) {
                 this.orderService.deleteOrderDetail(dto.getOrderDetailId(), dto.getProductDetailID());
@@ -103,7 +107,7 @@ public class OrderManagementService {
             this.orderDetailRepository.save(orderDetail);
 
             if (orderById.isPresent()) {
-                this.orderHistoryService.updateReturnProduct(saveTypeText, productNumber, orderById.get());
+                this.orderHistoryService.updateReturnProduct(saveTypeText, productNumber, orderById.get(), isRestocking);
                 return true;
             }
             return false;

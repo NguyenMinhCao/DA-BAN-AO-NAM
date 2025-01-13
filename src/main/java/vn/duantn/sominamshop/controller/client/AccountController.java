@@ -92,4 +92,11 @@ public class AccountController {
         return "client/account/order-show";
     }
 
+    @GetMapping("/user/change-pass")
+    public String getViewChangePass(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        return "client/account/change-pass";
+    }
+
 }

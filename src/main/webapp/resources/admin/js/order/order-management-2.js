@@ -66,9 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Hàm mở URL chi tiết đơn hàng
-    function openUrl(url) {
-        window.location.href = "/admin/orders/" + url;
-    }
+    
 
     // Hàm lấy giá trị size từ selectPageSize
     function getCurrentSize() {

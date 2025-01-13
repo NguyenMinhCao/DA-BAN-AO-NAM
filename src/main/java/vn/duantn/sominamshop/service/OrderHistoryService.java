@@ -112,7 +112,7 @@ public class OrderHistoryService {
         }
     }
 
-    public void updateReturnProduct(int saveTypeText, int productNumber, Order order) {
+    public void updateReturnProduct(int saveTypeText, int productNumber, Order order, Boolean isRestocking) {
         OrderHistory orderHis = new OrderHistory();
         orderHis.setOrder(order);
 
@@ -128,8 +128,10 @@ public class OrderHistoryService {
             }
         }
 
-        if (saveTypeText == 0) {
-            orderHis.setDescription("Đã hoàn trả " + productNumber + " sản phẩm");
+        if (isRestocking) {
+            orderHis.setDescription("Đã hoàn trả không hoàn kho " + productNumber + " sản phẩm");
+        } else if (saveTypeText == 0) {
+            orderHis.setDescription("Đã hoàn trả " + productNumber + " sản phẩm vào kho");
         } else if (saveTypeText == 1) {
             orderHis.setDescription("Đã loại bỏ " + productNumber + " sản phẩm khỏi đơn hàng");
         } else {
@@ -191,9 +193,5 @@ public class OrderHistoryService {
 
         return listOrderHisResponse;
     }
-
-    // public List<OrderHistory> getAllOrderHistoryByOrder(Order order) {
-    // return this.orderHistoryRepository.findAllByOrderSortedDesc(order);
-    // }
 
 }
