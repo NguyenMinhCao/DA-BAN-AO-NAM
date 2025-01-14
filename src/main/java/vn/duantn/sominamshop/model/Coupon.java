@@ -34,16 +34,22 @@ public class Coupon {
 
     @Column(name = "discount_type")
     @Enumerated(EnumType.STRING)
-    private DiscountType discountType;
+    private DiscountType discountType;// kiểu giảm
 
-    @Column(name = "discount_value")
-    private String discountValue;
+    @Column(name = "discount_value_fixed")
+    private double discountValueFixed; //số tiền giảm
+    
+    @Column(name = "discount_value_percent")
+    private int discountValuePercent;//sô phần trăm giảm
+    
+    @Column(name = "maximum_reduction")
+    private double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
 
-    @Column(name = "min_order_value", precision = 10, scale = 2)
-    private BigDecimal minOrderValue;
+    @Column(name = "minimum_value")
+    private double minimumValue;// giá trị đơn hàng tối thiểu được sử dụng mã giảm gía
 
     @Column(name = "usage_limit ")
-    private Integer usageLimit;
+    private int usageLimit;// giới hạn sử dụng
 
     @Column(name = "start_date ")
     private LocalDateTime startDate;

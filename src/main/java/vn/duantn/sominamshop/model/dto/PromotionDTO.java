@@ -41,10 +41,10 @@ public class PromotionDTO {
                 // .endDate(promotion.getEndDate())
                 .status(promotion.isStatus())
                 // .discountType(promotion.getDiscountType())
-                .discountValue(promotion.getDiscountValue())
+                // .discountValue(promotion.getDiscountValue())
                 // .promotionCode(promotion.getPromotionCode())
                 .usageLimit(promotion.getUsageLimit())
-                .minOrderValue(promotion.getMinOrderValue())
+                // .minOrderValue(promotion.getMinOrderValue())
                 .build();
         return promotionDTO;
     }

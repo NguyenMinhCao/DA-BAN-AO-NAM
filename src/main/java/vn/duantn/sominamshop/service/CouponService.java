@@ -67,10 +67,13 @@ public class CouponService {
             newCouponRes.setId(coupon.getId());
             newCouponRes.setCouponCode(coupon.getCouponCode());
             newCouponRes.setDiscountType(coupon.getDiscountType());
-            newCouponRes.setDiscountValue(coupon.getDiscountValue());
-            newCouponRes.setMinOrderValue(coupon.getMinOrderValue());
+            newCouponRes.setDiscountValuePercent(coupon.getDiscountValuePercent());
+            newCouponRes.setDiscountValueFixed(coupon.getDiscountValueFixed());
             newCouponRes.setStatus(coupon.isStatus());
             newCouponRes.setUsageLimit(coupon.getUsageLimit());
+            newCouponRes.setMaximumReduction(coupon.getMaximumReduction());
+            newCouponRes.setMinimumValue(coupon.getMaximumReduction());
+
 
             String formattedDateCreate = coupon.getCreatedAt().format(formatter);
             newCouponRes.setCreatedAt(formattedDateCreate);

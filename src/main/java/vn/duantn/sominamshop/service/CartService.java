@@ -193,7 +193,7 @@ public class CartService {
         }
 
         if (order.getCoupon() != null) {
-            discountValue = Double.parseDouble(order.getCoupon().getDiscountValue());
+            discountValue = order.getCoupon().getDiscountValueFixed();
         }
 
         totalPayment = totalPrice + shippingPrice - discountValue;

@@ -1,11 +1,5 @@
 package vn.duantn.sominamshop.model.dto.response;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
 import vn.duantn.sominamshop.model.constants.DiscountType;
@@ -16,11 +10,13 @@ public class ResCouponDTO {
     private long id;
     private String couponCode;
     private DiscountType discountType;
-    private String discountValue;
-    private BigDecimal minOrderValue;
-    private Integer usageLimit;
+    private double discountValueFixed;
+    private int discountValuePercent;
+    private double maximumReduction;
+    private double minimumValue;
+    private int usageLimit;
+    private boolean status;
     private String startDate;
     private String endDate;
-    private boolean status;
     private String createdAt;
 }

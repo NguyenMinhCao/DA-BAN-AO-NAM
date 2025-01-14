@@ -89,38 +89,24 @@
                                             <th>Ngày kết thúc</th>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="coupon-code">
-                                                        <span>39834IDJISDJSI</span>
-                                                    </div>
-                                                    <div class="coupon-discount-value">
-                                                        <span>Giảm 10% tối đa 20.000 đ</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <span class="css-gr2olx">Đang hoạt động</span>
-                                                </td>
-                                                <td><span>0</span></td>
-                                                <td><span> 12/01/2025 14:30</span></td>
-                                                <td><span> 12/01/2025 14:30</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="coupon-code">
-                                                        <span>39834IDJISDJSI</span>
-                                                    </div>
-                                                    <div class="coupon-discount-value">
-                                                        <span>Giảm 10% tối đa 20.000 đ</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <span class="css-gr2olx">Đang hoạt động</span>
-                                                </td>
-                                                <td><span>0</span></td>
-                                                <td><span> 12/01/2025 14:30</span></td>
-                                                <td><span> 12/01/2025 14:30</span></td>
-                                            </tr>
+                                            <t:forEach items="${lstCoupons}" var="coupon">
+                                                <tr>
+                                                    <td>
+                                                        <div class="coupon-code">
+                                                            <span>${coupon.couponCode}</span>
+                                                        </div>
+                                                        <div class="coupon-discount-value">
+                                                            <span>Giảm 10% tối đa 20.000 đ</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="css-gr2olx">Đang hoạt động</span>
+                                                    </td>
+                                                    <td><span>0</span></td>
+                                                    <td><span> 12/01/2025 14:30</span></td>
+                                                    <td><span> 12/01/2025 14:30</span></td>
+                                                </tr>
+                                            </t:forEach>
                                         </tbody>
                                     </table>
                                 </div>

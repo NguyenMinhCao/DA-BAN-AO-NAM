@@ -26,6 +26,13 @@ public class CouponController {
     }
 
     @GetMapping("/coupon")
+    public String getViewCoupon(Model model) {
+        List<Coupon> lstCoupons = this.couponService.findAllCoupon();
+        model.addAttribute("lstCoupons", lstCoupons);
+        return "admin/coupon/show";
+    }
+
+    @GetMapping("/coupon/search")
     public ResponseEntity<?> fetchCoupon(@Filter Specification<Coupon> spec, Pageable pageable) {
 
         return ResponseEntity.ok().body(this.couponService.fetchAllCoupons(spec, pageable));
