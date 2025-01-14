@@ -23,19 +23,183 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let totalPayment = 0;
     let invoiceCounter = 0;
-    let invoiceNumber = 0;
-    let selectedInvoiceId = 0;
+    let selectedInvoiceId = null;
     let listProduct = [];
-    let deletedInvoiceIDs = [];
-    let listOrder = []
+    let listOrder = [];
     let idOrderSelect = null;
-    let listCoupons = []
-    let idCoupon = null
+    let listCoupons = [];
+    let idCoupon = null;
+    let tabs = [];
 
-    fetchProducts(0, 2)
-    fetchCustomers(0)
-    fetchLocation()
-    fetchFillter()
+// Fetch dữ liệu
+    fetchProducts(0, 2);
+    fetchCustomers(0);
+    fetchLocation();
+    fetchFillter();
+    fetchOrder()
+
+// Tạo hóa đơn chờ
+    createInvoiceBtn.addEventListener("click", () => {
+        createOrderNewTabOrder(invoiceCounter);
+    });
+
+// Chọn tab hóa đơn
+    tabsContainer.addEventListener("click", function (e) {
+        if (e.target.classList.contains("tab")) {
+            selectInvoice(e.target);
+        }
+    });
+
+// Tạo hóa đơn mới
+    function createInvoice(index, orderID) {
+        if (tabs.length >= 5) {
+            notificationAddCusstomer(
+                "Cảnh báo",
+                "Hóa đơn đã đạt giới hạn",
+                "error"
+            );
+            return;
+        }
+
+        // Thêm tab mới vào danh sách
+        tabs.push(index);
+        invoiceCounter++;
+        selectedInvoiceId = index;
+        idOrderSelect = orderID;
+
+        // Tạo tab mới
+        const newTab = document.createElement("button");
+        newTab.className = "tab";
+        newTab.innerText = `Hóa đơn ${index + 1}`;
+        newTab.setAttribute("data-invoice-id", index);
+        newTab.setAttribute("data-order-id", orderID);
+
+        // Thêm vào DOM
+        tabsContainer.insertBefore(newTab, document.querySelector(".add-tab"));
+        activateTab(index);
+        resetInvoice();
+        resetCoupon();
+    }
+
+// Xóa hóa đơn
+    function removeInvoice(index) {
+        const tabToRemove = document.querySelector(
+            `.tab[data-invoice-id="${index}"]`
+        );
+        if (!tabToRemove) return;
+
+        // Xóa tab khỏi danh sách và DOM
+        tabs = tabs.filter((tab) => tab !== index);
+        tabToRemove.remove();
+
+        // Cập nhật tab hiện tại
+        if (tabs.length === 0) {
+            selectedInvoiceId = null;
+        } else if (index === Math.max(...tabs)) {
+            selectedInvoiceId = Math.max(...tabs); // Tab lớn nhất còn lại
+        } else {
+            selectedInvoiceId = Math.min(...tabs); // Tab nhỏ nhất còn lại
+        }
+        activateTab(selectedInvoiceId);
+    }
+
+// Chuyển tab
+    function activateTab(index) {
+        const allTabs = document.querySelectorAll(".tab");
+        allTabs.forEach((tab) => {
+            tab.classList.remove("active");
+            if (tab.getAttribute("data-invoice-id") == index) {
+                tab.classList.add("active");
+                idOrderSelect = tab.getAttribute("data-order-id");
+            }
+        });
+    }
+
+// Chọn tab hóa đơn
+    function selectInvoice(button) {
+        selectedInvoiceId = parseInt(button.getAttribute("data-invoice-id"), 10);
+        idOrderSelect = button.getAttribute("data-order-id");
+        activateTab(selectedInvoiceId);
+        resetInvoice();
+        resetCoupon();
+        let orderSelect = listOrder.find((item) => item.id == idOrderSelect);
+        if (orderSelect && orderSelect.user) {
+            customerNameInput.innerText = orderSelect.user.fullName;
+            customerNameInput.setAttribute("data-customer-id", orderSelect.user.id);
+            $("#infoDetail").empty();
+            $("#infoDetail").append(
+                `<p>Số điện thoại: ${orderSelect.user.phoneNumber}</p>`
+            );
+            $("#infoDetail").append(`<p>Email: ${orderSelect.user.email}</p>`);
+            $("#btn-delete-customer").prop("disabled", false);
+        } else {
+            customerNameInput.innerText = "Khách lẻ";
+            customerNameInput.setAttribute("data-customer-id", "");
+            $("#infoDetail").empty();
+        }
+        fetchOrderDetail(idOrderSelect);
+    }
+
+// Fetch đơn hàng
+    function fetchOrder() {
+        $.ajax({
+            url: `/api/admin/order/get/orders`,
+            type: "GET",
+            success: function (data) {
+                data.forEach((item) => {
+                    if (invoiceCounter < 5) {
+                        createInvoice(invoiceCounter, item.id);
+                    }
+                    listOrder.push(item);
+                });
+            },
+            error: function (xhr) {
+                let errorMap = JSON.parse(xhr.responseText);
+                let errorMessages = Object.values(errorMap);
+                notificationAddCusstomer(errorMessages, "error");
+            },
+        }).always(function () {
+            fetchOrderDetail(idOrderSelect);
+            let orderSelect = listOrder.find((item) => item.id == idOrderSelect);
+            if (orderSelect && orderSelect.user) {
+                customerNameInput.innerText = orderSelect.user.fullName;
+                customerNameInput.setAttribute("data-customer-id", orderSelect.user.id);
+                $("#infoDetail").empty();
+                $("#infoDetail").append(
+                    `<p>Số điện thoại: ${orderSelect.user.phoneNumber}</p>`
+                );
+                $("#infoDetail").append(`<p>Email: ${orderSelect.user.email}</p>`);
+                $("#btn-delete-customer").prop("disabled", false);
+            }
+        });
+    }
+
+// Tạo hóa đơn mới
+    function createOrderNewTabOrder(newInvoiceID) {
+        let data = {
+            orderSource: 0,
+            paymentStatus: "PENDING",
+            deliveryStatus: "COMPLETED",
+            orderStatus: "PENDING_INVOICE",
+            totalAmount: 0,
+        };
+        $.ajax({
+            url: `/api/admin/order/save/invoice`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response) {
+                listOrder.push(response);
+                createInvoice(newInvoiceID, response.id);
+            },
+            error: function (xhr) {
+                let errorMap = JSON.parse(xhr.responseText);
+                let errorMessages = Object.values(errorMap);
+                notificationAddCusstomer(errorMessages, "error");
+            },
+        });
+    }
+
     // Hiển thị modal chọn sản phẩm
     chooseProductBtn.addEventListener('click', function () {
         if (invoiceCounter < 1) {
@@ -108,9 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#infoDetail').append('<p>email: ' + email + '</p>');
             $('#btn-delete-customer').prop('disabled', false);
             toggleModal(customerModal, false);
-            console.log("Id của khách hàng " + e.target.getAttribute('customer-id'))
             let orderUpdate = listOrder.find(item => item.id == idOrderSelect)
-            console.log(orderUpdate)
             if (!orderUpdate) {
                 console.error(`Không tìm thấy đơn hàng với id: ${idOrderSelect}`);
             } else {
@@ -140,28 +302,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         updateOrder(orderUpdate)
     })
-
-    // Tạo hóa đơn chờ
-    createInvoiceBtn.addEventListener('click', () => {
-        if(invoiceCounter <= 4){
-            $('#infoDetail').empty()
-            createOrderNewTabOrder(invoiceNumber)
-        }
-        else {
-            Swal.fire({
-                icon: "error",
-                title: "Hóa đơn đạt giới hạn",
-                showConfirmButton: true,
-            });
-            return
-        }
-    });
-    // Chọn hóa đơn chờ
-    tabsContainer.addEventListener('click', function (e) {
-        if (e.target.classList.contains('tab')) {
-            selectInvoice(e.target);
-        }
-    });
 
     // Tìm kiếm sản phẩm theo tên
     productSearchBtn.addEventListener('click', function () {
@@ -195,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
         calculateCustomerMoney();
     });
     //Lưu đơn hàng
-    document.getElementById('btn-order-payment').addEventListener('click', () => saveInvoice(selectedInvoiceId));
+    document.getElementById('btn-order-payment').addEventListener('click', () => updateQuantity());
     // ----- Helper Functions -----
 
     // Hiển thị/Ẩn modal
@@ -232,10 +372,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let productToUpdate = listProduct.find(item => item.productDetail?.id == productId)
             if (productToUpdate) {
                 productToUpdate.quantity = quantityProductCart.value
-                console.log(productToUpdate.quantity + ": số lượng sản phẩm mới")
                 let totalAmount = ((Number(quantityProductCart.value)) * Number(price));
                 productToUpdate.price = totalAmount
-                console.log(totalAmount + ": tổng tiền muốn lưu")
                 totalPriceProductCart.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
                 updateOrderDetail(productToUpdate)
             }
@@ -281,7 +419,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 orderId: idOrderSelect,
                 productDetail:{
                     id : productId,
-                    price: price
+                    price: price,
+                    productName: name
                 }
             }
             listProduct.push(orderDetail)
@@ -322,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
             updateOrderDetail(productToUpdate)
         });
         quantityInput.addEventListener("change", () => {
-            if(Number(quantityInput.value) >= Number(totalQuantityProduct)){
+            if(Number(quantityInput.value) > Number(totalQuantityProduct)){
                 quantityInput.value = totalQuantityProduct
                 notificationAddCusstomer('Cảnh báo', 'Số lượng sản phẩm đạt giới hạn', 'error')
             }
@@ -337,7 +476,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         //Xóa sản phẩm trong table
         newRow.querySelector('.delete-btn').addEventListener('click', function() {
-            console.log(productId + " id sản phẩm")
             let productDelete = listProduct.find(product => product.productDetail?.id === productId);
             const updatedProducts = listProduct.filter(product => product.productDetail?.id !== productId);
             listProduct = updatedProducts
@@ -347,79 +485,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 deleteOrderDetail(productDelete.id)
             }
         });
-    }
-    // Tạo hóa đơn mới
-    function createInvoice(index, orderID) {
-        invoiceCounter++;
-        invoiceNumber++;
-        selectedInvoiceId = index
-        idOrderSelect = orderID
-        const newTab = document.createElement('button');
-        newTab.className = 'tab';
-        newTab.innerText = `Hóa đơn ${Number(index) + 1}`;
-        newTab.setAttribute('data-invoice-id', index);
-        newTab.setAttribute('data-order-id', orderID)
-        // Thêm tab vào danh sách
-        tabsContainer.insertBefore(newTab, document.querySelector('.add-tab'));
-        // Tạo nội dung mới cho tab
-        activateTab(index);
-        resetInvoice();
-        resetCoupon()
-    }
-    // Xóa hóa đơn
-    function removeInvoice(index) {
-        const tabToRemove = document.querySelector(`.tab[data-invoice-id="${index}"]`); // Tìm tab dựa trên thuộc tính data-invoice-id
-        const numberTab = tabToRemove.getAttribute('data-invoice-id')
-        if (tabToRemove) {
-            tabToRemove.remove();  // Xóa tab khỏi DOM
-            deletedInvoiceIDs.push(index);
-            invoiceCounter--
-            if(invoiceCounter >= 0){
-                if(numberTab >= invoiceNumber){
-                    selectedInvoiceId = invoiceNumber-1
-                    activateTab(selectedInvoiceId);
-                }else{
-                    selectedInvoiceId = invoiceNumber
-                    activateTab(selectedInvoiceId);
-                }
-
-            }
-        }
-    }
-    //chuyển tabs
-    function activateTab(index) {
-        let tab;
-        let tabs = document.querySelectorAll('.tab');
-        tabs.forEach((t) => {
-            t.classList.remove('active')
-            if (t.getAttribute('data-invoice-id') == index) {
-                tab = t
-            }
-        })
-        tab.classList.add('active');
-    }
-
-    // Chọn hóa đơn
-    function selectInvoice(button) {
-        selectedInvoiceId = button.getAttribute('data-invoice-id');
-        idOrderSelect = button.getAttribute('data-order-id');
-        activateTab(selectedInvoiceId)
-        resetInvoice()
-        resetCoupon()
-        let orderSelect = listOrder.find(item => item.id == idOrderSelect)
-        if(orderSelect && orderSelect.user && !orderSelect.user.id == 0){
-            customerNameInput.innerText = orderSelect.user.fullName,
-                customerNameInput.setAttribute('data-customer-id',orderSelect.user?.id)
-            $('#infoDetail').empty()
-            $('#infoDetail').append('<p>Số điện thoại: ' + orderSelect.user?.phoneNumber  + '</p>');
-            $('#infoDetail').append('<p>email: ' + orderSelect.user?.email + '</p>');
-            $('#btn-delete-customer').prop('disabled', false);
-        }else{
-            customerNameInput.innerText = 'Khách lẻ',
-                customerNameInput.setAttribute('data-customer-id','')
-            $('#infoDetail').empty()
-        }
-        fetchOrderDetail(idOrderSelect)
     }
 
     // Cập nhật tổng tiền
@@ -455,7 +520,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' VND')
         document.getElementById('form-invoice-total-amount').setAttribute('totalPayment', totalPayment)
-        console.log(document.getElementById('form-invoice-total-amount').getAttribute('totalPayment') + ": số tiền trong hóa đơn")
         calculateCustomerMoney();
     }
 
@@ -555,9 +619,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let optionSize = $('#search-input-size').val()
         let optionCategory = $('#search-input-category').val()
         const inputSearch = document.getElementById('search-input-product').value
-        console.log(optionColor + " optionColor")
-        console.log(optionSize + " optionSize")
-        console.log(optionCategory + " optionCategory")
         $.ajax({
             url: `/api/admin/order/get/products?page=${page}&limit=8`,
             type: 'GET',
@@ -632,7 +693,6 @@ document.addEventListener('DOMContentLoaded', function () {
         listContainer.innerHTML = '';
         if (products.length > 0) {
             products.forEach((product, index) => {
-                console.log('ảnh của sản phẩm :' + product.image)
                 $('#product-table').append(`
                         <tr>
                             <td>${index + 1}</td>
@@ -696,12 +756,10 @@ document.addEventListener('DOMContentLoaded', function () {
         let check = true
         let customerPayment = document.getElementById('customer-payment')?.value
         let totalPayment = document.getElementById('form-invoice-total-amount')?.innerHTML
-        console.log(totalPayment + " tổng tiền phải trả")
         if (customerPayment < Number(totalPayment.replace(/VND/g, '').replace(/\./g, ''))) {
             notificationAddCusstomer('Thất bại!', "Số tiền khách trả còn thiếu", 'error')
             check = false
         }
-        console.log(listProduct[0].id + " id của orderdetail")
         if (listProduct[0]?.id == null) {
             notificationAddCusstomer('Thất bại!', "Hóa đơn chưa có sản phẩm nào", 'error')
             check = false
@@ -715,9 +773,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let totalAmount = document.getElementById('form-invoice-total-amount').getAttribute('totalPayment')
         let totalProducts = orderDetailSave.reduce((sum, item) => sum + Number(item.quantity), 0);
         let paymentMethod = $('#payMethod').val()
-        if (!checkBeforeSaving()) {
-            return
-        }
         let data = {
             id: idOrderSelect,
             note: note,
@@ -730,12 +785,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         $.ajax({
-            url: `http://localhost:8080/api/admin/order/update/invoice`,
+            url: `/api/admin/order/update/invoice`,
             type: 'PUT',
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (response) {
-                updateQuantity()
             },
             error: function (xhr, status,error) {
                 notificationAddCusstomer('Thất bại!', "Có lỗi khi lưu hóa đơn", 'error')
@@ -745,39 +799,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error:', error); // Mô tả lỗi
             }
         });
-    }
-
-    function updateQuantity() {
-        let promises = [];
-        listProduct.forEach(item => {
-            let data = {
-                productDetail: {
-                    id: item.productDetail?.id
-                },
-                quantity: item.quantity
-            }
-            let promise = $.ajax({
-                url: `http://localhost:8080/api/admin/order/update/products`,
-                type: 'PUT',
-                contentType: "application/json",
-                data: JSON.stringify(data),
-                success: function (response) {
-                    return true;
-                },
-                error: function (error) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Có lỗi khi trừ số lượng sản phẩm",
-                        showConfirmButton: true,
-                        timer: 1500
-                    });
-                    return;
-                    console.log("Error:", error);
-                }
-
-            });
-            promises.push(promise);
-        })
         printInvoice(listProduct);
         customerNameInput.innerText = 'Khách lẻ';
         customerNameInput.setAttribute('data-customer-id', '')
@@ -785,18 +806,78 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#btn-delete-customer').prop('disabled', true);
         fetchProducts(0)
         resetInvoice();
+        if(idCoupon && idCoupon >0){
+            updateCoupon(idCoupon, 1)
+            fecthCoupons()
+        }
         resetCoupon()
         removeInvoice(selectedInvoiceId)
     }
 
+    function updateQuantity() {
+        let promises = [];
+        let hasError = false;
+        let listOrderddd = []
+        if (!checkBeforeSaving()) {
+            return
+        }
+        listProduct.forEach(item => {
+            let data = {
+                productDetail: {
+                    id: item.productDetail?.id
+                },
+                quantity: item.quantity
+            }
+            listOrderddd.push(data)
+        });
+            $.ajax({
+                url: `/api/admin/order/update/products`,
+                type: 'PUT',
+                contentType: "application/json",
+                data: JSON.stringify(listOrderddd),
+                success: function (xhr, status, error) {
+                    saveInvoice();
+                },
+                error: function (xhr, status, error) {
+                    hasError = true;
+                    if(xhr){
+                        let errorMap = JSON.parse(xhr.responseText);
+                        let errorMessages = Object.values(errorMap);
+                        notificationAddCusstomer('Thất bại!', errorMessages, 'error')
+                    }
+                    console.error('Error fetching districts data:', error);
+                }
+
+            });
+    }
+
 //********************* in hóa đơn **************
     function printInvoice(products) {
+        $('#totalPriceVoucher').text('')
+        $('#totalPricePrint').text('')
+        $('#contaiTotalPricePrint').hide()
+        $('#contaiTotalPriceVoucher').hide()
+        let totalPriceInTable = 0;
         let currentDate = new Date();
         let formattedDate = currentDate.toLocaleDateString('vi-VN');
         var nameCustomer = $('#customer-name').text();
         let totalAmout = $('#form-invoice-total-amount').text()
+        let totalAmountNumber = document.getElementById('form-invoice-total-amount').getAttribute('totalPayment')
+        const quantityProductCart = document.querySelectorAll(`.product-quantity-cart`);
+        quantityProductCart.forEach(function (input) {
+            const quantity = input.value;
+            const price = input.getAttribute('data-price');
+            totalPriceInTable += quantity * price;
+        });
+        if(totalPriceInTable > totalAmountNumber && idCoupon){
+            let totalPriceVoucher = totalPriceInTable - totalAmountNumber
+            $('#contaiTotalPricePrint').show()
+            $('#contaiTotalPriceVoucher').show()
+            $('#totalPriceVoucher').text(totalPriceVoucher.toLocaleString() +' VND');
+            $('#totalPricePrint').text(totalPriceInTable.toLocaleString()+' VND');
+        }
+        $('#totalPricePayMent').text(totalAmout)
         $('#table_print').empty()
-        $('#totalPricePrint').text(totalAmout.toLocaleString());
         products.forEach((product, index) =>{
             $('#table_print').append(`
                         <tr>
@@ -886,7 +967,6 @@ document.addEventListener('DOMContentLoaded', function () {
             url: apiUrl,
             method: 'GET',
             success: function(data) {
-                console.log(data);
                 data.forEach(function(value) {
                     $('#area').append(`<option value="${value.code}">${value.name}</option>`);
                 });
@@ -902,7 +982,6 @@ document.addEventListener('DOMContentLoaded', function () {
             url: apiUrlDistricts,
             method: 'GET',
             success: function(data) {
-                console.log(data);
                 let districts = data.districts;
                 $('#Districts').empty().append('<option value="">Select District</option>');
                 districts.forEach(function(value) {
@@ -920,7 +999,6 @@ document.addEventListener('DOMContentLoaded', function () {
             url: apiUrlWards,
             method: 'GET',
             success: function(data) {
-                console.log(data);
                 let wards = data.wards;
                 $('#Wards').empty().append('<option value="">Select Ward</option>');
                 wards.forEach(function(value) {
@@ -993,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ]
         }
         $.ajax({
-            url: `http://localhost:8080/api/admin/user/save/customer`,
+            url: `/api/admin/user/save/customer`,
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify(data),
@@ -1024,42 +1102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
 //*****************Đơn Hàng ***************
-              //lấy đơn hàng
-    fetchOrder()
-    function fetchOrder(){
-        $.ajax({
-            url: `/api/admin/order/get/orders`,
-            type: 'GET',
-            success: function(data) {
-                data.forEach(item => {
-                    if(invoiceCounter <= 4){
-                        console.log('Id hóa đơn :'+ item.id)
-                        createInvoice(invoiceNumber, item.id);
-                    }
-                    listOrder.push(item)
-                })
-            },
-            error: function(xhr, status, error) {
-                let errorMap = JSON.parse(xhr.responseText);
-                let errorMessages = Object.values(errorMap);
-                notificationAddCusstomer(errorMessages, 'error')
-                console.error('Error fetching districts data:', error);
-            }
-        }).always(function() {
-            fetchOrderDetail(idOrderSelect)
-            let orderSelect = listOrder.find(item => item.id == idOrderSelect)
-            if(orderSelect && orderSelect?.user){
-                if(orderSelect && orderSelect.user){
-                    customerNameInput.innerText = orderSelect.user?.fullName,
-                    customerNameInput.setAttribute('data-customer-id',orderSelect.user?.id)
-                    $('#infoDetail').empty()
-                    $('#infoDetail').append('<p>Số điện thoại: ' + orderSelect.user?.phoneNumber  + '</p>');
-                    $('#infoDetail').append('<p>email: ' + orderSelect.user?.email + '</p>');
-                    $('#btn-delete-customer').prop('disabled', false);
-                }
-            }
-        });
-    }
+
 //***** lấy đơn hàng chi tiết
     function fetchOrderDetail(orderID){
         $.ajax({
@@ -1070,7 +1113,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.forEach(item => {
                         listProduct.push(item)
                     })
-                listProduct.forEach(item => console.log(item.id + " số lượng sản phẩm"))
                 productListBody.innerHTML = ''
                 generatedProductFromInvoice(data)
                 updateTotalPrice()
@@ -1118,32 +1160,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Tạo hóa đơn mới
-    function createOrderNewTabOrder(newInvoiceID){
-        let data = {
-            orderSource : 0,
-            paymentStatus : 'PENDING',
-            deliveryStatus : 'COMPLETED',
-            orderStatus : 'PENDING_INVOICE',
-            totalAmount : 0
-        }
-        $.ajax({
-            url: `/api/admin/order/save/invoice`,
-            type: 'POST',
-            contentType: "application/json",
-            data : JSON.stringify(data),
-            success: function(respone) {
-                listOrder.push(respone)
-                createInvoice(newInvoiceID, respone.id);
-            },
-            error: function(xhr, status, error) {
-                let errorMap = JSON.parse(xhr.responseText);
-                let errorMessages = Object.values(errorMap);
-                notificationAddCusstomer(errorMessages, 'error')
-                console.error('Error fetching districts data:', error);
-            }
-        });
-    }
+
     function createdOrderDetail(dataOrderDetail, productId){
         $.ajax({
             url: `/api/admin/order/save/invoice/detail`,
@@ -1196,7 +1213,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const discount = checkedInput?.dataset.discount;
             const type = checkedInput?.dataset.type
             const code = checkedInput?.dataset.code
-            console.log(`Đã chọn: Voucher ID = ${value}, Discount = ${discount} ` + type);
         updateTotalPriceWithCoupons(value, discount, type)
         toggleModal(modalChoseVoucher, false)
         idCoupon = value
@@ -1211,23 +1227,21 @@ document.addEventListener('DOMContentLoaded', function () {
                response.forEach(item => listCoupons.push(item))
                renderCoupons(listCoupons)
            },
-            error: function(){
+            error: function(xhr, error){
                 let errorMap = JSON.parse(xhr.responseText);
                 console.error('Error fetching districts data:', error);
             }
         });
     }
-    function updateCoupon(data){
+    function updateCoupon(id, quantity){
         $.ajax({
-            url: '/api/admin/order/get/coupons',
+            url: `/api/admin/order/update/coupon?id=${id}&quantity=${quantity}`,
             type: 'PUT',
             contentType: "application/json",
-            data: JSON.stringify(data),
             success: function(response){
-                response.forEach(item => listCoupons.push(item))
-                renderCoupons(listCoupons)
+
             },
-            error: function(){
+            error: function(xhr, error){
                 let errorMap = JSON.parse(xhr.responseText);
                 console.error('Error fetching districts data:', error);
             }
@@ -1238,7 +1252,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let toTalPrice = document.getElementById('form-invoice-total-amount').getAttribute('totalPayment')
         contentCoupons.empty()
         let listCouponsActive = coupons.filter(item => item.minOrderValue <= Number(toTalPrice))
-        coupons.filter(item => console.log(item.minOrderValue + ": hóa đơn tối thiểu"))
         listCouponsActive.forEach(item => {
             let endDate = item.endDate
             let date = new Date(endDate[0], endDate[1] - 1, endDate[2], endDate[3], endDate[4]);

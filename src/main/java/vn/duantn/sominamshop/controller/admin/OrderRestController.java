@@ -19,6 +19,7 @@ import vn.duantn.sominamshop.model.dto.rest.FilterRequest;
 import vn.duantn.sominamshop.service.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/admin/order")
@@ -65,8 +66,11 @@ public class OrderRestController {
     }
 
     @GetMapping("/get/coupons")
-    public ResponseEntity<List<CouponDTO>> getPromotion() {
-        List<CouponDTO> promotionDTOList = promotionService.findValidCoupons();
+    public ResponseEntity<List<CouponDTO>> getPromotion(
+            @RequestParam(value = "code", defaultValue = "") String code
+    ) {
+        System.out.println("Code của giảm giá :" + code);
+        List<CouponDTO> promotionDTOList = promotionService.findValidCoupons(code);
         return ResponseEntity.ok(promotionDTOList);
     }
 
@@ -120,9 +124,12 @@ public class OrderRestController {
         );
     }
     @PutMapping("/update/products")
-    public ResponseEntity<?> updateProduct(@RequestBody OrderDetail orderDetail) {
-        if (orderDetail != null) {
-            productDetailService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProductDetail().getId());
+    public ResponseEntity<?> updateProduct(@RequestBody List<OrderDetail> orderDetailList) {
+        if (orderDetailList != null) {
+            Map<String, String> map =  productDetailService.updateQuantityProduct(orderDetailList);
+            if(!map.isEmpty()){
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(map);
+            }
         }
         return ResponseEntity.ok("Cập nhật thành công");
     }
@@ -132,7 +139,8 @@ public class OrderRestController {
             @RequestParam(value = "id", defaultValue = "") Long id
     ){
         if(id != null && quantity != null){
-            return ResponseEntity.status(HttpStatus.OK).body( promotionService.updateUsageLimitCoupon(quantity, id));
+            promotionService.updateUsageLimitCoupon(quantity, id);
+            return ResponseEntity.status(HttpStatus.OK).body("Sửa thành công");
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Lỗi khi thay đổi số lượng coupons");
     }

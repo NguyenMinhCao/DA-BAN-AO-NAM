@@ -31,13 +31,13 @@ public class Address {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "ward")
+    @Column(name = "ward", columnDefinition = "NVARCHAR(255)")
     private String ward;
 
-    @Column(name = "district")
+    @Column(name = "district", columnDefinition = "NVARCHAR(255)")
     private String district;
 
-    @Column(name = "city")
+    @Column(name = "city", columnDefinition = "NVARCHAR(255)")
     private String city;
 
     @Column(name = "street_details", columnDefinition = "NVARCHAR(1500)")

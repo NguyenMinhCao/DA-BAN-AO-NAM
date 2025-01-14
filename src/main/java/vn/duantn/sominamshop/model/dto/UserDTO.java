@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.duantn.sominamshop.model.User;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ public class UserDTO {
     private String fullName;
 
     private String phoneNumber;
+    private LocalDate dateOfBirth;
 
     private String avatar;
 
@@ -37,6 +39,6 @@ public class UserDTO {
                     .collect(Collectors.toList());
         }
 
-        return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getAvatar(), user.getGender(), addressDTOs);
+        return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getDateOfBirth(), user.getAvatar(), user.getGender(), addressDTOs);
     }
 }

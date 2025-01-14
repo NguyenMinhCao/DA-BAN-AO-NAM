@@ -1,6 +1,7 @@
 package vn.duantn.sominamshop.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -17,9 +18,14 @@ public interface PromotionRepository extends JpaRepository<Coupon, Long> {
 
 //    List<ProductResponse> getListProductNoneDiscount();
 
-    @Query("SELECT c FROM Coupon c WHERE c.startDate <= :currentDate AND c.endDate >= :currentDate AND c.status = true")
-    List<Coupon> findValidCoupons(@Param("currentDate") LocalDateTime currentDate);
+    @Query("SELECT c FROM Coupon c " +
+            "WHERE c.startDate <= :currentDate " +
+            "AND c.endDate >= :currentDate " +
+            "AND c.status = true " +
+            "AND c.couponCode like concat('%', :code, '%') ")
+    List<Coupon> findValidCoupons(@Param("currentDate") LocalDateTime currentDate, @Param("code") String code);
 
-    @Query("Update Coupon c set c.usageLimit = c.usageLimit - :quantity where c.id = :id AND c.status = true")
-    Coupon updateQuantity(@Param("quantity") Integer quantity, @Param("id") Long id );
+    @Modifying
+    @Query("Update Coupon c set c.usageLimit = c.usageLimit - :quantity where c.id = :id")
+    Integer updateQuantity(@Param("quantity") Integer quantity, @Param("id") Long id);
 }

@@ -17,5 +17,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     List<Address> findAllAddressByUser(@Param("user") User user);
 
     // List<Address> findAllAddressByUserOrderByStatusDesc(User user);
-
+    @Query("SELECT a FROM Address a WHERE a.user.id = :id")
+    List<Address> findAllAddressByIdUser(@Param("id") Long id);
 }

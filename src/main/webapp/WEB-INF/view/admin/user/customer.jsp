@@ -75,13 +75,14 @@
                         <div id="pagination-customer" class="pagination"></div>
 
 <%--                        // modal vị trí--%>
-                        <div class="container-modal">
+                        <div class="container-address-modal modal" id="containerAddressModal">
                             <div class="content">
+                                <h3>Địa chỉ của khách hàng</h3>
                                 <div>
-                                    <button >Thêm mới</button>
+                                    <button id="btnAddDress">Thêm mới</button>
                                 </div>
                                 <div class="container-table">
-                                    <table class="table" id="tableCustomer">
+                                    <table class="table" id="tableAddress">
                                         <thead class="table-light">
                                         <tr>
                                             <th>SĐT</th>
@@ -91,12 +92,63 @@
                                             <th>Tính năng</th>
                                         </tr>
                                         </thead>
-                                        <tbody >
+                                        <tbody id="bodyTableAddress">
                                         </tbody>
                                     </table>
                                 </div>
                                 <div>
-                                    <button>đóng</button>
+                                    <button id="btnCloseModalAddDress">đóng</button>
+                                </div>
+                            </div>
+                        </div>
+<%--                        Sửa khách hàng --%>
+                        <div class="form-add-customer modal" id="form-add-customer">
+                            <div class="content-add-customer">
+                                <h2>Chỉnh sửa thông tin</h2>
+                                <div>
+                                    <!-- Họ và tên -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="fullnameCustomer">Họ và tên</label>
+                                            <input type="text" id="fullnameCustomer" placeholder="Nhập họ và tên khách hàng">
+                                        </div>
+                                    </div>
+                                    <!-- Số điện thoại và Email -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="emailCustomer">Email</label>
+                                            <input type="email" id="emailCustomer" placeholder="Nhập email khách hàng">
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="phoneNumberAdd">Số điện thoại</label>
+                                            <input type="tel" id="phoneNumberAdd" placeholder="Nhập sdt khách hàng">
+                                        </div>
+                                    </div>
+
+                                    <!-- Giới tính và Ngày sinh -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="gender">Giới tính</label>
+                                            <select id="gender">
+                                                <option value="true">Nam</option>
+                                                <option value="false">Nữ</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="dob">Ngày sinh</label>
+                                            <input type="date" id="dob">
+                                        </div>
+                                    </div>
+                                    <div class="upload-container" id="uploadContainer">
+                                        <input type="file" id="imageInput" accept="image/*">
+                                        <button class="remove-btn" id="removeBtn">&times;</button>
+                                    </div>
+
+                                    <!-- Buttons -->
+                                    <div class="form-actions">
+                                        <button type="reset" id="cancel-btn-add-customer" class="cancel-btn">Hủy (ESC)</button>
+                                        <button class="add-btn" id="update-customer">Chỉnh sửa</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -43,6 +43,8 @@ body {
 }
 
 #btnSearch,
+#btnAddDress,
+#btnCloseModalAddDress,
 .radio-status button{
     margin: 0 5px;
     padding: 8px 16px;
@@ -128,8 +130,9 @@ button.btn-info {
 button.btn-info:hover {
     background-color: rgba(23, 162, 184, 0.1);
 }
-.container-modal{
-    display: flex;
+
+.container-address-modal{
+    /*display: flex;*/
     position: fixed;
     top: 0;
     left: 0;
@@ -142,8 +145,117 @@ button.btn-info:hover {
 }
 .content{
     padding: 22px;
+    width: 800px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+#btnCloseModalAddDress{
+    margin: 5px;
+    background-color: #d9363e;
+}
+#btnAddDress{
+    margin: 5px;
+}
+/*form chỉnh sửa khách hàng*/
+.form-add-customer{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /*z-index: 2000;*/
+}
+.content-add-customer{
+    padding: 22px;
     width: 600px;
     background-color: #fff;
     border-radius: 8px;
 }
+.row
+{
+    display: flex;
+    align-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.input-group{
+    flex:1
+}
+.input-group input,
+.input-group select{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.input-group label,
+.item label{
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
+.form-actions .cancel-btn {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.form-actions .add-btn {
+    background-color: #007bff;
+    color: white;
+}
+.upload-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.upload-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+.upload-container input {
+    display: none;
+}
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    visibility: hidden;
+}
+.upload-container:hover .remove-btn,
+.upload-container img:hover + .remove-btn {
+    visibility: visible;
+}

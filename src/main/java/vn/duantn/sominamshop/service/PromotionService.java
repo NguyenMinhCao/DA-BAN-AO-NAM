@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import vn.duantn.sominamshop.model.Coupon;
@@ -29,16 +30,14 @@ public class PromotionService {
         return this.promotionRepository.findById(id);
     }
 
-    public List<CouponDTO> findValidCoupons(){
+    public List<CouponDTO> findValidCoupons(String code){
         LocalDateTime localDateTime =  LocalDateTime.now(ZoneOffset.of("+07:00"));
-        List<Coupon> couponList = promotionRepository.findValidCoupons(localDateTime);
+        List<Coupon> couponList = promotionRepository.findValidCoupons(localDateTime, code);
         List<CouponDTO> couponDTOList = couponList.stream().map(CouponDTO :: toDTO).collect(Collectors.toList());
         return couponDTOList;
     }
-    public CouponDTO updateUsageLimitCoupon(Integer quantity, Long id){
-       Coupon coupon = promotionRepository.updateQuantity(quantity, id);
-       CouponDTO couponDTO = CouponDTO.toDTO(coupon);
-       return couponDTO;
+    @Transactional
+    public void updateUsageLimitCoupon(Integer quantity, Long id){
+       promotionRepository.updateQuantity(quantity, id);
     }
-//    public
 }

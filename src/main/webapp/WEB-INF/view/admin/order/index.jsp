@@ -327,8 +327,14 @@
                                 </tbody>
                             </table>
                             <div class="total-amount">
-                                <p><strong>Tổng Tiền:</strong>
+                                <p  id="contaiTotalPricePrint" style="display: none"><strong>Tổng Tiền hàng:</strong>
                                 <p id="totalPricePrint"></p>
+                                </p>
+                                <p id="contaiTotalPriceVoucher" style="display: none"><strong>Giảm giá:</strong>
+                                <p id="totalPriceVoucher"></p>
+                                </p>
+                                <p id="contaiTotalPricePayMent"><strong>Tổng tiền thành toán:</strong>
+                                <p id="totalPricePayMent"></p>
                                 </p>
                             </div>
                             <p>Cảm ơn quý khách !</p>
@@ -503,6 +509,7 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
@@ -511,6 +518,7 @@
 <script src="/admin/js/order/order.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script src="/common/toast.js"></script>
+<script src="/admin/js/scripts.js"></script>
 </body>
 
 </html>

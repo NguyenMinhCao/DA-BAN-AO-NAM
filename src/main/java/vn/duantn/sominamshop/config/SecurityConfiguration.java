@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                                 "/js/**", "/images/**", "/vendors/**", "/fonts/**", "/img/**", "api/admin/**")
                         .permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("USER")
                         .anyRequest().authenticated())
                 // .sessionManagement((sessionManagement) -> sessionManagement
                 // .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
