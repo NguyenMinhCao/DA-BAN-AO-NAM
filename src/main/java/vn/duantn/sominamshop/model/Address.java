@@ -42,8 +42,11 @@ public class Address {
 
     @Column(name = "street_details", columnDefinition = "NVARCHAR(1500)")
     private String streetDetails;
+
     private boolean status;
+
     private String createdBy;
+
     private String updatedBy;
 
     @ManyToOne

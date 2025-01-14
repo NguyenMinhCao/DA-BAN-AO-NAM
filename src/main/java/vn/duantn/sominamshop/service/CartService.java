@@ -16,6 +16,7 @@ import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.User;
+import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.constants.ShippingMethod;
 import vn.duantn.sominamshop.model.dto.CartDetailUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.request.DataGetProductDetail;
@@ -31,12 +32,12 @@ public class CartService {
     private final CartDetailRepository cartDetailRepository;
     private final OrderService orderService;
     private final AddressService addressService;
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
     private final ProductDetailService productDetailService;
 
     public CartService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartDetailRepository cartDetailRepository, @Lazy OrderService orderService, AddressService addressService,
-            PromotionService promotionService, ProductDetailService productDetailService) {
+            CouponService promotionService, ProductDetailService productDetailService) {
         this.productService = productService;
         this.userService = userService;
         this.cartRepository = cartRepository;
@@ -60,6 +61,7 @@ public class CartService {
             Order order = new Order();
             order.setPaymentMethod("COD");
             order.setShippingMethod(ShippingMethod.SAVE);
+            order.setOrderStatus(OrderStatus.PENDING_INVOICE);
             List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
             for (Address address : arrAddressByUser) {
                 if (address.isStatus() == true) {
@@ -190,8 +192,8 @@ public class CartService {
             shippingPrice = 20000;
         }
 
-        if (order.getPromotion() != null) {
-            discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
+        if (order.getCoupon() != null) {
+            discountValue = Double.parseDouble(order.getCoupon().getDiscountValue());
         }
 
         totalPayment = totalPrice + shippingPrice - discountValue;

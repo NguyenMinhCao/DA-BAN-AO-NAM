@@ -2,6 +2,9 @@ package vn.duantn.sominamshop.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Product;
@@ -9,6 +12,7 @@ import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.dto.request.DataGetProductDetail;
 import vn.duantn.sominamshop.model.dto.request.ProductDetailRequest;
 import vn.duantn.sominamshop.model.dto.response.ProductDetailResponse;
+import vn.duantn.sominamshop.model.dto.response.ResProductDetailSearchDTO;
 import vn.duantn.sominamshop.model.dto.response.SizeResponse;
 import vn.duantn.sominamshop.repository.ProductDetailRepository;
 import vn.duantn.sominamshop.repository.ProductRepository;
@@ -24,6 +28,7 @@ public class ProductDetailService {
     public List<ProductDetail> getAllProductDetail() {
         return productDetailRepository.findAll();
     }
+
 
     public ProductDetail getProductDetailByProductId(Long productId) {
         Product idProduct = productRepository.findById(productId).orElse(null);

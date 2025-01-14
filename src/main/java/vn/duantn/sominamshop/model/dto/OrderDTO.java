@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
@@ -22,9 +23,11 @@ public class OrderDTO {
     private long id;
     private Integer totalProducts;
     private CouponDTO promotion;
-    private String note;
+    private DeliveryStatus status;
 
     private BigDecimal totalAmount;
+
+    private String note;
 
     private ShippingMethod shippingMethod;
 
@@ -48,7 +51,7 @@ public class OrderDTO {
                 .totalAmount(order.getTotalAmount())
                 .totalProducts(order.getTotalProducts())
                 .paymentStatus(order.getPaymentStatus())
-                .promotion(CouponDTO.toDTO(order.getPromotion()))
+                .promotion(CouponDTO.toDTO(order.getCoupon()))
                 .build();
         return orderDTO;
     }

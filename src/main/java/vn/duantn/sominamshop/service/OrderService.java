@@ -12,11 +12,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.jpa.domain.Specification;
+
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -55,14 +57,14 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
     private final AddressService addressService;
     private final OrderHistoryService orderHistoryService;
     private final ProductDetailService productDetailService;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
-            PromotionService promotionService, AddressService addressService,
+            CouponService promotionService, AddressService addressService,
             OrderHistoryService orderHistoryService, ProductDetailService productDetailService) {
         this.productService = productService;
         this.userService = userService;
@@ -126,6 +128,7 @@ public class OrderService {
                 // update order
                 order.setOrderDetails(lstOrderDetails);
                 order.setDeliveryStatus(DeliveryStatus.PENDING);
+                order.setOrderStatus(OrderStatus.PENDING);
                 if (order.getPaymentMethod().toString().equalsIgnoreCase("COD")) {
                     order.setPaymentStatus(PaymentStatus.PENDING);
                 } else {
@@ -137,6 +140,12 @@ public class OrderService {
                 List<Address> addressByUser = this.addressService.findAllAddressByUser(userByEmail);
                 for (Address address : addressByUser) {
                     if (address.isStatus()) {
+                        order.setCity(address.getCity());
+                        order.setPhoneNumber(address.getPhoneNumber());
+                        order.setDistrict(address.getDistrict());
+                        order.setWard(address.getWard());
+                        order.setRecipientName(address.getFullName());
+                        order.setStreetDetails(address.getStreetDetails());
                         order.setAddress(address);
                     }
                 }
@@ -190,8 +199,8 @@ public class OrderService {
             if (promotionId != null) {
                 promotionById = this.promotionService.findPromotionById(promotionId);
                 if (promotionById.isPresent()) {
-                    order.setPromotion(promotionById.get());
-                    session.setAttribute("promotionInOrder", order.getPromotion());
+                    order.setCoupon(promotionById.get());
+                    session.setAttribute("promotionInOrder", order.getCoupon());
                 }
             }
 
@@ -238,8 +247,8 @@ public class OrderService {
                     discountValue = Double.parseDouble(promotionById.get().getDiscountValue());
                 }
                 // người dùng không truyền lên nhưng trong DB có
-                else if (promotionId == null && order.getPromotion() != null) {
-                    discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
+                else if (promotionId == null && order.getCoupon() != null) {
+                    discountValue = Double.parseDouble(order.getCoupon().getDiscountValue());
                 }
                 // người dùng không truyền lên trong DB cũng ko có
                 else {
@@ -261,7 +270,7 @@ public class OrderService {
                 response.put("totalPayment", totalPayment);
                 response.put("shippingPrice", shippingPrice);
                 if (discountValue != 0) {
-                    response.put("discountValue", order.getPromotion().getDiscountValue());
+                    response.put("discountValue", order.getCoupon().getDiscountValue());
                 }
             }
 
@@ -291,7 +300,7 @@ public class OrderService {
         mt.setPages(page.getTotalPages());
         mt.setTotal(page.getTotalElements());
         mt.setCurrentPageElements(page.getNumberOfElements());
-        
+
         rs.setMeta(mt);
         rs.setResult(orderRs);
         return rs;
@@ -324,18 +333,21 @@ public class OrderService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         for (Order order : lstOrder) {
-            ResOrderDTO newOrderRes = new ResOrderDTO();
-            newOrderRes.setDeliveryStatus(order.getDeliveryStatus());
-            newOrderRes.setId(order.getId());
-            newOrderRes.setFullName(
-                    order.getUser() != null ? order.getUser().getFullName() : "Không tồn tại");
-            newOrderRes.setTotalAmount(order.getTotalAmount());
-            newOrderRes.setOrderSource(order.getOrderSource() == true ? "Website" : "Tại quầy");
-            String formattedDateCreate = order.getCreatedAt().format(formatter);
-            newOrderRes.setCreateAt(formattedDateCreate);
-            newOrderRes.setOrderStatus(order.getOrderStatus());
-            newOrderRes.setPaymentStatus(order.getPaymentStatus());
-            orderSRes.add(newOrderRes);
+            if (order.getOrderStatus() != OrderStatus.PENDING_INVOICE) {
+                ResOrderDTO newOrderRes = new ResOrderDTO();
+                newOrderRes.setDeliveryStatus(order.getDeliveryStatus());
+                newOrderRes.setId(order.getId());
+                newOrderRes.setFullName(
+                        order.getUser() != null ? order.getUser().getFullName() : "Không tồn tại");
+                newOrderRes.setTotalAmount(order.getTotalAmount());
+                newOrderRes.setOrderSource(order.getOrderSource() == true ? "Website" : "Tại quầy");
+                String formattedDateCreate = order.getCreatedAt().format(formatter);
+                newOrderRes.setCreateAt(formattedDateCreate);
+                newOrderRes.setOrderStatus(order.getOrderStatus());
+                newOrderRes.setPaymentStatus(order.getPaymentStatus());
+                orderSRes.add(newOrderRes);
+            }
+
         }
 
         return orderSRes;
@@ -344,19 +356,42 @@ public class OrderService {
     public void updateOrderDetail(DataUpdateOrderDetailDTO dto, String idOrderD) {
         Optional<OrderDetail> findOrderDetailById = this.findOrderDetailById(Long.valueOf(idOrderD));
         if (findOrderDetailById.isPresent()) {
-            OrderDetail orderUnwrap = findOrderDetailById.get();
+            OrderDetail orderDUnwrap = findOrderDetailById.get();
             if (dto.isUpdateORemove()) {
                 Optional<ProductDetail> productDetailById = this.productDetailService
                         .findProductDetailById(dto.getProductDetailId());
-                orderUnwrap.setQuantity(dto.getQuantity());
+
                 if (productDetailById.isPresent()) {
                     Double newPrice = productDetailById.get().getPrice() * dto.getQuantity();
-                    orderUnwrap.setPrice(newPrice);
+                    orderDUnwrap.setPrice(newPrice);
+
+                    long amountDifference = 0;
+                    if (orderDUnwrap.getQuantity() > dto.getQuantity()) {
+                        amountDifference = orderDUnwrap.getQuantity() - dto.getQuantity();
+                        int newQuantity = productDetailById.get().getQuantity() + (int) amountDifference;
+                        productDetailById.get().setQuantity(newQuantity);
+                    } else {
+                        amountDifference = dto.getQuantity() - orderDUnwrap.getQuantity();
+                        int newQuantityProductDetail = productDetailById.get().getQuantity() - (int) amountDifference;
+                        productDetailById.get().setQuantity(newQuantityProductDetail);
+                    }
+
                 }
-                this.orderDetailRepository.save(orderUnwrap);
+                orderDUnwrap.setQuantity(dto.getQuantity());
+                this.orderDetailRepository.save(orderDUnwrap);
+                this.productDetailService.saveProductDetail(productDetailById.get());
 
             } else {
-                this.orderDetailRepository.delete(orderUnwrap);
+                Optional<ProductDetail> productDetailById = this.productDetailService
+                        .findProductDetailById(dto.getProductDetailId());
+                if (dto.isRestocking()) {
+                    long newPrice = productDetailById.get().getQuantity() + orderDUnwrap.getQuantity();
+                    int intPrice = (int) newPrice;
+                    productDetailById.get().setQuantity(intPrice);
+                    this.productDetailService.saveProductDetail(productDetailById.get());
+                }
+
+                this.orderDetailRepository.delete(orderDUnwrap);
             }
         }
 
@@ -376,6 +411,7 @@ public class OrderService {
         OrderDTO orderDTO = OrderDTO.toOrderDTO(orderCreate);
         return orderDTO;
     }
+
     @Transactional
     public OrderDTO updateInvoice(OrderDTO orderDTO) {
         Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
@@ -387,7 +423,7 @@ public class OrderService {
         }
         if(orderDTO.getPromotion() != null ){
             if(orderDTO.getPromotion().getId() != 0){
-                order.setPromotion(Coupon.builder().id(orderDTO.getPromotion().getId()).build());
+                order.setCoupon(Coupon.builder().id(orderDTO.getPromotion().getId()).build());
             }
         }
         order.setNote(orderDTO.getNote());
@@ -410,6 +446,7 @@ public class OrderService {
     public List<OrderDetail> saveInvoiceDetails(List<OrderDetail> list) {
         return orderDetailRepository.saveAll(list);
     }
+
     @Transactional
     public Map<String, Long> saveInvoiceDetail(OrderDetailDTO orderDetailDTO) {
         OrderDetail orderDetail = OrderDetail.builder()
@@ -424,24 +461,27 @@ public class OrderService {
         map.put("id", orderDetail1.getId());
         return map;
     }
+
     @Transactional
-    public void deleteInvoiceDetail(Long id){
+    public void deleteInvoiceDetail(Long id) {
         orderDetailRepository.deleteByOrderDetailIdAndProductDetailId(id);
     }
-    public List<OrderDTO> getOrderNonPendingAndPos(DeliveryStatus deliveryStatus, PaymentStatus paymentStatus){
-        Pageable pageable = PageRequest.of(0,5);
+
+    public List<OrderDTO> getOrderNonPendingAndPos(DeliveryStatus deliveryStatus, PaymentStatus paymentStatus) {
+        Pageable pageable = PageRequest.of(0, 5);
         List<Order> listOrder = orderRepository.getAllOrderNonPendingAndPos(deliveryStatus, paymentStatus, pageable);
-        List<OrderDTO> listOrderDTO = listOrder.stream().map(OrderDTO :: toOrderDTO).collect(Collectors.toList());
+        List<OrderDTO> listOrderDTO = listOrder.stream().map(OrderDTO::toOrderDTO).collect(Collectors.toList());
         return listOrderDTO;
     }
 
-    public List<OrderDetailDTO> getOrderDetailByOrderId(Long id){
+    public List<OrderDetailDTO> getOrderDetailByOrderId(Long id) {
         List<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailByOrderId(id);
         orderDetails.forEach(item -> System.out.println(item.getProductDetail().getPrice() + ": giá sản phẩm trong này"));
         List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO :: toOrderDetailDTO).collect(Collectors.toList());
         return orderDetailDTOS;
     }
-    public OrderDTO getOrderById(Long id){
+
+    public OrderDTO getOrderById(Long id) {
         Order order = orderRepository.getAllOrderById(id).orElse(null);
         OrderDTO orderDTO = OrderDTO.toOrderDTO(order);
         return orderDTO;

@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("api/admin/order")
 @RequiredArgsConstructor
 public class OrderRestController {
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
     private final OrderService orderService;
     private final ColorService colorService;
     private final SizeService sizeService;
@@ -73,6 +73,7 @@ public class OrderRestController {
         List<CouponDTO> promotionDTOList = promotionService.findValidCoupons(code);
         return ResponseEntity.ok(promotionDTOList);
     }
+
 
     @PostMapping("/save/invoice")
     public ResponseEntity<OrderDTO> saveInvoice(@RequestBody Order order) {

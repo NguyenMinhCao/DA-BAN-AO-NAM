@@ -27,7 +27,7 @@
                                         <a class="nav-link nav-link-select" href="/user/address">Địa chỉ</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link nav-link-select" href="/user/change">Đổi Mật Khẩu</a>
+                                        <a class="nav-link nav-link-select" href="/user/change-pass">Đổi Mật Khẩu</a>
                                     </li>
                                 </div>
                                 <li class="nav-item">

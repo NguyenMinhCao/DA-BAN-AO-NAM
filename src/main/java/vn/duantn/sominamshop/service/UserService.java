@@ -17,13 +17,16 @@ import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.multipart.MultipartFile;
-import vn.duantn.sominamshop.model.Address;
+
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.RegisterDTO;
 import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateUserOrderDTO;
+import vn.duantn.sominamshop.model.dto.request.EmailRequest;
+import vn.duantn.sominamshop.repository.OrderRepository;
 import vn.duantn.sominamshop.repository.RoleRepository;
 import vn.duantn.sominamshop.repository.UserRepository;
 
@@ -45,12 +48,17 @@ public class UserService {
     }
 
     public User findUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
+        User user = this.userRepository.findByEmail(email);
+        return user;
+    }
+
+    public User findUserByEmailRequest(EmailRequest emailR) {
+        User user = this.userRepository.findByEmail(emailR.getEmail());
         return user;
     }
 
     public Role getRoleByName(String name) {
-        return roleRepository.findByName(name);
+        return this.roleRepository.findByName(name);
     }
 
     public User handleSaveUser(User user) {
@@ -76,8 +84,6 @@ public class UserService {
         user.setRole(this.getRoleByName("USER"));
         return user;
     }
-
-
 
     public void updateUserInOrder(DataUpdateUserOrderDTO dto) {
         User userByEmail = this.findUserByEmail(dto.getOldEmailUser());
@@ -119,13 +125,13 @@ public class UserService {
         }
     }
 
-
     public Page<UserDTO> findByFullNameAndRole(Pageable pageable, String name) {
         Page<User> pageCustomer = userRepository.findByFullNameContainingAndRole(name,
                 pageable);
         Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
         return pageCustomerDto;
     }
+
     public List<User> findUserByPhone(String phone) {
         return this.userRepository.findByPhoneNumberStartingWith(phone);
     }
@@ -159,4 +165,5 @@ public class UserService {
         userRepository.save(userUpdate);
         return null;
     }
+
 }

@@ -11,4 +11,5 @@ public class CheckQuantityProductDeDTO {
     private long productDetailID;
     private String description;
     private long orderDetailId;
+    private boolean restocking;
 }

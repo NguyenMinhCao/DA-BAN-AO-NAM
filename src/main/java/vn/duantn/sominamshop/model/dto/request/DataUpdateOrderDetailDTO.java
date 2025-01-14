@@ -9,4 +9,5 @@ public class DataUpdateOrderDetailDTO {
     private long productDetailId;
     private long quantity;
     private boolean updateORemove;
+    private boolean restocking;
 }

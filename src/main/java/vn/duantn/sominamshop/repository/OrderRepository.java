@@ -92,7 +92,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 
     @Query(value = "SELECT o FROM Order o " +
             "LEFT JOIN User u on u.id = o.user.id " +
-            "LEFT JOIN Coupon cp on cp.id = o.promotion.id "+
+            "LEFT JOIN Coupon cp on cp.id = o.coupon.id "+
             "WHERE o.id = :id "
     )
     Optional<Order> getAllOrderById(@Param("id") Long id);

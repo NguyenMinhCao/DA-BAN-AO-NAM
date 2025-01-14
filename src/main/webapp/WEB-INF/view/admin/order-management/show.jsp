@@ -57,47 +57,32 @@
                                     <!-- tab -->
                                     <ul class="tablist-order d-flex">
                                         <li>
-                                            <button class="css-1hfoem2" id="tab1-btn" onclick="openTab('tab1')"><span
-                                                    class="css-1h1oecx e19wcowe2">Tất
-                                                    cả</span>
-                                            </button>
+                                            <button class="css-1hfoem2" id="tab1-btn"><span
+                                                    class="css-1h1oecx e19wcowe2">Tất cả</span></button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2" id="tab2-btn" onclick="openTab('tab2')"><span
-                                                    class="css-1h1oecx e19wcowe2">Chưa xử lý
-                                                    giao
-                                                    hàng
-                                                </span>
-                                            </button>
+                                            <button class="css-1hfoem2" id="tab2-btn"><span
+                                                    class="css-1h1oecx e19wcowe2">Chưa xử lý giao hàng</span></button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2" id="tab3-btn" onclick="openTab('tab3')"><span
-                                                    class="css-1h1oecx e19wcowe2">Đang chờ
-                                                    giao
-                                                    hàng
-                                                </span>
-                                            </button>
+                                            <button class="css-1hfoem2" id="tab3-btn"><span
+                                                    class="css-1h1oecx e19wcowe2">Đang chờ giao hàng</span></button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2" id="tab4-btn" onclick="openTab('tab4')"><span
-                                                    class="css-1h1oecx e19wcowe2">Hoàn thành</span>
-                                            </button>
+                                            <button class="css-1hfoem2" id="tab4-btn"><span
+                                                    class="css-1h1oecx e19wcowe2">Hoàn thành</span></button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2" id="tab5-btn" onclick="openTab('tab5')"><span
-                                                    class="css-1h1oecx e19wcowe2">Đã hủy</span>
-                                            </button>
+                                            <button class="css-1hfoem2" id="tab5-btn"><span
+                                                    class="css-1h1oecx e19wcowe2">Đã hủy</span></button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2" id="tab6-btn" onclick="openTab('tab6')"><span
-                                                    class="css-1h1oecx e19wcowe2">Chưa thanh
-                                                    toán</span>
-                                            </button>
+                                            <button class="css-1hfoem2" id="tab6-btn"><span
+                                                    class="css-1h1oecx e19wcowe2">Chưa thanh toán</span></button>
                                         </li>
                                         <li>
-                                            <button class="css-1hfoem2" id="tab7-btn" onclick="openTab('tab7')"><span
-                                                    class="css-1h1oecx e19wcowe2">Hoàn một phần</span>
-                                            </button>
+                                            <button class="css-1hfoem2" id="tab7-btn"><span
+                                                    class="css-1h1oecx e19wcowe2">Hoàn một phần</span></button>
                                         </li>
                                     </ul>
                                     <!-- filter -->
@@ -302,10 +287,17 @@
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;">
-                                                                            <span
-                                                                                class="css-ii5m0c e7ltd9p0">${order.fullName}
-                                                                            </span>
-
+                                                                            <c:if test="${order.fullName!=null}">
+                                                                                <span
+                                                                                    class="css-ii5m0c e7ltd9p0">${order.fullName}
+                                                                                </span>
+                                                                            </c:if>
+                                                                            <c:if test="${order.fullName==null}">
+                                                                                <span class="css-ii5m0c e7ltd9p0">Không
+                                                                                    tồn
+                                                                                    tại
+                                                                                </span>
+                                                                            </c:if>
                                                                         </div>
                                                                     </span>
                                                                 </span>
@@ -334,24 +326,62 @@
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa thanh toán
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa thanh toán
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'COMPLETED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã thanh toán
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'REFUNDED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PARTIALREFUND'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền một phần
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa xử lý
-                                                                                giao
-                                                                                hàng
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus != 'PENDING'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã xử lý giao hàng
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa xử lý
+                                                                                    giao
+                                                                                    hàng
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -386,25 +416,27 @@
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;">
-                                                                            <span
-                                                                                class="css-ii5m0c e7ltd9p0">${order.fullName}
-                                                                            </span>
+                                                                            <c:if test="${order.fullName!=null}">
+                                                                                <span
+                                                                                    class="css-ii5m0c e7ltd9p0">${order.fullName}
+                                                                                </span>
+                                                                            </c:if>
+                                                                            <c:if test="${order.fullName==null}">
+                                                                                <span class="css-ii5m0c e7ltd9p0">Không
+                                                                                    tồn
+                                                                                    tại
+                                                                                </span>
+                                                                            </c:if>
                                                                         </div>
-                                                                    </span></span>
+                                                                    </span>
+                                                                </span>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2"><span
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;"><span
                                                                                 class="css-ii5m0c e7ltd9p0">
-                                                                                <c:if
-                                                                                    test="${order.orderSource == true}">
-                                                                                    Website
-                                                                                </c:if>
-                                                                                <c:if
-                                                                                    test="${order.orderSource == false}">
-                                                                                    Tại quầy
-                                                                                </c:if>
+                                                                                ${order.orderSource}
                                                                             </span></div>
                                                                     </span></span>
                                                             </td>
@@ -423,24 +455,62 @@
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa thanh toán
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa thanh toán
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'COMPLETED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã thanh toán
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'REFUNDED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PARTIALREFUND'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền một phần
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa xử lý
-                                                                                giao
-                                                                                hàng
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus != 'PENDING'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã xử lý giao hàng
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa xử lý
+                                                                                    giao
+                                                                                    hàng
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -451,7 +521,7 @@
                                             <!-- tab 4 <<<<<<<<<<<<<<<<<<<<<<<<<<< -->
                                             <tbody class="tab-content" id="tab4">
                                                 <c:forEach items="${lstOrder.result}" var="order" varStatus="i">
-                                                    <c:if test="${order.deliveryStatus == 'PENDING'}">
+                                                    <c:if test="${order.orderStatus == 'COMPLETED'}">
                                                         <tr class="css-1n5r022" onclick="openUrl('${order.id}')">
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-1xdhyk6 e1f1ig8p0"><a
@@ -475,25 +545,27 @@
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;">
-                                                                            <span
-                                                                                class="css-ii5m0c e7ltd9p0">${order.fullName}
-                                                                            </span>
+                                                                            <c:if test="${order.fullName!=null}">
+                                                                                <span
+                                                                                    class="css-ii5m0c e7ltd9p0">${order.fullName}
+                                                                                </span>
+                                                                            </c:if>
+                                                                            <c:if test="${order.fullName==null}">
+                                                                                <span class="css-ii5m0c e7ltd9p0">Không
+                                                                                    tồn
+                                                                                    tại
+                                                                                </span>
+                                                                            </c:if>
                                                                         </div>
-                                                                    </span></span>
+                                                                    </span>
+                                                                </span>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2"><span
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;"><span
                                                                                 class="css-ii5m0c e7ltd9p0">
-                                                                                <c:if
-                                                                                    test="${order.orderSource == true}">
-                                                                                    Website
-                                                                                </c:if>
-                                                                                <c:if
-                                                                                    test="${order.orderSource == false}">
-                                                                                    Tại quầy
-                                                                                </c:if>
+                                                                                ${order.orderSource}
                                                                             </span></div>
                                                                     </span></span>
                                                             </td>
@@ -512,24 +584,62 @@
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa thanh toán
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa thanh toán
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'COMPLETED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã thanh toán
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'REFUNDED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PARTIALREFUND'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền một phần
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa xử lý
-                                                                                giao
-                                                                                hàng
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus != 'PENDING'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã xử lý giao hàng
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa xử lý
+                                                                                    giao
+                                                                                    hàng
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -564,25 +674,27 @@
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;">
-                                                                            <span
-                                                                                class="css-ii5m0c e7ltd9p0">${order.fullName}
-                                                                            </span>
+                                                                            <c:if test="${order.fullName!=null}">
+                                                                                <span
+                                                                                    class="css-ii5m0c e7ltd9p0">${order.fullName}
+                                                                                </span>
+                                                                            </c:if>
+                                                                            <c:if test="${order.fullName==null}">
+                                                                                <span class="css-ii5m0c e7ltd9p0">Không
+                                                                                    tồn
+                                                                                    tại
+                                                                                </span>
+                                                                            </c:if>
                                                                         </div>
-                                                                    </span></span>
+                                                                    </span>
+                                                                </span>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2"><span
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;"><span
                                                                                 class="css-ii5m0c e7ltd9p0">
-                                                                                <c:if
-                                                                                    test="${order.orderSource == true}">
-                                                                                    Website
-                                                                                </c:if>
-                                                                                <c:if
-                                                                                    test="${order.orderSource == false}">
-                                                                                    Tại quầy
-                                                                                </c:if>
+                                                                                ${order.orderSource}
                                                                             </span></div>
                                                                     </span></span>
                                                             </td>
@@ -601,24 +713,62 @@
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa thanh toán
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa thanh toán
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'COMPLETED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã thanh toán
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'REFUNDED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PARTIALREFUND'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền một phần
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa xử lý
-                                                                                giao
-                                                                                hàng
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus != 'PENDING'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã xử lý giao hàng
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa xử lý
+                                                                                    giao
+                                                                                    hàng
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -630,77 +780,109 @@
                                             <tbody class="tab-content" id="tab6">
                                                 <c:forEach items="${lstOrder.result}" var="order" varStatus="i">
                                                     <c:if test="${order.paymentStatus == 'PENDING'}">
-                                                        <tr class="css-1n5r022" onclick="openUrl('${order.id}')">
-                                                            <td class="css-166t3yd e160qq0x2">
-                                                                <div class="css-1xdhyk6 e1f1ig8p0"><a
-                                                                        class="css-1w5iufu ehy6p5f0"
-                                                                        href="/admin/orders/${order.id}">
-                                                                        <div style="display: flex;"><span
-                                                                                class="css-dbt8sz e1nigx955"><span
-                                                                                    class="css-1qvvvsu enzfz0r0">#</span></span><span
-                                                                                class="css-dbt8sz e1nigx955"><span
-                                                                                    class="css-1qvvvsu enzfz0r0">${order.id}</span></span>
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
-                                                            <td class="css-166t3yd e160qq0x2"><span
-                                                                    class="css-dbt8sz e1nigx955">
-                                                                    ${order.createAt}
-                                                                </span>
-                                                            </td>
-                                                            <td class="css-166t3yd e160qq0x2"><span
-                                                                    class="css-dbt8sz e1nigx955"><span
-                                                                        class="css-1qvvvsu enzfz0r0">
-                                                                        <div style="width: 125px;">
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-1xdhyk6 e1f1ig8p0"><a
+                                                                    class="css-1w5iufu ehy6p5f0"
+                                                                    href="/admin/orders/${order.id}">
+                                                                    <div style="display: flex;"><span
+                                                                            class="css-dbt8sz e1nigx955"><span
+                                                                                class="css-1qvvvsu enzfz0r0">#</span></span><span
+                                                                            class="css-dbt8sz e1nigx955"><span
+                                                                                class="css-1qvvvsu enzfz0r0">${order.id}</span></span>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955">
+                                                                ${order.createAt}
+                                                            </span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955"><span
+                                                                    class="css-1qvvvsu enzfz0r0">
+                                                                    <div style="width: 125px;">
+                                                                        <c:if test="${order.fullName!=null}">
                                                                             <span
                                                                                 class="css-ii5m0c e7ltd9p0">${order.fullName}
                                                                             </span>
-                                                                        </div>
-                                                                    </span></span>
-                                                            </td>
-                                                            <td class="css-166t3yd e160qq0x2"><span
-                                                                    class="css-dbt8sz e1nigx955"><span
-                                                                        class="css-1qvvvsu enzfz0r0">
-                                                                        <div style="width: 125px;"><span
-                                                                                class="css-ii5m0c e7ltd9p0">
-                                                                                <c:if
-                                                                                    test="${order.orderSource == true}">
-                                                                                    Website
-                                                                                </c:if>
-                                                                                <c:if
-                                                                                    test="${order.orderSource == false}">
-                                                                                    Tại quầy
-                                                                                </c:if>
-                                                                            </span></div>
-                                                                    </span></span>
-                                                            </td>
-                                                            <td class="css-166t3yd e160qq0x2">
-                                                                <div class="css-4fkh5d e1ehoxn20">
-                                                                    <div class="css-thtl67 e14jmgg0"><span
-                                                                            class="css-dbt8sz e1nigx955"><span
-                                                                                class="css-1qvvvsu enzfz0r0">
-                                                                                <fmt:formatNumber type="number"
-                                                                                    value="${order.totalAmount}" />
-                                                                                đ
-                                                                            </span></span>
+                                                                        </c:if>
+                                                                        <c:if test="${order.fullName==null}">
+                                                                            <span class="css-ii5m0c e7ltd9p0">Không tồn
+                                                                                tại
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
+                                                                </span>
+                                                            </span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2"><span
+                                                                class="css-dbt8sz e1nigx955"><span
+                                                                    class="css-1qvvvsu enzfz0r0">
+                                                                    <div style="width: 125px;"><span
+                                                                            class="css-ii5m0c e7ltd9p0">
+                                                                            ${order.orderSource}
+                                                                        </span></div>
+                                                                </span></span>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-4fkh5d e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0"><span
+                                                                        class="css-dbt8sz e1nigx955"><span
+                                                                            class="css-1qvvvsu enzfz0r0">
+                                                                            <fmt:formatNumber type="number"
+                                                                                value="${order.totalAmount}" />
+                                                                            đ
+                                                                        </span></span>
                                                                 </div>
-                                                            </td>
-                                                            <td class="css-166t3yd e160qq0x2">
-                                                                <div class="css-k9p4ua e1ehoxn20">
-                                                                    <div class="css-thtl67 e14jmgg0">
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-k9p4ua e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0">
+                                                                    <c:if test="${order.paymentStatus == 'PENDING'}">
                                                                         <span class="css-2kmgkw e8ptwd0">
                                                                             <span class="css-z8vxi5 enzfz0r0">
                                                                                 Chưa thanh toán
                                                                             </span>
                                                                         </span>
-                                                                    </div>
+                                                                    </c:if>
+                                                                    <c:if test="${order.paymentStatus == 'COMPLETED'}">
+                                                                        <span class="css-1e8zcwn e8ptwd0">
+                                                                            <span class="css-z8vxi5 enzfz0r0">
+                                                                                Đã thanh toán
+                                                                            </span>
+                                                                        </span>
+                                                                    </c:if>
+                                                                    <c:if test="${order.paymentStatus == 'REFUNDED'}">
+                                                                        <span class="css-1e8zcwn e8ptwd0">
+                                                                            <span class="css-z8vxi5 enzfz0r0">
+                                                                                Đã hoàn tiền
+                                                                            </span>
+                                                                        </span>
+                                                                    </c:if>
+                                                                    <c:if
+                                                                        test="${order.paymentStatus == 'PARTIALREFUND'}">
+                                                                        <span class="css-1e8zcwn e8ptwd0">
+                                                                            <span class="css-z8vxi5 enzfz0r0">
+                                                                                Đã hoàn tiền một phần
+                                                                            </span>
+                                                                        </span>
+                                                                    </c:if>
                                                                 </div>
-                                                            </td>
-                                                            <td class="css-166t3yd e160qq0x2">
-                                                                <div class="css-k9p4ua e1ehoxn20">
-                                                                    <div class="css-thtl67 e14jmgg0">
+                                                            </div>
+                                                        </td>
+                                                        <td class="css-166t3yd e160qq0x2">
+                                                            <div class="css-k9p4ua e1ehoxn20">
+                                                                <div class="css-thtl67 e14jmgg0">
+                                                                    <c:if test="${order.deliveryStatus != 'PENDING'}">
+                                                                        <span class="css-1e8zcwn e8ptwd0">
+                                                                            <span class="css-z8vxi5 enzfz0r0">
+                                                                                Đã xử lý giao hàng
+                                                                            </span>
+                                                                        </span>
+                                                                    </c:if>
+                                                                    <c:if test="${order.deliveryStatus == 'PENDING'}">
                                                                         <span class="css-2kmgkw e8ptwd0">
                                                                             <span class="css-z8vxi5 enzfz0r0">
                                                                                 Chưa xử lý
@@ -708,9 +890,10 @@
                                                                                 hàng
                                                                             </span>
                                                                         </span>
-                                                                    </div>
+                                                                    </c:if>
                                                                 </div>
-                                                            </td>
+                                                            </div>
+                                                        </td>
                                                         </tr>
                                                     </c:if>
                                                 </c:forEach>
@@ -742,25 +925,27 @@
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;">
-                                                                            <span
-                                                                                class="css-ii5m0c e7ltd9p0">${order.fullName}
-                                                                            </span>
+                                                                            <c:if test="${order.fullName!=null}">
+                                                                                <span
+                                                                                    class="css-ii5m0c e7ltd9p0">${order.fullName}
+                                                                                </span>
+                                                                            </c:if>
+                                                                            <c:if test="${order.fullName==null}">
+                                                                                <span class="css-ii5m0c e7ltd9p0">Không
+                                                                                    tồn
+                                                                                    tại
+                                                                                </span>
+                                                                            </c:if>
                                                                         </div>
-                                                                    </span></span>
+                                                                    </span>
+                                                                </span>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2"><span
                                                                     class="css-dbt8sz e1nigx955"><span
                                                                         class="css-1qvvvsu enzfz0r0">
                                                                         <div style="width: 125px;"><span
                                                                                 class="css-ii5m0c e7ltd9p0">
-                                                                                <c:if
-                                                                                    test="${order.orderSource == true}">
-                                                                                    Website
-                                                                                </c:if>
-                                                                                <c:if
-                                                                                    test="${order.orderSource == false}">
-                                                                                    Tại quầy
-                                                                                </c:if>
+                                                                                ${order.orderSource}
                                                                             </span></div>
                                                                     </span></span>
                                                             </td>
@@ -779,24 +964,62 @@
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa thanh toán
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa thanh toán
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'COMPLETED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã thanh toán
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'REFUNDED'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.paymentStatus == 'PARTIALREFUND'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã hoàn tiền một phần
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td class="css-166t3yd e160qq0x2">
                                                                 <div class="css-k9p4ua e1ehoxn20">
                                                                     <div class="css-thtl67 e14jmgg0">
-                                                                        <span class="css-2kmgkw e8ptwd0">
-                                                                            <span class="css-z8vxi5 enzfz0r0">
-                                                                                Chưa xử lý
-                                                                                giao
-                                                                                hàng
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus != 'PENDING'}">
+                                                                            <span class="css-1e8zcwn e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Đã xử lý giao hàng
+                                                                                </span>
                                                                             </span>
-                                                                        </span>
+                                                                        </c:if>
+                                                                        <c:if
+                                                                            test="${order.deliveryStatus == 'PENDING'}">
+                                                                            <span class="css-2kmgkw e8ptwd0">
+                                                                                <span class="css-z8vxi5 enzfz0r0">
+                                                                                    Chưa xử lý
+                                                                                    giao
+                                                                                    hàng
+                                                                                </span>
+                                                                            </span>
+                                                                        </c:if>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -809,10 +1032,14 @@
                                     <!-- pagination -->
                                     <div class="css-10rtstj">
                                         <div class="css-12jjl5s">
-                                            <div class="css-thtl67 e14jmgg0"><span class="css-3ciuc3 enzfz0r0">Từ
-                                                    ${lstOrder.meta.page} đến
+                                            <div class="css-thtl67 e14jmgg0">
+                                                <span class="css-3ciuc3 enzfz0r0" id="dispaly-detail-page">
+                                                    Từ
+                                                    <span></span> đến
                                                     ${lstOrder.meta.currentPageElements}
-                                                    trên tổng ${lstOrder.meta.total}</span></div>
+                                                    trên tổng ${lstOrder.meta.total}
+                                                </span>
+                                            </div>
                                             <div class="css-1iytplx e14jmgg0">
                                                 <div class="css-17oe0xs e1ehoxn20">
                                                     <div class="css-thtl67 e14jmgg0">
@@ -825,9 +1052,9 @@
                                                         <div>
                                                             <div class="css-0 e1d2ile02">
                                                                 <div class="css-bjn8wh e115wh4o5">
-                                                                    <select id="slectPageSize">
+                                                                    <select id="selectPageSize">
                                                                         <option value="5">5</option>
-                                                                        <option value="10">10</option>
+                                                                        <option selected value="10">10</option>
                                                                         <option value="20">20</option>
                                                                     </select>
                                                                 </div>
@@ -841,7 +1068,8 @@
                                             </div>
                                             <div class="css-thtl67 e14jmgg0">
                                                 <div class="css-18c5rtc e1lvcblw0">
-                                                    <button disabled="" class="css-1u0jvzv e1lvcblw2"><span
+                                                    <button class="css-1u0jvzv e1lvcblw2 decrease-btn"
+                                                        style="border: none;background-color: #fff;"><span
                                                             class="css-rkie3g e16p30ob1"><svg
                                                                 xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                 viewBox="0 0 24 24" focusable="false"
@@ -851,8 +1079,9 @@
                                                                 </path>
                                                             </svg></span>
                                                     </button>
-                                                    <button class="css-1abf0ql e1lvcblw2">1</button>
-                                                    <button disabled="" class="css-1u0jvzv e1lvcblw2"><span
+                                                    <button class="css-1abf0ql e1lvcblw2 quantity-display">1</button>
+                                                    <button class="css-1u0jvzv e1lvcblw2 increase-btn"
+                                                        style="border: none;background-color: #fff;"><span
                                                             class="css-rkie3g e16p30ob1"><svg
                                                                 xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                 viewBox="0 0 24 24" focusable="false"
@@ -881,38 +1110,8 @@
                 <script src="/admin/js/order/order-management-2.js"></script>
                 <script src="/common/toast.js"></script>
                 <script>
-                    const searchInput = document.getElementById('searchInput');
-
-                    searchInput.addEventListener('input', function (event) {
-                        // Lấy giá trị hiện tại của ô input
-                        const currentValue = event.target.value;
-                        // Hiển thị giá trị đó
-                        console.log(currentValue)
-                    });
-                    function openTab(tabId) {
-                        var tabContents = document.querySelectorAll('.tab-content');
-                        let activeTab = document.getElementById(tabId);
-                        let tabButtons = document.getElementsByClassName('css-1hfoem2');
-                        let tabBtn = document.getElementById(tabId + '-btn')
-
-                        for (i = 0; i < tabButtons.length; i++) {
-                            tabButtons[i].style.borderBottom = "none";
-                            tabButtons[i].style.color = "rgb(116, 124, 135)";
-                        }
-
-                        tabBtn.style.borderBottom = '2px #4CAF50 solid';
-                        tabBtn.style.color = '#4CAF50';
-
-                        tabContents.forEach(tabContent => tabContent.style.display = 'none');
-                        activeTab.style.display = 'table-row-group'
-                    }
-
                     function openUrl(url) {
                         window.location.href = "/admin/orders/" + url;
-                    }
-
-                    window.onload = function () {
-                        openTab('tab1'); // Mở tab1 khi trang tải
                     }
                 </script>
             </body>

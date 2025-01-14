@@ -13,11 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.turkraft.springfilter.boot.Filter;
 
 import java.util.UUID;
 
@@ -25,6 +29,7 @@ import java.util.UUID;
 import jakarta.validation.Valid;
 import vn.duantn.sominamshop.model.*;
 import vn.duantn.sominamshop.model.dto.response.ProductResponse;
+import vn.duantn.sominamshop.model.dto.response.ResProductDetailSearchDTO;
 import vn.duantn.sominamshop.service.*;
 
 @Controller
@@ -339,7 +344,12 @@ public class ProductController {
         return "admin/product/index";
     }
 
+     @GetMapping("/search")
+    public ResponseEntity<List<ResProductDetailSearchDTO>> getAllProduct(
+            @Filter Specification<Product> spec) {
 
+        return ResponseEntity.ok().body(this.productService.fetchAllProduct(spec));
+    }
 
 }
 

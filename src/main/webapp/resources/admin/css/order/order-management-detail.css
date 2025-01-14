@@ -163,6 +163,12 @@
     color: rgb(228, 156, 6);
 }
 
+.status-canceled {
+    outline: rgb(255, 184, 184) solid 1px;
+    background-color: rgb(255, 246, 246);
+    color: rgb(238, 71, 71);
+}
+
 
 .header .status span:last-child,
 .header .order__status .status {
@@ -529,4 +535,17 @@
 
 #textReasonReturn {
     padding: 5px;
+}
+
+#modalOverlayEditAddress input,
+#modalOverlayEditAddress select {
+    border: 1px solid rgb(211, 213, 215);
+    outline: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+#modalOverlayEditAddress .span-margin span {
+    margin-bottom: 6px;
 }

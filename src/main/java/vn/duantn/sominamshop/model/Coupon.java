@@ -12,7 +12,6 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.*;
 
-
 import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
@@ -56,11 +55,16 @@ public class Coupon {
     @Column(name = "status")
     private boolean status;
 
+     @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     private String createdBy;
     private String updatedBy;
 
     @PrePersist
     public void handleBeforeCreate() {
+        this.createdAt = LocalDateTime.now();
+        
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
