@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import vn.duantn.sominamshop.model.Category;
 import vn.duantn.sominamshop.model.Material;
-import vn.duantn.sominamshop.service.CategoryService;
-import vn.duantn.sominamshop.service.ColorService;
-import vn.duantn.sominamshop.service.MaterialService;
-import vn.duantn.sominamshop.service.SizeService;
+import vn.duantn.sominamshop.model.Origin;
+import vn.duantn.sominamshop.model.Pattern;
+import vn.duantn.sominamshop.service.*;
 
 import java.util.List;
 @Controller
@@ -20,6 +19,12 @@ public class AddProductController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    PatternService patternService;
+
+    @Autowired
+    OriginService originService;
 
     @Autowired
     ColorService colorService;
@@ -41,6 +46,13 @@ public class AddProductController {
 
         List<Material> listMaterial = materialService.getAllActive();
         model.addAttribute("listMaterial", listMaterial);
+
+        List<Origin> listOrigin = originService.getAllActive();
+        model.addAttribute("listOrigin", listOrigin);
+
+
+        List<Pattern> listPattern = patternService.getAllActive();
+        model.addAttribute("listPattern", listPattern);
 
 //        List<Size> listSize = sizeService.getAllActive();
 //        model.addAttribute("listSize", listSize);

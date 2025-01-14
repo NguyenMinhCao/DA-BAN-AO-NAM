@@ -51,6 +51,7 @@ public class Product extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "product")
     private List<ProductDetail> productDetails;
 
+
     public Integer getStatus() {
         if (status == null) {
             return 0;
@@ -65,5 +66,6 @@ public class Product extends BaseEntity implements Serializable {
             this.status = status;
         }
     }
+
 
 }

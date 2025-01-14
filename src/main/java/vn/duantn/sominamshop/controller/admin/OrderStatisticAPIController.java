@@ -22,7 +22,7 @@ public class OrderStatisticAPIController {
     public List<OrderStaticDTO> getOrderStatistics() {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate = sdf.parse("2024-01-01");
+            Date startDate = sdf.parse("2025-01-01");
             Date endDate = sdf.parse("2025-12-31");
             return orderService.getOrderStatisticsByMonth(startDate, endDate);
         } catch (Exception e) {

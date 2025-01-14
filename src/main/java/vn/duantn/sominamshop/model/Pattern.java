@@ -8,19 +8,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import vn.duantn.sominamshop.util.SecurityUtil;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "patterns")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pattern {
+public class Pattern extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -28,20 +28,7 @@ public class Pattern {
   @Column(name = "pattern_name", columnDefinition = "NVARCHAR(255)")
   private String patternName;
 
-  private String createdBy;
-  private String updatedBy;
+  @Column(name = "status")
+  private Integer status;
 
-  @PrePersist
-  public void handleBeforeCreate() {
-    this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-        ? SecurityUtil.getCurrentUserLogin().get()
-        : "";
-  }
-
-  @PreUpdate
-  public void handleBeforeUpdate() {
-    this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-        ? SecurityUtil.getCurrentUserLogin().get()
-        : "";
-  }
 }

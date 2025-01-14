@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.duantn.sominamshop.model.Category;
 import vn.duantn.sominamshop.model.Color;
 import vn.duantn.sominamshop.model.Origin;
 import vn.duantn.sominamshop.repository.OriginRepository;
@@ -69,6 +70,8 @@ public class OriginService {
         }
         return null;
     }
-
+    public List<Origin> getAllActive() {
+        return originRepository.getAllActive();
+    }
 
 }

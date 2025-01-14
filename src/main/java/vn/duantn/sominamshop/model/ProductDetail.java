@@ -54,7 +54,5 @@ public class ProductDetail {
     @OneToMany(mappedBy = "productDetail")
     private List<Image> images;
 
-    @Transient
-    private List<MultipartFile> imagesFiles = new ArrayList<>();
 
 }

@@ -14,37 +14,34 @@ import vn.duantn.sominamshop.model.dto.response.ProductResponse;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
-
-        // @Query("SELECT p FROM Product p LEFT JOIN FETCH p.images WHERE p.id =
-        // :productId")
-        // Optional<Product> findProductWithImages(@Param("productId") Long productId);
-        //
-        // @Query("SELECT p FROM Product p " +
-        // "JOIN FETCH p.category " +
-        // "JOIN FETCH p.color " +
-        // "JOIN FETCH p.material " +
-        // "JOIN FETCH p.origin " +
-        // "JOIN FETCH p.pattern " +
-        // "JOIN FETCH p.size " +
-        // "WHERE p.id = :productId")
-        // Product findByIdWithRelations(@Param("productId") Long productId);
-        //
-        // Page<Product> findAll(Pageable pageable);
-        //
-        // Page<Product> findByNameContaining(String name, Pageable pageable);
-        //
-        // boolean existsByName(String name);
-
-        // Page<CounterProductProjection> findAllProductByName(Pageable pageable,
-        // @Param(value = "name") String name);
-        //
-        // @Modifying
-        // @Query("UPDATE Product p set p.quantity = p.quantity - :quantity WHERE p.id =
-        // :id")
-        // void updateQuantityProduct(@Param("quantity") Long quantity, @Param("id")
-        // Long id);
-        //
-        // Page<Product> findByColorId(Long colorId, Pageable pageable);
+        // @Query(value = """
+        // SELECT
+        // new vn.duantn.sominamsh.o.model.response.ProductResponseClient(
+        // p.id,
+        // p.name,
+        // COALESCE((SELECT MAX(i.urlImage) FROM Image i WHERE i.product.id = p.id),
+        // ''),
+        // p.description,
+        // MIN(pd.price) as minPrice,
+        // MAX(pd.price) as maxPrice,
+        // p.status,
+        // 0 AS discount
+        // )
+        // FROM
+        // Product p
+        // LEFT JOIN
+        // p.productDetails pd
+        // LEFT JOIN
+        // p.images i
+        // WHERE
+        // i.id = (SELECT MIN(id) FROM Image WHERE product.id = p.id) AND
+        // p.status = 0
+        // GROUP BY
+        // p.id, p.name, p.description, p.status
+        // ORDER BY
+        // p.id
+        // """)
+        // Page<ProductResponseClient> pageProductResponse(Pageable pageable);
 
         List<Product> findByName(String name);
 
@@ -60,7 +57,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
                         "LEFT JOIN\n" +
                         "    product_details pd ON p.id = pd.product_id\n" +
                         "LEFT JOIN\n" +
-                        "    images i ON pd.id = i.product_detail_id\n" +
+                        "    images i ON pd.id = i.product_detail_id AND i.is_main = 1\n" +
                         "GROUP BY\n" +
                         "    p.id, p.name, p.description, p.status, i.url_image\n" +
                         "ORDER BY p.id", nativeQuery = true)
@@ -122,5 +119,4 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
         // p.id
         // """)
         // Page<ProductResponseClient> pageProductResponse(Pageable pageable);
-
 }

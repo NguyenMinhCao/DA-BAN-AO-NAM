@@ -154,18 +154,14 @@ function getListURL(productId) {
 
 
 function displayImages(listUrlImage) {
-    // Xóa sạch nội dung cũ
     $("#thumbbox").empty();
 
-    // Lấy base URL (http://localhost:8080)
     var baseUrl = window.location.origin;
 
-    // Lặp qua danh sách URL để thêm ảnh
     listUrlImage.forEach(function (url) {
         // Tạo đường dẫn đầy đủ
         var fullUrl = baseUrl + url;
 
-        // Thêm ảnh vào thumbbox
         var imageElement = `
             <div class="image-product-container">
                 <img src="${fullUrl}" alt="Product Image" class="thumbimage" />
@@ -177,7 +173,6 @@ function displayImages(listUrlImage) {
 }
 
 
-// Gọi hàm khi tài liệu sẵn sàng
 $(document).ready(function () {
     var productId = 1; // Thay bằng ID sản phẩm thực tế
     getListURL(productId); // Gọi hàm lấy URL ảnh

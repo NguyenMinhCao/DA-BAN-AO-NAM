@@ -309,3 +309,39 @@ a.css-67mbka:hover {
     border-radius: 6px;
     margin-left: 10px;
 }
+
+.minimum-total-value {
+    padding: 5px 0;
+}
+
+.minimum-total-value .input-limit-use {
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+.minimum-total-value .enter-minium-value {
+    display: inline-flex;
+    margin-left: 17px;
+    margin-top: 5px;
+}
+
+.minimum-total-value .input-minium-total-value {
+    border: none;
+    border-radius: 6px;
+    padding: 0 7px;
+    outline: none;
+}
+
+.span-display-dong {
+    padding: 0px 14px;
+    margin: auto;
+}
+
+.css-padding-5px {
+    padding: 5px 0;
+}
+
+#fixed-section,
+#percentage-section {
+    display: none;
+}

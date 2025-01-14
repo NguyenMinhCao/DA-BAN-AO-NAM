@@ -231,12 +231,12 @@
                 <tbody>
                 <c:forEach var="product" items="${lowStockProducts}">
                     <tr>
-                        <td>${product.name}</td>
-                        <td>${product.size.sizeName}</td>
-                        <td>${product.color.colorName}</td>
-                        <td>${product.price}</td>
-                        <td>${product.quantity}</td>
-                        <td>${product.price * product.quantity}</td>
+                        <td>${product.productName}</td>
+                        <td>${product.productDetail.size.sizeName}</td>
+                        <td>${product.productDetail.color.colorName}</td>
+                        <td>${product.productDetail.price}</td>
+                        <td>${product.productDetail.quantity}</td>
+                        <td>${product.productDetail.price * product.productDetail.quantity}</td>
                     </tr>
                 </c:forEach>
 

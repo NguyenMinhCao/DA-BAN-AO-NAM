@@ -14,6 +14,7 @@ public class ImageRequest {
     private Long detailId;
     private String urlImage;
     private Integer status;
+    private Integer isMain;
 
     public Image map(Image image) {
         if (this.detailId == null) {
@@ -23,6 +24,7 @@ public class ImageRequest {
         image.setProductDetail(productDetail);
         image.setUrlImage(this.urlImage);
         image.setStatus(this.status);
+        image.setIsMain(this.isMain);
         return image;
     }
 

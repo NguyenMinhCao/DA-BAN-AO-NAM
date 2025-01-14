@@ -59,18 +59,18 @@
                                                 <span class="heading-header">Giá trị</span>
                                             </div>
                                             <div class="pading-20 coupon-value">
-
                                                 <div class="d-flex" style="gap: 15px;">
-
                                                     <div class="">
                                                         <span style="margin-bottom: 5px;display: block">Giá trị khuyến
                                                             mại</span>
                                                         <div class="border-common d-flex" style="width: 139px;">
+                                                            <!-- theo dữ server trả về  -->
                                                             <c:if test="${couponById.discountType == 'PERCENTAGE'}">
                                                                 <button class="btn-fixed">Số tiền</button>
                                                                 <button
                                                                     class="btn-percient back-ground-focus">%</button>
                                                             </c:if>
+                                                            <!-- theo dữ server trả về  -->
                                                             <c:if test="${couponById.discountType == 'FIXED'}">
                                                                 <button class="btn-fixed back-ground-focus">Số
                                                                     tiền</button>
@@ -78,18 +78,21 @@
                                                             </c:if>
                                                         </div>
                                                     </div>
-                                                    <c:if test="${couponById.discountType == 'FIXED'}">
-                                                        <div class="d-flex flex-column justify-content-end">
-                                                            <span> </span>
-                                                            <div class="border-common">
-                                                                <input type="text"
-                                                                    value="${couponById.discountValueFixed}"
-                                                                    class="input-percent">
-                                                                <span style="padding: 0px 14px;">đ</span>
-                                                            </div>
+
+                                                    <!-- Phần Giảm Giá Theo fixed -->
+                                                    <div id="fixed-section"
+                                                        class="d-flex flex-column justify-content-end">
+                                                        <span> </span>
+                                                        <div class="border-common">
+                                                            <input type="text" value="${couponById.discountValueFixed}"
+                                                                class="input-percent">
+                                                            <span style="padding: 0px 14px;">đ</span>
                                                         </div>
-                                                    </c:if>
-                                                    <c:if test="${couponById.discountType == 'PERCENTAGE'}">
+                                                    </div>
+
+                                                    <!-- Phần Giảm Giá Theo Phần Trăm -->
+                                                    <div id="percentage-section" class="discount-section d-flex"
+                                                        style="gap: 15px;">
                                                         <div class="d-flex flex-column justify-content-end">
                                                             <span> </span>
                                                             <div class="border-common">
@@ -100,16 +103,15 @@
                                                             </div>
                                                         </div>
                                                         <div class="">
-                                                            <span style="margin-bottom: 5px;display: block">Giá trị giảm
-                                                                tối
-                                                                đa</span>
+                                                            <span style="margin-bottom: 5px; display: block">Giá trị
+                                                                giảm tối đa</span>
                                                             <div class="border-common">
                                                                 <input type="text" class="input-max"
                                                                     value="${couponById.maximumReduction}">
                                                                 <span style="padding: 0px 14px;">đ</span>
                                                             </div>
                                                         </div>
-                                                    </c:if>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -122,36 +124,34 @@
                                             <div class="pading-20">
                                                 <div class="" style="padding: 5px 0;">
                                                     <c:if test="${couponById.minimumValue == null}">
-                                                        <input type="radio" checked>
+                                                        <input type="radio" checked id="checked-nothing"
+                                                            name="minimumValueOption">
                                                     </c:if>
                                                     <c:if test="${couponById.minimumValue != null}">
-                                                        <input type="radio">
+                                                        <input type="radio" id="checked-nothing"
+                                                            name="minimumValueOption">
                                                     </c:if>
                                                     <span>Không có</span>
                                                 </div>
 
-                                                <!-- <div class="" style="padding: 5px 0;">
-                                                    <input type="radio">
-                                                    <span>Tổng giá trị đơn hàng tối thiểu</span>
-                                                </div> -->
-                                                <div class="" style="padding: 5px 0;">
+                                                <div class="minimum-total-value">
                                                     <div class="">
-                                                        <input type="radio" checked>
+                                                        <c:if test="${couponById.minimumValue != null}">
+                                                            <input type="radio" name="minimumValueOption"
+                                                                id="checked-yes" checked>
+                                                        </c:if>
+                                                        <c:if test="${couponById.minimumValue == null}">
+                                                            <input type="radio" name="minimumValueOption"
+                                                                id="checked-yes">
+                                                        </c:if>
                                                         <span>Tổng giá trị đơn hàng tối thiểu</span>
                                                     </div>
-                                                    <c:if test="${couponById.minimumValue == null}">
-                                                        <input type="text" class="border-common"
-                                                            style="margin-left: 20px;margin-top: 5px;">
-                                                    </c:if>
-                                                    <c:if test="${couponById.minimumValue != null}">
-                                                        <div class="border-common"
-                                                            style="display: inline-flex;margin-left: 17px;margin-top: 5px;">
-                                                            <input type="text" class="input-max"
-                                                                value="${couponById.maximumReduction}"
-                                                                style="border: none;border-radius: 6px;padding: 0 7px;">
-                                                            <span style="padding: 0px 14px; margin: auto;">đ</span>
-                                                        </div>
-                                                    </c:if>
+                                                    <div class="border-common enter-minium-value"
+                                                        id="minimum-value-input">
+                                                        <input type="text" class="input-max input-minium-total-value"
+                                                            value="${couponById.maximumReduction}">
+                                                        <span class="span-display-dong">đ</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -162,11 +162,13 @@
                                             </div>
 
                                             <div class="pading-20">
-                                                <div class="" style="padding: 5px 0;">
+                                                <div class="css-padding-5px">
                                                     <input type="checkbox">
                                                     <span>Giới hạn sử dụng</span>
+                                                    <input type="text" class="input-max"
+                                                        value="${couponById.maximumReduction}">
                                                 </div>
-                                                <div class="" style="padding: 5px 0;">
+                                                <div class="css-padding-5px">
                                                     <input type="checkbox">
                                                     <span>Giới hạn mỗi khách hàng chỉ được sử dụng mã giảm giá này 1
                                                         lần</span>
@@ -245,6 +247,7 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                 crossorigin="anonymous"></script>
             <script src="/admin/js/scripts.js"></script>
+            <script src="/admin/js/coupon/coupon.js"></script>
         </body>
 
         </html>
