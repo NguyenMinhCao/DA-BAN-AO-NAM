@@ -476,6 +476,7 @@ public class OrderService {
 
     public List<OrderDetailDTO> getOrderDetailByOrderId(Long id) {
         List<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailByOrderId(id);
+
         orderDetails.forEach(item -> System.out.println(item.getProductDetail().getPrice() + ": giá sản phẩm trong này"));
         List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO :: toOrderDetailDTO).collect(Collectors.toList());
         return orderDetailDTOS;

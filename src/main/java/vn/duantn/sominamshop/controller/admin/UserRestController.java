@@ -88,8 +88,8 @@ public class UserRestController {
     }
     @PutMapping("/update/customer")
     public ResponseEntity<?> updateCustomer(
-            @RequestPart(name = "user") String userJson,
-            @RequestPart(name = "file") MultipartFile file) throws JsonProcessingException {
+            @RequestPart(name = "user" ) String userJson,
+            @RequestPart(name = "file", required = false) MultipartFile file) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         User user = objectMapper.readValue(userJson, User.class);

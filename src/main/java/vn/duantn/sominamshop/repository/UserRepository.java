@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "where u.fullName like concat('%', :fullName, '%') and rl.id = 2")
     Page<User> findByFullNameContainingAndRole(@Param("fullName") String fullName, Pageable pageable);
 
-    boolean existsByPhoneNumber(String phone);
+    boolean existsByPhoneNumberAndRole(String phone, Role role);
 
     List<User> findByPhoneNumberStartingWith(String prefix);
 }

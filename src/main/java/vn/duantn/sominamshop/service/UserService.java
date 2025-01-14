@@ -96,7 +96,7 @@ public class UserService {
 
     public Map<String, String> validateCustomerData(User user) {
         Map<String, String> errors = new HashMap<>();
-        if (!user.getPhoneNumber().isEmpty() && userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+        if (!user.getPhoneNumber().isEmpty() && userRepository.existsByPhoneNumberAndRole(user.getPhoneNumber(), Role.builder().id(2).build())) {
             errors.put("phoneNumber", "Phone number already exists.");
         }
         if (!user.getEmail().isEmpty() && this.checkEmailExits(user.getEmail())) {

@@ -1,6 +1,7 @@
 package vn.duantn.sominamshop.model.dto;
 
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,16 +18,17 @@ import java.time.LocalDateTime;
 @Builder
 public class CouponDTO {
     private long id;
-
     private String couponCode;
+    private DiscountType discountType;// kiểu giảm
+    private double discountValueFixed; //số tiền giảm
 
-    private DiscountType discountType;
+    private int discountValuePercent;//sô phần trăm giảm
 
-    private String discountValue;
+    private double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
 
-    private BigDecimal minOrderValue;
+    private double minimumValue;// giá trị đơn hàng tối thiểu được sử dụng mã giảm gía
 
-    private Integer usageLimit;
+    private int usageLimit;// giới hạn sử dụng
 
     private LocalDateTime startDate;
 
@@ -41,13 +43,15 @@ public class CouponDTO {
         return CouponDTO.builder()
                 .id(coupon.getId())
                 .couponCode(coupon.getCouponCode())
+                .status(coupon.isStatus())
+                .usageLimit(coupon.getUsageLimit())
+                .discountType(coupon.getDiscountType())
                 .endDate(coupon.getEndDate())
                 .startDate(coupon.getStartDate())
-                .discountType(coupon.getDiscountType())
-                .minOrderValue(coupon.getMinOrderValue())
-                .usageLimit(coupon.getUsageLimit())
-                .status(coupon.isStatus())
-                .discountValue(coupon.getDiscountValue())
+                .discountValueFixed(coupon.getDiscountValueFixed())
+                .discountValuePercent(coupon.getDiscountValuePercent())
+                .minimumValue(coupon.getMinimumValue())
+                .maximumReduction(coupon.getMaximumReduction())
                 .build();
     }
 }
