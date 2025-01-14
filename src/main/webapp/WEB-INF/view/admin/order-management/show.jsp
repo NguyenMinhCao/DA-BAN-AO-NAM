@@ -144,14 +144,19 @@
                                                 <c:forEach items="${lstOrder.result}" var="order" varStatus="i">
                                                     <tr class="css-1n5r022" onclick="openUrl('${order.id}')">
                                                         <td class="css-166t3yd e160qq0x2">
-                                                            <div class="css-1xdhyk6 e1f1ig8p0"><a
-                                                                    class="css-1w5iufu ehy6p5f0"
+                                                            <div class="css-1xdhyk6 e1f1ig8p0">
+                                                                <a class="css-1w5iufu ehy6p5f0"
                                                                     href="/admin/orders/${order.id}">
-                                                                    <div style="display: flex;"><span
-                                                                            class="css-dbt8sz e1nigx955"><span
-                                                                                class="css-1qvvvsu enzfz0r0">#</span></span><span
-                                                                            class="css-dbt8sz e1nigx955"><span
-                                                                                class="css-1qvvvsu enzfz0r0">${order.id}</span></span>
+                                                                    <div style="display: flex;">
+                                                                        <span class="css-dbt8sz e1nigx955">
+                                                                            <span class="css-1qvvvsu enzfz0r0">#
+                                                                            </span>
+                                                                        </span>
+                                                                        <span class="css-dbt8sz e1nigx955">
+                                                                            <span
+                                                                                class="css-1qvvvsu enzfz0r0">${order.id}
+                                                                            </span>
+                                                                        </span>
                                                                     </div>
                                                                 </a>
                                                             </div>

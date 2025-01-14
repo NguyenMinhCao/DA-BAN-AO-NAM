@@ -1,6 +1,8 @@
 package vn.duantn.sominamshop.controller.admin;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.turkraft.springfilter.boot.Filter;
@@ -38,9 +41,18 @@ public class CouponController {
         return ResponseEntity.ok().body(this.couponService.fetchAllCoupons(spec, pageable));
     }
 
-    @GetMapping("/coupon/edit")
-    public String getDetailCoupon() {
-        return "admin/coupon/edit";
+    @GetMapping("/coupon/{id}/edit")
+    public String getDetailCoupon(@PathVariable Long id, Model model) {
+        Optional<Coupon> couponById = this.couponService.findCouponById(id);
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String startDate = couponById.get().getStartDate().format(formatter);
+        String endDate = couponById.get().getEndDate().format(formatter);
+
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("couponById", couponById.get());
+        return "admin/coupon/detail";
     }
 
     @GetMapping("/coupon/add")

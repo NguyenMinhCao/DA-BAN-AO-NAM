@@ -1,11 +1,9 @@
 package vn.duantn.sominamshop.service;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,11 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.duantn.sominamshop.model.Coupon;
-import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.constants.OrderStatus;
-import vn.duantn.sominamshop.model.dto.PromotionDTO;
 import vn.duantn.sominamshop.model.dto.response.ResCouponDTO;
-import vn.duantn.sominamshop.model.dto.response.ResOrderDTO;
 import vn.duantn.sominamshop.model.dto.response.ResultPaginationDTO;
 import vn.duantn.sominamshop.repository.CouponRepository;
 
@@ -33,7 +27,7 @@ public class CouponService {
         return this.couponRepository.findAll();
     }
 
-    public Optional<Coupon> findPromotionById(Long id) {
+    public Optional<Coupon> findCouponById(Long id) {
         return this.couponRepository.findById(id);
     }
 

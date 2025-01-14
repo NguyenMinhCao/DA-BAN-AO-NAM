@@ -89,24 +89,39 @@
                                             <th>Ngày kết thúc</th>
                                         </thead>
                                         <tbody>
-                                            <t:forEach items="${lstCoupons}" var="coupon">
-                                                <tr>
+                                            <c:forEach items="${lstCoupons}" var="coupon">
+                                                <tr id-coupon="${coupon.id}" onclick="openUrl('${coupon.id}')">
                                                     <td>
                                                         <div class="coupon-code">
                                                             <span>${coupon.couponCode}</span>
                                                         </div>
-                                                        <div class="coupon-discount-value">
-                                                            <span>Giảm 10% tối đa 20.000 đ</span>
-                                                        </div>
+                                                        <c:if test="${coupon.discountType == 'FIXED'}">
+                                                            <div class="coupon-discount-value">
+                                                                <span>Giảm ${coupon.discountValueFixed} cho toàn bộ đơn
+                                                                    hàng</span>
+                                                            </div>
+                                                        </c:if>
+                                                        <c:if test="${coupon.discountType == 'PERCENTAGE'}">
+                                                            <div class="coupon-discount-value">
+                                                                <span>Giảm ${coupon.discountValuePercent}% tối đa
+                                                                    ${coupon.maximumReduction}
+                                                                    đ</span>
+                                                            </div>
+                                                        </c:if>
                                                     </td>
                                                     <td>
-                                                        <span class="css-gr2olx">Đang hoạt động</span>
+                                                        <c:if test="${coupon.status == true}">
+                                                            <span class="css-gr2olx">Đang hoạt động</span>
+                                                        </c:if>
+                                                        <c:if test="${coupon.status == false}">
+                                                            <span class="css-gr2olx">Không hoạt động</span>
+                                                        </c:if>
                                                     </td>
-                                                    <td><span>0</span></td>
+                                                    <td><span>${coupon.usageLimit}</span></td>
                                                     <td><span> 12/01/2025 14:30</span></td>
                                                     <td><span> 12/01/2025 14:30</span></td>
                                                 </tr>
-                                            </t:forEach>
+                                            </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>
@@ -141,6 +156,11 @@
                 crossorigin="anonymous"></script>
             <script src="/admin/js/scripts.js"></script>
             <script src="/admin/js/coupon/coupon.js"></script>
+            <script>
+                function openUrl(url) {
+                    window.location.href = "/admin/coupon/" + url + "/edit";
+                }
+            </script>
         </body>
 
         </html>

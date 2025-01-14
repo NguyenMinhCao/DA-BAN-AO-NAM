@@ -256,9 +256,12 @@ a.css-67mbka:hover {
 
 .btn-percient {
     border: none;
-    background-color: rgb(0, 136, 255);
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
+}
+
+.back-ground-focus {
+    background-color: rgb(0, 136, 255);
     color: #fff;
 }
 
