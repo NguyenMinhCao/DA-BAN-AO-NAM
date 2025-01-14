@@ -1109,7 +1109,11 @@
                 <script src="/admin/js/order/order-management.js"></script>
                 <script src="/admin/js/order/order-management-2.js"></script>
                 <script src="/common/toast.js"></script>
-
+                <script>
+                    function openUrl(url) {
+                        window.location.href = "/admin/orders/" + url;
+                    }
+                </script>
             </body>
 
             </html>

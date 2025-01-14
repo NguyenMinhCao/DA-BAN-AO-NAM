@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("api/admin/order")
 @RequiredArgsConstructor
 public class OrderRestController {
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
     private final OrderService orderService;
     private final ColorService colorService;
     private final SizeService sizeService;
@@ -58,12 +58,12 @@ public class OrderRestController {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderDetailByOrderId(id));
     }
 
-    @GetMapping("/get/promotions")
-    public ResponseEntity<List<PromotionDTO>> getPromotion(
-            @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue) {
-        List<PromotionDTO> promotionDTOList = promotionService.getPromotion(orderValue);
-        return ResponseEntity.ok(promotionDTOList);
-    }
+    // @GetMapping("/get/promotions")
+    // public ResponseEntity<List<PromotionDTO>> getPromotion(
+    //         @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue) {
+    //     List<PromotionDTO> promotionDTOList = promotionService.getPromotion(orderValue);
+    //     return ResponseEntity.ok(promotionDTOList);
+    // }
 
     @PostMapping("/save/invoice")
     public ResponseEntity<OrderDTO> saveInvoice(@RequestBody Order order) {

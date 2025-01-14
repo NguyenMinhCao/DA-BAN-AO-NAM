@@ -7,12 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.duantn.sominamshop.model.*;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.request.ProductRequest;
 import vn.duantn.sominamshop.model.dto.response.ProductResponse;
+import vn.duantn.sominamshop.model.dto.response.ResProductDetailSearchDTO;
 import vn.duantn.sominamshop.repository.*;
 
 @Service
@@ -49,36 +51,37 @@ public class ProductService {
         return this.productRepository.save(product);
     }
 
-
-    //    @Transactional
-//    public Product saveProduct(Product product) {
-//        Product savedProduct = productRepository.save(product);
-//
-//        if (product.getVariants() != null) {
-//            for (ProductDetail variant : product.getVariants()) {
-//                variant.setProduct(savedProduct);
-//                productDetailRepository.save(variant);
-//            }
-//        }
-//        return savedProduct;
-//    }
-//    public Product findProductById(long id) {
-//        Optional<Product> prOptional = this.productRepository.findById(id);
-//        return prOptional.get();
-//    }
-//
-//    public Product findProductByIdWithImg(long id) {
-//        Optional<Product> prOptional = this.productRepository.findProductWithImages(id);
-//        return prOptional.get();
-//    }
-////
-//    public boolean existsByName(String name) {
-//        return productRepository.existsByName(name);
-//    }
-//
+    // @Transactional
+    // public Product saveProduct(Product product) {
+    // Product savedProduct = productRepository.save(product);
+    //
+    // if (product.getVariants() != null) {
+    // for (ProductDetail variant : product.getVariants()) {
+    // variant.setProduct(savedProduct);
+    // productDetailRepository.save(variant);
+    // }
+    // }
+    // return savedProduct;
+    // }
+    // public Product findProductById(long id) {
+    // Optional<Product> prOptional = this.productRepository.findById(id);
+    // return prOptional.get();
+    // }
+    //
+    // public Product findProductByIdWithImg(long id) {
+    // Optional<Product> prOptional =
+    // this.productRepository.findProductWithImages(id);
+    // return prOptional.get();
+    // }
+    ////
+    // public boolean existsByName(String name) {
+    // return productRepository.existsByName(name);
+    // }
+    //
 
     public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name) {
-        Page<CounterProductProjection> pageCounterRespone = productDetailRepository.findAllProductByName(pageable, name);
+        Page<CounterProductProjection> pageCounterRespone = productDetailRepository.findAllProductByName(pageable,
+                name);
         return pageCounterRespone;
     }
     //
@@ -182,6 +185,33 @@ public class ProductService {
         Integer end = (start + pageable.getPageSize()) > list.size() ? list.size() : start + pageable.getPageSize();
         list = list.subList(start, end);
         return new PageImpl<>(list, pageable, searchProductName(keyWord).size());
+    }
+
+    @Transactional
+    public List<ResProductDetailSearchDTO> fetchAllProduct(Specification<Product> spec) {
+        List<Product> lstProducts = this.productRepository.findAll(spec);
+
+        List<ResProductDetailSearchDTO> resLst = new ArrayList<>();
+        List<ProductDetail> listProductDetails = new ArrayList<>();
+
+        for (Product product : lstProducts) {
+            listProductDetails.addAll(product.getProductDetails());
+        }
+
+        for (ProductDetail productDetail : listProductDetails) {
+            ResProductDetailSearchDTO res = new ResProductDetailSearchDTO();
+            res.setId(productDetail.getId());
+            res.setName(productDetail.getProduct().getName());
+            res.setPrice(productDetail.getPrice());
+            res.setSizeName(productDetail.getSize().getSizeName());
+            res.setColorName(productDetail.getColor().getColorName());
+            res.setUrlImage(
+                    productDetail.getImages().size() > 0 ? productDetail.getImages().get(0).getUrlImage() : null);
+            res.setQuantity(productDetail.getQuantity());
+            resLst.add(res);
+        }
+
+        return resLst;
     }
 
     // public Page<ProductResponseClient> pageProductResponse(Pageable pageable) {

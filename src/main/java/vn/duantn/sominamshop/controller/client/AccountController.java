@@ -17,7 +17,7 @@ import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.OrderService;
-import vn.duantn.sominamshop.service.PromotionService;
+import vn.duantn.sominamshop.service.CouponService;
 import vn.duantn.sominamshop.service.UploadService;
 import vn.duantn.sominamshop.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,6 +90,13 @@ public class AccountController {
         model.addAttribute("userByEmail", userByEmail);
 
         return "client/account/order-show";
+    }
+
+    @GetMapping("/user/change-pass")
+    public String getViewChangePass(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        return "client/account/change-pass";
     }
 
 }

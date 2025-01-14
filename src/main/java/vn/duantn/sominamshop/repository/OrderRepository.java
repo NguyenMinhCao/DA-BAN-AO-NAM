@@ -15,10 +15,7 @@ import vn.duantn.sominamshop.model.Order;
 import java.math.BigDecimal;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-
-import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;

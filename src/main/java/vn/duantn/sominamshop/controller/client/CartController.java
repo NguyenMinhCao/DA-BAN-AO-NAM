@@ -28,7 +28,7 @@ import vn.duantn.sominamshop.service.CartService;
 import vn.duantn.sominamshop.service.OrderService;
 import vn.duantn.sominamshop.service.ProductDetailService;
 import vn.duantn.sominamshop.service.ProductService;
-import vn.duantn.sominamshop.service.PromotionService;
+import vn.duantn.sominamshop.service.CouponService;
 import vn.duantn.sominamshop.service.UserService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,12 +40,12 @@ public class CartController {
     private final CartService cartService;
     private final UserService userService;
     private final AddressService addressService;
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
     private final OrderService orderService;
     private final ProductDetailService productDetailService;
 
     public CartController(ProductService productService, UserService userService, AddressService addressService,
-            CartService cartService, PromotionService promotionService, OrderService orderService,
+            CartService cartService, CouponService promotionService, OrderService orderService,
             ProductDetailService productDetailService) {
         this.productService = productService;
         this.userService = userService;
@@ -70,14 +70,14 @@ public class CartController {
         }
 
         // Lấy ra toàn bộ promotions để hiển thị
-        List<Coupon> listPromotions = this.promotionService.findAllPromotion();
+        List<Coupon> listPromotions = this.promotionService.findAllCoupon();
 
         // thiết lập lại trường promotion trong order có delivery-status null khi người
         // dùng rời
         // khỏi trang order
         Order order = this.orderService.findOrderByStatusAndCreatedBy();
         if (order != null) {
-            order.setPromotion(null);
+            order.setCoupon(null);
             this.orderService.saveOrder(order);
         }
 

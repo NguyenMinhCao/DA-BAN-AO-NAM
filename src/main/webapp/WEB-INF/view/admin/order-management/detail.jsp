@@ -59,7 +59,11 @@
                                                         Đã xử lý giao hàng
                                                     </span>
                                                 </c:if>
-
+                                                <c:if test="${order.orderStatus == 'CANCELED'}">
+                                                    <span class="order-status--canceled border-status status-canceled">
+                                                        Đã hủy đơn hàng
+                                                    </span>
+                                                </c:if>
                                             </div>
                                         </div>
                                         <div class="order__details">
@@ -183,14 +187,14 @@
                                             </div>
                                             <!-- nếu đơn hàng đang trong trạng thái chưa xử lý -->
                                             <c:if test="${order.deliveryStatus == 'PENDING'}">
-                                                <div class="delivery-date d-flex mt-8p">
+                                                <!-- <div class="delivery-date d-flex mt-8p">
                                                     <div class="text-delivery mw-88 sub-font">
                                                         Ngày giao
                                                     </div>
                                                     <div class="text-date sub-font">
                                                         : 29/12/2024 16:03:05
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="transport d-flex mt-8p">
                                                     <div class="text-transport mw-88 sub-font">
                                                         Vận chuyển
@@ -426,7 +430,7 @@
                                             </div>
                                         </c:if>
                                         <c:if
-                                            test="${order.deliveryStatus == 'PENDING' && order.orderStatus != 'CANCELED'}">
+                                            test="${order.paymentStatus == 'PENDING' && order.orderStatus != 'CANCELED'}">
                                             <div class="footer-payment-pending pad-20px-4 sub-font">
                                                 <div class="d-flex justify-content-end">
                                                     <!-- <div class="">sdf</div> -->
@@ -516,24 +520,28 @@
                                                 </div>
                                             </div>
                                             <div class="contact-information">
-                                                <div class="header-contact d-flex justify-content-between">
+                                                <div class="header-contact">
                                                     <p class="font-w450">Thông tin liên hệ</p>
-                                                    <span id="modalEditInformation"><i
-                                                            class="fa-solid fa-pencil"></i></span>
+                                                    <!-- <span id="modalEditInformation"><i
+                                                            class="fa-solid fa-pencil"></i></span> -->
                                                 </div>
-                                                <p class="user-name mb-5p sub-font">${order.user.email}</p>
+                                                <p class="user-name mb-5p sub-font" id="emailUserOrder">
+                                                    ${order.user.email}</p>
                                                 <p class="user-phone sub-font">${order.user.phoneNumber}</p>
                                             </div>
                                             <div class="delivery-address d-flex flex-grow-1">
                                                 <div class="d-flex flex-column justify-content-between flex-grow-1">
                                                     <div class="header-contact d-flex justify-content-between">
                                                         <p class="font-w450 ">Địa chỉ giao hàng</p>
-                                                        <span><i class="fa-solid fa-pencil"></i></span>
+                                                        <span id="btnOpenModalEditAddress"><i
+                                                                class="fa-solid fa-pencil"></i></span>
                                                     </div>
-                                                    <p class="user-name mb-5p sub-font">${order.address.fullName}</p>
-                                                    <p class="user-phone mb-5p sub-font">${order.address.phoneNumber}
+                                                    <p class="user-name mb-5p sub-font">${order.recipientName}</p>
+                                                    <p class="user-phone mb-5p sub-font">${order.phoneNumber}
                                                     </p>
-                                                    <p class="user-name mb-5p sub-font">${order.address.streetDetails}
+                                                    <p class="user-name mb-5p sub-font">${order.streetDetails},
+                                                        ${order.ward}, ${order.district},
+                                                        ${order.city}
                                                     </p>
                                                 </div>
                                             </div>
@@ -547,9 +555,9 @@
                                                 <span id="modalOpenEditNote"><i class="fa-solid fa-pencil"></i></span>
                                             </div>
                                             <p class="user-phone sub-font" style="padding: 0 20px;">
-                                                <c:if test="${order.note != null}"><span>${order.note}</span></c:if>
+                                                <c:if test="${order.note != null}"><span
+                                                        id="text-note-db">${order.note}</span></c:if>
                                                 <c:if test="${order.note == null}"><span>Chưa có ghi chú</span></c:if>
-
                                             </p>
                                         </div>
                                     </div>
@@ -722,7 +730,7 @@
                             </div>
                         </div>
                         <!-- modal Sửa thông tin liên -->
-                        <div class="modal-overlay-edit-information modal-overlay" id="modalOverlayEditInformation">
+                        <!-- <div class="modal-overlay-edit-information modal-overlay" id="modalOverlayEditInformation">
                             <div class="modal-overlay-edit-information-content modal-overlay-content">
                                 <div class="header-modal d-flex justify-content-between">
                                     <h3>Sửa thông tin liên hệ</h3>
@@ -749,7 +757,7 @@
                                             </div>
                                         </div>
                                         <div class="" style="margin-top: 15px;">
-                                            <input type="checkbox" name="" id="">
+                                            <input type="checkbox" name="" id="confirmUpdateUserDB">
                                             <span>Cập nhật hồ sơ khách hàng</span>
                                         </div>
                                     </div>
@@ -766,7 +774,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- modal ghi chú -->
                         <div class="modal-overlay-edit-note modal-overlay" id="modalOverlayEditNote">
@@ -781,7 +789,7 @@
                                         <span>Nội dung ghi chú</span>
                                         <div class="input-text-note">
                                             <input placeholder="VD: Giao hàng trong giờ hành chính cho khách hàng"
-                                                type="text" name="" id="">
+                                                type="text" name="" id="inputNoteUser">
                                         </div>
                                     </div>
                                 </div>
@@ -790,14 +798,97 @@
                                         <div class="common-push-btn btn-cancel d-flex btn-close-modal">
                                             <span class="align-self-center">Hủy</span>
                                         </div>
-                                        <div class="common-push-btn btn-confirm change-status-order"
-                                            id="confirmUpdateUser">
+                                        <div id-order-update-note="${order.id}" class="common-push-btn btn-confirm"
+                                            id="confirmUpdateNote">
                                             <span>Lưu</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                        </div>
+
+                        <!-- modal Sửa địa chỉ giao hàng -->
+                        <div class="modal-overlay-edit-address modal-overlay" id="modalOverlayEditAddress">
+                            <div class="modal-overlay-edit-address-content modal-overlay-content">
+                                <div class="header-modal d-flex justify-content-between">
+                                    <h3>Sửa địa chỉ giao hàng</h3>
+                                    <span class="close-modal-icon btn-close-modal"><i
+                                            class="fa-solid fa-xmark"></i></span>
+                                </div>
+                                <div class="content-modal span-margin">
+                                    <div class="box-content-modal d-flex flex-column" style="gap: 15px;">
+                                        <!-- <div class="header-input">
+                                            <span style="display: block;">Chọn địa chỉ</span>
+                                            <div class="input-text">
+                                                <select name="userAddress" id="userAddressSelect">
+                                                </select>
+                                            </div>
+                                        </div> -->
+                                        <div class="body-input d-flex flex-column" style="gap: 15px;">
+                                            <div class="d-flex " style="gap: 15px;">
+                                                <div class="d-flex flex-column" style="width: 50%;">
+                                                    <span>Họ và tên</span>
+                                                    <div class="input-text">
+                                                        <input type="text" id="inputFullNameAddress"
+                                                            value="${order.recipientName}">
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column" style="width: 50%;">
+                                                    <span>Số điện thoại</span>
+                                                    <div class="input-text">
+                                                        <input type="text" id-order="${order.id}"
+                                                            id="inputPhoneNumberAddress" value="${order.phoneNumber}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex " style="gap: 15px;">
+                                                <div class="d-flex flex-column" style="width: 50%;">
+                                                    <span>Tỉnh/Thành phố</span>
+                                                    <div class="input-text">
+                                                        <input type="text" id="inputCityAddress" value="${order.city}">
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column" style="width: 50%;">
+                                                    <span>Quận/Huyện</span>
+                                                    <div class="input-text">
+                                                        <input type="text" id="inputDistrictAddress"
+                                                            value="${order.district}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="footer-input">
+                                            <div class="d-flex " style="gap: 15px;">
+                                                <div class="d-flex flex-column" style="width: 50%;">
+                                                    <span>Phường xã</span>
+                                                    <div class="input-text">
+                                                        <input type="text" id="inputAddressWard" value="${order.ward}">
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column" style="width: 50%;">
+                                                    <span>Địa chỉ cụ thể</span>
+                                                    <div class="input-text">
+                                                        <input type="text" id="addressDetail"
+                                                            value="${order.streetDetails}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="footer-modal">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="common-push-btn btn-cancel d-flex btn-close-modal">
+                                            <span class="align-self-center">Hủy</span>
+                                        </div>
+                                        <div class="common-push-btn btn-confirm" id="confirmUpdateAddress">
+                                            <span>Lưu</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <jsp:include page="../layout/footer.jsp" />
                         <div id="toast"></div>

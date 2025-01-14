@@ -112,7 +112,8 @@ public class OrderHistoryService {
         }
     }
 
-    public void updateReturnProduct(int saveTypeText, int productNumber, Order order) {
+    public void updateReturnProduct(int saveTypeText, int productNumber, Order order, Boolean isRestocking,
+            String description) {
         OrderHistory orderHis = new OrderHistory();
         orderHis.setOrder(order);
 
@@ -128,13 +129,39 @@ public class OrderHistoryService {
             }
         }
 
-        if (saveTypeText == 0) {
-            orderHis.setDescription("Đã hoàn trả " + productNumber + " sản phẩm");
+        if (!isRestocking) {
+            orderHis.setDescription(
+                    "Đã hoàn trả không hoàn kho " + productNumber + " sản phẩm. " + "Lý do hoàn trả là " + description);
+        } else if (saveTypeText == 0) {
+            orderHis.setDescription(
+                    "Đã hoàn trả " + productNumber + " sản phẩm vào kho." + " Lý do hoàn trả là " + description);
         } else if (saveTypeText == 1) {
-            orderHis.setDescription("Đã loại bỏ " + productNumber + " sản phẩm khỏi đơn hàng");
+            orderHis.setDescription(
+                    "Đã loại bỏ " + productNumber + " sản phẩm khỏi đơn hàng." + " Lý do hoàn trả là " + description);
         } else {
             orderHis.setDescription("Đơn hàng #" + order.getId() + " đã bị hủy");
         }
+
+        this.orderHistoryRepository.save(orderHis);
+    }
+
+    public void updateAddressOrder(Order order) {
+        OrderHistory orderHis = new OrderHistory();
+        orderHis.setOrder(order);
+
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        if (email != null) {
+            User userByEmail = this.userService.findUserByEmail(email);
+            if (userByEmail.getRole().getName().equals("USER")) {
+                orderHis.setPerformedBy("Hệ thống");
+            } else {
+                orderHis.setPerformedBy(userByEmail.getFullName());
+            }
+        }
+
+        orderHis.setDescription("Đã cập nhật địa chỉ giao hàng");
 
         this.orderHistoryRepository.save(orderHis);
     }
@@ -191,9 +218,5 @@ public class OrderHistoryService {
 
         return listOrderHisResponse;
     }
-
-    // public List<OrderHistory> getAllOrderHistoryByOrder(Order order) {
-    // return this.orderHistoryRepository.findAllByOrderSortedDesc(order);
-    // }
 
 }

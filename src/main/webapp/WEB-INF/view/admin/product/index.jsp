@@ -66,6 +66,23 @@
                                         </select>
                                     </div>
 
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Nguồn gốc</label>
+                                        <select class="form-control" id="product-origin">
+                                            <c:forEach var="origin" items="${listOrigin}">
+                                                <option value="${origin.originId}">${origin.originName}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Mẫu sản phẩm</label>
+                                        <select class="form-control" id="product-pattern">
+                                            <c:forEach var="pattern" items="${listPattern}">
+                                                <option value="${pattern.id}">${pattern.patternName}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
 
 
                                     <!--Chất liệu-->

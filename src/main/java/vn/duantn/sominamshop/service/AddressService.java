@@ -51,6 +51,10 @@ public class AddressService {
         return this.addressRepository.findById(id).get();
     }
 
+    public void saveAddress(Address address) {
+        this.addressRepository.save(address);
+    }
+
     public AddressDTO convertAddressToAddressDTO(String idAddress) {
         Address addressById = this.addressRepository.findById(Long.valueOf(idAddress)).get();
         AddressDTO dto = new AddressDTO();

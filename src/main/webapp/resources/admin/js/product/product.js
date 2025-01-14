@@ -145,17 +145,15 @@ function updateProductForm(element) {
         type: 'GET',
         url: '/admin/rest/product/formUpdate/' + productId,
         success: function (product) {
-            // Lấy dữ liệu ảnh
             getListURL(product.id);
 
-            // Hiển thị hộp thoại modal
             $('#ProductModal').modal('show');
 
-            // Điền dữ liệu vào các trường biểu mẫu
             $('#product-name').val(product.name);
-            $('#product-category').val(product.category.id);
-            $('#product-brand').val(product.brand.id);
+            $('#product-origin').val(product.origin.id);
             $('#product-material').val(product.material.id);
+            $('#product-pattern').val(product.pattern.id);
+            $('#product-category').val(product.category.id);
             CKEDITOR.instances['product-description'].setData(product.description);
         },
         error: function (error) {

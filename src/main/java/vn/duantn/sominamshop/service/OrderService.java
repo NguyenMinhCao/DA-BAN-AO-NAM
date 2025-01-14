@@ -55,14 +55,14 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
     private final AddressService addressService;
     private final OrderHistoryService orderHistoryService;
     private final ProductDetailService productDetailService;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
-            PromotionService promotionService, AddressService addressService,
+            CouponService promotionService, AddressService addressService,
             OrderHistoryService orderHistoryService, ProductDetailService productDetailService) {
         this.productService = productService;
         this.userService = userService;
@@ -138,6 +138,12 @@ public class OrderService {
                 List<Address> addressByUser = this.addressService.findAllAddressByUser(userByEmail);
                 for (Address address : addressByUser) {
                     if (address.isStatus()) {
+                        order.setCity(address.getCity());
+                        order.setPhoneNumber(address.getPhoneNumber());
+                        order.setDistrict(address.getDistrict());
+                        order.setWard(address.getWard());
+                        order.setRecipientName(address.getFullName());
+                        order.setStreetDetails(address.getStreetDetails());
                         order.setAddress(address);
                     }
                 }
@@ -191,8 +197,8 @@ public class OrderService {
             if (promotionId != null) {
                 promotionById = this.promotionService.findPromotionById(promotionId);
                 if (promotionById.isPresent()) {
-                    order.setPromotion(promotionById.get());
-                    session.setAttribute("promotionInOrder", order.getPromotion());
+                    order.setCoupon(promotionById.get());
+                    session.setAttribute("promotionInOrder", order.getCoupon());
                 }
             }
 
@@ -236,11 +242,11 @@ public class OrderService {
 
                 // người dùng truyền lên promotion
                 if (promotionId != null) {
-                    discountValue = Double.parseDouble(promotionById.get().getDiscountValue());
+                    discountValue = promotionById.get().getDiscountValueFixed();
                 }
                 // người dùng không truyền lên nhưng trong DB có
-                else if (promotionId == null && order.getPromotion() != null) {
-                    discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
+                else if (promotionId == null && order.getCoupon() != null) {
+                    discountValue = order.getCoupon().getDiscountValueFixed();
                 }
                 // người dùng không truyền lên trong DB cũng ko có
                 else {
@@ -262,7 +268,7 @@ public class OrderService {
                 response.put("totalPayment", totalPayment);
                 response.put("shippingPrice", shippingPrice);
                 if (discountValue != 0) {
-                    response.put("discountValue", order.getPromotion().getDiscountValue());
+                    response.put("discountValue", order.getCoupon().getDiscountValueFixed());
                 }
             }
 
@@ -348,19 +354,42 @@ public class OrderService {
     public void updateOrderDetail(DataUpdateOrderDetailDTO dto, String idOrderD) {
         Optional<OrderDetail> findOrderDetailById = this.findOrderDetailById(Long.valueOf(idOrderD));
         if (findOrderDetailById.isPresent()) {
-            OrderDetail orderUnwrap = findOrderDetailById.get();
+            OrderDetail orderDUnwrap = findOrderDetailById.get();
             if (dto.isUpdateORemove()) {
                 Optional<ProductDetail> productDetailById = this.productDetailService
                         .findProductDetailById(dto.getProductDetailId());
-                orderUnwrap.setQuantity(dto.getQuantity());
+
                 if (productDetailById.isPresent()) {
                     Double newPrice = productDetailById.get().getPrice() * dto.getQuantity();
-                    orderUnwrap.setPrice(newPrice);
+                    orderDUnwrap.setPrice(newPrice);
+
+                    long amountDifference = 0;
+                    if (orderDUnwrap.getQuantity() > dto.getQuantity()) {
+                        amountDifference = orderDUnwrap.getQuantity() - dto.getQuantity();
+                        int newQuantity = productDetailById.get().getQuantity() + (int) amountDifference;
+                        productDetailById.get().setQuantity(newQuantity);
+                    } else {
+                        amountDifference = dto.getQuantity() - orderDUnwrap.getQuantity();
+                        int newQuantityProductDetail = productDetailById.get().getQuantity() - (int) amountDifference;
+                        productDetailById.get().setQuantity(newQuantityProductDetail);
+                    }
+
                 }
-                this.orderDetailRepository.save(orderUnwrap);
+                orderDUnwrap.setQuantity(dto.getQuantity());
+                this.orderDetailRepository.save(orderDUnwrap);
+                this.productDetailService.saveProductDetail(productDetailById.get());
 
             } else {
-                this.orderDetailRepository.delete(orderUnwrap);
+                Optional<ProductDetail> productDetailById = this.productDetailService
+                        .findProductDetailById(dto.getProductDetailId());
+                if (dto.isRestocking()) {
+                    long newPrice = productDetailById.get().getQuantity() + orderDUnwrap.getQuantity();
+                    int intPrice = (int) newPrice;
+                    productDetailById.get().setQuantity(intPrice);
+                    this.productDetailService.saveProductDetail(productDetailById.get());
+                }
+
+                this.orderDetailRepository.delete(orderDUnwrap);
             }
         }
 
@@ -388,7 +417,7 @@ public class OrderService {
             return null;
         }
         order1.setPaymentStatus(PaymentStatus.COMPLETED);
-        order1.setPromotion(order.getPromotion());
+        order1.setCoupon(order.getCoupon());
         order1.setNote(order.getNote());
         order1.setTotalAmount(order.getTotalAmount());
         order1.setTotalProducts(order.getTotalProducts());
