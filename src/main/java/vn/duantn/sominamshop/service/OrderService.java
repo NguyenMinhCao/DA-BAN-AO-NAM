@@ -55,14 +55,14 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
     private final AddressService addressService;
     private final OrderHistoryService orderHistoryService;
     private final ProductDetailService productDetailService;
 
     public OrderService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartService cartService, OrderRepository orderRepository, OrderDetailRepository orderDetailRepository,
-            PromotionService promotionService, AddressService addressService,
+            CouponService promotionService, AddressService addressService,
             OrderHistoryService orderHistoryService, ProductDetailService productDetailService) {
         this.productService = productService;
         this.userService = userService;
@@ -197,8 +197,8 @@ public class OrderService {
             if (promotionId != null) {
                 promotionById = this.promotionService.findPromotionById(promotionId);
                 if (promotionById.isPresent()) {
-                    order.setPromotion(promotionById.get());
-                    session.setAttribute("promotionInOrder", order.getPromotion());
+                    order.setCoupon(promotionById.get());
+                    session.setAttribute("promotionInOrder", order.getCoupon());
                 }
             }
 
@@ -245,8 +245,8 @@ public class OrderService {
                     discountValue = Double.parseDouble(promotionById.get().getDiscountValue());
                 }
                 // người dùng không truyền lên nhưng trong DB có
-                else if (promotionId == null && order.getPromotion() != null) {
-                    discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
+                else if (promotionId == null && order.getCoupon() != null) {
+                    discountValue = Double.parseDouble(order.getCoupon().getDiscountValue());
                 }
                 // người dùng không truyền lên trong DB cũng ko có
                 else {
@@ -268,7 +268,7 @@ public class OrderService {
                 response.put("totalPayment", totalPayment);
                 response.put("shippingPrice", shippingPrice);
                 if (discountValue != 0) {
-                    response.put("discountValue", order.getPromotion().getDiscountValue());
+                    response.put("discountValue", order.getCoupon().getDiscountValue());
                 }
             }
 
@@ -358,12 +358,26 @@ public class OrderService {
             if (dto.isUpdateORemove()) {
                 Optional<ProductDetail> productDetailById = this.productDetailService
                         .findProductDetailById(dto.getProductDetailId());
-                orderDUnwrap.setQuantity(dto.getQuantity());
+
                 if (productDetailById.isPresent()) {
                     Double newPrice = productDetailById.get().getPrice() * dto.getQuantity();
                     orderDUnwrap.setPrice(newPrice);
+
+                    long amountDifference = 0;
+                    if (orderDUnwrap.getQuantity() > dto.getQuantity()) {
+                        amountDifference = orderDUnwrap.getQuantity() - dto.getQuantity();
+                        int newQuantity = productDetailById.get().getQuantity() + (int) amountDifference;
+                        productDetailById.get().setQuantity(newQuantity);
+                    } else {
+                        amountDifference = dto.getQuantity() - orderDUnwrap.getQuantity();
+                        int newQuantityProductDetail = productDetailById.get().getQuantity() - (int) amountDifference;
+                        productDetailById.get().setQuantity(newQuantityProductDetail);
+                    }
+
                 }
+                orderDUnwrap.setQuantity(dto.getQuantity());
                 this.orderDetailRepository.save(orderDUnwrap);
+                this.productDetailService.saveProductDetail(productDetailById.get());
 
             } else {
                 Optional<ProductDetail> productDetailById = this.productDetailService
@@ -403,7 +417,7 @@ public class OrderService {
             return null;
         }
         order1.setPaymentStatus(PaymentStatus.COMPLETED);
-        order1.setPromotion(order.getPromotion());
+        order1.setCoupon(order.getCoupon());
         order1.setNote(order.getNote());
         order1.setTotalAmount(order.getTotalAmount());
         order1.setTotalProducts(order.getTotalProducts());

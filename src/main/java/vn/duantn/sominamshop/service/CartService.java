@@ -32,12 +32,12 @@ public class CartService {
     private final CartDetailRepository cartDetailRepository;
     private final OrderService orderService;
     private final AddressService addressService;
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
     private final ProductDetailService productDetailService;
 
     public CartService(ProductService productService, UserService userService, CartRepository cartRepository,
             CartDetailRepository cartDetailRepository, @Lazy OrderService orderService, AddressService addressService,
-            PromotionService promotionService, ProductDetailService productDetailService) {
+            CouponService promotionService, ProductDetailService productDetailService) {
         this.productService = productService;
         this.userService = userService;
         this.cartRepository = cartRepository;
@@ -192,8 +192,8 @@ public class CartService {
             shippingPrice = 20000;
         }
 
-        if (order.getPromotion() != null) {
-            discountValue = Double.parseDouble(order.getPromotion().getDiscountValue());
+        if (order.getCoupon() != null) {
+            discountValue = Double.parseDouble(order.getCoupon().getDiscountValue());
         }
 
         totalPayment = totalPrice + shippingPrice - discountValue;

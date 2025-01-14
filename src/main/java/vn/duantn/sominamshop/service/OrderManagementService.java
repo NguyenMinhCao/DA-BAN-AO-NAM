@@ -11,15 +11,18 @@ import org.springframework.stereotype.Service;
 
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
+import vn.duantn.sominamshop.model.OrderHistory;
 import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
+import vn.duantn.sominamshop.model.dto.request.AddressUpdateRequest;
 import vn.duantn.sominamshop.model.dto.request.CheckQuantityProductDeDTO;
 import vn.duantn.sominamshop.model.dto.request.DataStatusOrderDTO;
 import vn.duantn.sominamshop.model.dto.response.ResOrderDTO;
 import vn.duantn.sominamshop.repository.OrderDetailRepository;
+import vn.duantn.sominamshop.util.SecurityUtil;
 
 @Service
 public class OrderManagementService {
@@ -77,7 +80,7 @@ public class OrderManagementService {
         int saveTypeText = 0;
         int productNumber = 0;
         boolean isRestocking = false;
-        Optional<Order> orderById = this.orderService.findOrderById(dto.getOrderDetailId());
+        Optional<Order> orderById = this.orderService.findOrderById(dto.getOrderId());
         Optional<OrderDetail> orderDetailById = this.orderDetailRepository.findById(dto.getOrderDetailId());
         if (orderDetailById.isPresent()) {
             OrderDetail orderDetail = orderDetailById.get();
@@ -107,7 +110,8 @@ public class OrderManagementService {
             this.orderDetailRepository.save(orderDetail);
 
             if (orderById.isPresent()) {
-                this.orderHistoryService.updateReturnProduct(saveTypeText, productNumber, orderById.get(), isRestocking);
+                this.orderHistoryService.updateReturnProduct(saveTypeText, productNumber, orderById.get(), isRestocking,
+                        dto.getDescription());
                 return true;
             }
             return false;
@@ -173,5 +177,43 @@ public class OrderManagementService {
         }
 
         return orderSRes;
+    }
+
+    public Boolean updateTextNote(String textNote, Order order) {
+        OrderHistory orderHis = new OrderHistory();
+        orderHis.setOrder(order);
+
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        if (email != null) {
+            User userByEmail = this.userService.findUserByEmail(email);
+            if (userByEmail.getRole().getName().equals("USER")) {
+                orderHis.setPerformedBy("Hệ thống");
+            } else {
+                orderHis.setPerformedBy(userByEmail.getFullName());
+            }
+        }
+
+        orderHis.setDescription("Đã cập nhật ghi chú");
+
+        order.setNote(textNote);
+        this.orderService.saveOrder(order);
+
+        this.orderHistoryService.saveOrderHistory(orderHis);
+
+        return true;
+    }
+
+    public Order updateAddressOrder(AddressUpdateRequest addressUpdateRequest , Order order) {
+        order.setRecipientName(addressUpdateRequest.getFullName());
+        order.setPhoneNumber(addressUpdateRequest.getPhoneNumber());
+        order.setWard(addressUpdateRequest.getWard());
+        order.setDistrict(addressUpdateRequest.getDistrict());
+        order.setCity(addressUpdateRequest.getCity());
+        order.setStreetDetails(addressUpdateRequest.getStreetDetails());
+        this.orderService.saveOrder(order);
+        this.orderHistoryService.updateAddressOrder(order);
+        return order;
     }
 }

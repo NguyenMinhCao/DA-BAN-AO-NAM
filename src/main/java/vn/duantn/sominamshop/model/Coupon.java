@@ -16,6 +16,7 @@ import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "coupons")
@@ -45,19 +46,24 @@ public class Coupon {
     private Integer usageLimit;
 
     @Column(name = "start_date ")
-    private String startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private String endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "status")
     private boolean status;
+
+     @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     private String createdBy;
     private String updatedBy;
 
     @PrePersist
     public void handleBeforeCreate() {
+        this.createdAt = LocalDateTime.now();
+        
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";

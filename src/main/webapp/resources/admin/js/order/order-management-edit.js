@@ -120,6 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmRemove.onclick = () => handleButtonClick(false);
     }
 
+    // Hàm kiểm tra xem một giá trị có phải là số nguyên dương không
+    function isPositiveInteger(value) {
+        const number = Number(value);
+        return Number.isInteger(number) && number > 0;
+    }
+
 
     const handleButtonClick = async (isUpdate) => {
         var isUp = true;
@@ -142,16 +148,33 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const sentData = {
-            productDetailId: getProductDetailId,
-            quantity: inputQuantity.value,
-            updateORemove: isUp,
-            restocking: restocking.checked ? 'true' : 'false'
-        }
-
-        console.log(sentData)
-
         try {
+
+            const inputValue = inputQuantity.value.trim();
+            //kiểm tra xem có đang mở modal chỉnh sủa không vì có thể sẽ chạy vào đây
+            const styleDisplay = window.getComputedStyle(modalOverlayEditOrder);
+            const display = styleDisplay.display;
+            if (display === 'block') {
+                // Kiểm tra xem giá trị có phải là số nguyên dương không
+                if (!isPositiveInteger(inputValue)) {
+                    toast({
+                        title: "Thất bại!",
+                        message: "Vui lòng nhập số nguyên dương hợp lệ.",
+                        type: "error",
+                        duration: 1700
+                    });
+                    return;
+                }
+            }
+
+
+            const sentData = {
+                productDetailId: getProductDetailId,
+                quantity: inputQuantity.value,
+                updateORemove: isUp,
+                restocking: restocking.checked ? 'true' : 'false'
+            }
+
             const response = await fetch('/admin/orders/' + getIdOrderDetail + '/edit', {
                 method: 'PUT',
                 headers: {

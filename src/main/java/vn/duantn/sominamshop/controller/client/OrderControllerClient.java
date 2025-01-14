@@ -32,10 +32,10 @@ public class OrderControllerClient {
     private final UserService userService;
     private final OrderService orderService;
     private final AddressService addressService;
-    private final PromotionService promotionService;
+    private final CouponService promotionService;
 
     public OrderControllerClient(ProductService productService, UserService userService, AddressService addressService,
-            CartService cartService, OrderService orderService, PromotionService promotionService) {
+            CartService cartService, OrderService orderService, CouponService promotionService) {
         this.productService = productService;
         this.userService = userService;
         this.addressService = addressService;
@@ -73,8 +73,8 @@ public class OrderControllerClient {
         double totalPayment = 0;
         totalPayment = totalPrice + shippingPrice;
 
-        if (order.getPromotion() != null) {
-            totalPayment = totalPayment - Double.parseDouble(order.getPromotion().getDiscountValue());
+        if (order.getCoupon() != null) {
+            totalPayment = totalPayment - Double.parseDouble(order.getCoupon().getDiscountValue());
         }
 
         // Lấy địa chỉ mặc định

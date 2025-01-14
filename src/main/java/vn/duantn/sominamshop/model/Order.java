@@ -96,6 +96,12 @@ public class Order {
     @Column(name = "street_details", columnDefinition = "NVARCHAR(1500)")
     private String streetDetails;
 
+    @Column(name = "contact_email")
+    private String contactEmail;
+
+    @Column(name = "contact_phone")
+    private String contactPhone;
+
     @ManyToOne
     private User user;
 
@@ -107,8 +113,8 @@ public class Order {
     private Address address;
 
     @ManyToOne
-    @JoinColumn(name = "promotion_id")
-    private Coupon promotion;
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
     @Column(name = "created_by")
     private String createdBy;

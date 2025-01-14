@@ -12,6 +12,7 @@ import com.turkraft.springfilter.boot.Filter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.ProductDetail;
+import vn.duantn.sominamshop.model.dto.request.AddressUpdateRequest;
 import vn.duantn.sominamshop.model.dto.request.CheckQuantityProductDeDTO;
 import vn.duantn.sominamshop.model.dto.request.DataAddProductDTO;
 import vn.duantn.sominamshop.model.dto.request.DataStatusOrderDTO;
@@ -111,7 +113,7 @@ public class OrderManagementController {
 
     @GetMapping("/orders/{id}/edit")
     public String getEditOrders(@PathVariable String id, Model model) {
-        // Tìm Order theo ID
+
         Optional<Order> orderById = this.orderService.findOrderById(Long.valueOf(id));
 
         if (!orderById.isPresent()) {
@@ -171,22 +173,33 @@ public class OrderManagementController {
         if (!findOrderById.isPresent()) {
             return ResponseEntity.ok().body(false);
         } else {
-            findOrderById.get().setNote(textNote);
-            this.orderService.saveOrder(findOrderById.get());
-            return ResponseEntity.ok().body(true);
+            return ResponseEntity.ok().body(this.orderManagementService.updateTextNote(textNote, findOrderById.get()));
         }
     }
 
-    @PutMapping("/orders/{id}/address/edit")
-    public ResponseEntity<Boolean> putAddressOrder(@PathVariable String id, @RequestBody String textNote) {
-        Optional<Order> findOrderById = this.orderService.findOrderById(Long.valueOf(id));
-        if (!findOrderById.isPresent()) {
-            return ResponseEntity.ok().body(false);
-        } else {
-            findOrderById.get().setNote(textNote);
-            this.orderService.saveOrder(findOrderById.get());
-            return ResponseEntity.ok().body(true);
+    // @PutMapping("/orders/{id}/address/edit")
+    // public ResponseEntity<Boolean> putAddressOrder(@PathVariable String id,
+    // @RequestBody String textNote) {
+    // Optional<Order> findOrderById =
+    // this.orderService.findOrderById(Long.valueOf(id));
+    // if (!findOrderById.isPresent()) {
+    // return ResponseEntity.ok().body(false);
+    // } else {
+    // findOrderById.get().setNote(textNote);
+    // this.orderService.saveOrder(findOrderById.get());
+    // return ResponseEntity.ok().body(true);
+    // }
+    // }
+
+    @PostMapping("/order/update-address")
+    public ResponseEntity<?> updateAddress(@RequestBody AddressUpdateRequest addressUpdateRequest) {
+        Optional<Order> orderById = this.orderService.findOrderById(addressUpdateRequest.getIdOrder());
+        if (!orderById.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Địa chỉ không tồn tại.");
         }
+
+        return ResponseEntity.ok()
+                .body(this.orderManagementService.updateAddressOrder(addressUpdateRequest, orderById.get()));
     }
 
     @PostMapping("/orders/add/product")

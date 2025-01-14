@@ -22,13 +22,13 @@ public class PromotionDTO {
     private String discountValue;
     private BigDecimal minOrderValue;
     private Integer usageLimit;
-    private String startDate;
+    // private String startDate;
     private String endDate;
     private boolean status;
 
-    public LocalDate getStartDateAsLocalDate() {
-        return LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    }
+    // public LocalDate getStartDateAsLocalDate() {
+    //     return LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    // }
 
     public LocalDate getEndDateAsLocalDate() {
         return LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -37,8 +37,8 @@ public class PromotionDTO {
     public static PromotionDTO toPromotionDTO(Coupon promotion) {
         PromotionDTO promotionDTO = PromotionDTO.builder()
                 .id(promotion.getId())
-                .startDate(promotion.getStartDate())
-                .endDate(promotion.getEndDate())
+                // .startDate(promotion.getStartDate())
+                // .endDate(promotion.getEndDate())
                 .status(promotion.isStatus())
                 // .discountType(promotion.getDiscountType())
                 .discountValue(promotion.getDiscountValue())

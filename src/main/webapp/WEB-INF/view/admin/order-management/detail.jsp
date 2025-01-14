@@ -520,10 +520,10 @@
                                                 </div>
                                             </div>
                                             <div class="contact-information">
-                                                <div class="header-contact d-flex justify-content-between">
+                                                <div class="header-contact">
                                                     <p class="font-w450">Thông tin liên hệ</p>
-                                                    <span id="modalEditInformation"><i
-                                                            class="fa-solid fa-pencil"></i></span>
+                                                    <!-- <span id="modalEditInformation"><i
+                                                            class="fa-solid fa-pencil"></i></span> -->
                                                 </div>
                                                 <p class="user-name mb-5p sub-font" id="emailUserOrder">
                                                     ${order.user.email}</p>
@@ -730,7 +730,7 @@
                             </div>
                         </div>
                         <!-- modal Sửa thông tin liên -->
-                        <div class="modal-overlay-edit-information modal-overlay" id="modalOverlayEditInformation">
+                        <!-- <div class="modal-overlay-edit-information modal-overlay" id="modalOverlayEditInformation">
                             <div class="modal-overlay-edit-information-content modal-overlay-content">
                                 <div class="header-modal d-flex justify-content-between">
                                     <h3>Sửa thông tin liên hệ</h3>
@@ -757,7 +757,7 @@
                                             </div>
                                         </div>
                                         <div class="" style="margin-top: 15px;">
-                                            <input type="checkbox" name="" id="">
+                                            <input type="checkbox" name="" id="confirmUpdateUserDB">
                                             <span>Cập nhật hồ sơ khách hàng</span>
                                         </div>
                                     </div>
@@ -774,7 +774,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- modal ghi chú -->
                         <div class="modal-overlay-edit-note modal-overlay" id="modalOverlayEditNote">

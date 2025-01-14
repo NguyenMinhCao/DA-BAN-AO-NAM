@@ -17,7 +17,7 @@ import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.OrderService;
-import vn.duantn.sominamshop.service.PromotionService;
+import vn.duantn.sominamshop.service.CouponService;
 import vn.duantn.sominamshop.service.UploadService;
 import vn.duantn.sominamshop.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;

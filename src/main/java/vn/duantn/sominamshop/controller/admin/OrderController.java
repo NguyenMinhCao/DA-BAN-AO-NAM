@@ -26,21 +26,5 @@ public class OrderController {
         return "admin/order/index";
     }
 
-    @PostMapping("/admin/order/update-address")
-    public ResponseEntity<?> updateAddress(@RequestBody AddressUpdateRequest addressUpdateRequest) {
-        Optional<Order> orderById = this.orderService.findOrderById(addressUpdateRequest.getIdOrder());
-        if (!orderById.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Địa chỉ không tồn tại.");
-        }
-
-        orderById.get().setRecipientName(addressUpdateRequest.getFullName());
-        orderById.get().setPhoneNumber(addressUpdateRequest.getPhoneNumber());
-        orderById.get().setWard(addressUpdateRequest.getWard());
-        orderById.get().setDistrict(addressUpdateRequest.getDistrict());
-        orderById.get().setCity(addressUpdateRequest.getCity());
-        orderById.get().setStreetDetails(addressUpdateRequest.getStreetDetails());
-        this.orderService.saveOrder(orderById.get());
-
-        return ResponseEntity.ok().body(orderById);
-    }
+   
 }

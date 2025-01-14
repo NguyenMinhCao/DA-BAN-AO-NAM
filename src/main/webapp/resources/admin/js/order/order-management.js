@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openModalEditInformation = document.getElementById('modalEditInformation')
     const modalOverlayEditInformation = document.getElementById('modalOverlayEditInformation')
     const modalOverlayEditNote = document.getElementById('modalOverlayEditNote')
-    const btnConfirmUpdateUser = document.getElementById('confirmUpdateUser')
+    // const btnConfirmUpdateUser = document.getElementById('confirmUpdateUser')
     const selectBox = document.querySelector('.select-box')
     const modalOpenEditNote = document.getElementById('modalOpenEditNote')
     const modalOverlayEditAddress = document.getElementById('modalOverlayEditAddress')
@@ -120,40 +120,82 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     })
 
-    if (btnConfirmUpdateUser) {
-        btnConfirmUpdateUser.onclick = async () => {
+    // cập nhật thông tin liên hệ
+    // if (btnConfirmUpdateUser) {
+    //     btnConfirmUpdateUser.onclick = async () => {
 
-            var emailUserInput = document.getElementById('emailUserInput')
-            var oldEmailUser = emailUserInput.getAttribute('email-old-user')
-            var phoneUserInput = document.getElementById('phoneNumberInput')
-            const valEmailInput = emailUserInput.value;
-            const phoneInput = phoneUserInput.value;
-            const sentData = {
-                emailUser: valEmailInput,
-                phoneNumber: phoneInput,
-                oldEmailUser: oldEmailUser
-            }
+    //         const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    //         const phonePattern = /^0\d{9}$/;
 
-            try {
-                const response = await fetch('/admin/user/update-order', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(sentData)
-                });
+    //         var emailUserInput = document.getElementById('emailUserInput')
+    //         var oldEmailUser = emailUserInput.getAttribute('email-old-user')
+    //         var phoneUserInput = document.getElementById('phoneNumberInput')
+    //         var confirmUpdateUserDB = document.getElementById('confirmUpdateUserDB')
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
+    //         const valEmailInput = emailUserInput.value.trim();
+    //         const phoneInput = phoneUserInput.value.trim();
 
-                window.location.reload(true);
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-    }
+    //         // Kiểm tra Email
+    //         if (!emailPattern.test(valEmailInput)) {
+    //             toast({
+    //                 title: "Thất bại!",
+    //                 message: 'Vui lòng nhập email hợp lệ kết thúc bằng @gmail.com!',
+    //                 type: "error",
+    //                 duration: 1700
+    //             });
+    //             return
+    //         }
+
+    //         // Kiểm tra Số Điện Thoại
+    //         if (!phonePattern.test(phoneInput)) {
+    //             toast({
+    //                 title: "Thất bại!",
+    //                 message: 'Vui lòng nhập số điện thoại hợp lệ (10 số, bắt đầu bằng 0).!',
+    //                 type: "error",
+    //                 duration: 1700
+    //             });
+    //             return
+    //         }
+
+
+    //         const sentData = {
+    //             emailUser: valEmailInput,
+    //             phoneNumber: phoneInput,
+    //             oldEmailUser: oldEmailUser,
+    //             updateUserDb: confirmUpdateUserDB.checked ? 'true' : 'false'
+    //         }
+
+    //         try {
+    //             const response = await fetch('/admin/user/update-order', {
+    //                 method: 'PUT',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'Accept': 'application/json'
+    //                 },
+    //                 body: JSON.stringify(sentData)
+    //             });
+
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok ' + response.statusText);
+    //             } else {
+    //                 toast({
+    //                     title: "Thành công!",
+    //                     message: 'Cập nhật thành công',
+    //                     type: "success",
+    //                     duration: 1200
+    //                 });
+    //                 modalOverlayEditInformation.style.display = 'none'
+
+    //                 setTimeout(() => {
+    //                     window.location.reload(true);
+    //                 }, 1200);
+    //             }
+
+    //         } catch (error) {
+    //             console.error('Error:', error);
+    //         }
+    //     }
+    // }
 
     //trả hàng
     const btnReturnProduct = document.querySelectorAll('.product-order .text-return');

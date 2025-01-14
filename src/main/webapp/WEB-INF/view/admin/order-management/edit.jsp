@@ -47,7 +47,7 @@
                                                         <span class="icon-search"><i
                                                                 class="fa-solid fa-magnifying-glass"></i></span>
                                                         <input id="inputSearchProduct" class="flex-grow-1" type="text"
-                                                            placeholder="Tìm theo mã" style="width: 100%;">
+                                                            placeholder="Tìm theo tên sản phẩm" style="width: 100%;">
                                                         <div class="table-select-product">
                                                             <div
                                                                 class="display-product-detail-search d-flex flex-column">
