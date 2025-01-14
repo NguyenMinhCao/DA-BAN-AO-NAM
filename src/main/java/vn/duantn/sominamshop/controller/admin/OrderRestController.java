@@ -2,7 +2,6 @@ package vn.duantn.sominamshop.controller.admin;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,8 @@ import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 import vn.duantn.sominamshop.model.dto.CounterProductProjection;
 import vn.duantn.sominamshop.model.dto.OrderDTO;
-import vn.duantn.sominamshop.model.dto.PromotionDTO;
+import vn.duantn.sominamshop.model.dto.OrderDetailDTO;
+import vn.duantn.sominamshop.model.dto.CouponDTO;
 import vn.duantn.sominamshop.model.dto.rest.FilterRequest;
 import vn.duantn.sominamshop.service.*;
 
@@ -37,9 +37,14 @@ public class OrderRestController {
     public ResponseEntity<?> GetProduct(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "5") int limit,
-            @RequestParam(value = "keyword", defaultValue = "") String search) {
+            @RequestParam(value = "keyword", defaultValue = "") String search,
+            @RequestParam(value = "color", defaultValue = "") Long idColor,
+            @RequestParam(value = "size", defaultValue = "") Long idSize,
+            @RequestParam(value = "category", defaultValue = "") Long idCategory
+    ) {
+        System.out.println(idColor + " color" + idCategory + " idcate" + idSize + " idsize");
         Pageable pageable = PageRequest.of(page, limit);
-        Page<CounterProductProjection> pageProduct = productService.GetAllProductByName(pageable, search);
+        Page<CounterProductProjection> pageProduct = productService.GetAllProductByName(pageable, search, idSize, idColor, idCategory);
         return ResponseEntity.ok(pageProduct);
     }
     @GetMapping("/get/orders")
@@ -55,15 +60,20 @@ public class OrderRestController {
     }
     @GetMapping("/get/orderdetails")
     public ResponseEntity<?> getOrdersDetailByIdOrder(@RequestParam(name="id", defaultValue = "") Long id){
+        List<OrderDetailDTO> orderDetailDTOS = orderService.getOrderDetailByOrderId(id);
+        orderDetailDTOS.forEach(item -> System.out.println(item.getProductDetail().getProductName()));
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderDetailByOrderId(id));
     }
 
-    // @GetMapping("/get/promotions")
-    // public ResponseEntity<List<PromotionDTO>> getPromotion(
-    //         @RequestParam(name = "orderValue", defaultValue = "10000000") Double orderValue) {
-    //     List<PromotionDTO> promotionDTOList = promotionService.getPromotion(orderValue);
-    //     return ResponseEntity.ok(promotionDTOList);
-    // }
+    @GetMapping("/get/coupons")
+    public ResponseEntity<List<CouponDTO>> getPromotion(
+            @RequestParam(value = "code", defaultValue = "") String code
+    ) {
+        System.out.println("Code của giảm giá :" + code);
+        List<CouponDTO> promotionDTOList = promotionService.findValidCoupons(code);
+        return ResponseEntity.ok(promotionDTOList);
+    }
+
 
     @PostMapping("/save/invoice")
     public ResponseEntity<OrderDTO> saveInvoice(@RequestBody Order order) {
@@ -71,8 +81,8 @@ public class OrderRestController {
     }
 
     @PutMapping("/update/invoice")
-    public ResponseEntity<OrderDTO> updateInvoice(@RequestBody Order order){
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateInvoice(order));
+    public ResponseEntity<?> updateInvoice(@RequestBody OrderDTO orderDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.updateInvoice(orderDTO));
     }
     @PostMapping("/save/invoice/details")
     public ResponseEntity<List<OrderDetail>> saveInvoiceDetails(@RequestBody List<OrderDetail> request) {
@@ -80,13 +90,14 @@ public class OrderRestController {
     }
 
     @PostMapping("/save/invoice/detail")
-    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetail orderDetail){
+    public ResponseEntity<?> saveInvoiceDetail(@RequestBody OrderDetailDTO orderDetail){
+        System.out.println(orderDetail.getOrderId() + ": id của orderdetailDto controller");
         return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetail));
     }
 
     @PutMapping("/update/invoice/detail")
-    public ResponseEntity<?> updateInvoiceDetail(@RequestBody OrderDetail orderDetail){
-        return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetail));
+    public ResponseEntity<?> updateInvoiceDetail(@RequestBody OrderDetailDTO orderDetailDTO){
+        return ResponseEntity.ok(orderService.saveInvoiceDetail(orderDetailDTO));
     }
 
     @DeleteMapping("/delete/invoice/detail/{id}")
@@ -114,11 +125,24 @@ public class OrderRestController {
         );
     }
     @PutMapping("/update/products")
-    public ResponseEntity<?> updateProduct(@RequestBody OrderDetail orderDetail) {
-        if (orderDetail != null) {
-            productDetailService.updateQuantityProduct(orderDetail.getQuantity(), orderDetail.getProductDetail().getId());
+    public ResponseEntity<?> updateProduct(@RequestBody List<OrderDetail> orderDetailList) {
+        if (orderDetailList != null) {
+            Map<String, String> map =  productDetailService.updateQuantityProduct(orderDetailList);
+            if(!map.isEmpty()){
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(map);
+            }
         }
         return ResponseEntity.ok("Cập nhật thành công");
     }
-
+    @PutMapping("/update/coupon")
+    public ResponseEntity<?> updateCoupons(
+            @RequestParam(value = "quantity", defaultValue = "") Integer quantity,
+            @RequestParam(value = "id", defaultValue = "") Long id
+    ){
+        if(id != null && quantity != null){
+            promotionService.updateUsageLimitCoupon(quantity, id);
+            return ResponseEntity.status(HttpStatus.OK).body("Sửa thành công");
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Lỗi khi thay đổi số lượng coupons");
+    }
 }

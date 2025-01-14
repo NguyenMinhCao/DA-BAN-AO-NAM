@@ -15,7 +15,6 @@ import lombok.*;
 import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,6 +23,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +38,13 @@ public class Coupon {
 
     @Column(name = "discount_value_fixed")
     private double discountValueFixed; //số tiền giảm
-    
+
     @Column(name = "discount_value_percent")
     private int discountValuePercent;//sô phần trăm giảm
     
     @Column(name = "maximum_reduction")
     private double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
+
 
     @Column(name = "minimum_value")
     private double minimumValue;// giá trị đơn hàng tối thiểu được sử dụng mã giảm gía
@@ -60,7 +61,7 @@ public class Coupon {
     @Column(name = "status")
     private boolean status;
 
-     @Column(name = "created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     private String createdBy;
@@ -69,7 +70,7 @@ public class Coupon {
     @PrePersist
     public void handleBeforeCreate() {
         this.createdAt = LocalDateTime.now();
-        
+
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";

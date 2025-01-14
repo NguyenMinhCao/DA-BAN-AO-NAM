@@ -138,10 +138,10 @@ body {
     justify-content: space-between;
 }
 
-.customer-select {
-    display: flex;
-    margin: 20px 0 20px 0;
-}
+/*.customer-select {*/
+/*    display: flex;*/
+/*    margin: 20px 0 20px 0;*/
+/*}*/
 
 .product-quantity-cart {
     border-radius: 20px;
@@ -727,4 +727,74 @@ btn-pay-note{
 {
     color: #888;
 }
+
+/* Tổng thể container */
+.customer-select {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    /*background-color: #f9f9f9;*/
+    /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+    max-width: 400px;
+    /*margin: 16px auto;*/
+    font-family: Arial, sans-serif;
+}
+
+/* Phần tên khách hàng */
+#nameCustomer {
+    margin-top: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+    padding: 4px 8px;
+    /*background-color: #e8f4f8;*/
+    border-radius: 4px;
+    width: 100%;
+    text-transform: capitalize;
+}
+
+/* Phần thông tin chi tiết */
+#infoCustomer {
+    margin-bottom: 12px;
+}
+
+#infoCustomer strong {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 4px;
+    display: block;
+}
+
+#infoDetail {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+
+#infoDetail p {
+    margin: 4px 0;
+}
+
+/* Tăng khoảng cách và làm rõ các đoạn thông tin */
+#infoDetail p:first-child {
+    font-weight: bold;
+    color: #007bff; /* Màu xanh cho số điện thoại */
+}
+
+#infoDetail p:last-child {
+    font-style: italic;
+    color: #28a745; /* Màu xanh lá cho email */
+}
+
+/* Hiệu ứng hover */
+.customer-select:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
 /*phần input và select ở thông tin hóa đơn end */

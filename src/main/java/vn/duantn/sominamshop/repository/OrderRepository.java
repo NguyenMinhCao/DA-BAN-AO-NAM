@@ -2,6 +2,7 @@ package vn.duantn.sominamshop.repository;
 
 import java.util.List;
 
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,9 @@ import vn.duantn.sominamshop.model.Order;
 import java.math.BigDecimal;
 
 import java.util.Date;
+
 import java.util.Optional;
+
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
@@ -111,12 +114,12 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
         List<Order> findByIdStartingWith(@Param("prefix") String prefix);
 
     @Query("select od from Order od where od.deliveryStatus = :deliveryStatus and od.orderSource = false and od.paymentStatus = :paymentStatus")
-    List<Order> getAllOrderNonPendingAndPos(@Param("deliveryStatus") DeliveryStatus deliveryStatus, @Param("paymentStatus") PaymentStatus paymentStatus, Pageable pageable);
+    List<Order> getAllOrderNonPendingAndPos(@Param("deliveryStatus") DeliveryStatus deliveryStatus, @Param("paymentStatus") PaymentStatus paymentStatus, Pageable page);
 
-    @Query(value = "SELECT * FROM orders o " +
-            "LEFT JOIN users u on u.id = o.user_id " +
-            "LEFT JOIN promotions p on p.id = o.promotion_id " +
+    @Query(value = "SELECT o FROM Order o " +
+            "LEFT JOIN User u on u.id = o.user.id " +
+            "LEFT JOIN Coupon cp on cp.id = o.coupon.id "+
             "WHERE o.id = :id "
-            , nativeQuery = true)
+    )
     Optional<Order> getAllOrderById(@Param("id") Long id);
 }

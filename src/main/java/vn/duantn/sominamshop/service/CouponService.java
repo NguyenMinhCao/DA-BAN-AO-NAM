@@ -1,23 +1,22 @@
 package vn.duantn.sominamshop.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.duantn.sominamshop.model.Coupon;
-import vn.duantn.sominamshop.model.Order;
-import vn.duantn.sominamshop.model.constants.OrderStatus;
-import vn.duantn.sominamshop.model.dto.PromotionDTO;
+import vn.duantn.sominamshop.model.dto.CouponDTO;
 import vn.duantn.sominamshop.model.dto.response.ResCouponDTO;
-import vn.duantn.sominamshop.model.dto.response.ResOrderDTO;
 import vn.duantn.sominamshop.model.dto.response.ResultPaginationDTO;
 import vn.duantn.sominamshop.repository.CouponRepository;
 
@@ -59,6 +58,7 @@ public class CouponService {
 
     public List<ResCouponDTO> convertCouponToCouponResponse(List<Coupon> lstCoupon) {
         List<ResCouponDTO> couponSRes = new ArrayList<>();
+
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -105,4 +105,14 @@ public class CouponService {
     //     return listPromotionDTO;
     // }
 
+    public List<CouponDTO> findValidCoupons(String code){
+        LocalDateTime localDateTime =  LocalDateTime.now(ZoneOffset.of("+07:00"));
+        List<Coupon> couponList = couponRepository.findValidCoupons(localDateTime, code);
+        List<CouponDTO> couponDTOList = couponList.stream().map(CouponDTO :: toDTO).collect(Collectors.toList());
+        return couponDTOList;
+    }
+    @Transactional
+    public void updateUsageLimitCoupon(Integer quantity, Long id){
+        couponRepository.updateQuantity(quantity, id);
+    }
 }

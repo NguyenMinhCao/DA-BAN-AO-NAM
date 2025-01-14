@@ -18,15 +18,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
 
-    Page<User> findByFullNameContainingAndRole(String fullName, Role role, Pageable pageable);
+
 
     @Query("SELECT u from User u " +
             "left join Address ad on u.id = ad.user.id " +
             "left join Role rl on u.role.id = rl.id " +
-            "where u.fullName like concat('%', :fullName, '%') and rl.id = 1")
+            "where u.fullName like concat('%', :fullName, '%') and rl.id = 2")
     Page<User> findByFullNameContainingAndRole(@Param("fullName") String fullName, Pageable pageable);
 
-    boolean existsByPhoneNumber(String phone);
+    boolean existsByPhoneNumberAndRole(String phone, Role role);
 
     List<User> findByPhoneNumberStartingWith(String prefix);
 }

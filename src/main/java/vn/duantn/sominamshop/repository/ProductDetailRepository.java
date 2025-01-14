@@ -160,10 +160,13 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
             left join colors cl on pd.color_id = cl.id
             left join sizes sz on pd.size_id = sz.id
             WHERE
-            (p.name like CONCAT('%', :name,'%')
-            or sz.size_name like CONCAT('%', :name,'%')
-            or cl.color_name like CONCAT('%', :name,'%'))
-            and pd.quantity > 0
+             (
+                    p.name LIKE CONCAT('%', :name, '%')
+                    AND (pd.color_id = :color OR :color IS NULL)
+                    AND (pd.size_id = :size OR :size IS NULL)
+                    AND (p.category_id = :category OR :category IS NULL)
+                 )
+             AND pd.quantity > 0
             GROUP BY pd.id, p.name, pd.quantity, sz.size_name, cl.color_name, pd.price, imagesOrder.url_image
             """,
             countQuery = """
@@ -173,12 +176,17 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
             left join colors cl ON pd.color_id = cl.id
             left join sizes sz ON pd.size_id = sz.id
             WHERE
-            (p.name like CONCAT('%', :name,'%')
-            or sz.size_name like CONCAT('%', :name,'%')
-            or cl.color_name like CONCAT('%', :name,'%'))
-            and pd.quantity > 0
+            (
+                 (
+                   p.name LIKE CONCAT('%', :name, '%')
+                    AND (pd.color_id = :color OR :color IS NULL)
+                    AND (pd.size_id = :size OR :size IS NULL)
+                    AND (p.category_id = :category OR :category IS NULL)
+                 )
+             )
+             AND pd.quantity > 0
             """,nativeQuery = true)
-    Page<CounterProductProjection> findAllProductByName(Pageable pageable, @Param(value = "name") String name);
+    Page<CounterProductProjection> findAllProductByName(Pageable pageable, @Param(value = "name") String name, @Param("size") Long size, @Param("color") Long color, @Param("category") Long category);
 
     @Modifying
     @Query("UPDATE ProductDetail p set p.quantity = p.quantity - :quantity WHERE p.id = :id")
@@ -194,4 +202,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
     @Query("select pd from ProductDetail pd where pd.size.id =:idSize and pd.color.id =:idColor and pd.product.id=:idProduct")
     ProductDetail findProductDetailBySizeAndColorAndProduct(long idSize, long idColor, long idProduct);
+
+    @Query("select pd.quantity from ProductDetail pd where pd.id = :id")
+    Long findQuantityProductById(@Param("id") Long id);
 }

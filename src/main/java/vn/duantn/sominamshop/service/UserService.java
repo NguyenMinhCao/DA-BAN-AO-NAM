@@ -1,17 +1,25 @@
 package vn.duantn.sominamshop.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import vn.duantn.sominamshop.model.Order;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.RegisterDTO;
@@ -30,11 +38,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UploadService uploadService;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, UploadService uploadService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.uploadService = uploadService;
     }
 
     public User findUserByEmail(String email) {
@@ -86,7 +96,7 @@ public class UserService {
 
     public Map<String, String> validateCustomerData(User user) {
         Map<String, String> errors = new HashMap<>();
-        if (!user.getPhoneNumber().isEmpty() && userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+        if (!user.getPhoneNumber().isEmpty() && userRepository.existsByPhoneNumberAndRole(user.getPhoneNumber(), Role.builder().id(2).build())) {
             errors.put("phoneNumber", "Phone number already exists.");
         }
         if (!user.getEmail().isEmpty() && this.checkEmailExits(user.getEmail())) {
@@ -124,6 +134,36 @@ public class UserService {
 
     public List<User> findUserByPhone(String phone) {
         return this.userRepository.findByPhoneNumberStartingWith(phone);
+    }
+    public Map<String, String> updateUser(User user, MultipartFile file){
+        User userUpdate = userRepository.findById(user.getId()).orElse(null);
+        userUpdate.setFullName(user.getFullName());
+        userUpdate.setEmail(user.getEmail());
+        userUpdate.setAvatar(user.getAvatar());
+        Map<String, String> validationErrors = this.validateCustomerData(user);
+        if(!validationErrors.isEmpty()){
+            return validationErrors;
+        }
+        if(user.getPhoneNumber() !=null){
+            userUpdate.setPhoneNumber(user.getPhoneNumber());
+        }
+        if(user.getEmail() != null){
+            userUpdate.setPhoneNumber(user.getPhoneNumber());
+        }
+        userUpdate.setGender(user.getGender());
+        if(file != null){
+            Path filePath = Paths.get("/resources/images/avatar/"+user.getAvatar());
+            try {
+                Files.delete(filePath);
+                System.out.println("File đã được xóa: " + filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String avatar = uploadService.handleSaveAvatar(file, "/resources/images/avatar");
+            user.setAvatar(avatar);
+        }
+        userRepository.save(userUpdate);
+        return null;
     }
 
 }

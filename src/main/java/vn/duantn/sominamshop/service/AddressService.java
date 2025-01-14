@@ -2,12 +2,14 @@ package vn.duantn.sominamshop.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.AddressDTO;
+import vn.duantn.sominamshop.model.dto.response.AddressReponseDTO;
 import vn.duantn.sominamshop.repository.AddressRepository;
 
 @Service
@@ -86,5 +88,11 @@ public class AddressService {
             addressById.setStatus(false);
         }
         return this.addressRepository.save(addressById);
+    }
+
+    public List<AddressReponseDTO> findAddressByIdUser(Long id){
+        List<Address> addressList = addressRepository.findAllAddressByIdUser(id);
+        List<AddressReponseDTO> addressDTOList = addressList.stream().map(AddressReponseDTO :: toDTO).collect(Collectors.toList());
+        return addressDTOList;
     }
 }

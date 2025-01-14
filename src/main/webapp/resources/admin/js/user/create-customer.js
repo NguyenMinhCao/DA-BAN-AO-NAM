@@ -42,7 +42,7 @@ $(document).ready(function () {
         }
         formData.append("user", new Blob([JSON.stringify(data)], {type: "application/json"}));
         $.ajax({
-            url: `http://localhost:8080/api/admin/user/save/customer/multipart`,
+            url: `/api/admin/user/save/customer/multipart`,
             type: 'POST',
             data: formData,
             processData: false,

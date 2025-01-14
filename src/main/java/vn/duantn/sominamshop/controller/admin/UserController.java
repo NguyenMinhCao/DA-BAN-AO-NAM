@@ -80,7 +80,7 @@ public class UserController {
 
     @GetMapping("/admin/staff/create")
     public String showIndexPageStaffCreate() {
-        return "admin/user/create-customer";
+        return "admin/user/create-staff";
     }
 
     // @PostMapping("/admin/user/find-by-email")

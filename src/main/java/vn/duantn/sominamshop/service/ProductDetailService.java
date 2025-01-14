@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Product;
 import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.dto.request.DataGetProductDetail;
@@ -16,9 +17,7 @@ import vn.duantn.sominamshop.model.dto.response.SizeResponse;
 import vn.duantn.sominamshop.repository.ProductDetailRepository;
 import vn.duantn.sominamshop.repository.ProductRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -162,7 +161,28 @@ public class ProductDetailService {
     }
 
     @Transactional
-    public void updateQuantityProduct(Long quantity, Long id) {
-        productDetailRepository.updateQuantityProduct(quantity, id);
+    public Map<String, String> updateQuantityProduct(List<OrderDetail> productOrderDetailList) {
+        Map<String, String> map = new HashMap<>();
+        boolean check = true;
+        for(OrderDetail od : productOrderDetailList){
+            if(od.getProductDetail() != null){
+                Long quantityInSql = productDetailRepository.findQuantityProductById(od.getProductDetail().getId());
+                if(quantityInSql == 0){
+                    check = false;
+                    map.put("error", "opp trong kho còn 0 sản phẩm số :" + od.getProductDetail().getId());
+                }else if(quantityInSql < od.getQuantity()){
+                    check = false;
+                    map.put("error", "Rất xin lỗi khách hàng trong kho còn có "+quantityInSql+" sản phẩm :" + od.getProductDetail().getId());
+                }else if(quantityInSql >= od.getQuantity()){
+                    check =true;
+                }
+            }
+        }
+        if(check == true){
+            for(OrderDetail od : productOrderDetailList){
+                productDetailRepository.updateQuantityProduct(od.getQuantity(), od.getProductDetail().getId());
+            }
+        }
+        return map;
     }
 }
