@@ -195,7 +195,7 @@ public class OrderService {
             }
 
             if (promotionId != null) {
-                promotionById = this.promotionService.findPromotionById(promotionId);
+                promotionById = this.promotionService.findCouponById(promotionId);
                 if (promotionById.isPresent()) {
                     order.setCoupon(promotionById.get());
                     session.setAttribute("promotionInOrder", order.getCoupon());
