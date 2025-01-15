@@ -95,17 +95,19 @@
                                         </select>
                                     </div>
 
-                                    <!-- Ảnh -->
+                                    <!--ảnh-->
                                     <div class="form-group col-md-12">
                                         <label class="control-label">Ảnh sản phẩm</label>
                                         <div id="myfileupload">
-                                            <input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)"/>
+                                            <input type="file" id="uploadfile" name="ImageUpload" multiple
+                                                   onchange="readURL(this)"/>
                                         </div>
                                         <div id="thumbbox" class="d-flex">
 
                                         </div>
                                         <div id="boxchoice">
-                                            <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
+                                            <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn
+                                                ảnh</a>
                                             <p style="clear:both"></p>
                                         </div>
                                     </div>
@@ -127,10 +129,6 @@
 
                     <!-- Table -->
                     <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0" id="sampleTable">
-
-
-
-
 
 
                         <thead>

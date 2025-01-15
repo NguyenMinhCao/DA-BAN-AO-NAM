@@ -53,9 +53,30 @@
                         </div>
 
                         <div class="col-md-12">
+                            <label class="control-label">Danh mục: </label>
+                            <label>${product.category.categoryName}</label>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="control-label">Mẫu sản phẩm: </label>
+                            <label>${product.pattern.patternName}</label>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="control-label">Nguồn gốc: </label>
+                            <label>${product.origin.originName}</label>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="control-label">Chất liệu: </label>
+                            <label>${product.material.materialName}</label>
+                        </div>
+
+                        <div class="col-md-12">
                             <label class="control-label">Ảnh sản phẩm:</label>
                             <div id="thumbbox" class="d-flex flex-wrap"></div>
                         </div>
+
 
                         <!-- Số lượng -->
                         <div class="col-md-12">
