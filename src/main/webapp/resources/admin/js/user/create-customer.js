@@ -3,6 +3,9 @@ $(document).ready(function () {
         addCustomer()
     })
     function addCustomer(){
+        if(!validate()){
+            return;
+        }
         // thông tin cơ bản
         let name = $('#customerName').val()
         let phone = $('#customerPhone').val()
@@ -24,7 +27,7 @@ $(document).ready(function () {
             phoneNumber : phone,
             gender : gender,
             dateOfBirth : dob,
-            status : 'Kích hoạt',
+            status : true,
             address : [
                 {
                     fullName : addressName,
@@ -49,6 +52,7 @@ $(document).ready(function () {
             contentType: false,
             success: function() {
                 notificationAddCusstomer('Thêm thành công', 'success')
+                window.location.href = "/admin/customer";
             },
             error: function(xhr, status, error) {
                 let errorMap = JSON.parse(xhr.responseText);
@@ -61,13 +65,26 @@ $(document).ready(function () {
         });
     }
 
-    function validate(data){
+    function validate(){
+        let name = $('#customerName').val()
+        let phone = $('#customerPhone').val()
+        let email = $('#customerEmail').val()
         let emailRegex = /^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         let phoneRegex = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
-        if(!data.name || (!data.phoneNumber && !data.email)){
-            notificationAddCusstomer("Họ tên, số điện thoại hoặc email không được để trống", warning)
+
+        if (!phone || !email || !name) {
+            notificationAddCusstomer("Không để số điện thoại, tên, email trống", 'warning')
+            return false;
         }
-        // if(data)
+        if (!phoneRegex.test(phone)) {
+            notificationAddCusstomer("Số điện thoại không đúng", 'warning')
+            return false;
+        }
+        if (!emailRegex.test(email)) {
+            notificationAddCusstomer("email không đúng", 'warning')
+            return false;
+        }
+        return true;
     }
 
     function notificationAddCusstomer(message, icon){
@@ -88,4 +105,64 @@ $(document).ready(function () {
             title: message
         });
     }
+    fetchLocation()
+    //fetch địa chỉ cho các ô select
+    function fetchLocation(){
+        const apiUrl = 'https://provinces.open-api.vn/api/p';
+        $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            success: function(data) {
+                data.forEach(function(value) {
+                    $('#customerProvince').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching provinces data:', error);
+            }
+        });
+    }
+    function fetchDistricts(districtsCode) {
+        const apiUrlDistricts = `https://provinces.open-api.vn/api/p/${districtsCode}/?depth=2`;
+        $.ajax({
+            url: apiUrlDistricts,
+            method: 'GET',
+            success: function(data) {
+                let districts = data.districts;
+                $('#customerDistrict').empty().append('<option value="">Select District</option>');
+                districts.forEach(function(value) {
+                    $('#customerDistrict').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching districts data:', error);
+            }
+        });
+    }
+    function fetchWards(wardCode) {
+        const apiUrlWards = `https://provinces.open-api.vn/api/d/${wardCode}/?depth=2`;
+        $.ajax({
+            url: apiUrlWards,
+            method: 'GET',
+            success: function(data) {
+                let wards = data.wards;
+                $('#customerWard').empty().append('<option value="">Select Ward</option>');
+                wards.forEach(function(value) {
+                    $('#customerWard').append(`<option value="${value.code}">${value.name}</option>`);
+                });
+            },
+            error: function(error) {
+                console.error('Error fetching wards data:', error);
+            }
+        });
+    }
+
+    $('#customerProvince').on('change', function(e) {
+        fetchDistricts(e.target.value);
+    });
+
+    $('#customerDistrict').on('change', function(e) {
+        fetchWards(e.target.value);
+    });
+
 })

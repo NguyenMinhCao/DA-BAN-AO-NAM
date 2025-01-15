@@ -2,6 +2,7 @@ package vn.duantn.sominamshop.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,29 +59,32 @@ public class CouponService {
     public List<ResCouponDTO> convertCouponToCouponResponse(List<Coupon> lstCoupon) {
         List<ResCouponDTO> couponSRes = new ArrayList<>();
 
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-//
-//        for (Coupon coupon : lstCoupon) {
-//            ResCouponDTO newCouponRes = new ResCouponDTO();
-//            newCouponRes.setId(coupon.getId());
-//            newCouponRes.setCouponCode(coupon.getCouponCode());
-//            newCouponRes.setDiscountType(coupon.getDiscountType());
-//            newCouponRes.setDiscountValue(coupon.getDiscountValue());
-//            newCouponRes.setMinOrderValue(coupon.getMinOrderValue());
-//            newCouponRes.setStatus(coupon.isStatus());
-//            newCouponRes.setUsageLimit(coupon.getUsageLimit());
-//
-//            String formattedDateCreate = coupon.getCreatedAt().format(formatter);
-//            newCouponRes.setCreatedAt(formattedDateCreate);
-//
-//            String formattedStartDate = coupon.getStartDate().format(formatter);
-//            newCouponRes.setStartDate(formattedStartDate);
-//
-//            String formattedEndDate = coupon.getEndDate().format(formatter);
-//            newCouponRes.setEndDate(formattedEndDate);
-//
-//            couponSRes.add(newCouponRes);
-//        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        for (Coupon coupon : lstCoupon) {
+            ResCouponDTO newCouponRes = new ResCouponDTO();
+            newCouponRes.setId(coupon.getId());
+            newCouponRes.setCouponCode(coupon.getCouponCode());
+            newCouponRes.setDiscountType(coupon.getDiscountType());
+            newCouponRes.setDiscountValuePercent(coupon.getDiscountValuePercent());
+            newCouponRes.setDiscountValueFixed(coupon.getDiscountValueFixed());
+            newCouponRes.setStatus(coupon.getStatus());
+            newCouponRes.setUsageLimit(coupon.getUsageLimit());
+            newCouponRes.setMaximumReduction(coupon.getMaximumReduction());
+            newCouponRes.setMinimumValue(coupon.getMaximumReduction());
+
+
+            String formattedDateCreate = coupon.getCreatedAt().format(formatter);
+            newCouponRes.setCreatedAt(formattedDateCreate);
+
+            String formattedStartDate = coupon.getStartDate().format(formatter);
+            newCouponRes.setStartDate(formattedStartDate);
+
+            String formattedEndDate = coupon.getEndDate().format(formatter);
+            newCouponRes.setEndDate(formattedEndDate);
+
+            couponSRes.add(newCouponRes);
+        }
 
         return couponSRes;
     }

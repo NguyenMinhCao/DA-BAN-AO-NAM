@@ -25,6 +25,7 @@ public class UserDTO {
     private String avatar;
 
     private Boolean gender;
+    private Boolean status;
     private List<AddressDTO> address;
 
     public static UserDTO toDTO(User user){
@@ -39,6 +40,6 @@ public class UserDTO {
                     .collect(Collectors.toList());
         }
 
-        return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getDateOfBirth(), user.getAvatar(), user.getGender(), addressDTOs);
+        return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getDateOfBirth(), user.getAvatar(), user.getGender(), user.getStatus(),addressDTOs);
     }
 }

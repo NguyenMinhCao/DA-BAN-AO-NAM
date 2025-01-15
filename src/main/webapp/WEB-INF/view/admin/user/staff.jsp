@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Dashboard - SB Admin</title>
+    <title>Nhân Viên - Admin</title>
     <link href="/admin/css/user/customer.css" rel="stylesheet"/>
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/style1.css"/>
@@ -37,7 +37,7 @@
                     <div class="invoice-container">
                         <div class="status-add">
                             <div class="radio-status">
-                                <button id="btnNewCustomer">+Thêm mới nhân viên</button>
+                                <button id="btnNewStaff">+Thêm mới nhân viên</button>
                             </div>
                             <div class="search">
                                 <input type="text" id="search" placeholder="Nhập tên để tìm kiếm" class="form-control">
@@ -74,6 +74,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-<script src="/admin/js/user/customer.js"></script>
+<script src="/admin/js/user/staff.js"></script>
 </body>
 </html>

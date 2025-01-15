@@ -95,4 +95,13 @@ public class AddressService {
         List<AddressReponseDTO> addressDTOList = addressList.stream().map(AddressReponseDTO :: toDTO).collect(Collectors.toList());
         return addressDTOList;
     }
+
+    public void updateAddress(Address address){
+        if(address !=null){
+            if(address.getUser() !=null){
+                System.out.println("UserIdaddress " + address.getUser().getId());
+                addressRepository.save(address);
+            }
+        }
+    }
 }

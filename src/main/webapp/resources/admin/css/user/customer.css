@@ -157,6 +157,7 @@ button.btn-info:hover {
     margin: 5px;
 }
 /*form chỉnh sửa khách hàng*/
+.form-add-address,
 .form-add-customer{
     display: none;
     position: fixed;
@@ -167,8 +168,12 @@ button.btn-info:hover {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /*z-index: 2000;*/
+    z-index: 1000;
 }
+.form-add-address{
+    z-index: 1100;
+}
+.content-add-address,
 .content-add-customer{
     padding: 22px;
     width: 600px;
@@ -258,4 +263,16 @@ button.btn-info:hover {
 .upload-container:hover .remove-btn,
 .upload-container img:hover + .remove-btn {
     visibility: visible;
+}
+.status-active {
+    color: green;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: red;
+    font-weight: bold;
+}
+.swal2-container {
+    z-index: 3000;
 }

@@ -20,21 +20,21 @@ public class CouponDTO {
     private long id;
     private String couponCode;
     private DiscountType discountType;// kiểu giảm
-    private double discountValueFixed; //số tiền giảm
+    private Double discountValueFixed; //số tiền giảm
 
-    private int discountValuePercent;//sô phần trăm giảm
+    private Integer discountValuePercent;//sô phần trăm giảm
 
-    private double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
+    private Double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
 
-    private double minimumValue;// giá trị đơn hàng tối thiểu được sử dụng mã giảm gía
+    private Double minimumValue;// giá trị đơn hàng tối thiểu được sử dụng mã giảm gía
 
-    private int usageLimit;// giới hạn sử dụng
+    private Integer usageLimit;// giới hạn sử dụng
 
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
 
-    private boolean status;
+    private Boolean status;
 
     public static CouponDTO toDTO(Coupon coupon){
         if(coupon == null){
@@ -43,7 +43,7 @@ public class CouponDTO {
         return CouponDTO.builder()
                 .id(coupon.getId())
                 .couponCode(coupon.getCouponCode())
-                .status(coupon.isStatus())
+                .status(coupon.getStatus())
                 .usageLimit(coupon.getUsageLimit())
                 .discountType(coupon.getDiscountType())
                 .endDate(coupon.getEndDate())

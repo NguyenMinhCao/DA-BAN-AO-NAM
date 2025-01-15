@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.UserDTO;
@@ -29,23 +30,35 @@ public class UserRestController {
     private final UserService userService;
     private final UploadService uploadService;
     private final AddressService addressService;
-    @GetMapping("/get/customers")
-    public ResponseEntity<?> getCustomers(
+    @GetMapping("/get/order/customers")
+    public ResponseEntity<?> getCustomersForOrder(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "2") int limit,
             @RequestParam(value = "keyword", defaultValue = "") String search) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search);
+        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search, true, 2);
+        return ResponseEntity.ok(pageCustomer);
+    }
+    @GetMapping("/get/customers")
+    public ResponseEntity<?> getCustomers(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "limit", defaultValue = "2") int limit,
+            @RequestParam(value = "keyword", defaultValue = "") String search,
+            @RequestParam(value = "status", defaultValue = "") Boolean status
+    ) {
+        System.out.println(status + " trạng thái của khách hangd");
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search, status, 2);
         return ResponseEntity.ok(pageCustomer);
     }
     @GetMapping("/get/staffs")
     public ResponseEntity<?> getStaff(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "2") int limit,
-            @RequestParam(value = "keyword", defaultValue = " ") String search
+            @RequestParam(value = "keyword", defaultValue = "") String search
     ){
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageStaff = userService.findByFullNameAndRole(pageable, search);
+        Page<UserDTO> pageStaff = userService.findStaff(pageable, search, null);
         return ResponseEntity.ok(pageStaff);
     }
     @GetMapping("/get/address/{id}")
@@ -62,6 +75,7 @@ public class UserRestController {
         if(user.getPhoneNumber() != null)
             user.getAddress().forEach(address -> address.setUser(user));
         user.setRole(Role.builder().id(2).build());
+        user.setStatus(true);
         User userSave = userService.handleSaveUser(user);
         UserDTO userDTO = UserDTO.toDTO(userSave);
         return ResponseEntity.ok(userDTO);
@@ -69,7 +83,7 @@ public class UserRestController {
     @PostMapping(value = "/save/customer/multipart")
     public ResponseEntity<?> saveCustomerMultipart(
             @RequestPart(name = "user") String userJson,
-            @RequestPart(name = "file") MultipartFile file) throws JsonProcessingException {
+            @RequestPart(name = "file", required = false) MultipartFile file) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         User user = objectMapper.readValue(userJson, User.class);
@@ -79,9 +93,12 @@ public class UserRestController {
         }
         if(user.getPhoneNumber() != null)
             user.getAddress().forEach(address -> address.setUser(user));
-        user.setRole(Role.builder().id(2).build());
-        String avatar = uploadService.handleSaveAvatar(file, "/resources/images/avatar");
-        user.setAvatar(avatar);
+            user.setRole(Role.builder().id(2).build());
+        if(file != null){
+            String avatar = uploadService.handleSaveAvatar(file, "/resources/images/avatar");
+            user.setAvatar(avatar);
+        }
+        user.setStatus(true);
         User userSave = userService.handleSaveUser(user);
         UserDTO userDTO = UserDTO.toDTO(userSave);
         return ResponseEntity.ok(userDTO);
@@ -93,7 +110,23 @@ public class UserRestController {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         User user = objectMapper.readValue(userJson, User.class);
-        userService.updateUser(user, file);
+        Map<String,String> map =  userService.updateUser(user, file);
+        if(!map.isEmpty()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(map);
+        }
         return ResponseEntity.ok("chỉnh sửa thành công");
+    }
+    @PutMapping("/update/status/customer")
+    public ResponseEntity<?> updateStatusCustomer(
+            @RequestParam(value = "id", defaultValue = "") Long id,
+            @RequestParam(value = "status", defaultValue = "true") Boolean status
+    ){
+        userService.updateStatus(id, status);
+        return ResponseEntity.ok("Chỉnh sửa thành công");
+    }
+    @PutMapping("/update/address")
+    public ResponseEntity<?> updateAddress(@RequestBody Address address){
+        addressService.updateAddress(address);
+        return ResponseEntity.ok("chỉnh sủa thành công");
     }
 }

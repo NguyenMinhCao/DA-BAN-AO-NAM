@@ -74,7 +74,7 @@ public class OrderControllerClient {
         totalPayment = totalPrice + shippingPrice;
 
         if (order.getCoupon() != null) {
-            totalPayment = totalPayment - Double.parseDouble(order.getCoupon().getDiscountValue());
+            totalPayment = totalPayment - order.getCoupon().getDiscountValueFixed();
         }
 
         // Lấy địa chỉ mặc định

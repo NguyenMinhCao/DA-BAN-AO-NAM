@@ -40,15 +40,15 @@
                                 <button id="btnNewCustomer">+Thêm mới khách hàng</button>
                             </div>
                             <div class="radio-status">
-                                <input type="radio" name="statusCustomer" checked>
+                                <input type="radio" value="" name="statusCustomer" checked>
                                 <label>Tất cả</label>
                             </div>
                             <div class="radio-status">
-                                <input type="radio" name="statusCustomer">
+                                <input type="radio" value="true" name="statusCustomer">
                                 <label>Hoạt động</label>
                             </div>
                             <div class="radio-status">
-                                <input type="radio" name="statusCustomer">
+                                <input type="radio" value="false" name="statusCustomer">
                                 <label>Không hoạt động</label>
                             </div>
                             <div class="search">
@@ -88,7 +88,6 @@
                                             <th>SĐT</th>
                                             <th>Họ tên</th>
                                             <th>Địa chỉ</th>
-                                            <th>Trạng thái</th>
                                             <th>Tính năng</th>
                                         </tr>
                                         </thead>
@@ -148,6 +147,62 @@
                                     <div class="form-actions">
                                         <button type="reset" id="cancel-btn-add-customer" class="cancel-btn">Hủy (ESC)</button>
                                         <button class="add-btn" id="update-customer">Chỉnh sửa</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+<%--                        form dịa chỉ--%>
+                        <div class="form-add-address" id="form-add-address">
+                            <div class="content-add-address">
+                                <h2>Thêm mới địa chỉ</h2>
+                                <div>
+                                    <!-- Họ và tên -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="fullnameAddress">Họ và tên</label>
+                                            <input type="text" id="fullnameAddress" placeholder="Nhập họ và tên">
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="phoneNumberAddress">Số điện thoại</label>
+                                            <input type="tel" id="phoneNumberAddress" placeholder="Nhập sdt">
+                                        </div>
+                                    </div>
+
+                                    <!-- Địa chỉ và Quốc gia -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="addressAddDetail">Địa chỉ chi tiết</label>
+                                            <input type="text" id="addressAddDetail" placeholder="Nhập địa chỉ chi tiết">
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="area">Khu vực</label>
+                                            <select id="area">
+                                                <option disabled selected>Chọn khu vực</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Khu vực và Phường/Xã -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="Districts">Quận/Huyện</label>
+                                            <select id="Districts">
+                                                <option disabled selected>Chọn Quận/Huyện</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="Wards">Phường/Xã</label>
+                                            <select id="Wards">
+                                                <option disabled selected>Chọn Phường/Xã</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Buttons -->
+                                    <div class="form-actions">
+                                        <button type="reset" id="cancel-btn-add-address" class="cancel-btn">Hủy (ESC)</button>
+                                        <button class="add-btn" id="add-address">Thêm</button>
                                     </div>
                                 </div>
                             </div>

@@ -23,7 +23,7 @@ import vn.duantn.sominamshop.util.SecurityUtil;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "full_name", columnDefinition = "NVARCHAR(255)")
     private String fullName;

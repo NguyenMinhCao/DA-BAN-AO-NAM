@@ -244,11 +244,11 @@ public class OrderService {
 
                 // người dùng truyền lên promotion
                 if (promotionId != null) {
-                    discountValue = Double.parseDouble(promotionById.get().getDiscountValue());
+                    discountValue = promotionById.get().getDiscountValueFixed();
                 }
                 // người dùng không truyền lên nhưng trong DB có
                 else if (promotionId == null && order.getCoupon() != null) {
-                    discountValue = Double.parseDouble(order.getCoupon().getDiscountValue());
+                    discountValue = order.getCoupon().getDiscountValueFixed();
                 }
                 // người dùng không truyền lên trong DB cũng ko có
                 else {
@@ -270,7 +270,7 @@ public class OrderService {
                 response.put("totalPayment", totalPayment);
                 response.put("shippingPrice", shippingPrice);
                 if (discountValue != 0) {
-                    response.put("discountValue", order.getCoupon().getDiscountValue());
+                    response.put("discountValue", order.getCoupon().getDiscountValueFixed());
                 }
             }
 

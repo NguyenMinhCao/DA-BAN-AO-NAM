@@ -37,19 +37,19 @@ public class Coupon {
     private DiscountType discountType;// kiểu giảm
 
     @Column(name = "discount_value_fixed")
-    private double discountValueFixed; //số tiền giảm
-
+    private Double discountValueFixed; //số tiền giảm
+    
     @Column(name = "discount_value_percent")
-    private int discountValuePercent;//sô phần trăm giảm
-
+    private Integer discountValuePercent;//sô phần trăm giảm
+    
     @Column(name = "maximum_reduction")
-    private double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
+    private Double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
 
     @Column(name = "minimum_value")
-    private double minimumValue;// giá trị đơn hàng tối thiểu được sử dụng mã giảm gía
+    private Double minimumValue;// giá trị đơn hàng tối thiểu được sử dụng mã giảm gía
 
     @Column(name = "usage_limit ")
-    private int usageLimit;// giới hạn sử dụng
+    private Integer usageLimit;// giới hạn sử dụng
 
     @Column(name = "start_date ")
     private LocalDateTime startDate;
@@ -58,7 +58,7 @@ public class Coupon {
     private LocalDateTime endDate;
 
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

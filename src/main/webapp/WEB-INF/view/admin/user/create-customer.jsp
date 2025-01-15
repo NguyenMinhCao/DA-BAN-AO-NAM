@@ -91,13 +91,13 @@
                                 <div class="item-group">
                                     <label for="customerProvince" class="form-label">Tỉnh/Thành</label>
                                     <select id="customerProvince" class="form-select">
-                                        <option disabled>select-province</option>
+                                        <option disabled selected>select-province</option>
                                     </select>
                                 </div>
                                 <div class="item-group">
                                     <label for="customerDistrict" class="form-label">Quận/Huyện</label>
                                     <select id="customerDistrict" class="form-select">
-                                        <option disabled>select-district</option>
+                                        <option disabled selected>select-district</option>
                                     </select>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
                                 <div class="item-group">
                                     <label for="customerWard" class="form-label">Phường/Xã</label>
                                     <select id="customerWard" class="form-select">
-                                        <option disabled>select-ward</option>
+                                        <option disabled selected>select-ward</option>
                                     </select>
                                 </div>
                                 <div class="item-group gender">
