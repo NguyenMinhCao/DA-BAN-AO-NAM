@@ -1,9 +1,6 @@
 package vn.duantn.sominamshop.repository;
-
 import java.util.List;
-
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -14,6 +11,8 @@ import vn.duantn.sominamshop.model.Order;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
+
+
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;

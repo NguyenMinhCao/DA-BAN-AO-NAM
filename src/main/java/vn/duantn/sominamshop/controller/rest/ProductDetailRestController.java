@@ -24,6 +24,7 @@ public class ProductDetailRestController {
         return ResponseEntity.ok(productDetailService.add(productDetailRequest));
     }
 
+
     @GetMapping("/formUpdate/{id}")
     public ResponseEntity<?> formUpdate(@PathVariable("id") Long id, Model model) {
         ProductDetail productDetail = productDetailService.findById(id);

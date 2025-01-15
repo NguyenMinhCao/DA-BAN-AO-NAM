@@ -66,6 +66,23 @@
                                         </select>
                                     </div>
 
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Nguồn gốc</label>
+                                        <select class="form-control" id="product-origin">
+                                            <c:forEach var="origin" items="${listOrigin}">
+                                                <option value="${origin.originId}">${origin.originName}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Mẫu sản phẩm</label>
+                                        <select class="form-control" id="product-pattern">
+                                            <c:forEach var="pattern" items="${listPattern}">
+                                                <option value="${pattern.id}">${pattern.patternName}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
 
 
                                     <!--Chất liệu-->
@@ -78,18 +95,21 @@
                                         </select>
                                     </div>
 
-                                    <!--ảnh-->
+                                    <!-- Ảnh -->
                                     <div class="form-group col-md-12">
                                         <label class="control-label">Ảnh sản phẩm</label>
                                         <div id="myfileupload">
                                             <input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)"/>
                                         </div>
-                                        <div id="thumbbox" class="d-flex"></div>
+                                        <div id="thumbbox" class="d-flex">
+
+                                        </div>
                                         <div id="boxchoice">
                                             <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
                                             <p style="clear:both"></p>
                                         </div>
                                     </div>
+
 
                                     <!--Mô tả-->
                                     <div class="form-group col-md-12">

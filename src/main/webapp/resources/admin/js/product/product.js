@@ -16,7 +16,7 @@ function writeURL() {
         var imageContainer = $(
             '<div class="image-product-container">' +
             '   <img src="' + url + '" alt="Thumb image" class="thumbimage"/>' +
-            '   <a class="removeimg" href="javascript:" style="display: inline"></a>' +
+            '   <a class="removeimg" href="javascript:" style="display: inline">Xóa</a>' +
             '</div>'
         );
 
@@ -26,12 +26,17 @@ function writeURL() {
         // Sự kiện click cho nút xóa
         imageContainer.find(".removeimg").on("click", function () {
             var removedImage = $(this).closest(".image-product-container").find("img").attr("src");
+
             // Xóa ảnh khỏi biến listUrlImage
             listUrlImage = listUrlImage.filter(function (img) {
                 return img !== removedImage;
             });
+
+            // Loại bỏ container ảnh
             $(this).closest(".image-product-container").remove();
             console.log(listUrlImage);
+
+            // Reset lại upload file
             $("#myfileupload").html('<input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)"/>');
             $('.Choicefile').css('background', '#14142B');
         });
@@ -42,58 +47,73 @@ function writeURL() {
 function readURL(input) {
     if (input.files && input.files.length > 0) {
         for (var i = 0; i < input.files.length; i++) {
-            var reader = new FileReader();
+            var formData = new FormData();
+            formData.append("file", input.files[i]);
 
-            reader.onload = function (e) {
-                // Kiểm tra xem ảnh đã tồn tại trong mảng listUrlImage chưa
-                var isDuplicate = listUrlImage.some(function (img) {
-                    return img === e.target.result;
-                });
+            // Gửi ảnh lên server
+            $.ajax({
+                url: '/upload/image', // Địa chỉ endpoint xử lý tải ảnh
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Nhận URL ảnh trả về từ server
+                    var imageUrl = response.imageUrl; // URL ảnh từ server
+                    console.log("Image URL:", imageUrl);
 
-                if (!isDuplicate) {
-                    // Tạo một container cho ảnh và nút xóa
-                    var imageContainer = $(
-                        '<div class="image-product-container">' +
-                        '   <img src="' + e.target.result + '" alt="Thumb image" class="thumbimage"/>' +
-                        '   <a class="removeimg" href="javascript:" style="display: inline"></a>' +
-                        '</div>'
-                    );
-
-                    // Thêm container vào thumbbox
-                    $("#thumbbox").append(imageContainer);
-
-                    // Lưu đường dẫn ảnh vào biến listUrlImage
-                    listUrlImage.push(e.target.result);
-
-                    // Sự kiện click cho nút xóa
-                    imageContainer.find(".removeimg").on("click", function () {
-                        var removedImage = $(this).closest(".image-product-container").find("img").attr("src");
-                        // Xóa ảnh khỏi biến listUrlImage
-                        listUrlImage = listUrlImage.filter(function (img) {
-                            return img !== removedImage;
-                        });
-                        $(this).closest(".image-product-container").remove();
-                        console.log(listUrlImage);
-                        $("#myfileupload").html('<input type="file" id="uploadfile" name="ImageUpload" multiple onchange="readURL(this)"/>');
-                        $('.Choicefile').css('background', '#14142B');
+                    // Kiểm tra nếu ảnh chưa có trong danh sách
+                    var isDuplicate = listUrlImage.some(function (img) {
+                        return img === imageUrl;
                     });
+
+                    if (!isDuplicate) {
+                        // Thêm URL vào danh sách
+                        listUrlImage.push(imageUrl);
+                        console.log("Updated Image List:", listUrlImage);
+
+                        // Tạo phần tử hiển thị ảnh
+                        var imageContainer = $(
+                            '<div class="image-product-container">' +
+                            '   <img src="' + imageUrl + '" alt="Thumb image" class="thumbimage"/>' +
+                            '   <a class="removeimg" href="javascript:" style="display: inline">Xóa</a>' +
+                            '</div>'
+                        );
+
+                        // Thêm container vào thumbbox
+                        $("#thumbbox").append(imageContainer);
+
+                        // Sự kiện click cho nút xóa
+                        imageContainer.find(".removeimg").on("click", function () {
+                            var removedImage = $(this).closest(".image-product-container").find("img").attr("src");
+
+                            // Xóa ảnh khỏi danh sách
+                            listUrlImage = listUrlImage.filter(function (img) {
+                                return img !== removedImage;
+                            });
+                            console.log("Updated Image List After Remove:", listUrlImage);
+
+                            // Loại bỏ container ảnh
+                            $(this).closest(".image-product-container").remove();
+                        });
+                    }
+                },
+                error: function() {
+                    alert("Có lỗi khi tải ảnh lên.");
                 }
-            };
-            reader.readAsDataURL(input.files[i]);
+            });
         }
     }
 
-    console.log(listUrlImage);
     // Hiển thị các phần tử khi có ảnh
     $(".Choicefile").css('background', '#14142B');
 }
-
 
 $(document).ready(function () {
     $(".Choicefile").bind('click', function () {
         $("#uploadfile").click();
     });
-})
+});
 
 //Set Status
 function toggleStatus(checkbox) {
@@ -145,17 +165,15 @@ function updateProductForm(element) {
         type: 'GET',
         url: '/admin/rest/product/formUpdate/' + productId,
         success: function (product) {
-            // Lấy dữ liệu ảnh
             getListURL(product.id);
 
-            // Hiển thị hộp thoại modal
             $('#ProductModal').modal('show');
 
-            // Điền dữ liệu vào các trường biểu mẫu
             $('#product-name').val(product.name);
-            $('#product-category').val(product.category.id);
-            $('#product-brand').val(product.brand.id);
+            $('#product-origin').val(product.origin.originId);
             $('#product-material').val(product.material.id);
+            $('#product-pattern').val(product.pattern.id);
+            $('#product-category').val(product.category.id);
             CKEDITOR.instances['product-description'].setData(product.description);
         },
         error: function (error) {
@@ -189,7 +207,9 @@ function save() {
     var productId = $('#ProductModal').attr("product-id-update");
     var productName = $("#product-name").val();
     var productCategory = $("#product-category").val();
-    var productBrand = $("#product-brand").val();
+    var productPattern = $("#product-pattern").val();
+    var productOrigin = $("#product-origin").val();
+
     var productMaterial = $("#product-material").val();
     var productDescription = CKEDITOR.instances['product-description'].getData();
     var productStatus = 0;
@@ -198,7 +218,8 @@ function save() {
         name: productName,
         description: productDescription,
         categoryId: productCategory,
-        brandId: productBrand,
+        patternId: productPattern,
+        originId: productOrigin,
         materialId: productMaterial,
         status: productStatus
     }
@@ -237,38 +258,42 @@ function save() {
 }
 
 function saveImage(productId) {
-    // Clear tất cả sản phẩm có id = productId
+    // Xóa ảnh cũ trước khi thêm ảnh mới
     $.ajax({
         type: "DELETE",
         url: "/admin/rest/image/deleteAll/" + productId,
         success: function (response) {
-            console.log("Xóa toàn bộ Ảnh tương ứng thành công!");
+            console.log("Xóa toàn bộ ảnh cũ thành công!");
 
-            for (var i = 0; i < listUrlImage.length; i++) {
+            // Dùng Promise để thêm ảnh mới sau khi xóa thành công
+            var promises = listUrlImage.map(function (url, index) {
+                // Xác định isMain dựa trên chỉ số
+                var isMain = (index === 0) ? 1 : 0; // Ảnh đầu tiên là ảnh chính, các ảnh sau là ảnh phụ
+
                 var dataToSend = {
                     productId: productId,
-                    urlImage: listUrlImage[i]
-                }
-                // Gửi yêu cầu AJAX
-                $.ajax({
+                    urlImage: url,
+                    isMain: isMain
+                };
+
+                return $.ajax({
                     type: "POST",
-                    url: "/admin/rest/image/add",
+                    url: "/admin/rest/image/save",
                     contentType: "application/json",
-                    data: JSON.stringify(dataToSend),
-                    async: false,
-                    success: function (response) {
-                        console.log("Lưu Ảnh thành công!");
-                    },
-                    error: function (error) {
-                        console.error("Lỗi khi lưu Ảnh:", error);
-                        return false;
-                    }
+                    data: JSON.stringify(dataToSend)
                 });
-            }
+            });
+
+            // Chờ tất cả ảnh mới được thêm thành công
+            $.when.apply($, promises).done(function () {
+                console.log("Lưu ảnh thành công!");
+            }).fail(function (error) {
+                console.error("Lỗi khi lưu ảnh:", error);
+            });
+
         },
         error: function (error) {
-            console.error("Lỗi khi xóa Ảnh:", error);
-            return false;
+            console.error("Lỗi khi xóa ảnh:", error);
         }
     });
 }
