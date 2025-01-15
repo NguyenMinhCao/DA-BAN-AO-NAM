@@ -24,45 +24,39 @@ $(document).ready(function () {
 
 //Lấy danh sách size add
 function getSize(selectElement) {
-    $("#select-size").empty();
+    $("#select-size").html(''); // Xóa tất cả các option cũ
     var colorId = selectElement.value;
 
-    var dataToSend = {
-        productId: productId,
-        colorId: colorId
+    if (!productId || !colorId) {
+        alert("Thiếu dữ liệu sản phẩm hoặc màu sắc!");
+        return;
     }
 
     $.ajax({
         type: "GET",
         url: "/admin/rest/product-detail/getListSizeAddProductDetail",
-        contentType: "application/json",
-        data: dataToSend,
+        data: { productId: productId, colorId: colorId },
         success: function (response) {
             console.log("Lấy danh sách Size thành công!");
             renderListSize(response);
         },
         error: function (error) {
             console.error("Lỗi khi lấy danh sách Size:", error);
-            return false;
+            alert("Không thể lấy danh sách Size. Vui lòng thử lại!");
         }
     });
 }
 
-//Render danh sách size add
 function renderListSize(listSize) {
-    for (var i = 0; i < listSize.length; i++) {
+    $("#select-size").append('<option value="">Chọn kích thước</option>');
 
-        var value = listSize[i].id;
+    listSize.forEach(function (size) {
+        var value = size.id;
+        var name = size.name || size.sizeName;
 
-        var name = listSize[i].name;
-
-        var sizeSelect = $(
-            '<option value="' + value + '">' + name + '</option>'
-        )
-
-        $(sizeSelect).appendTo("#select-size");
-
-    }
+        var sizeOption = $('<option>', { value: value, text: name });
+        $("#select-size").append(sizeOption);
+    });
 }
 
 //Lấy số lượng thông qua màu
@@ -156,15 +150,15 @@ function getListURL(productId) {
 function displayImages(listUrlImage) {
     $("#thumbbox").empty();
 
-    var baseUrl = window.location.origin;
+    // var baseUrl = window.location.origin;
 
     listUrlImage.forEach(function (url) {
         // Tạo đường dẫn đầy đủ
-        var fullUrl = baseUrl + url;
+        var fullUrl = url;
 
         var imageElement = `
             <div class="image-product-container">
-                <img src="${fullUrl}" alt="Product Image" class="thumbimage" />
+                <img src="/images/product/${fullUrl}" alt="Product Image" class="thumbimage" />
             </div>
         `;
         $("#thumbbox").append(imageElement); // Thêm ảnh vào #thumbbox

@@ -64,7 +64,7 @@ public class CartService {
             order.setOrderStatus(OrderStatus.PENDING_INVOICE);
             List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
             for (Address address : arrAddressByUser) {
-                if (address.isStatus() == true) {
+                if (address.getStatus() == true) {
                     order.setAddress(address);
                 }
             }

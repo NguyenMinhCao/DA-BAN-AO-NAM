@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
+    // private List<AddressDTO> address;
     private long id;
     private String email;
 
@@ -26,10 +27,10 @@ public class UserDTO {
 
     private Boolean gender;
     private Boolean status;
-//    private List<AddressDTO> address;
+    // private List<AddressDTO> address;
 
-    public static UserDTO toDTO(User user){
-        if(user == null){
+    public static UserDTO toDTO(User user) {
+        if (user == null) {
             return null;
         }
         return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getDateOfBirth(), user.getAvatar(), user.getGender(), user.getStatus());

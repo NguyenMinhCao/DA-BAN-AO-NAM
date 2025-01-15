@@ -1,24 +1,19 @@
 package vn.duantn.sominamshop.service;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.multipart.MultipartFile;
 import vn.duantn.sominamshop.model.Image;
 import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.dto.request.ImageRequest;
 import vn.duantn.sominamshop.repository.ImageRepository;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import vn.duantn.sominamshop.repository.ProductDetailRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -111,20 +106,55 @@ public class ImageService {
     @Autowired
     ImageRepository imageRepository;
 
+    @Autowired
+    ProductDetailRepository productDetailRepository;
+
 
     public List<Image> getALlByProducctId(Integer id) {
         return imageRepository.getAllByProductId(id);
     }
 
 
-    public Image add(ImageRequest imageRequest) {
-        Image image = imageRequest.map(new Image());
-        return imageRepository.save(image);
+    public void save(ImageRequest imageRequest) {
+        // Lấy danh sách ProductDetail từ productId
+        List<ProductDetail> productDetails = productDetailRepository.findByProductId(imageRequest.getProductId());
+
+        // Nếu không tìm thấy ProductDetail nào
+        if (productDetails.isEmpty()) {
+            throw new IllegalArgumentException("Không tìm thấy ProductDetail cho productId: " + imageRequest.getProductId());
+        }
+
+        // Lặp qua từng ProductDetail
+        for (ProductDetail productDetail : productDetails) {
+            // Kiểm tra xem ảnh đã có trong ProductDetail này chưa, tránh việc thêm ảnh trùng
+            if (imageRepository.existsByProductDetailAndUrlImage(productDetail, imageRequest.getUrlImage())) {
+                throw new IllegalArgumentException("Ảnh đã tồn tại trong ProductDetail này.");
+            }
+
+            // Tiến hành lưu ảnh vào ProductDetail
+            Image image = new Image();
+            image.setProductDetail(productDetail);
+            image.setUrlImage(imageRequest.getUrlImage());
+            image.setStatus(imageRequest.getStatus());
+            image.setIsMain(imageRequest.getIsMain());
+
+            // Lưu ảnh vào cơ sở dữ liệu
+            imageRepository.save(image);
+        }
     }
 
-    public String deleteAllByProductId(Integer productId) {
+
+
+    public List<ProductDetail> getProductDetailsByProductId(Long productId) {
+        return productDetailRepository.findByProductId(productId);
+    }
+    public String deleteAllByProductId(Long productId) {
         imageRepository.deleteAllByProductId(productId);
         return "Xóa thành công ảnh với ProductId: " + productId;
     }
 
+    public Image add(ImageRequest imageRequest) {
+        Image image = imageRequest.map(new Image());
+        return imageRepository.save(image);
+    }
 }

@@ -43,7 +43,8 @@ public class Address {
     @Column(name = "street_details", columnDefinition = "NVARCHAR(1500)")
     private String streetDetails;
 
-    private boolean status;
+    @Column(name = "status")
+    private Boolean status;
 
     private String createdBy;
 

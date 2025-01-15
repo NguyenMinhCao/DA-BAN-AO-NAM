@@ -16,6 +16,7 @@ import vn.duantn.sominamshop.model.dto.response.ProductDetailResponse;
 import vn.duantn.sominamshop.model.dto.response.SizeResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 
@@ -51,20 +52,24 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
             "    RankedSizes.sizeRank;", nativeQuery = true)
     List<ProductDetailResponse> getAllByProductId(@Param("productId") Long productId);
 
-    @Query(value = "SELECT sizes.id, \n" +
-            "\t   sizes.size_name, \n" +
-            "\t   sizes.status\n" +
-            "FROM sizes\n" +
-            "\t   CROSS JOIN colors\n" +
-            "WHERE colors.id = :colorId\n" +
-            "      AND NOT EXISTS (\n" +
-            "          SELECT *\n" +
-            "          FROM product_details\n" +
-            "          WHERE color_id = :colorId\n" +
-            "              AND size_id = sizes.id\n" +
-            "              AND product_id = :productId)", nativeQuery = true)
-    List<SizeResponse> getListSizeAddProductDetail(@Param("productId") Integer productId,
-            @Param("colorId") Integer colorId);
+    @Query(value = """
+    SELECT sizes.id, 
+           sizes.size_name, 
+           sizes.status
+    FROM sizes
+    WHERE NOT EXISTS (
+              SELECT 1
+              FROM product_details
+              WHERE product_details.color_id = :colorId
+                    AND product_details.size_id = sizes.id
+                    AND product_details.product_id = :productId
+          )
+""", nativeQuery = true)
+    List<SizeResponse> getListSizeAddProductDetail(
+            @Param("productId") Integer productId,
+            @Param("colorId") Integer colorId
+    );
+
 
     @Query("Select Count(p.id) From ProductDetail p Where p.quantity < :number")
     int countProduct(int number);
@@ -107,6 +112,8 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
     @Query("select pd from ProductDetail pd where pd.id = :productDetailId")
     ProductDetail findByProductDetailId(@Param("productDetailId") Integer productDetailId);
+
+    Optional<ProductDetail> findByProduct_Id(Long productId);
 
     @Query(value = """
                 SELECT pd.*
@@ -205,4 +212,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
     @Query("select pd.quantity from ProductDetail pd where pd.id = :id")
     Long findQuantityProductById(@Param("id") Long id);
+
+    List<ProductDetail> findByProductId(Long productId);
+
 }

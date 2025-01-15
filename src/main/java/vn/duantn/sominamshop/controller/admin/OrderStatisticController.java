@@ -19,10 +19,12 @@ import vn.duantn.sominamshop.model.dto.request.LowStockProductDTO;
 import vn.duantn.sominamshop.service.OrderStatisticService;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 @Controller
@@ -50,19 +52,24 @@ public class OrderStatisticController {
         totalLowProduct = (totalLowProduct != null) ? totalLowProduct : 0L;
         totalTodayOrderCount = (totalTodayOrderCount != null) ? totalTodayOrderCount : 0L;
 
-        Pageable pageable = PageRequest.of(page, 5);
-        Page<LowStockProductDTO> lowStockProductsPage = orderService.getLowStockProducts(pageable);
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        model.addAttribute("totalRevenue", currencyFormat.format(totalRevenue));
+        model.addAttribute("monthlyRevenue", currencyFormat.format(monthlyRevenue));
+        model.addAttribute("todayRevenue", currencyFormat.format(todayRevenue));
+        model.addAttribute("yearlyRevenue", currencyFormat.format(yearlyRevenue));
 
-        model.addAttribute("totalRevenue", totalRevenue);
-        model.addAttribute("monthlyRevenue", monthlyRevenue);
-        model.addAttribute("todayRevenue", todayRevenue);
-        model.addAttribute("yearlyRevenue", yearlyRevenue);
         model.addAttribute("totalProduct", totalProduct);
         model.addAttribute("totalLowProduct", totalLowProduct);
+
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<LowStockProductDTO> lowStockProductsPage = orderService.getLowStockProducts(pageable);
         model.addAttribute("lowStockProductsPage", lowStockProductsPage);
         model.addAttribute("lowStockProducts", lowStockProductsPage.getContent());
+
         model.addAttribute("totalTodayOrderCount", totalTodayOrderCount);
 
         return "admin/order/order-statistics";
     }
 }
+
+

@@ -25,5 +25,5 @@ public class AddressDTO {
 
     private String streetDetails;
 
-    private boolean status;
+    private Boolean status;
 }

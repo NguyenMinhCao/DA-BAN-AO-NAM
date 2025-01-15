@@ -26,14 +26,17 @@ public class AddressService {
         Address addressNew = new Address();
         addressNew.setFullName(dto.getFullName());
         addressNew.setPhoneNumber(dto.getPhoneNumber());
-        // addressNew.setAddress(dto.getAddress());
-        addressNew.setUser(user);
+        addressNew.setCity(dto.getCity());
+        addressNew.setDistrict(dto.getDistrict());
         addressNew.setStreetDetails(dto.getStreetDetails());
-        if (dto.isStatus() == true) {
+        addressNew.setWard(dto.getWard());
+        addressNew.setUser(user);
+
+        if (dto.getStatus() == true) {
 
             List<Address> arrAddressByUser = this.findAllAddressByUser(user);
             for (Address address : arrAddressByUser) {
-                if (address.isStatus() == true) {
+                if (address.getStatus() == true) {
                     address.setStatus(false);
                     this.addressRepository.save(address);
                 }
@@ -63,9 +66,11 @@ public class AddressService {
         dto.setIdAddress(addressById.getId());
         dto.setFullName(addressById.getFullName());
         dto.setPhoneNumber(addressById.getPhoneNumber());
-        // dto.setAddress(addressById.getAddress());
+        dto.setCity(addressById.getCity());
+        dto.setDistrict(addressById.getDistrict());
+        dto.setWard(addressById.getWard());
         dto.setStreetDetails(addressById.getStreetDetails());
-        dto.setStatus(dto.isStatus());
+        dto.setStatus(dto.getStatus());
         return dto;
     }
 
@@ -75,10 +80,10 @@ public class AddressService {
         addressById.setFullName(dto.getFullName());
         addressById.setPhoneNumber(dto.getPhoneNumber());
         addressById.setStreetDetails(dto.getStreetDetails());
-        if (dto.isStatus() != addressById.isStatus()) {
+        if (dto.getStatus() != addressById.getStatus()) {
             List<Address> arrAddressByUser = this.findAllAddressByUser(user);
             for (Address address : arrAddressByUser) {
-                if (address.isStatus() == true) {
+                if (address.getStatus() == true) {
                     address.setStatus(false);
                     this.addressRepository.save(address);
                 }
@@ -90,15 +95,16 @@ public class AddressService {
         return this.addressRepository.save(addressById);
     }
 
-    public List<AddressReponseDTO> findAddressByIdUser(Long id){
+    public List<AddressReponseDTO> findAddressByIdUser(Long id) {
         List<Address> addressList = addressRepository.findAllAddressByIdUser(id);
-        List<AddressReponseDTO> addressDTOList = addressList.stream().map(AddressReponseDTO :: toDTO).collect(Collectors.toList());
+        List<AddressReponseDTO> addressDTOList = addressList.stream().map(AddressReponseDTO::toDTO)
+                .collect(Collectors.toList());
         return addressDTOList;
     }
 
-    public void updateAddress(Address address){
-        if(address !=null){
-            if(address.getUser() !=null){
+    public void updateAddress(Address address) {
+        if (address != null) {
+            if (address.getUser() != null) {
                 System.out.println("UserIdaddress " + address.getUser().getId());
                 addressRepository.save(address);
             }

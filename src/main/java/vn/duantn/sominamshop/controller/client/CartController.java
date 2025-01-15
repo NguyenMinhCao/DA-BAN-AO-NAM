@@ -84,9 +84,11 @@ public class CartController {
         // Lấy địa chỉ mặc định phục vụ hiển thị bên /order
         User user = this.userService.findUserByEmail(emailUser);
         List<Address> arrAddressByUser = this.addressService.findAllAddressByUser(user);
-        for (Address address : arrAddressByUser) {
-            if (address.isStatus() == true) {
-                session.setAttribute("address", address);
+        if (arrAddressByUser.size() > 0) {
+            for (Address address : arrAddressByUser) {
+                if (address.getStatus() == true) {
+                    session.setAttribute("address", address);
+                }
             }
         }
 

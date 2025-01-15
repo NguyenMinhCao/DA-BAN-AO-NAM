@@ -29,7 +29,7 @@ public class AddressReponseDTO {
                     .ward(address.getWard())
                     .fullName(address.getFullName())
                     .phoneNumber(address.getPhoneNumber())
-                    .status(address.isStatus())
+                    .status(address.getStatus())
                     .streetDetails(address.getStreetDetails())
                     .userId(address.getUser().getId())
                     .build();
