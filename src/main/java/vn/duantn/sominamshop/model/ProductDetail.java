@@ -53,6 +53,4 @@ public class ProductDetail {
     @JsonIgnore
     @OneToMany(mappedBy = "productDetail")
     private List<Image> images;
-
-
 }

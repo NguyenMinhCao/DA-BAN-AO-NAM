@@ -150,15 +150,15 @@ function getListURL(productId) {
 function displayImages(listUrlImage) {
     $("#thumbbox").empty();
 
-    var baseUrl = window.location.origin;
+    // var baseUrl = window.location.origin;
 
     listUrlImage.forEach(function (url) {
         // Tạo đường dẫn đầy đủ
-        var fullUrl = baseUrl + url;
+        var fullUrl = url;
 
         var imageElement = `
             <div class="image-product-container">
-                <img src="${fullUrl}" alt="Product Image" class="thumbimage" />
+                <img src="/images/product/${fullUrl}" alt="Product Image" class="thumbimage" />
             </div>
         `;
         $("#thumbbox").append(imageElement); // Thêm ảnh vào #thumbbox

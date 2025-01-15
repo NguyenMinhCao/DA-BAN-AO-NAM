@@ -49,12 +49,12 @@ $(document).ready(function () {
         success: function (data) {
             // Tạo options màu sắc từ danh sách màu trong productListResponse
             var colorOptions = data.colors.map(function (color) {
-                return {id: color.id, title: color.colorName};
+                return { id: color.id, title: color.colorName };
             });
 
             // Tạo options kích thước từ kích thước trong productListResponse
             var sizeOptions = data.sizes.map(function (size) {
-                return {id: size.id, title: size.sizeName};
+                return { id: size.id, title: size.sizeName };
             });
 
             // Cập nhật options của màu sắc
@@ -87,11 +87,11 @@ function quickEdit() {
         return;
     }
 
-    $(".gia_ban").each(function(){
+    $(".gia_ban").each(function () {
         $(this).val(price);
     });
 
-    $(".so_luong").each(function(){
+    $(".so_luong").each(function () {
         $(this).val(quantity);
     });
 
@@ -127,7 +127,7 @@ function readURL(input, variantIndex) {
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(response) {
+                success: function (response) {
                     // Nhận URL ảnh trả về từ server
                     var imageUrl = response.imageUrl; // URL ảnh từ server
                     console.log("Image URL:", imageUrl);
@@ -146,7 +146,7 @@ function readURL(input, variantIndex) {
                         // Tạo một phần tử hiển thị ảnh
                         var imageContainer = $(
                             '<div class="image-product-container">' +
-                            '   <img src="' + imageUrl + '" alt="Thumb image" class="thumbimage"/>' +
+                            '   <img src="' + '/images/product/' + imageUrl + '" alt="Thumb image" class="thumbimage"/>' +
                             '   <a class="removeimg" href="javascript:" style="display: inline"></a>' +
                             '</div>'
                         );
@@ -165,7 +165,7 @@ function readURL(input, variantIndex) {
                         });
                     }
                 },
-                error: function() {
+                error: function () {
                     alert("Có lỗi khi tải ảnh lên.");
                 }
             });
@@ -304,13 +304,13 @@ function showListProductDetail() {
     // Lấy thông tin chi tiết về các mục đã chọn từ dropdown màu sắc
     var selectedColorItems = selectColor[0].selectize.items.map(function (item) {
         var option = selectColor[0].selectize.getItem(item);
-        return {id: item, name: option.text()};
+        return { id: item, name: option.text() };
     });
 
     // Lấy thông tin chi tiết về các mục đã chọn từ dropdown kích thước
     var selectedSizeItems = selectSize[0].selectize.items.map(function (item) {
         var option = selectSize[0].selectize.getItem(item);
-        return {id: item, name: option.text()};
+        return { id: item, name: option.text() };
     });
 
     // Kiểm tra đầu vào
@@ -397,7 +397,7 @@ function renderListProductDetail(selectedColorItems, selectedSizeItems, quantity
                             listUrlImage.push(imageUrl);
 
                             // Hiển thị ảnh trong hàng
-                            $(fileInput).closest('td').html('<img src="' + imageUrl + '" class="product-image-preview" style="width: 50px; height: 50px;">');
+                            $(fileInput).closest('td').html('<img src="' + '/images/product/' + imageUrl + '" class="product-image-preview" style="width: 50px; height: 50px;">');
 
                             console.log("Danh sách URL hình ảnh: ", listUrlImage);
                         },
@@ -528,7 +528,7 @@ function checkDuplicateProduct(productName) {
         type: "POST",
         url: "/admin/rest/add-product/checkDuplicateName",
         contentType: "application/json",
-        data: JSON.stringify({name: productName}),
+        data: JSON.stringify({ name: productName }),
         async: false,
         success: function (response) {
             console.log("Kiểm tra trùng tên Sản phẩm thành công!");

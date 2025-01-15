@@ -178,7 +178,7 @@
                                                         <td class="stt">${status.index + 1}</td>
                                                         <!-- Sử dụng status.index để lấy chỉ số của vòng lặp -->
                                                         <td class="ten_san_pham">${product.name}</td>
-                                                        <td class="anh"><img src="${product.image}"
+                                                        <td class="anh"><img src="/images/product/${product.image}"
                                                                 alt="Hình ảnh sản phẩm"></td>
                                                         <td class="mo_ta">${product.description}</td>
                                                         <td class="so_luong_ton">${product.quantity}</td>

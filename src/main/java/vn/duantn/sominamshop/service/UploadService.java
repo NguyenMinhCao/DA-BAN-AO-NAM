@@ -52,13 +52,25 @@ public class UploadService {
         if (file != null && !file.isEmpty()) {
             try {
                 String originalFilename = file.getOriginalFilename();
-                String rootPath = this.servletContext.getRealPath(uploadDir);
+                String rootPath = this.servletContext.getRealPath("/resources/images/" + uploadDir);
+
+                // Đảm bảo thư mục tồn tại
+                Path uploadPath = Paths.get(rootPath);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                    System.out.println("Đã tạo thư mục: " + uploadPath.toString());
+                }
+
                 String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-                String uniqueFileName = UUID.randomUUID().toString() + "_" + System.currentTimeMillis() + "." + extension;
-                Path filePath = Paths.get(rootPath, uniqueFileName);
-//                Files.createDirectories(filePath.getParent());
+                String uniqueFileName = UUID.randomUUID().toString() + "_" + System.currentTimeMillis() + "."
+                        + extension;
+                Path filePath = uploadPath.resolve(uniqueFileName);
+
+                // Lưu tệp
                 file.transferTo(filePath.toFile());
-                System.out.println(uniqueFileName + ": ảnh ");
+                System.out.println("Đã lưu ảnh: " + uniqueFileName);
+
+                // Trả về đường dẫn tương đối hoặc URL theo nhu cầu
                 return uniqueFileName;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -67,10 +79,32 @@ public class UploadService {
         return null;
     }
 
+    // public String handleSaveAvatar(MultipartFile file, String uploadDir) {
+    // System.out.println(file + "ảnh ");
+    // if (file != null && !file.isEmpty()) {
+    // try {
+    // String originalFilename = file.getOriginalFilename();
+    // String rootPath = this.servletContext.getRealPath(uploadDir);
+    // String extension =
+    // originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+    // String uniqueFileName = UUID.randomUUID().toString() + "_" +
+    // System.currentTimeMillis() + "." + extension;
+    // Path filePath = Paths.get(rootPath, uniqueFileName);
+    // // Files.createDirectories(filePath.getParent());
+    // file.transferTo(filePath.toFile());
+    // System.out.println(uniqueFileName + ": ảnh ");
+    // return uniqueFileName;
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+    // }
+    // return null;
+    // }
+
     public void deleteFile(String file, String uploadDir) {
         String rootPath = this.servletContext.getRealPath(uploadDir);
         try {
-            if(file != null){
+            if (file != null) {
                 Path filePath = Paths.get(rootPath, file);
                 Files.delete(filePath);
                 System.out.println("File đã được xóa: " + filePath);
