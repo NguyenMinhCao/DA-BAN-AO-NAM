@@ -809,6 +809,7 @@ document.addEventListener('DOMContentLoaded', function () {
             totalAmount: totalAmount || 0,
             paymentMethod: paymentMethod,
             paymentStatus : 'COMPLETED',
+            orderStatus : 'COMPLETED',
             totalProducts: totalProducts,
             promotion: {
                 id : idCoupon
@@ -829,7 +830,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error:', error); // Mô tả lỗi
             }
         });
-        printInvoice(listProduct);
+        printInvoice(listProduct, idOrderSelect);
         customerNameInput.innerText = 'Khách lẻ';
         customerNameInput.setAttribute('data-customer-id', '')
         $('#infoDetail').empty()
@@ -837,7 +838,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchProducts(0)
         resetInvoice();
         if(idCoupon && idCoupon >0){
-            updateCoupon(idCoupon, 1)
+            // updateCoupon(idCoupon, 1)
             fecthCoupons()
         }
         resetCoupon()
@@ -882,7 +883,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 //********************* in hóa đơn **************
-    function printInvoice(products) {
+    function printInvoice(products, idOrderSelect) {
         $('#totalPriceVoucher').text('')
         $('#totalPricePrint').text('')
         $('#contaiTotalPricePrint').hide()
@@ -930,6 +931,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div style="text-align: center; margin-bottom: 20px;">
       <h3>Hóa Đơn Thanh Toán</h3>
       <p><strong>TN2K STORE</strong></p>
+      <p>Mã hóa đơn: #${idOrderSelect}</p>
       <p>Địa chỉ: 123 Đường ABC, Nam Từ Liêm, Hà Nội</p>
       <p>Điện thoại: 0999999999</p>
       <hr>
@@ -1268,20 +1270,20 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    function updateCoupon(id, quantity){
-        $.ajax({
-            url: `/api/admin/order/update/coupon?id=${id}&quantity=${quantity}`,
-            type: 'PUT',
-            contentType: "application/json",
-            success: function(response){
-
-            },
-            error: function(xhr, error){
-                let errorMap = JSON.parse(xhr.responseText);
-                console.error('Error fetching districts data:', error);
-            }
-        });
-    }
+    // function updateCoupon(id, quantity){
+    //     $.ajax({
+    //         url: `/api/admin/order/update/coupon?id=${id}&quantity=${quantity}`,
+    //         type: 'PUT',
+    //         contentType: "application/json",
+    //         success: function(response){
+    //
+    //         },
+    //         error: function(xhr, error){
+    //             let errorMap = JSON.parse(xhr.responseText);
+    //             console.error('Error fetching districts data:', error);
+    //         }
+    //     });
+    // }
     function renderCoupons(coupons){
         let contentCoupons = $('#contentCoupons')
         let searchCouponCode = $('#searchCoupon').val()

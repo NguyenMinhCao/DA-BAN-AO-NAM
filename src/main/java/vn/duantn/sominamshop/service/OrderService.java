@@ -421,7 +421,9 @@ public class OrderService {
         if(orderDTO.getPaymentStatus() == PaymentStatus.COMPLETED){
             order.setPaymentStatus(PaymentStatus.COMPLETED);
         }
-        if(orderDTO.get)
+        if(orderDTO.getOrderStatus() == OrderStatus.COMPLETED){
+            order.setOrderStatus(OrderStatus.COMPLETED);
+        }
         if(orderDTO.getPromotion() != null ){
             if(orderDTO.getPromotion().getId() != 0){
                 order.setCoupon(Coupon.builder().id(orderDTO.getPromotion().getId()).build());

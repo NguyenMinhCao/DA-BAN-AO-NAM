@@ -134,15 +134,15 @@ public class OrderRestController {
         }
         return ResponseEntity.ok("Cập nhật thành công");
     }
-    @PutMapping("/update/coupon")
-    public ResponseEntity<?> updateCoupons(
-            @RequestParam(value = "quantity", defaultValue = "") Integer quantity,
-            @RequestParam(value = "id", defaultValue = "") Long id
-    ){
-        if(id != null && quantity != null){
-            promotionService.updateUsageLimitCoupon(quantity, id);
-            return ResponseEntity.status(HttpStatus.OK).body("Sửa thành công");
-        }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Lỗi khi thay đổi số lượng coupons");
-    }
+//    @PutMapping("/update/coupon")
+//    public ResponseEntity<?> updateCoupons(
+//            @RequestParam(value = "quantity", defaultValue = "") Integer quantity,
+//            @RequestParam(value = "id", defaultValue = "") Long id
+//    ){
+//        if(id != null && quantity != null){
+//            promotionService.updateUsageLimitCoupon(quantity, id);
+//            return ResponseEntity.status(HttpStatus.OK).body("Sửa thành công");
+//        }
+//        return ResponseEntity.status(HttpStatus.CONFLICT).body("Lỗi khi thay đổi số lượng coupons");
+//    }
 }
