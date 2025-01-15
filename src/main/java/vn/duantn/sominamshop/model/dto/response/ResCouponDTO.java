@@ -7,14 +7,14 @@ import vn.duantn.sominamshop.model.constants.DiscountType;
 @Getter
 @Setter
 public class ResCouponDTO {
-    private long id;
+    private Long id;
     private String couponCode;
     private DiscountType discountType;
-    private double discountValueFixed;
-    private int discountValuePercent;
-    private double maximumReduction;
-    private double minimumValue;
-    private int usageLimit;
+    private Double discountValueFixed;
+    private Integer discountValuePercent;
+    private Double maximumReduction;
+    private Double minimumValue;
+    private Integer usageLimit;
     private boolean status;
     private String startDate;
     private String endDate;

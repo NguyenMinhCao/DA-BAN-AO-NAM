@@ -88,18 +88,9 @@
     border-top: 1px solid rgb(232, 234, 235);
 }
 
-.css-gr2olx {
-    display: inline-flex;
-    -webkit-box-align: center;
-    align-items: center;
-    padding: 0px 16px;
-    outline: rgb(159, 237, 207) solid 1px;
-    outline-offset: -3px;
-    border-radius: 20px;
-    background-color: rgb(243, 252, 249);
-    color: rgb(13, 180, 115);
-    font-size: 14px;
-}
+
+
+
 
 .table-coupon .coupon-code {
     color: rgb(0, 136, 255);
@@ -301,7 +292,8 @@ a.css-67mbka:hover {
     border-radius: 6px;
 }
 
-#btn-confirm-create-coupon {
+#btn-confirm-create-coupon,
+#btn-update-create-coupon {
     padding: 7px 16px;
     border: 1px solid transparent;
     color: rgb(255, 255, 255);
@@ -344,4 +336,116 @@ a.css-67mbka:hover {
 #fixed-section,
 #percentage-section {
     display: none;
+}
+
+#usageLimitInputDiv {
+    display: none;
+}
+
+#inputUsageLimit {
+    outline: none;
+    padding: 0 7px;
+    margin-left: 15px;
+    margin-top: 5px;
+    height: 36px;
+}
+
+.css-gr2olx {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 16px;
+    outline: rgb(159, 237, 207) solid 1px;
+    outline-offset: -3px;
+    border-radius: 20px;
+    background-color: rgb(243, 252, 249);
+    color: rgb(13, 180, 115);
+    height: 23px;
+    font-size: 14px;
+}
+
+.css-3u37zr {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 16px;
+    outline: rgb(255, 184, 184) solid 1px;
+    outline-offset: -1px;
+    border-radius: 20px;
+    background-color: rgb(255, 246, 246);
+    color: rgb(238, 71, 71);
+    height: 23px;
+    font-size: 14px;
+}
+
+#createCodeRenderNew:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.tab-btns .btn-tab {
+    cursor: pointer;
+}
+
+.btn-tab.active {
+    color: #4CAF50;
+    border-bottom: 2px #4CAF50 solid;
+}
+
+.css-18c5rtc {
+    height: 20px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.css-rkie3g {
+    display: block;
+    height: 20px;
+    width: 20px;
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+    color: rgb(163, 168, 175);
+}
+
+.css-rkie3g svg {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.css-rkie3g svg {
+    fill: rgb(163, 168, 175);
+}
+
+.css-1abf0ql {
+    appearance: none;
+    background: none rgb(0, 136, 255);
+    min-width: 20px;
+    height: 20px;
+    line-height: 20px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 0px 4px;
+    cursor: pointer;
+    border: 0px;
+    font-size: calc(1rem* var(--ui-rem-scale));
+    border-radius: 9999px;
+    margin: 0px 4px;
+    transition: 200ms;
+    color: rgb(255, 255, 255);
+    position: relative;
+}
+
+#selectPageSize {
+    border: 1px solid rgb(211, 213, 215);
+    padding: 5px 10px;
+    border-radius: 6px;
+    outline: none;
 }

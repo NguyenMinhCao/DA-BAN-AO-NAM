@@ -29,7 +29,7 @@
                             <div class="d-flex justify-content-between" style="margin-top: 10px;">
                                 <h3>Danh sách khuyến mãi</h3>
                                 <a class="css-67mbka e4zt08y7" id="order-create-btn" data-segment-control="true"
-                                    href="/admin/orders/create">
+                                    href="/admin/coupon/add">
                                     <span class="css-slup14 e4zt08y4">
                                         <span class="css-y5qmm9 e4zt08y3">
                                             <span class="css-1o24pcm e16p30ob1">
@@ -50,13 +50,13 @@
                             <div class="container mt-3 d-flex flex-column container-background"
                                 style="padding-left: 0px;padding-right: 0px;">
                                 <div class="tab-btns d-flex">
-                                    <div class="btn-tab">
+                                    <div class="btn-tab active" id="fetchAllCoupon">
                                         <span>Tất cả</span>
                                     </div>
-                                    <div class="btn-tab">
+                                    <div class="btn-tab" id="fetchCouponStillActive">
                                         <span>Đang áp dụng</span>
                                     </div>
-                                    <div class="btn-tab">
+                                    <div class="btn-tab" id="fetchCouponStopWorking">
                                         <span>Ngừng áp dụng</span>
                                     </div>
                                 </div>
@@ -65,17 +65,17 @@
                                         <div class="search-box-coupon border-input d-flex">
                                             <span class="icon-search css-rkie3g"><i
                                                     class="fa-solid fa-magnifying-glass"></i></span>
-                                            <input id="" class="inputSearch" type="text"
-                                                placeholder="Tìm theo mã khuyến mãi" style="">
+                                            <input id="inputSearchCouponCode" class="inputSearch" type="text"
+                                                placeholder="Tìm theo mã khuyến mãi">
                                         </div>
                                     </div>
                                     <div class="d-flex">
                                         <div class="border-input input-date" style="margin-right: 10px;">
-                                            <input type="date">
+                                            <input type="date" id="startDateFilter">
                                         </div>
 
                                         <div class="border-input input-date">
-                                            <input type="date">
+                                            <input type="date" id="endDateFilter">
                                         </div>
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="couponTableBody">
                                             <c:forEach items="${lstCoupons}" var="coupon">
                                                 <tr id-coupon="${coupon.id}" onclick="openUrl('${coupon.id}')">
                                                     <td>
@@ -114,12 +114,12 @@
                                                             <span class="css-gr2olx">Đang hoạt động</span>
                                                         </c:if>
                                                         <c:if test="${coupon.status == false}">
-                                                            <span class="css-gr2olx">Không hoạt động</span>
+                                                            <span class="css-3u37zr">Ngừng áp dụng</span>
                                                         </c:if>
                                                     </td>
                                                     <td><span>${coupon.usageLimit}</span></td>
-                                                    <td><span> 12/01/2025 14:30</span></td>
-                                                    <td><span> 12/01/2025 14:30</span></td>
+                                                    <td><span>${coupon.startDate}</span></td>
+                                                    <td><span>${coupon.endDate}</span></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -132,18 +132,38 @@
                                             <span style="text-align: center;">Hiển thị</span>
                                         </div>
                                         <div class="">
-                                            <select name="" id="slectPageSize">
-                                                <option value="">5</option>
-                                                <option value="">10</option>
-                                                <option value="">20</option>
+                                            <select name="" id="selectPageSize">
+                                                <option value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
                                             </select>
                                         </div>
                                         <div class="" style="margin: auto 0;"><span>Kết quả</span></div>
                                     </div>
                                     <div class="" style="margin: auto 0;">
-                                        <span>1</span>
-                                        <span>1</span>
-                                        <span>1</span>
+                                        <div class="css-18c5rtc e1lvcblw0">
+                                            <button class="css-1u0jvzv e1lvcblw2 decrease-btn" id="prevPage"
+                                                style="border: none;background-color: #fff;"><span
+                                                    class="css-rkie3g e16p30ob1"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 24 24" focusable="false"
+                                                        aria-hidden="true">
+                                                        <path fill="currentColor"
+                                                            d="m14.298 5.99-6.01 6.01 6.01 6.01 1.414-1.414-4.596-4.596 4.596-4.596z">
+                                                        </path>
+                                                    </svg></span>
+                                            </button>
+                                            <button class="css-1abf0ql e1lvcblw2" id="currentPage"></button>
+                                            <button class="css-1u0jvzv e1lvcblw2 increase-btn" id="nextPage"
+                                                style="border: none;background-color: #fff;"><span
+                                                    class="css-rkie3g e16p30ob1"><svg xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 24 24" focusable="false"
+                                                        aria-hidden="true">
+                                                        <path fill="currentColor"
+                                                            d="m9.702 18.01 6.01-6.01-6.01-6.01-1.414 1.414 4.596 4.596-4.596 4.596z">
+                                                        </path>
+                                                    </svg></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +176,7 @@
                 crossorigin="anonymous"></script>
             <script src="/admin/js/scripts.js"></script>
             <script src="/admin/js/coupon/coupon.js"></script>
+            <script src="/admin/js/coupon/coupon-search.js"></script>
             <script>
                 function openUrl(url) {
                     window.location.href = "/admin/coupon/" + url + "/edit";

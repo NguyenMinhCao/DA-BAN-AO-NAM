@@ -16,6 +16,7 @@
 
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
             <link href="/admin/css/coupon/coupon.css" rel="stylesheet" />
+            <link rel="stylesheet" href="/common/toast.css">
         </head>
 
         <body class="sb-nav-fixed">
@@ -43,12 +44,14 @@
                                             <div
                                                 class="header-input-code header-padding d-flex justify-content-between">
                                                 <span class="heading-header">Mã khuyến mãi</span>
-                                                <span style="color: rgb(0, 136, 255);">Tạo mã ngẫu nhiên</span>
+                                                <span style="color: rgb(0, 136, 255);" id="createCodeRenderNew">Tạo mã
+                                                    ngẫu nhiên</span>
                                             </div>
                                             <div class="pading-20 d-flex flex-column" style="gap: 5px;">
                                                 <span>Mã khuyến mãi </span>
                                                 <div class="input-code-value">
-                                                    <input type="text" placeholder="VD: Coupon 10%">
+                                                    <input type="text" placeholder=" VD: Coupon 10%"
+                                                        id="value-code-input">
                                                 </div>
                                             </div>
                                         </div>
@@ -58,31 +61,45 @@
                                                 <span class="heading-header">Giá trị</span>
                                             </div>
                                             <div class="pading-20 coupon-value">
-
                                                 <div class="d-flex" style="gap: 15px;">
-
                                                     <div class="">
                                                         <span style="margin-bottom: 5px;display: block">Giá trị khuyến
                                                             mại</span>
                                                         <div class="border-common d-flex" style="width: 139px;">
                                                             <button class="btn-fixed">Số tiền</button>
-                                                            <button class="btn-percient">%</button>
+                                                            <button class="btn-percient back-ground-focus">%</button>
                                                         </div>
                                                     </div>
 
-                                                    <div class="d-flex flex-column justify-content-end">
+                                                    <!-- Phần Giảm Giá Theo fixed -->
+                                                    <div id="fixed-section"
+                                                        class="d-flex flex-column justify-content-end">
                                                         <span> </span>
                                                         <div class="border-common">
-                                                            <input type="text" class="input-percent">
-                                                            <span style="padding: 0px 14px;">%</span>
+                                                            <input type="text" class="input-percent input-value-reduce">
+                                                            <span style="padding: 0px 14px;">đ</span>
                                                         </div>
                                                     </div>
-                                                    <div class="">
-                                                        <span style="margin-bottom: 5px;display: block">Giá trị giảm tối
-                                                            đa</span>
-                                                        <div class="border-common">
-                                                            <input type="text" class="input-max">
-                                                            <span style="padding: 0px 14px;">đ</span>
+
+                                                    <!-- Phần Giảm Giá Theo Phần Trăm -->
+                                                    <div id="percentage-section" class="discount-section d-flex"
+                                                        style="gap: 15px;">
+                                                        <div class="d-flex flex-column justify-content-end">
+                                                            <span> </span>
+                                                            <div class="border-common">
+                                                                <input type="text"
+                                                                    class="input-percent input-value-reduce">
+                                                                <span style="padding: 0px 14px;">%</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="">
+                                                            <span style="margin-bottom: 5px; display: block">Giá trị
+                                                                giảm tối đa</span>
+                                                            <div class="border-common">
+                                                                <input type="text" class="input-max"
+                                                                    id="max-discount-input">
+                                                                <span style="padding: 0px 14px;">đ</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -96,12 +113,22 @@
 
                                             <div class="pading-20">
                                                 <div class="" style="padding: 5px 0;">
-                                                    <input type="radio">
+                                                    <input type="radio" checked id="checked-nothing"
+                                                        name="minimumValueOption">
                                                     <span>Không có</span>
                                                 </div>
-                                                <div class="" style="padding: 5px 0;">
-                                                    <input type="radio">
-                                                    <span>Tổng giá trị đơn hàng tối thiểu</span>
+
+                                                <div class="minimum-total-value">
+                                                    <div class="">
+                                                        <input type="radio" name="minimumValueOption" id="checked-yes"
+                                                            checked>
+                                                        <span>Tổng giá trị đơn hàng tối thiểu</span>
+                                                    </div>
+                                                    <div class="border-common enter-minium-value"
+                                                        id="minimum-value-input">
+                                                        <input type="text" class="input-max input-minium-total-value">
+                                                        <span class="span-display-dong">đ</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,12 +139,17 @@
                                             </div>
 
                                             <div class="pading-20">
-                                                <div class="" style="padding: 5px 0;">
-                                                    <input type="checkbox">
+                                                <div class="css-padding-5px">
+                                                    <input type="checkbox" id="usageLimitCheckbox">
                                                     <span>Giới hạn sử dụng</span>
+                                                    <div class="" id="usageLimitInputDiv">
+                                                        <input type="text" class="input-max border-common"
+                                                            placeholder="1" id="inputUsageLimit">
+                                                    </div>
+
                                                 </div>
-                                                <div class="" style="padding: 5px 0;">
-                                                    <input type="checkbox">
+                                                <div class="css-padding-5px">
+                                                    <input type="checkbox" id="customerLimitCheckbox">
                                                     <span>Giới hạn mỗi khách hàng chỉ được sử dụng mã giảm giá này 1
                                                         lần</span>
                                                 </div>
@@ -136,8 +168,8 @@
                                                         <span>Ngày bắt đầu</span>
                                                     </div>
                                                     <div class="">
-                                                        <input type="date" class="w-100 border-common"
-                                                            style="padding:0 8px;">
+                                                        <input type="datetime-local" id="selectStartDate"
+                                                            class="w-100 border-common" style="padding:0 8px;">
                                                     </div>
                                                 </div>
                                                 <div class="" style="width: 50%;">
@@ -145,8 +177,8 @@
                                                         <span>Ngày kết thúc</span>
                                                     </div>
                                                     <div class="">
-                                                        <input type="date" class="w-100 border-common"
-                                                            style="padding:0 5px;">
+                                                        <input type="datetime-local" id="selectEndDate"
+                                                            class="w-100 border-common" style="padding:0 5px;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -162,16 +194,40 @@
                                             <div class="pading-20 coupon-details">
                                                 <div class="coupon-detail-text">
                                                     <div class="pading-16 header-coupon-detail">
-                                                        <h5 style="margin-bottom: 0px;">29MCUTS5ZHHO</h5>
+                                                        <h5 style="margin-bottom: 0px;" id="display-header-code">Mã
+                                                            khuyến
+                                                            mãi</h5>
                                                     </div>
                                                     <div class="" style="padding: 16px;">
                                                         <ul>
-                                                            <li>Giảm 10% tối đa 20,000₫ cho toàn bộ đơn hàng</li>
-                                                            <li>Áp dụng từ 12/01/2025 14:30</li>
+                                                            <li>Giảm
+                                                                <span class="reduced-value">0</span>
+                                                                <span class="reduced-type"></span>
+                                                                <span class="maximum-reduction"
+                                                                    style="display: none;">tối đa</span>
+                                                                cho toàn bộ đơn hàng
+                                                            </li>
+                                                            <li id="conditionsApply">
+                                                                <span id="minimum-order-value">Tổng giá trị đơn hàng
+                                                                    được khuyến mại phải tối
+                                                                    thiểu là 1₫
+                                                                </span>
+                                                            </li>
+                                                            <li id="numberUsed">
+                                                                Mã được phép sử dụng
+                                                                <span class="number-times-used">1</span>
+                                                                lần
+                                                            </li>
+                                                            <li id="limited-user">
+                                                                Mỗi khách
+                                                                hàng được sử dụng
+                                                                <span class="limited-one-time">1</span> lần
+                                                            </li>
+                                                            <li id="startDateandEndDate">
+                                                                Áp dụng từ <span class="startDateDis"></span> đến <span
+                                                                    class="endDateDis"></span>
+                                                            </li>
                                                             <li>Đã sử dụng 0 lần</li>
-                                                            <li>Tổng giá trị đơn hàng được khuyến mại phải tối thiểu là
-                                                                100,000₫</li>
-                                                            <li>Mã được phép sử dụng 2 lần</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -181,17 +237,21 @@
                                 </div>
                                 <div class="footer-create d-flex justify-content-end">
                                     <button id="btn-cancel-create-coupon">Hủy</button>
-                                    <button id="btn-confirm-create-coupon">Tạo khuyến mại</button>
+                                    <button id="btn-confirm-create-coupon">Tạo
+                                        khuyến mại</button>
                                 </div>
                             </div>
                         </div>
                     </main>
                     <jsp:include page="../layout/footer.jsp" />
+                    <div id="toast"></div>
                 </div>
             </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
                 crossorigin="anonymous"></script>
             <script src="/admin/js/scripts.js"></script>
+            <script src="/common/toast.js"></script>
+            <script src="/admin/js/coupon/coupon.js"></script>
         </body>
 
         </html>

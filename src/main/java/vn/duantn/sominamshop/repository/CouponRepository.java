@@ -11,6 +11,8 @@ import java.util.List;
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, Long>, JpaSpecificationExecutor<Coupon> {
+
+    Coupon findByCouponCode(String code);
     // List<Coupon> findByMinOrderValueLessThanEqual(Double orderValue);
 
     // List<ProductResponse> getListProductNoneDiscount();
