@@ -368,16 +368,16 @@
                                                     <div class="k81zo2">
                                                         <div class="aXMKUl gGu3qC">
                                                             <div class="aWf_k3">
-                                                                <div class="K5cdoq">Tỉnh/Thành phố</div>
+                                                                <div class="K5cdoq">Phường xã</div>
                                                                 <input class="uU_7Kb" type="text"
                                                                     placeholder="Phường/Xã" maxlength="64"
-                                                                    name="user_address_city" value="">
+                                                                    name="user_address_ward" value="">
                                                             </div>
                                                         </div>
                                                         <div class="P49sO4"></div>
                                                         <div class="aXMKUl oawiV9">
                                                             <div class="aWf_k3">
-                                                                <div class="K5cdoq">Quận/Huyện</div>
+                                                                <div class="K5cdoq">Địa chỉ chi tiết</div>
                                                                 <input class="uU_7Kb" type="text"
                                                                     placeholder="Địa chỉ chi tiết" name="user_street_address"
                                                                     value="">
