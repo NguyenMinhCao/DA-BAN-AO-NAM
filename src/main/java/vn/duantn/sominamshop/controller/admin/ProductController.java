@@ -314,6 +314,11 @@ public class ProductController {
     @Autowired
     ProductDetailService productDetailService;
 
+    @Autowired
+    PatternService patternService;
+
+    @Autowired
+    OriginService originService;
 
     @Autowired
     CategoryService categoryService;
@@ -338,6 +343,13 @@ public class ProductController {
 
         List<ProductResponse> lists = productService.getAll();
         model.addAttribute("lists", lists);
+
+        List<Origin> listOrigin = originService.getAllActive();
+        model.addAttribute("listOrigin", listOrigin);
+
+
+        List<Pattern> listPattern = patternService.getAllActive();
+        model.addAttribute("listPattern", listPattern);
 
 //        List<ProductDetail> listsDT = productDetailService.getAll();
 //        model.addAttribute("listDT", listsDT);

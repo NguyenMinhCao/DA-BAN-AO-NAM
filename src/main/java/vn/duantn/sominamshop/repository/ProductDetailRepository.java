@@ -16,6 +16,7 @@ import vn.duantn.sominamshop.model.dto.response.ProductDetailResponse;
 import vn.duantn.sominamshop.model.dto.response.SizeResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 
@@ -107,6 +108,8 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
     @Query("select pd from ProductDetail pd where pd.id = :productDetailId")
     ProductDetail findByProductDetailId(@Param("productDetailId") Integer productDetailId);
+
+    Optional<ProductDetail> findByProduct_Id(Long productId);
 
     @Query(value = """
                 SELECT pd.*
@@ -205,4 +208,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 
     @Query("select pd.quantity from ProductDetail pd where pd.id = :id")
     Long findQuantityProductById(@Param("id") Long id);
+
+    List<ProductDetail> findByProductId(Long productId);
+
 }

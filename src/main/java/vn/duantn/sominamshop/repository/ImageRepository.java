@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import vn.duantn.sominamshop.model.Image;
 import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.ProductDetail;
 
 import java.util.List;
 
@@ -31,12 +32,19 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
         nativeQuery = true)
 List<Image> getAllByProductId(@Param("id") Integer id);
 
-
     @Transactional
     @Modifying
-    @Query(value = "DELETE FROM [dbo].[images]\n" +
-            "      WHERE [product_details] = :productId",nativeQuery = true)
-    void deleteAllByProductId(@Param("productId") Integer productId);
+    @Query(value = "DELETE FROM [dbo].[images] " +
+            "WHERE [product_detail_id] IN (" +
+            "    SELECT pd.[id] " +
+            "    FROM [dbo].[product_details] pd " +
+            "    WHERE pd.[product_id] = :productId" +
+            ")", nativeQuery = true)
+    void deleteAllByProductId(@Param("productId") Long productId);
+
+
+    boolean existsByProductDetailAndUrlImage(ProductDetail productDetail, String urlImage);
+
 }
 
 

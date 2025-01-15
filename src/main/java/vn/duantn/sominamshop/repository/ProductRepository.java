@@ -46,27 +46,27 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
         //
         // Page<Product> findByColorId(Long colorId, Pageable pageable);
 
-        List<Product> findByName(String name);
+    List<Product> findByName(String name);
+    @Query(value = "SELECT\n" +
+            "    p.id AS id,\n" +
+            "    p.name AS name,\n" +
+            "    COALESCE(i.url_image, '') AS image,\n" +
+            "    p.description AS description,\n" +
+            "    SUM(pd.quantity) AS quantity,\n" +
+            "    p.status AS status\n" +
+            "FROM\n" +
+            "    products p\n" +
+            "LEFT JOIN\n" +
+            "    product_details pd ON p.id = pd.product_id\n" +
+            "LEFT JOIN\n" +
+            "    images i ON pd.id = i.product_detail_id AND i.is_main = 1\n" +
+            "GROUP BY\n" +
+            "    p.id, p.name, p.description, p.status, i.url_image\n" +
+            "ORDER BY p.id", nativeQuery = true)
+    List<ProductResponse> getAll();
 
-        @Query(value = "SELECT\n" +
-                        "    p.id AS id,\n" +
-                        "    p.name AS name,\n" +
-                        "    COALESCE(i.url_image, '') AS image,\n" +
-                        "    p.description AS description,\n" +
-                        "    SUM(pd.quantity) AS quantity,\n" +
-                        "    p.status AS status\n" +
-                        "FROM\n" +
-                        "    products p\n" +
-                        "LEFT JOIN\n" +
-                        "    product_details pd ON p.id = pd.product_id\n" +
-                        "LEFT JOIN\n" +
-                        "    images i ON pd.id = i.product_detail_id\n" +
-                        "GROUP BY\n" +
-                        "    p.id, p.name, p.description, p.status, i.url_image\n" +
-                        "ORDER BY p.id", nativeQuery = true)
-        List<ProductResponse> getAll();
 
-        @Query(value = "SELECT SUM(dbo.product_details.quantity)\n" +
+    @Query(value = "SELECT SUM(dbo.product_details.quantity)\n" +
                         "FROM     dbo.colors INNER JOIN\n" +
                         "                  dbo.product_details ON dbo.colors.id = dbo.product_details.color_id INNER JOIN\n"
                         +

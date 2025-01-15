@@ -171,7 +171,7 @@ function readURL(input, variantIndex) {
             });
         }
 
-}
+    }
 
     // Thay đổi giao diện khi có ảnh
     $(".Choicefile").css('background', '#14142B');
