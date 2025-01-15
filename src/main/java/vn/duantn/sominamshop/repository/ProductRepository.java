@@ -14,6 +14,7 @@ import vn.duantn.sominamshop.model.dto.response.ProductResponse;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+
         // @Query("SELECT p FROM Product p LEFT JOIN FETCH p.images WHERE p.id =
         // :productId")
         // Optional<Product> findProductWithImages(@Param("productId") Long productId);
@@ -34,16 +35,39 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
         //
         // boolean existsByName(String name);
 
-        // Page<CounterProductProjection> findAllProductByName(Pageable pageable,
-        // @Param(value = "name") String name);
-        //
-        // @Modifying
-        // @Query("UPDATE Product p set p.quantity = p.quantity - :quantity WHERE p.id =
-        // :id")
-        // void updateQuantityProduct(@Param("quantity") Long quantity, @Param("id")
-        // Long id);
-        //
-        // Page<Product> findByColorId(Long colorId, Pageable pageable);
+
+    // @Query("SELECT p FROM Product p LEFT JOIN FETCH p.images WHERE p.id =
+    // :productId")
+    // Optional<Product> findProductWithImages(@Param("productId") Long productId);
+    //
+    // @Query("SELECT p FROM Product p " +
+    // "JOIN FETCH p.category " +
+    // "JOIN FETCH p.color " +
+    // "JOIN FETCH p.material " +
+    // "JOIN FETCH p.origin " +
+    // "JOIN FETCH p.pattern " +
+    // "JOIN FETCH p.size " +
+    // "WHERE p.id = :productId")
+    // Product findByIdWithRelations(@Param("productId") Long productId);
+    //
+    // Page<Product> findAll(Pageable pageable);
+    //
+    // Page<Product> findByNameContaining(String name, Pageable pageable);
+    //
+    // boolean existsByName(String name);
+
+    // Page<CounterProductProjection> findAllProductByName(Pageable pageable,
+    // @Param(value = "name") String name);
+    //
+    // @Modifying
+    // @Query("UPDATE Product p set p.quantity = p.quantity - :quantity WHERE p.id =
+    // :id")
+    // void updateQuantityProduct(@Param("quantity") Long quantity, @Param("id")
+    // Long id);
+    //
+    // Page<Product> findByColorId(Long colorId, Pageable pageable);
+
+
 
         List<Product> findByName(String name);
 
@@ -121,4 +145,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
         // p.id
         // """)
         // Page<ProductResponseClient> pageProductResponse(Pageable pageable);
+
 }

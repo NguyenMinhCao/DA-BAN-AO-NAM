@@ -17,8 +17,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/upload")
 public class ImageUploadController {
-    // Đường dẫn đến thư mục lưu ảnh trên server
-    private static final String UPLOAD_DIR = "C:/DATN/images/";
+    // Đường dẫn đến thư mục lưu ảnh trong thư mục resources/images
+    private static final String UPLOAD_DIR = "src/main/webapp/resources/images/product";
 
     @PostMapping("/image")
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
@@ -39,7 +39,7 @@ public class ImageUploadController {
             Files.write(filePath, file.getBytes());
 
             // Trả về URL ảnh
-            String imageUrl = "/uploads/" + fileName;
+            String imageUrl = "/uploads/images/product/" + fileName;
 
             // Thêm thông tin vào response
             response.put("imageUrl", imageUrl);
@@ -52,4 +52,5 @@ public class ImageUploadController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 }

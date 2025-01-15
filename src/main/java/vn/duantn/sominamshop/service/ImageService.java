@@ -1,6 +1,9 @@
 package vn.duantn.sominamshop.service;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +14,6 @@ import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.dto.request.ImageRequest;
 import vn.duantn.sominamshop.repository.ImageRepository;
 import vn.duantn.sominamshop.repository.ProductDetailRepository;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
