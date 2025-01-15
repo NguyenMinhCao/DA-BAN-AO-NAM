@@ -129,9 +129,9 @@ $(document).ready(function () {
         var nameUser = $("input[name='user_address_fullname']").val();
         var phoneUser = $("input[name='user_address_phone']").val();
         var streetAdressUser = $("input[name='user_street_address']").val();
-        var cityAddress = $("input[name='user_address_city$']").val();
-        var districtAddress = $("input[name='user_address_district$']").val();
-        var wardAddress = $("input[name='user_address_ward$']").val();
+        var cityAddress = $("input[name='user_address_city']").val();
+        var districtAddress = $("input[name='user_address_district']").val();
+        var wardAddress = $("input[name='user_address_ward']").val();
         var isCheckedAddress = $("input[name='address_select']").is(':checked');
 
         var data = {
@@ -176,13 +176,17 @@ $(document).ready(function () {
             // Không cần contentType cho yêu cầu GET với tham số truy vấn
             data: { idAddress: selectedAddress }, // Truyền tham số qua URL
             success: function (response) {
+                console.log(response)
                 console.log('Dữ liệu đã được gửi thành công!', response);
                 $('#userAddressFullName').val(response.fullName);
                 $('#userAddress').val(response.address);
                 $('#userAddressId').val(response.idAddress);
                 $('#userAddressPhone').val(response.phoneNumber);
-                // $('#userAddressFullName').val(response.status);
                 $('#userStreetAddress').val(response.streetDetails);
+                $('#userCityAddress').val(response.city);
+                $('#districtAddress').val(response.district);
+                $('#wardAddress').val(response.ward);
+                $('#streetDetailAdd').val(response.streetDetails);
             },
             error: function (error) {
                 console.error('Lỗi khi gửi dữ liệu:', error);

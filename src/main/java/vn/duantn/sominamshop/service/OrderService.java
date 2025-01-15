@@ -139,7 +139,7 @@ public class OrderService {
                 // set address
                 List<Address> addressByUser = this.addressService.findAllAddressByUser(userByEmail);
                 for (Address address : addressByUser) {
-                    if (address.isStatus()) {
+                    if (address.getStatus()) {
                         order.setCity(address.getCity());
                         order.setPhoneNumber(address.getPhoneNumber());
                         order.setDistrict(address.getDistrict());
@@ -187,7 +187,7 @@ public class OrderService {
                 dto.setFullName(addressById.getFullName());
                 dto.setPhoneNumber(addressById.getPhoneNumber());
                 dto.setStreetDetails(addressById.getStreetDetails());
-                dto.setStatus(addressById.isStatus());
+                dto.setStatus(addressById.getStatus());
                 session.setAttribute("isChangeAddress", "true");
                 response.put("addressById", dto);
             }

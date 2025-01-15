@@ -275,7 +275,9 @@
                                                     <div class="CRFtuZ kdrlZs">
                                                         <div class="h44KA2 ZnXbv2">
                                                             <div class="glTVDN">
-                                                                <div class="ieb1A9">${address.streetDetails}</div>
+                                                                <div class="ieb1A9">${address.streetDetails},
+                                                                    ${address.ward}, ${address.district},
+                                                                    ${address.city}</div>
                                                             </div>
                                                         </div>
                                                         <div class="p2Hy8c MM8UDO"></div>
@@ -379,8 +381,8 @@
                                                             <div class="aWf_k3">
                                                                 <div class="K5cdoq">Địa chỉ chi tiết</div>
                                                                 <input class="uU_7Kb" type="text"
-                                                                    placeholder="Địa chỉ chi tiết" name="user_street_address"
-                                                                    value="">
+                                                                    placeholder="Địa chỉ chi tiết"
+                                                                    name="user_street_address" value="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -412,12 +414,11 @@
 
                             <!-- Bắt đầu nội dung box cập nhật địa chỉ -->
                             <div class="modal-overlay-update-address" id="modalOverlayUpdateAddress">
-                                <!-- <div class="modal-content-update-address">
+                                <div class="modal-content-update-address">
                                     <div class="header-update-address">
                                         <h3 style="font-size: 20px;font-weight: 500;">Cập nhật địa chỉ</h3>
                                     </div>
                                     <hr>
-
                                     <div class="body-update-address">
                                         <form>
                                             <div class="GIYGxC">
@@ -445,28 +446,41 @@
                                                         </div>
                                                     </div>
                                                     <div class="k81zo2">
-                                                        <div class="B3Z66j">
-                                                            <div class="fD7jc0">
-                                                                <div class="RyrP3M">
-                                                                    <input class="uU_7Kb" type="text"
-                                                                        placeholder="Tỉnh/ Thành phố, Quận/Huyện, Phường/Xã"
-                                                                        name="user_address" id="userAddress" value="">
-                                                                </div>
+                                                        <div class="aXMKUl gGu3qC">
+                                                            <div class="aWf_k3">
+                                                                <div class="K5cdoq">Tỉnh/Thành phố</div>
+                                                                <input class="uU_7Kb" type="text"
+                                                                    placeholder="Tỉnh/Thành phố" maxlength="64"
+                                                                    name="user_address_city" value="" id="userCityAddress">
+                                                            </div>
+                                                        </div>
+                                                        <div class="P49sO4"></div>
+                                                        <div class="aXMKUl oawiV9">
+                                                            <div class="aWf_k3">
+                                                                <div class="K5cdoq">Quận/Huyện</div>
+                                                                <input class="uU_7Kb" type="text"
+                                                                    placeholder="Quận/Huyện"
+                                                                    name="user_address_district" value="" id="districtAddress">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="k81zo2">
-                                                        <div class="HtRrP7">
-                                                            <div class="yb8LRL _6FQEs4 WsMrm9">
-                                                                <div class="NCOcN7">
-                                                                    <div class="bMYo7S">Địa chỉ cụ thể</div>
-                                                                    <input class="zKGLlL" rows="2"
-                                                                        placeholder="Địa chỉ cụ thể"
-                                                                        name="user_street_address" maxlength="128"
-                                                                        id="userStreetAddress"></input>
-                                                                </div>
+                                                        <div class="aXMKUl gGu3qC">
+                                                            <div class="aWf_k3">
+                                                                <div class="K5cdoq">Phường xã</div>
+                                                                <input class="uU_7Kb" type="text"
+                                                                    placeholder="Phường/Xã" maxlength="64"
+                                                                    name="user_address_ward" value="" id="wardAddress">
                                                             </div>
-                                                            <div class="GDmj6q"></div>
+                                                        </div>
+                                                        <div class="P49sO4"></div>
+                                                        <div class="aXMKUl oawiV9">
+                                                            <div class="aWf_k3">
+                                                                <div class="K5cdoq">Địa chỉ chi tiết</div>
+                                                                <input class="uU_7Kb" type="text"
+                                                                    placeholder="Địa chỉ chi tiết"
+                                                                    name="user_street_address" value="" id="streetDetailAdd">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="htdX_R">
@@ -491,7 +505,7 @@
                                                 NHẬN</button>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                             <!-- Kết thúc nội dung box cập nhật địa chỉ -->
 
