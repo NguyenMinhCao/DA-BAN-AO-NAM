@@ -47,7 +47,7 @@ public class UploadService {
         return finalName;
     }
 
-    public String handleSaveAvatar(MultipartFile file, String uploadDir){
+    public String handleSaveAvatar(MultipartFile file, String uploadDir) {
         System.out.println(file + "ảnh ");
         if (file != null && !file.isEmpty()) {
             try {
@@ -58,11 +58,25 @@ public class UploadService {
                 Path filePath = Paths.get(rootPath, uniqueFileName);
 //                Files.createDirectories(filePath.getParent());
                 file.transferTo(filePath.toFile());
+                System.out.println(uniqueFileName + ": ảnh ");
                 return uniqueFileName;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return null;
+    }
+
+    public void deleteFile(String file, String uploadDir) {
+        String rootPath = this.servletContext.getRealPath(uploadDir);
+        try {
+            if(file != null){
+                Path filePath = Paths.get(rootPath, file);
+                Files.delete(filePath);
+                System.out.println("File đã được xóa: " + filePath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -47,3 +47,59 @@ body {
     cursor: pointer;
     font-size: 14px;
 }
+.upload-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.upload-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+.upload-container input {
+    display: none;
+}
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    visibility: hidden;
+}
+.upload-container:hover .remove-btn,
+.upload-container img:hover + .remove-btn {
+    visibility: visible;
+}
+.status-active {
+    color: green;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: red;
+    font-weight: bold;
+}
+.swal2-container {
+    z-index: 3000;
+}

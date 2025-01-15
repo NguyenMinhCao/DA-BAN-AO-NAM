@@ -113,8 +113,9 @@
                             </div>
                             <div class="form-group-wrapper">
                                 <div class="item-group">
-                                    <label class="" for="customerImage">Ảnh</label>
-                                    <input type="file" class="form-control" id="customerImage">
+                                    <label for="customerEmail" class="form-label">Mật khẩu</label>
+                                    <input type="password" class="form-control" id="customerPassword"
+                                           placeholder="Nhập mật khẩu" autocomplete="on">
                                 </div>
                                 <div class="item-group gender">
                                     <label for="customerDob" class="form-label">Giới tính</label>
@@ -123,14 +124,10 @@
                                 </div>
                             </div>
                             <div class="form-group-wrapper">
-                                <div class="item-group">
-                                    <label for="customerEmail" class="form-label">Mật khẩu</label>
-                                    <input type="password" class="form-control" id="customerEmail"
-                                           placeholder="Nhập mật khẩu" autocomplete="on">
-                                </div>
-                                <div class="item-group">
-                                    <label for="customerDob" class="form-label">Chức vụ</label>
-                                    <input type="date" class="form-control" id="customerDob">
+                                <label for="customerDob" class="form-label">Ảnh</label>
+                                <div class="upload-container" id="uploadContainer">
+                                    <input type="file" id="imageInput" accept="image/*">
+                                    <button class="remove-btn" id="removeBtn">&times;</button>
                                 </div>
                             </div>
                         </div>
@@ -152,6 +149,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-<script src="/admin/js/user/create-customer.js"></script>
+<script src="/admin/js/user/create-staff.js"></script>
 </body>
 </html>

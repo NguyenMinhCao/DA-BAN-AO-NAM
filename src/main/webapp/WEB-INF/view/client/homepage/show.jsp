@@ -386,7 +386,7 @@
                     <!--================ End Inspired Product Area =================-->
 
                     <!--================ Start Blog Area =================-->
-                    <section class="blog-area section-gap">
+                    <!-- <section class="blog-area section-gap">
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-12">
@@ -483,7 +483,7 @@
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </section> -->
                     <!--================ End Blog Area =================-->
 
                     <!--================ start footer Area  =================-->

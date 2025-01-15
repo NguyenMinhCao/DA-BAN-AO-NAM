@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Dashboard - SB Admin</title>
+    <title>Nhân Viên - Admin</title>
     <link href="/admin/css/user/customer.css" rel="stylesheet"/>
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/style1.css"/>
@@ -37,7 +37,7 @@
                     <div class="invoice-container">
                         <div class="status-add">
                             <div class="radio-status">
-                                <button id="btnNewCustomer">+Thêm mới nhân viên</button>
+                                <button id="btnNewStaff">+Thêm mới nhân viên</button>
                             </div>
                             <div class="search">
                                 <input type="text" id="search" placeholder="Nhập tên để tìm kiếm" class="form-control">
@@ -61,6 +61,51 @@
                             </table>
                         </div>
                         <div id="pagination-customer" class="pagination"></div>
+
+                        <div class="form-add-customer modal" id="form-add-customer">
+                            <div class="content-add-customer">
+                                <h2>Chỉnh sửa thông tin</h2>
+                                <div>
+                                    <!-- Họ và tên -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="fullnameCustomer">Họ và tên</label>
+                                            <input type="text" id="fullnameCustomer" placeholder="Nhập họ và tên khách hàng">
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="gender">Giới tính</label>
+                                            <select id="gender">
+                                                <option value="true">Nam</option>
+                                                <option value="false">Nữ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Số điện thoại và Email -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="emailCustomer">Email</label>
+                                            <input type="email" id="emailCustomer" placeholder="Nhập email khách hàng">
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="phoneNumberAdd">Số điện thoại</label>
+                                            <input type="tel" id="phoneNumberAdd" placeholder="Nhập sdt khách hàng">
+                                        </div>
+                                    </div>
+                                    <label style="font-weight: bold">Ảnh</label>
+                                    <div class="upload-container" id="uploadContainer" style="margin: 5px 0px 10px 0px">
+                                        <input type="file" id="imageInput" accept="image/*">
+                                        <button class="remove-btn" id="removeBtn">&times;</button>
+                                    </div>
+
+                                    <!-- Buttons -->
+                                    <div class="form-actions">
+                                        <button type="reset" id="cancel-btn-add-customer" class="cancel-btn">Hủy (ESC)</button>
+                                        <button class="add-btn" id="update-customer">Chỉnh sửa</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </ol>
             </div>
@@ -74,6 +119,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-<script src="/admin/js/user/customer.js"></script>
+<script src="/admin/js/user/staff.js"></script>
 </body>
 </html>

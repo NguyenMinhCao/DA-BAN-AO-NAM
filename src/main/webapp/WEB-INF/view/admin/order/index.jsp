@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Dashboard - SB Admin</title>
+    <title>Bán Hàng - Admin</title>
     <link href="/admin/css/order/order.css" rel="stylesheet"/>
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/style1.css"/>
@@ -193,7 +193,7 @@
                                         </div>
                                         <div class="form-invoice-item">
                                             <strong>Giảm giá:</strong>
-                                            <span>0 VND</span>
+                                            <span id="moneyDecrease">0 VND</span>
                                         </div>
                                         <div class="form-invoice-item">
                                             <strong>Khách thanh toán:</strong>

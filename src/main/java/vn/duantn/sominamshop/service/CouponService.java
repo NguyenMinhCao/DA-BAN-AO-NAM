@@ -1,5 +1,6 @@
 package vn.duantn.sominamshop.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -13,8 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import vn.duantn.sominamshop.model.Coupon;
+import vn.duantn.sominamshop.model.constants.DiscountType;
+import vn.duantn.sominamshop.model.dto.request.DataCouponDTO;
 import vn.duantn.sominamshop.model.dto.CouponDTO;
 import vn.duantn.sominamshop.model.dto.response.ResCouponDTO;
 import vn.duantn.sominamshop.model.dto.response.ResultPaginationDTO;
@@ -32,7 +34,7 @@ public class CouponService {
         return this.couponRepository.findAll();
     }
 
-    public Optional<Coupon> findPromotionById(Long id) {
+    public Optional<Coupon> findCouponById(Long id) {
         return this.couponRepository.findById(id);
     }
 
@@ -69,11 +71,10 @@ public class CouponService {
             newCouponRes.setDiscountType(coupon.getDiscountType());
             newCouponRes.setDiscountValuePercent(coupon.getDiscountValuePercent());
             newCouponRes.setDiscountValueFixed(coupon.getDiscountValueFixed());
-            newCouponRes.setStatus(coupon.isStatus());
+            newCouponRes.setStatus(coupon.getStatus());
             newCouponRes.setUsageLimit(coupon.getUsageLimit());
             newCouponRes.setMaximumReduction(coupon.getMaximumReduction());
             newCouponRes.setMinimumValue(coupon.getMaximumReduction());
-
 
             String formattedDateCreate = coupon.getCreatedAt().format(formatter);
             newCouponRes.setCreatedAt(formattedDateCreate);
@@ -90,19 +91,70 @@ public class CouponService {
         return couponSRes;
     }
 
+    public Coupon findCouponByCode(String code) {
+        return this.couponRepository.findByCouponCode(code);
+    }
+
+    public void saveCoupon(DataCouponDTO dto) {
+        Coupon coupon = new Coupon();
+        coupon.setCouponCode(dto.getCouponCode());
+        coupon.setDiscountType(dto.isDiscountType() == true ? DiscountType.FIXED : DiscountType.PERCENTAGE);
+        coupon.setDiscountValueFixed(dto.getDiscountValueFixed());
+        coupon.setDiscountValuePercent(dto.getDiscountValuePercent());
+        coupon.setMaximumReduction(dto.getMaximumReduction());
+        coupon.setMinimumValue(dto.getMinimumValue());
+        coupon.setStatus(true);
+        coupon.setUsageLimit(dto.getUsageLimit());
+
+        // Định dạng ngày
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+        // Chuyển đổi LocalDate thành LocalDateTime tại đầu ngày (00:00)
+        LocalDateTime startDateTime = LocalDateTime.parse(dto.getStartDate(), formatter);
+        LocalDateTime endDateTime = LocalDateTime.parse(dto.getEndDate(), formatter);
+
+        coupon.setStartDate(startDateTime);
+        coupon.setEndDate(endDateTime);
+        this.couponRepository.save(coupon);
+    }
+
+    public Coupon updateCoupon(DataCouponDTO dto, Coupon coupon) {
+        coupon.setCouponCode(dto.getCouponCode());
+        coupon.setDiscountType(dto.isDiscountType() == true ? DiscountType.FIXED : DiscountType.PERCENTAGE);
+        coupon.setDiscountValueFixed(dto.getDiscountValueFixed());
+        coupon.setDiscountValuePercent(dto.getDiscountValuePercent());
+        coupon.setMaximumReduction(dto.getMaximumReduction());
+        coupon.setMinimumValue(dto.getMinimumValue());
+        coupon.setStatus(true);
+        coupon.setUsageLimit(dto.getUsageLimit());
+
+        // Định dạng ngày
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+        // Chuyển đổi LocalDate thành LocalDateTime tại đầu ngày (00:00)
+        LocalDateTime startDateTime = LocalDateTime.parse(dto.getStartDate(), formatter);
+        LocalDateTime endDateTime = LocalDateTime.parse(dto.getEndDate(), formatter);
+
+        coupon.setStartDate(startDateTime);
+        coupon.setEndDate(endDateTime);
+        return this.couponRepository.save(coupon);
+    }
+
     // public List<PromotionDTO> getPromotion(Double orderValue) {
-    //     LocalDate today = LocalDate.now();
-    //     List<PromotionDTO> listPromotionDTO = couponRepository.findByMinOrderValueLessThanEqual(orderValue).stream()
-    //             .map(PromotionDTO::toPromotionDTO)
-    //             .filter(promotionDTO -> promotionDTO.getStartDateAsLocalDate() != null
-    //                     && promotionDTO.getStartDateAsLocalDate().isBefore(today)
-    //                     || promotionDTO.getStartDateAsLocalDate().equals(today))
-    //             .filter(promotionDTO -> promotionDTO.getEndDateAsLocalDate() != null
-    //                     && promotionDTO.getEndDateAsLocalDate().isAfter(today))
-    //             .filter(promotionDTO -> promotionDTO.getUsageLimit() != null && promotionDTO.getUsageLimit() > 0)
-    //             .filter(promotionDTO -> promotionDTO.isStatus())
-    //             .collect(Collectors.toList());
-    //     return listPromotionDTO;
+    // LocalDate today = LocalDate.now();
+    // List<PromotionDTO> listPromotionDTO =
+    // couponRepository.findByMinOrderValueLessThanEqual(orderValue).stream()
+    // .map(PromotionDTO::toPromotionDTO)
+    // .filter(promotionDTO -> promotionDTO.getStartDateAsLocalDate() != null
+    // && promotionDTO.getStartDateAsLocalDate().isBefore(today)
+    // || promotionDTO.getStartDateAsLocalDate().equals(today))
+    // .filter(promotionDTO -> promotionDTO.getEndDateAsLocalDate() != null
+    // && promotionDTO.getEndDateAsLocalDate().isAfter(today))
+    // .filter(promotionDTO -> promotionDTO.getUsageLimit() != null &&
+    // promotionDTO.getUsageLimit() > 0)
+    // .filter(promotionDTO -> promotionDTO.isStatus())
+    // .collect(Collectors.toList());
+    // return listPromotionDTO;
     // }
 
     public List<CouponDTO> findValidCoupons(String code){

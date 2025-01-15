@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     listOrder.push(item);
                 });
+                resetCoupon()
             },
             error: function (xhr) {
                 let errorMap = JSON.parse(xhr.responseText);
@@ -227,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#search-input-color').prop("selectedIndex", 0);
         $('#search-input-size').prop("selectedIndex", 0);
         $('#search-input-category').prop("selectedIndex", 0);
-        $('#search-input-product').text('')
+        $('#search-input-product').val('')
         fetchProducts(0)
     })
 
@@ -442,6 +443,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 let totalAmount = (Number(quantityInput.value) * Number(price))
                 totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
                 productToUpdate.price = totalAmount
+                resetCoupon()
+                renderCoupons(listCoupons)
                 updateTotalPrice();
                 updateOrderDetail(productToUpdate)
             }
@@ -457,8 +460,11 @@ document.addEventListener('DOMContentLoaded', function () {
             let totalAmount = (Number(quantityInput.value) * Number(price))
             totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
             productToUpdate.price = totalAmount
+            resetCoupon()
+            renderCoupons(listCoupons)
             updateTotalPrice();
             updateOrderDetail(productToUpdate)
+
         });
         quantityInput.addEventListener("change", () => {
             if(Number(quantityInput.value) > Number(totalQuantityProduct)){
@@ -471,6 +477,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let totalAmount = (Number(quantityInput.value) * Number(price))
             totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
             productToUpdate.price = totalAmount
+            resetCoupon()
+            renderCoupons(listCoupons)
             updateTotalPrice();
             updateOrderDetail(productToUpdate)
         });
@@ -480,6 +488,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const updatedProducts = listProduct.filter(product => product.productDetail?.id !== productId);
             listProduct = updatedProducts
             newRow.remove();
+            resetCoupon()
+            renderCoupons(listCoupons)
             updateTotalPrice()
             if(productDelete){
                 deleteOrderDetail(productDelete.id)
@@ -503,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
         calculateCustomerMoney();
         renderCoupons(listCoupons)
     }
-    function updateTotalPriceWithCoupons(value, discount, type) {
+    function updateTotalPriceWithCoupons(value, discountFixed, discountPercent, type) {
         totalPayment = 0;
         const quantityProductCart = document.querySelectorAll(`.product-quantity-cart`);
         quantityProductCart.forEach(function (input) {
@@ -511,11 +521,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const price = input.getAttribute('data-price');
             totalPayment += quantity * price;
         });
-        if(value && discount && type){
+        console.log(discountFixed + " discountPercent " + discountPercent)
+        if(value && type){
             if(type == 'PERCENTAGE'){
-                totalPayment = totalPayment - (totalPayment * (Number(discount)/100))
+                if(discountPercent && discountPercent >0){
+                    totalPayment = totalPayment - (totalPayment * (Number(discountPercent)/100))
+                    console.log(totalPayment + " discountPercent")
+                    $('#moneyDecrease').text((totalPayment * (Number(discountPercent)/100)).toLocaleString() + ' VND')
+                }
             }else{
-                totalPayment = totalPayment - Number(discount)
+                if(discountFixed && discountFixed >0){
+                    totalPayment = totalPayment - Number(discountFixed)
+                    console.log(totalPayment + " discountFixed")
+                    $('#moneyDecrease').text(discountFixed.toLocaleString() + ' VND')
+                }
             }
         }
         $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' VND')
@@ -531,6 +550,7 @@ document.addEventListener('DOMContentLoaded', function () {
         idCoupon = null
         updateTotalPriceWithCoupons()
         $('#voucher').val('')
+        $('#moneyDecrease').text('0 VND')
     }
 
     // Tính tiền trả lại và còn thiếu
@@ -717,7 +737,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchCustomers(page) {
         const inputSearch = document.getElementById('search-input-customer').value
         $.ajax({
-            url: `/api/admin/user/get/customers?page=${page}&limit=8`,
+            url: `/api/admin/user/get/order/customers?page=${page}&limit=20`,
             type: 'GET',
             data: {keyword: inputSearch},
             success: function (response) {
@@ -875,6 +895,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#contaiTotalPriceVoucher').show()
             $('#totalPriceVoucher').text(totalPriceVoucher.toLocaleString() +' VND');
             $('#totalPricePrint').text(totalPriceInTable.toLocaleString()+' VND');
+            console.log("totalPriceVoucher " + totalPriceVoucher)
         }
         $('#totalPricePayMent').text(totalAmout)
         $('#table_print').empty()
@@ -1210,10 +1231,12 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#closeModalBtnAddVouCher').on('click', function(){
         const checkedInput = document.querySelector('input[name="voucher-select"]:checked');
             const value = checkedInput?.value;
-            const discount = checkedInput?.dataset.discount;
+            const discountFixed = checkedInput?.getAttribute('data-discountFixed');
+            const discountPercent= checkedInput?.getAttribute('data-discountPercent');
             const type = checkedInput?.dataset.type
             const code = checkedInput?.dataset.code
-        updateTotalPriceWithCoupons(value, discount, type)
+        updateTotalPriceWithCoupons(value, discountFixed, discountPercent, type)
+        console.log("discountFixed "+discountFixed+ " discountPercent " + discountPercent + " type " + type)
         toggleModal(modalChoseVoucher, false)
         idCoupon = value
         $('#voucher').val(code)
@@ -1225,6 +1248,7 @@ document.addEventListener('DOMContentLoaded', function () {
            type: 'GET',
            success: function(response){
                response.forEach(item => listCoupons.push(item))
+               listCoupons.forEach(item => console.log(item))
                renderCoupons(listCoupons)
            },
             error: function(xhr, error){
@@ -1251,7 +1275,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let contentCoupons = $('#contentCoupons')
         let toTalPrice = document.getElementById('form-invoice-total-amount').getAttribute('totalPayment')
         contentCoupons.empty()
-        let listCouponsActive = coupons.filter(item => item.minOrderValue <= Number(toTalPrice))
+        let listCouponsActive = coupons.filter(item => item.minimumValue <= Number(toTalPrice))
         listCouponsActive.forEach(item => {
             let endDate = item.endDate
             let date = new Date(endDate[0], endDate[1] - 1, endDate[2], endDate[3], endDate[4]);
@@ -1266,10 +1290,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
 
                 <div class="voucher-details">
-                    <div class="voucher-exp">Đơn tối thiểu: ${item.minOrderValue}₫<br>HSD: ${formattedDate}</div>
+                    <div class="voucher-exp">Đơn tối thiểu: ${item.minimumValue}₫<br>HSD: ${formattedDate}</div>
                 </div>
                 <div class="voucher-checkbox" style="padding-right: 15px;">
-                    <input type="radio" name="voucher-select" value="${item.id}" data-discount="${item.discountValue}" data-type="${item.discountType}" data-code="${item.couponCode}"/>
+                    <input type="radio" name="voucher-select" value="${item.id}" data-discountFixed="${item.discountValueFixed}" data-discountPercent="${item.discountValuePercent}" data-type="${item.discountType}" data-code="${item.couponCode}"/>
                 </div>
             </div>
            

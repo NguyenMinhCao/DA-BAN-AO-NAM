@@ -39,7 +39,7 @@ public class PromotionDTO {
                 .id(promotion.getId())
                 // .startDate(promotion.getStartDate())
                 // .endDate(promotion.getEndDate())
-                .status(promotion.isStatus())
+//                .status(promotion.isStatus())
                 // .discountType(promotion.getDiscountType())
                 // .discountValue(promotion.getDiscountValue())
                 // .promotionCode(promotion.getPromotionCode())
