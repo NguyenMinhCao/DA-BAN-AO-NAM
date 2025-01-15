@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     <link href="${pageContext.request.contextPath}/Admin/css/order/order-stats.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -234,25 +236,49 @@
                         <td>${product.productName}</td>
                         <td>${product.productDetail.size.sizeName}</td>
                         <td>${product.productDetail.color.colorName}</td>
-                        <td>${product.productDetail.price}</td>
+                        <td>
+                            <fmt:formatNumber value="${product.productDetail.price}" type="currency" currencySymbol="₫" />
+                        </td>
                         <td>${product.productDetail.quantity}</td>
-                        <td>${product.productDetail.price * product.productDetail.quantity}</td>
+                        <td>
+                            <fmt:formatNumber value="${product.productDetail.price * product.productDetail.quantity}"
+                                              type="currency"
+                                              currencySymbol="₫" />
+                        </td>
                     </tr>
                 </c:forEach>
 
                 </tbody>
             </table>
-            <div class="pagination">
-                <c:if test="${lowStockProductsPage.hasPrevious()}">
-                    <a href="?page=${lowStockProductsPage.number - 1}">Trang trước</a>
-                </c:if>
-                <span>Trang ${lowStockProductsPage.number + 1} / ${lowStockProductsPage.totalPages}</span>
-                <c:if test="${lowStockProductsPage.hasNext()}">
-                    <a href="?page=${lowStockProductsPage.number + 1}">Trang sau</a>
-                </c:if>
+            <div class="d-flex justify-content-center mt-3">
+                <nav aria-label="Pagination">
+                    <ul class="pagination">
+                        <c:if test="${lowStockProductsPage.hasPrevious()}">
+                            <li class="page-item">
+                                <a class="page-link" href="?page=${lowStockProductsPage.number - 1}" aria-label="Trang trước">
+                                    <
+                                </a>
+                            </li>
+                        </c:if>
+                        <li class="page-item disabled">
+                <span class="page-link">
+                    Trang ${lowStockProductsPage.number + 1} / ${lowStockProductsPage.totalPages}
+                </span>
+                        </li>
+
+                        <c:if test="${lowStockProductsPage.hasNext()}">
+                            <li class="page-item">
+                                <a class="page-link" href="?page=${lowStockProductsPage.number + 1}" aria-label="Trang sau">
+                                    >
+                                </a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
             </div>
 
-    </main>
+
+        </main>
     <jsp:include page="../layout/footer.jsp"/>
 </div>
 </body>
