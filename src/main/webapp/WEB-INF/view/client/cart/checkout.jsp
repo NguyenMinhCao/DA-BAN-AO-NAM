@@ -208,7 +208,7 @@
                                             <div class="place-detail-one">
                                                 <div class="PzGLCh" id="fullNameAndPhoneNumber">
                                                     ${address.fullName}
-                                                    ${address.phoneNumber} 
+                                                    ${address.phoneNumber}
                                                 </div>
                                                 <div class="a9c4OR" style="margin-left: 20px; display: inline-block;"
                                                     id="streetDetailsAndAdress">
@@ -317,7 +317,7 @@
 
                             <!-- Bắt đầu nội dung box thêm địa chỉ -->
                             <div class="modal-overlay-add-address" id="modalOverlayAddAddress">
-                                <!-- <div class="modal-content-add-address">
+                                <div class="modal-content-add-address">
                                     <div class="header-add-address">
                                         <h3 style="font-size: 20px;font-weight: 500;">Thêm địa chỉ</h3>
                                     </div>
@@ -347,28 +347,41 @@
                                                         </div>
                                                     </div>
                                                     <div class="k81zo2">
-                                                        <div class="B3Z66j">
-                                                            <div class="fD7jc0">
-                                                                <div class="RyrP3M">
-                                                                    <input class="uU_7Kb" type="text"
-                                                                        placeholder="Tỉnh/ Thành phố, Quận/Huyện, Phường/Xã"
-                                                                        name="user_address" value="">
-                                                                </div>
+                                                        <div class="aXMKUl gGu3qC">
+                                                            <div class="aWf_k3">
+                                                                <div class="K5cdoq">Tỉnh/Thành phố</div>
+                                                                <input class="uU_7Kb" type="text"
+                                                                    placeholder="Tỉnh/Thành phố" maxlength="64"
+                                                                    name="user_address_city" value="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="P49sO4"></div>
+                                                        <div class="aXMKUl oawiV9">
+                                                            <div class="aWf_k3">
+                                                                <div class="K5cdoq">Quận/Huyện</div>
+                                                                <input class="uU_7Kb" type="text"
+                                                                    placeholder="Quận/Huyện"
+                                                                    name="user_address_district" value="">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="k81zo2">
-                                                        <div class="HtRrP7">
-                                                            <div class="yb8LRL _6FQEs4 WsMrm9">
-                                                                <div class="NCOcN7">
-                                                                    <div class="bMYo7S">Địa chỉ cụ thể</div>
-                                                                    <input class="zKGLlL" rows="2"
-                                                                        placeholder="Địa chỉ cụ thể"
-                                                                        name="user_street_address"
-                                                                        maxlength="128"></input>
-                                                                </div>
+                                                        <div class="aXMKUl gGu3qC">
+                                                            <div class="aWf_k3">
+                                                                <div class="K5cdoq">Tỉnh/Thành phố</div>
+                                                                <input class="uU_7Kb" type="text"
+                                                                    placeholder="Phường/Xã" maxlength="64"
+                                                                    name="user_address_city" value="">
                                                             </div>
-                                                            <div class="GDmj6q"></div>
+                                                        </div>
+                                                        <div class="P49sO4"></div>
+                                                        <div class="aXMKUl oawiV9">
+                                                            <div class="aWf_k3">
+                                                                <div class="K5cdoq">Quận/Huyện</div>
+                                                                <input class="uU_7Kb" type="text"
+                                                                    placeholder="Địa chỉ chi tiết" name="user_street_address"
+                                                                    value="">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="htdX_R">
@@ -392,7 +405,7 @@
                                         </div>
                                     </div>
 
-                                </div> -->
+                                </div>
                             </div>
                             <!-- Kết thúc nội dung box thêm địa chỉ -->
 
@@ -661,7 +674,7 @@
 
                                                                             <div class="voucher-details">
                                                                                 <div class="voucher-exp">Giảm tối đa
-                                                                                    ${pro.discountValue}k | Đơn tối
+                                                                                    ${pro.discountValueFixed}k | Đơn tối
                                                                                     thiểu 0₫<br>HSD:
                                                                                     27.11.2024</div>
                                                                             </div>
@@ -670,15 +683,15 @@
                                                                                 <input type="radio"
                                                                                     name="voucher-select"
                                                                                     value="${pro.id}"
-                                                                                    data-discount="${pro.discountValue}"
+                                                                                    data-discount="${pro.discountValueFixed}"
                                                                                     <c:if
                                                                                     test="${promotionInOrder.id == pro.id}">
                                                                                 checked
                                                                                 </c:if>/>
                                                                             </div>
                                                                         </div>
-                                                                        <!-- <c:set var="discountValue"
-                                                                            value="${listPromotions[0].discountValue}" /> -->
+                                                                        <!-- <c:set var="discountValueFixed"
+                                                                            value="${listPromotions[0].discountValueFixed}" /> -->
                                                                     </c:forEach>
                                                                 </div>
 

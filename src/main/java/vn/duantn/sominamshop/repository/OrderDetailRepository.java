@@ -16,8 +16,8 @@ import java.util.List;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
     @Query(value = "select odt from OrderDetail odt " +
             "inner join Order od on od.id = odt.order.id " +
-            "left join ProductDetail pd on pd.id = odt.id " +
-            "left join Image ig on ig.id = pd.id " +
+            "left join ProductDetail pd on pd.id = odt.productDetail.id " +
+            "left join Image ig on ig.productDetail.id = pd.id " +
             "inner join Product p on p.id = pd.product.id " +
             "where od.id = :id")
     List<OrderDetail> getOrderDetailByOrderId(Long id);

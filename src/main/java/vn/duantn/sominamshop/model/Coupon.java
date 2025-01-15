@@ -15,7 +15,6 @@ import lombok.*;
 import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.util.SecurityUtil;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,6 +23,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +58,7 @@ public class Coupon {
     private LocalDateTime endDate;
 
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

@@ -338,7 +338,7 @@
 
                                                     <div class="voucher-details">
                                                         <div class="voucher-exp">Giảm tối đa
-                                                            ${pro.discountValue}k | Đơn tối
+                                                            ${pro.discountValueFixed}k | Đơn tối
                                                             thiểu 0₫<br>HSD:
                                                             27.11.2024</div>
                                                     </div>
@@ -347,8 +347,8 @@
                                                             value="${pro.id}" />
                                                     </div>
                                                 </div>
-                                                <!-- <c:set var="discountValue"
-                                                                                value="${listPromotions[0].discountValue}" /> -->
+                                                <!-- <c:set var="discountValueFixed"
+                                                                                value="${listPromotions[0].discountValueFixed}" /> -->
                                             </c:forEach>
                                         </div>
 

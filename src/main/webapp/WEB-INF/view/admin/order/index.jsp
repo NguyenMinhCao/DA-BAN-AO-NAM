@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Dashboard - SB Admin</title>
+    <title>Bán Hàng - Admin</title>
     <link href="/admin/css/order/order.css" rel="stylesheet"/>
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/style1.css"/>
@@ -98,7 +98,6 @@
                                 </div>
                                 <div class="customer-select">
                                     <div id="infoCustomer">
-                                        <strong>Tên khách hàng:</strong>
                                         <div id="infoDetail">
                                         </div>
                                     </div>
@@ -108,62 +107,64 @@
                                 </div>
                                 <hr>
                                 <div class="form-customer-invoice">
-
-                                    <div class="form-customer">
-                                        <div class="form-customer-item btn-choose-local">
-                                            <h4>Thông tin khách hàng</h4>
-                                            <button>Chọn địa chỉ</button>
-                                        </div>
-                                        <div class="form-customer-item logo-ghn">
-                                            <img src="/img/Logo-GHN-Blue-Orange.webp" height="40px" width="auto">
-                                        </div>
-                                        <div class="form-customer-item name-customer">
-                                            <div class="item">
-                                                <label>Họ tên khách hàng</label>
-                                                <input type="text" id="name" value="Nguyễn Thị Thùy Dương">
+                                    <div style="width: 60%">
+                                        <div style="width: 100%" class="form-customer modal">
+                                            <div class="form-customer-item btn-choose-local">
+                                                <h4>Thông tin khách hàng</h4>
+                                                <button>Chọn địa chỉ</button>
                                             </div>
-                                            <div class="item">
-                                                <label>SDT</label>
-                                                <input type="text" id="phone" value="0473029182">
+                                            <div class="form-customer-item logo-ghn">
+                                                <img src="/img/Logo-GHN-Blue-Orange.webp" height="40px" width="auto">
                                             </div>
-                                        </div>
-                                        <div class="form-customer-item address-customer">
-                                            <div class="item">
-                                                <label>Địa chỉ chi tiết</label>
-                                                <input type="text" id="address" value="Địa chỉ 12">
+                                            <div class="form-customer-item name-customer">
+                                                <div class="item">
+                                                    <label>Họ tên khách hàng</label>
+                                                    <input type="text" id="name" value="Nguyễn Thị Thùy Dương">
+                                                </div>
+                                                <div class="item">
+                                                    <label>SDT</label>
+                                                    <input type="text" id="phone" value="0473029182">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-customer-item cty-customer">
-                                            <div class="item">
-                                                <label for="city">Tỉnh/thành phố</label>
-                                                <select id="city">
-                                                    <option>Sơn La</option>
-                                                    <!-- Add other cities as options -->
-                                                </select>
+                                            <div class="form-customer-item address-customer">
+                                                <div class="item">
+                                                    <label>Địa chỉ chi tiết</label>
+                                                    <input type="text" id="address" value="Địa chỉ 12">
+                                                </div>
                                             </div>
-                                            <div class="item">
-                                                <label for="district">Quận/huyện</label>
-                                                <select id="district">
-                                                    <option>Huyện Quỳnh Nhai</option>
-                                                    <!-- Add other districts -->
-                                                </select>
+                                            <div class="form-customer-item cty-customer">
+                                                <div class="item">
+                                                    <label for="city">Tỉnh/thành phố</label>
+                                                    <select id="city">
+                                                        <option>Sơn La</option>
+                                                        <!-- Add other cities as options -->
+                                                    </select>
+                                                </div>
+                                                <div class="item">
+                                                    <label for="district">Quận/huyện</label>
+                                                    <select id="district">
+                                                        <option>Huyện Quỳnh Nhai</option>
+                                                        <!-- Add other districts -->
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-customer-item subdistrict-customer">
-                                            <div class="item">
-                                                <label for="subdistrict">Xã/phường/thị
-                                                    trấn</label>
-                                                <select id="subdistrict">
-                                                    <option>Xã Mường Giôn</option>
-                                                    <!-- Add other subdistricts -->
-                                                </select>
+                                            <div class="form-customer-item subdistrict-customer">
+                                                <div class="item">
+                                                    <label for="subdistrict">Xã/phường/thị
+                                                        trấn</label>
+                                                    <select id="subdistrict">
+                                                        <option>Xã Mường Giôn</option>
+                                                        <!-- Add other subdistricts -->
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
 
+
                                     <div class="form-invoice">
-                                        <div class="form-check form-switch">
+                                        <div class="form-check form-switch modal">
                                             <input class="form-check-input" type="checkbox" role="switch"
                                                    id="flexSwitchCheckDefault">
                                             <label class="form-check-label"
@@ -177,22 +178,22 @@
                                             <strong>Phương thức thanh toán:</strong>
                                             <div>
                                                 <select id="payMethod">
-                                                    <option value="">Tiền mặt</option>
-                                                    <option>Chuyển khoản</option>
-                                                    <option>Tiền mặt và chuyển khoản</option>
+                                                    <option value="CASH">Tiền mặt</option>
+                                                    <option value="CARD">Chuyển khoản</option>
+                                                    <option value="CASH_AND_CARD">Tiền mặt và chuyển khoản</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-invoice-item">
                                             <strong>Phiếu giảm giá:</strong>
                                             <div class="choose-voucher">
-                                                <input id="voucher" type="text" placeholder="Giảm giá">
+                                                <input id="voucher" type="text" placeholder="Giảm giá" disabled>
                                                 <button id="openModalBtnAddVoucher">Chọn</button>
                                             </div>
                                         </div>
                                         <div class="form-invoice-item">
                                             <strong>Giảm giá:</strong>
-                                            <span>0 VND</span>
+                                            <span id="moneyDecrease">0 VND</span>
                                         </div>
                                         <div class="form-invoice-item">
                                             <strong>Khách thanh toán:</strong>
@@ -233,25 +234,25 @@
                                 <div class="group-search-item search-size">
                                     <label>Kích cỡ</label>
                                     <select id="search-input-size">
-                                        <option disabled selected>Chọn kích cỡ</option>
+                                        <option selected value="">Chọn kích cỡ</option>
                                     </select>
                                 </div>
                                 <div class="group-search-item search-color">
                                     <label>Màu sắc</label>
                                     <select id="search-input-color">
-                                        <option disabled selected>Chọn màu sắc</option>
+                                        <option selected value="">Chọn màu sắc</option>
                                     </select>
                                 </div>
                                 <div class="group-search-item search-category">
                                     <label>Danh mục</label>
                                     <select id="search-input-category">
-                                        <option disabled selected>Chọn danh mục</option>
+                                        <option selected value="">Chọn danh mục</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="btn-search">
                                 <button id="btn-search-product">Tìm kiếm</button>
-                                <button>Làm mới</button>
+                                <button id="btn-reset-product">Làm mới</button>
                             </div>
                             <div class="select-product">
                                 <table>
@@ -326,8 +327,14 @@
                                 </tbody>
                             </table>
                             <div class="total-amount">
-                                <p><strong>Tổng Tiền:</strong>
+                                <p  id="contaiTotalPricePrint" style="display: none"><strong>Tổng Tiền hàng:</strong>
                                 <p id="totalPricePrint"></p>
+                                </p>
+                                <p id="contaiTotalPriceVoucher" style="display: none"><strong>Giảm giá:</strong>
+                                <p id="totalPriceVoucher"></p>
+                                </p>
+                                <p id="contaiTotalPricePayMent"><strong>Tổng tiền thành toán:</strong>
+                                <p id="totalPricePayMent"></p>
                                 </p>
                             </div>
                             <p>Cảm ơn quý khách !</p>
@@ -472,53 +479,20 @@
                                 </div>
                                 <div class="voucher-list">
                                     <div style="margin: 10px 0;">
-                                        <p
-                                                style="margin-bottom: 0px; font-weight: bold;">
+                                        <p style="margin-bottom: 0px; font-weight: bold;">
                                             Danh Sách Mã
                                         </p>
                                         <small>Có thể chọn một voucher</small>
                                     </div>
-                                    <c:forEach items="${listPromotions}" var="pro">
-                                        <div class="voucher-item">
-                                            <div class="hhiiii"
-                                                 style="display: flex; justify-content: center; align-items: center; position: relative; background-color: #71cd14;">
-                                                <div class="vm3TF0"
-                                                     style="display: flex; justify-content: center; align-items: center; width: 90px; height: 90px;">
-                                                    <img class="e52C78 nh7RxM"
-                                                         style="width: 45px; height: 45px; border-radius: 50%;"
-                                                         src="/img/voucher.png"
-                                                         alt="Logo">
-                                                </div>
-                                            </div>
+                                    <div id="contentCoupons">
 
-                                            <div class="voucher-details">
-                                                <div class="voucher-exp">Giảm tối đa
-                                                        ${pro.discountValue}k | Đơn tối
-                                                    thiểu 0₫<br>HSD:
-                                                    27.11.2024
-                                                </div>
-                                            </div>
-                                            <div class="voucher-checkbox"
-                                                 style="padding-right: 15px;">
-                                                <input type="radio"
-                                                       name="voucher-select"
-                                                       value="${pro.id}"
-                                                       data-discount="${pro.discountValue}"
-                                                        <c:if
-                                                                test="${promotionInOrder.id == pro.id}">
-                                                            checked
-                                                        </c:if>/>
-                                            </div>
-                                        </div>
-                                        <!-- <c:set var="discountValue"
-                                                    value="${listPromotions[0].discountValue}"/> -->
-                                    </c:forEach>
+                                    </div>
                                 </div>
 
                             </div>
                             <div class="footer-voucher">
                                 <button class="close-btn-add-voucher"
-                                        id="closeModalBtnAddVouCher">TRỞ LẠI
+                                        id="closeModalBtnBackVouCher">TRỞ LẠI
                                 </button>
                                 <button class="OK-btn-add-voucher"
                                         id="closeModalBtnAddVouCher">OK
@@ -531,11 +505,11 @@
             </div>
         </main>
         <jsp:include page="../layout/footer.jsp"/>
-        <button id="xemlisst">Xóa</button>
         <div id="toast">
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
@@ -544,6 +518,7 @@
 <script src="/admin/js/order/order.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script src="/common/toast.js"></script>
+<script src="/admin/js/scripts.js"></script>
 </body>
 
 </html>

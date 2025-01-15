@@ -20,7 +20,57 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 </head>
+<style>
+    .image-upload-container {
+        margin-top: 10px;
+    }
 
+    .image-upload-container label {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .image-preview {
+        position: relative;
+        margin-top: 10px;
+        width: 150px;
+        height: 200px;
+        border: 1px solid #ddd;
+        overflow: hidden;
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none;
+    }
+
+    .remove-image {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 18px;
+        color: red;
+        cursor: pointer;
+        display: none;
+    }
+
+    .upload-button {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #2c3e50;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .upload-button:hover {
+        background-color: #34495e;
+    }
+
+</style>
 <body class="sb-nav-fixed">
 <jsp:include page="../layout/header.jsp"/>
 <div id="layoutSidenav">
@@ -29,11 +79,11 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h3 class="mt-4">Thêm mới khách hàng</h3>
+                <h3 class="mt-4">Thêm mới nhân viên</h3>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">
                         <a href="/admin" style="text-decoration: none;">Admin</a> /
-                        Customer
+                        Nhân viên
                     </li>
                     <div class="container">
                         <div class="base-information">
@@ -63,8 +113,9 @@
                             </div>
                             <div class="form-group-wrapper">
                                 <div class="item-group">
-                                    <label class="" for="customerImage">Ảnh</label>
-                                    <input type="file" class="form-control" id="customerImage">
+                                    <label for="customerEmail" class="form-label">Mật khẩu</label>
+                                    <input type="password" class="form-control" id="customerPassword"
+                                           placeholder="Nhập mật khẩu" autocomplete="on">
                                 </div>
                                 <div class="item-group gender">
                                     <label for="customerDob" class="form-label">Giới tính</label>
@@ -72,50 +123,16 @@
                                     <input type="radio" name="customerGender" class="form-check-input" value="false">Nữ
                                 </div>
                             </div>
-                        </div>
-                        <div class="address-information">
-                            <h4>Địa chỉ nhận hàng</h4>
                             <div class="form-group-wrapper">
-                                <div class="item-group">
-                                    <label for="customerName" class="form-label">Họ tên</label>
-                                    <input type="text" class="form-control" id="addressCustomerName"
-                                           placeholder="Nhập họ tên">
-                                </div>
-                                <div class="item-group">
-                                    <label for="customerPhone" class="form-label">SDT</label>
-                                    <input type="text" class="form-control" id="addressCustomerPhone"
-                                           placeholder="Nhập số điện thoại">
-                                </div>
-                            </div>
-                            <div class="form-group-wrapper">
-                                <div class="item-group">
-                                    <label for="customerProvince" class="form-label">Tỉnh/Thành</label>
-                                    <select id="customerProvince" class="form-select">
-                                        <option disabled selected>select-province</option>
-                                    </select>
-                                </div>
-                                <div class="item-group">
-                                    <label for="customerDistrict" class="form-label">Quận/Huyện</label>
-                                    <select id="customerDistrict" class="form-select">
-                                        <option disabled selected>select-district</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group-wrapper">
-                                <div class="item-group">
-                                    <label for="customerWard" class="form-label">Phường/Xã</label>
-                                    <select id="customerWard" class="form-select">
-                                        <option disabled selected>select-ward</option>
-                                    </select>
-                                </div>
-                                <div class="item-group gender">
-                                    <label for="addressDetail" class="form-label">Địa chỉ chi tiết</label>
-                                    <input type="text" class="form-control" id="addressDetail"
-                                           placeholder="Nhập địa chỉ chi tiết">
+                                <label for="customerDob" class="form-label">Ảnh</label>
+                                <div class="upload-container" id="uploadContainer">
+                                    <input type="file" id="imageInput" accept="image/*">
+                                    <button class="remove-btn" id="removeBtn">&times;</button>
                                 </div>
                             </div>
                         </div>
                         <div class="btn-add">
+                            <button>Hủy</button>
                             <button id="save">Lưu</button>
                         </div>
                     </div>
@@ -132,6 +149,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-<script src="/admin/js/user/create-customer.js"></script>
+<script src="/admin/js/user/create-staff.js"></script>
 </body>
 </html>

@@ -1,40 +1,53 @@
 package vn.duantn.sominamshop.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import vn.duantn.sominamshop.model.Order;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.RegisterDTO;
 import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateUserOrderDTO;
 import vn.duantn.sominamshop.model.dto.request.EmailRequest;
+import vn.duantn.sominamshop.model.dto.response.UserProjection;
 import vn.duantn.sominamshop.repository.OrderRepository;
 import vn.duantn.sominamshop.repository.RoleRepository;
 import vn.duantn.sominamshop.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UploadService uploadService;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, UploadService uploadService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.uploadService = uploadService;
     }
 
     public User findUserByEmail(String email) {
@@ -85,12 +98,15 @@ public class UserService {
     }
 
     public Map<String, String> validateCustomerData(User user) {
+        System.out.println(user.getPhoneNumber() + " số điện thoại");
         Map<String, String> errors = new HashMap<>();
-        if (!user.getPhoneNumber().isEmpty() && userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
-            errors.put("phoneNumber", "Phone number already exists.");
+        if (user.getPhoneNumber() != null && userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+            errors.put("phoneNumber", "Số điện thoại đã tồn tại");
+            return errors;
         }
-        if (!user.getEmail().isEmpty() && this.checkEmailExits(user.getEmail())) {
-            errors.put("email", "Email already exists.");
+        if (user.getEmail() != null && userRepository.existsByEmail(user.getEmail())) {
+            errors.put("email", "Email đã tồn tại");
+            return errors;
         }
         return errors;
     }
@@ -115,15 +131,64 @@ public class UserService {
         }
     }
 
-    public Page<UserDTO> findByFullNameAndRole(Pageable pageable, String name) {
-        Page<User> pageCustomer = userRepository.findByFullNameContainingAndRole(name,
-                pageable);
-        Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
-        return pageCustomerDto;
+    public Page<UserProjection> findByFullNameAndRole(Pageable pageable, String name, Boolean status, Integer idRole) {
+        Page<UserProjection> pageCustomer = userRepository.findByFullNameContainingAndRole(name, status, idRole, pageable);
+//        System.out.println(pageCustomer.getTotalPages() + " TotalPages");
+//        Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
+//        System.out.println(pageCustomerDto.getTotalPages() + " pageCustomerDto");
+        return pageCustomer;
     }
 
     public List<User> findUserByPhone(String phone) {
         return this.userRepository.findByPhoneNumberStartingWith(phone);
     }
-
+    public Map<String, String> updateUser(User user, MultipartFile file){
+        Map<String, String> validationErrors = new HashMap<>();
+        User userUpdate = userRepository.findById(user.getId()).orElse(null);
+        if(userUpdate == null){
+            userUpdate = new User();
+            userUpdate.setStatus(true);
+            userUpdate.setRole(Role.builder().id(3).build());
+        }
+        userUpdate.setFullName(user.getFullName());
+        if(user.getDateOfBirth() != null){
+            userUpdate.setDateOfBirth(user.getDateOfBirth());
+        }
+        if(user.getPhoneNumber() != null){
+            userUpdate.setPhoneNumber(user.getPhoneNumber());
+        }
+        if(user.getEmail() != null){
+            userUpdate.setEmail(user.getEmail());
+            System.out.println(userUpdate.getEmail() + " email");
+        }
+        validationErrors = this.validateCustomerData(user);
+        if(!validationErrors.isEmpty()){
+            return validationErrors;
+        }
+        userUpdate.setGender(user.getGender());
+        if(file != null){
+            uploadService.deleteFile(userUpdate.getAvatar(),"/resources/images/avatar");
+            String avatar = uploadService.handleSaveAvatar(file, "/resources/images/avatar");
+            userUpdate.setAvatar(avatar);
+        }
+        if(user.getPassword() != null){
+            String hashPassWord = passwordEncoder.encode(user.getPassword());
+            userUpdate.setPassword(hashPassWord);
+        }
+        userRepository.save(userUpdate);
+        return validationErrors;
+    }
+    @Transactional
+    public void updateStatus(Long id, Boolean status){
+        User userUpdate = userRepository.findById(id).orElse(null);
+        if(userUpdate != null){
+            userUpdate.setStatus(status);
+            userRepository.save(userUpdate);
+        }
+    }
+    public Page<UserDTO> findStaff(Pageable pageable, String name, Boolean status){
+        Page<User> users = userRepository.findStaff(name, pageable, status);
+        Page<UserDTO> userDTOPage = users.map(UserDTO :: toDTO);
+        return userDTOPage;
+    }
 }

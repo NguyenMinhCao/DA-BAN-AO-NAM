@@ -13,6 +13,7 @@ import vn.duantn.sominamshop.model.constants.ShippingMethod;
 
 import java.math.BigDecimal;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,9 +21,9 @@ import java.math.BigDecimal;
 public class OrderDTO {
 
     private long id;
-    private DeliveryStatus status;
-
     private Integer totalProducts;
+    private CouponDTO promotion;
+    private DeliveryStatus status;
 
     private BigDecimal totalAmount;
 
@@ -40,8 +41,6 @@ public class OrderDTO {
 
     private UserDTO user;
 
-    private Coupon promotion;
-
     public static OrderDTO toOrderDTO(Order order) {
         OrderDTO orderDTO = OrderDTO.builder()
                 .id(order.getId())
@@ -52,6 +51,7 @@ public class OrderDTO {
                 .totalAmount(order.getTotalAmount())
                 .totalProducts(order.getTotalProducts())
                 .paymentStatus(order.getPaymentStatus())
+                .promotion(CouponDTO.toDTO(order.getCoupon()))
                 .build();
         return orderDTO;
     }

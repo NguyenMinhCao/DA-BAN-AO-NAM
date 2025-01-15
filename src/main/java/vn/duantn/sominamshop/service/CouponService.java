@@ -2,19 +2,22 @@ package vn.duantn.sominamshop.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.model.dto.request.DataCouponDTO;
+import vn.duantn.sominamshop.model.dto.CouponDTO;
 import vn.duantn.sominamshop.model.dto.response.ResCouponDTO;
 import vn.duantn.sominamshop.model.dto.response.ResultPaginationDTO;
 import vn.duantn.sominamshop.repository.CouponRepository;
@@ -67,7 +70,7 @@ public class CouponService {
             newCouponRes.setDiscountType(coupon.getDiscountType());
             newCouponRes.setDiscountValuePercent(coupon.getDiscountValuePercent());
             newCouponRes.setDiscountValueFixed(coupon.getDiscountValueFixed());
-            newCouponRes.setStatus(coupon.isStatus());
+            newCouponRes.setStatus(coupon.getStatus());
             newCouponRes.setUsageLimit(coupon.getUsageLimit());
             newCouponRes.setMaximumReduction(coupon.getMaximumReduction());
             newCouponRes.setMinimumValue(coupon.getMaximumReduction());
@@ -153,4 +156,14 @@ public class CouponService {
     // return listPromotionDTO;
     // }
 
+    public List<CouponDTO> findValidCoupons(String code){
+        LocalDateTime localDateTime =  LocalDateTime.now(ZoneOffset.of("+07:00"));
+        List<Coupon> couponList = couponRepository.findValidCoupons(localDateTime, code);
+        List<CouponDTO> couponDTOList = couponList.stream().map(CouponDTO :: toDTO).collect(Collectors.toList());
+        return couponDTOList;
+    }
+    @Transactional
+    public void updateUsageLimitCoupon(Integer quantity, Long id){
+        couponRepository.updateQuantity(quantity, id);
+    }
 }
