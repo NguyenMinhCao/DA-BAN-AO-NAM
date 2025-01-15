@@ -32,14 +32,6 @@ public class UserDTO {
         if(user == null){
             return null;
         }
-        List<AddressDTO> addressDTOs = new ArrayList<>();
-        if(user.getAddress() !=null){
-            addressDTOs = user.getAddress()
-                    .stream()
-                    .map(a -> new AddressDTO(a.getId(), a.getFullName(), a.getPhoneNumber() ,a.getStreetDetails(), a.isStatus()))
-                    .collect(Collectors.toList());
-        }
-
         return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getDateOfBirth(), user.getAvatar(), user.getGender(), user.getStatus());
     }
 }

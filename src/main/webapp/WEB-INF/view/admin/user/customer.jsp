@@ -138,6 +138,7 @@
                                             <input type="date" id="dob">
                                         </div>
                                     </div>
+                                    <label style="font-weight: bold">Ảnh</label>
                                     <div class="upload-container" id="uploadContainer">
                                         <input type="file" id="imageInput" accept="image/*">
                                         <button class="remove-btn" id="removeBtn">&times;</button>

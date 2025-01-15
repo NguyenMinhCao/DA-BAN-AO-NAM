@@ -37,7 +37,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
                         left join roles rl on u.role_id = rl.id
                         where u.full_name like concat('%', :fullName, '%')
                         and u.role_id = :role
-                        and (u.status = :status OR :status IS NULL)
+                        and (u.status = :status OR :status IS NULL) order by u.id desc
             """, nativeQuery = true)
     Page<UserProjection> findByFullNameContainingAndRole(@Param("fullName") String fullName, @Param("status") Boolean status, @Param("role") Integer id, Pageable pageable);
     boolean existsByPhoneNumber(String phone);

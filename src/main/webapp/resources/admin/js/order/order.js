@@ -123,7 +123,8 @@ document.addEventListener('DOMContentLoaded', function () {
         resetInvoice();
         resetCoupon();
         let orderSelect = listOrder.find((item) => item.id == idOrderSelect);
-        if (orderSelect && orderSelect.user) {
+        if (orderSelect && orderSelect.user && orderSelect.user.id) {
+            console.log(orderSelect.user + " user selce")
             customerNameInput.innerText = orderSelect.user.fullName;
             customerNameInput.setAttribute("data-customer-id", orderSelect.user.id);
             $("#infoDetail").empty();
@@ -270,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var phoneNumber = e.target.getAttribute('data-sdt');
             var email  = e.target.getAttribute('data-email')
             $('#infoDetail').append('<p>Số điện thoại: ' + phoneNumber + '</p>');
-            $('#infoDetail').append('<p>email: ' + email + '</p>');
+            $('#infoDetail').append('<p>Email: ' + email + '</p>');
             $('#btn-delete-customer').prop('disabled', false);
             toggleModal(customerModal, false);
             let orderUpdate = listOrder.find(item => item.id == idOrderSelect)
@@ -389,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <img src="${imgSrc}" alt="Sản phẩm">
                         <div class="product-detail">
                             <span>${name}</span><br>
-                            <p class="product-detail-amount">Giá tiền: ${(Number(price)).toLocaleString('vi-VN')} VND</p>
+                            <p class="product-detail-amount">Giá tiền: ${(Number(price)).toLocaleString('vi-VN')} đ</p>
                             <small>Màu sắc: ${color}</small>
                             <br>
                             <small>Kích cỡ: ${size}</small>
@@ -404,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </td>
 
-                <td><span class="product-price" product-id="${productId}">${(Number(quantityBy?.value || 1) * Number(price)).toLocaleString('vi-VN')} </span> VND</td>
+                <td><span class="product-price" product-id="${productId}">${(Number(quantityBy?.value || 1) * Number(price)).toLocaleString('vi-VN')} </span> đ</td>
                 <td>
                     <button class="action-btn delete-btn" id="productListBody">Xóa</button>
                 </td>
@@ -506,14 +507,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const price = input.getAttribute('data-price');
             totalPayment += quantity * price;
         });
-        totalPaymentElement.textContent = totalPayment.toLocaleString() + ' VND';
-        $('#total-price-table-invoice').text(totalPayment.toLocaleString() + ' VND')
-        $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' VND')
+        totalPaymentElement.textContent = totalPayment.toLocaleString() + ' đ';
+        $('#total-price-table-invoice').text(totalPayment.toLocaleString() + ' đ')
+        $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' đ')
+        $('#customer-payment').val(totalPayment)
         document.getElementById('form-invoice-total-amount').setAttribute('totalPayment', totalPayment)
         calculateCustomerMoney();
         renderCoupons(listCoupons)
     }
-    function updateTotalPriceWithCoupons(value, discountFixed, discountPercent, type) {
+    function updateTotalPriceWithCoupons(value, discountFixed, discountPercent, type, maximumReduction) {
         totalPayment = 0;
         const quantityProductCart = document.querySelectorAll(`.product-quantity-cart`);
         quantityProductCart.forEach(function (input) {
@@ -525,19 +527,27 @@ document.addEventListener('DOMContentLoaded', function () {
         if(value && type){
             if(type == 'PERCENTAGE'){
                 if(discountPercent && discountPercent >0){
-                    totalPayment = totalPayment - (totalPayment * (Number(discountPercent)/100))
-                    console.log(totalPayment + " discountPercent")
-                    $('#moneyDecrease').text((totalPayment * (Number(discountPercent)/100)).toLocaleString() + ' VND')
+                    let totalPaymentAfterCoupons = (totalPayment * (Number(discountPercent)/100))
+                    if(totalPaymentAfterCoupons > maximumReduction? maximumReduction : 0){
+                        $('#moneyDecrease').text((totalPayment - Number(maximumReduction)).toLocaleString() + ' đ')
+                        totalPayment = (totalPayment - Number(maximumReduction))
+                        console.log(totalPayment + " discountPercent")
+                    }else{
+                        $('#moneyDecrease').text((totalPayment * (Number(discountPercent)/100)).toLocaleString() + ' đ')
+                        totalPayment = totalPayment - (totalPayment * (Number(discountPercent)/100))
+                        console.log(totalPayment + " discountPercent")
+                    }
+
                 }
             }else{
                 if(discountFixed && discountFixed >0){
+                    $('#moneyDecrease').text(discountFixed.toLocaleString() + ' đ')
                     totalPayment = totalPayment - Number(discountFixed)
                     console.log(totalPayment + " discountFixed")
-                    $('#moneyDecrease').text(discountFixed.toLocaleString() + ' VND')
                 }
             }
         }
-        $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' VND')
+        $('#form-invoice-total-amount').text(totalPayment.toLocaleString() + ' đ')
         document.getElementById('form-invoice-total-amount').setAttribute('totalPayment', totalPayment)
         calculateCustomerMoney();
     }
@@ -550,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function () {
         idCoupon = null
         updateTotalPriceWithCoupons()
         $('#voucher').val('')
-        $('#moneyDecrease').text('0 VND')
+        $('#moneyDecrease').text('0 đ')
     }
 
     // Tính tiền trả lại và còn thiếu
@@ -558,11 +568,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const customerPayment = parseInt(customerPaymentInput.value) || 0;
         const returnMoney = customerPayment - totalPayment;
         if (returnMoney >= 0) {
-            returnMoneyElement.textContent = returnMoney.toLocaleString() + 'VND';
-            remainingMoneyElement.textContent = '0 VND';
+            returnMoneyElement.textContent = returnMoney.toLocaleString() + ' đ';
+            remainingMoneyElement.textContent = '0 đ';
         } else {
-            returnMoneyElement.textContent = '0 VND';
-            remainingMoneyElement.textContent = (-returnMoney).toLocaleString() + 'VND';
+            returnMoneyElement.textContent = '0 đ';
+            remainingMoneyElement.textContent = (-returnMoney).toLocaleString() + ' đ';
         }
     }
 
@@ -603,10 +613,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${i + 1}</td>
                 <td>
                     <div class="product-in-table">
-                        <img src="${productAtInvoice[i]?.productDetail.images[0]?.urlImage}" alt="Sản phẩm">
+                        <img src="/images/product/${productAtInvoice[i]?.productDetail.images[0]?.urlImage}" alt="Sản phẩm">
                         <div class="product-detail">
                             <span>${productAtInvoice[i]?.productDetail.productName}</span><br>
-                            <p class="product-detail-amount">Giá tiền: ${(productAtInvoice[i]?.productDetail.price).toLocaleString('vi-VN')} VND</p>
+                            <p class="product-detail-amount">Giá tiền: ${(productAtInvoice[i]?.productDetail.price).toLocaleString('vi-VN')} đ</p>
                             <small>Màu sắc: ${productAtInvoice[i]?.productDetail.colorName}</small>
                             <br>
                             <small>Kích cỡ: ${productAtInvoice[i]?.productDetail.sizeName}</small>
@@ -620,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <button class="quantity-btn increase">+</button>
                     </div>
                 </td>
-                <td><span class="product-price" product-id="${productAtInvoice[i]?.productDetail.id}">${(Number(productAtInvoice[i].quantity || 1) * Number(productAtInvoice[i]?.productDetail.price)).toLocaleString('vi-VN')} </span> VND</td>
+                <td><span class="product-price" product-id="${productAtInvoice[i]?.productDetail.id}">${(Number(productAtInvoice[i].quantity || 1) * Number(productAtInvoice[i]?.productDetail.price)).toLocaleString('vi-VN')} </span> </td>
                 <td>
                     <button class="action-btn delete-btn">Xóa</button>
                 </td>
@@ -717,11 +727,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         <tr>
                             <td>${index + 1}</td>
                             <td class="product-name" >${product.name}</td>
-                            <td class="product-image"><img src="${product.image}" alt="ảnh lỗi" height="100" width="auto"></td>
+                            <td class="product-image"><img src="/images/product/${product.image}" alt="ảnh lỗi" height="100" width="auto"></td>
                             <td class="product-size">${product.sizeName}</td>
                             <td class="product-quantity">${product.quantity}</td>
                             <td class="product-color">${product.colorName}</td>
-                            <td class="product-price" data-product-price="${product.price}">${(Number(product.price)).toLocaleString('vi-VN')} VND</td>
+                            <td class="product-price" data-product-price="${product.price}">${(Number(product.price)).toLocaleString('vi-VN')} đ</td>
                             <td>
                                 <button class="btn-add-product" product-id='${product.id}'>Chọn</button>
                             </td>
@@ -760,7 +770,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <tr>
                             <td>${index + 1}</td>
                             <td class="product-name" >${customer.fullName}</td>
-                            <td class="product-size">${customer.phoneNumber}</td>
+                            <td class="product-size">${customer.phoneNumber? customer.phoneNumber : ''}</td>
                             <td>
                                 <button id="btn-add-customer" class="btn-add-customer" data-name='${customer.fullName}' customer-id='${customer.id}' data-sdt='${customer.phoneNumber}' data-email='${customer.email}'>Chọn</button>
                             </td>
@@ -776,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let check = true
         let customerPayment = document.getElementById('customer-payment')?.value
         let totalPayment = document.getElementById('form-invoice-total-amount')?.innerHTML
-        if (customerPayment < Number(totalPayment.replace(/VND/g, '').replace(/\./g, ''))) {
+        if (customerPayment < Number(totalPayment.replace(/đ/g, '').replace(/\./g, ''))) {
             notificationAddCusstomer('Thất bại!', "Số tiền khách trả còn thiếu", 'error')
             check = false
         }
@@ -893,8 +903,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let totalPriceVoucher = totalPriceInTable - totalAmountNumber
             $('#contaiTotalPricePrint').show()
             $('#contaiTotalPriceVoucher').show()
-            $('#totalPriceVoucher').text(totalPriceVoucher.toLocaleString() +' VND');
-            $('#totalPricePrint').text(totalPriceInTable.toLocaleString()+' VND');
+            $('#totalPriceVoucher').text(totalPriceVoucher.toLocaleString() +' đ');
+            $('#totalPricePrint').text(totalPriceInTable.toLocaleString()+' ');
             console.log("totalPriceVoucher " + totalPriceVoucher)
         }
         $('#totalPricePayMent').text(totalAmout)
@@ -906,9 +916,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <td colspan="4"><strong>${product.productDetail?.productName}</strong></td>
                             </tr>
                         <tr>
-                            <td>Đơn Giá: ${(product.productDetail?.price).toLocaleString()} VND</td>
+                            <td>Đơn Giá: ${(product.productDetail?.price).toLocaleString()} đ</td>
                             <td>Số Lượng: ${product.quantity}</td>
-                            <td colspan="2">Tổng: ${product.productDetail?.price * product.quantity} VND</td>
+                            <td colspan="2">Tổng: ${(product.productDetail?.price * product.quantity).toLocaleString()} đ</td>
                         </tr>
             `);
         })
@@ -1105,7 +1115,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var phoneNumber = data.phoneNumber;
                 var email  = data.email;
                 $('#infoDetail').append('<p>Số điện thoại: ' + phoneNumber + '</p>');
-                $('#infoDetail').append('<p>email: ' + email + '</p>');
+                $('#infoDetail').append('<p>Email: ' + email + '</p>');
                 $('#btn-delete-customer').prop('disabled', false);
                 toggleModal(customerModal, false);
                 fetchCustomers(0)
@@ -1233,9 +1243,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const value = checkedInput?.value;
             const discountFixed = checkedInput?.getAttribute('data-discountFixed');
             const discountPercent= checkedInput?.getAttribute('data-discountPercent');
+            const maximumReduction = checkedInput?.getAttribute('data-maximumReduction');
             const type = checkedInput?.dataset.type
             const code = checkedInput?.dataset.code
-        updateTotalPriceWithCoupons(value, discountFixed, discountPercent, type)
+        updateTotalPriceWithCoupons(value, discountFixed, discountPercent, type, maximumReduction)
         console.log("discountFixed "+discountFixed+ " discountPercent " + discountPercent + " type " + type)
         toggleModal(modalChoseVoucher, false)
         idCoupon = value
@@ -1273,9 +1284,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function renderCoupons(coupons){
         let contentCoupons = $('#contentCoupons')
+        let searchCouponCode = $('#searchCoupon').val()
         let toTalPrice = document.getElementById('form-invoice-total-amount').getAttribute('totalPayment')
         contentCoupons.empty()
-        let listCouponsActive = coupons.filter(item => item.minimumValue <= Number(toTalPrice))
+        let listCouponsActive = coupons.filter(
+            item => item.minimumValue <= Number(toTalPrice)
+            && !searchCouponCode || item.couponCode === searchCouponCode
+        )
         listCouponsActive.forEach(item => {
             let endDate = item.endDate
             let date = new Date(endDate[0], endDate[1] - 1, endDate[2], endDate[3], endDate[4]);
@@ -1290,10 +1305,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
 
                 <div class="voucher-details">
-                    <div class="voucher-exp">Đơn tối thiểu: ${item.minimumValue}₫<br>HSD: ${formattedDate}</div>
+                    <div class="voucher-exp">Đơn tối thiểu: ${item.minimumValue? (item.minimumValue).toLocaleString() : '0'} ₫ || Giảm giá đến ${item.discountType == 'PERCENTAGE'? item.discountValuePercent + "%" : (item.discountValueFixed).toLocaleString() + 'đ'}
+                    ${item.discountType == 'PERCENTAGE'? (item.maximumReduction? '|| giảm tối đa ' + item.maximumReduction : '') : ''}
+                    <br>HSD: ${formattedDate}
+                </div>
                 </div>
                 <div class="voucher-checkbox" style="padding-right: 15px;">
-                    <input type="radio" name="voucher-select" value="${item.id}" data-discountFixed="${item.discountValueFixed}" data-discountPercent="${item.discountValuePercent}" data-type="${item.discountType}" data-code="${item.couponCode}"/>
+                    <input type="radio" name="voucher-select" value="${item.id}" data-discountFixed="${item.discountValueFixed}" data-discountPercent="${item.discountValuePercent}" data-type="${item.discountType}" data-code="${item.couponCode}" data-maximumReduction="${item.maximumReduction}"/>
                 </div>
             </div>
            

@@ -467,11 +467,7 @@
                                             style="margin-bottom: 0px; margin-left: 9px;">Mã
                                         voucher</label>
                                     <div class="input-with-validator">
-                                        <input
-                                                style="border:none; width: 200px; padding: 0px; outline: none;"
-                                                type="text" value=""
-                                                placeholder="Mã Shopee Voucher"
-                                                maxlength="255">
+                                        <input style="border:none; width: 200px; padding: 0px; outline: none;" type="text" value="" placeholder="Mã Voucher" maxlength="255" id="searchCoupon">
                                     </div>
                                     <button class="button-add-voucher">ÁP
                                         DỤNG

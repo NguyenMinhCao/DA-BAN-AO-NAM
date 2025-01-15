@@ -153,7 +153,7 @@ $(document).ready(function () {
         let emailCustomer = null
         let fullnameCustomer = $('#fullnameCustomer').val()
         let phoneNumberAdd = null
-        if(!$('#emailCustomer').val() == customerUpdate.email){
+        if(!($('#emailCustomer').val() == customerUpdate.email)){
             emailCustomer = $('#emailCustomer').val()
             console.log(emailCustomer + " mail")
         }
@@ -164,7 +164,9 @@ $(document).ready(function () {
         console.log($('#phoneNumberAdd').val()+ " số điện thoại mới, " + customerUpdate.phoneNumber + ": số điện thoại cũ")
         let gender = $('#gender').val()
         let dob = $('#dob').val()
-        validate(name, phoneNumberAdd, emailCustomer)
+        if(!validate()){
+            return
+        }
         let data = {
             id:idUser,
             email: emailCustomer,
@@ -184,10 +186,10 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function() {
-                const selectedRadio = $('input[name="statusCustomer"]:checked').val();
                 notificationAddCusstomer('Sửa thành công', 'success')
                 fileGlobal = null
-                toggleModal(updateCustomerModal, false)
+                toggleModal(updateStaffModal, false)
+                fetchStaff(0)
             },
             error: function(xhr, status, error) {
                 let errorMap = JSON.parse(xhr.responseText);
@@ -199,9 +201,9 @@ $(document).ready(function () {
     }
 
     function validate(){
-        let name = $('#customerName').val()
-        let phone = $('#customerPhone').val()
-        let email = $('#customerEmail').val()
+        let name = $('#fullnameCustomer').val()
+        let phone = $('#phoneNumberAdd').val()
+        let email = $('#emailCustomer').val()
         let emailRegex = /^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         let phoneRegex = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
 
@@ -278,8 +280,23 @@ $(document).ready(function () {
     uploadContainer.addEventListener('click', function () {
         imageInput.click();
     });
-    $('#save').on('click', function () {
-        addCustomer()
+    $('#update-customer').on('click', function () {
+        Swal.fire({
+            title: "Cảnh báo?",
+            text: "Bạn chắc chắn muốn thay đổi chứ!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updateCustomer()
+            }else{
+                return
+            }
+        });
     })
     function updateStatus(idUser, status){
         $.ajax({
