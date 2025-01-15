@@ -17,6 +17,12 @@ public class AddressDTO {
 
     private String phoneNumber;
 
+    private String city;
+
+    private String district;
+    
+    private String ward;
+
     private String streetDetails;
 
     private boolean status;

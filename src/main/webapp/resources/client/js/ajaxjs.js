@@ -128,17 +128,20 @@ $(document).ready(function () {
     $('.btn-add-address').click(function () {
         var nameUser = $("input[name='user_address_fullname']").val();
         var phoneUser = $("input[name='user_address_phone']").val();
-        var addressUser = $("input[name='user_address']").val();
         var streetAdressUser = $("input[name='user_street_address']").val();
+        var cityAddress = $("input[name='user_address_city$']").val();
+        var districtAddress = $("input[name='user_address_district$']").val();
+        var wardAddress = $("input[name='user_address_ward$']").val();
         var isCheckedAddress = $("input[name='address_select']").is(':checked');
-
 
         var data = {
             fullName: nameUser,
             phoneNumber: phoneUser,
-            address: addressUser,
+            ward: wardAddress,
             streetDetails: streetAdressUser,
-            status: isCheckedAddress
+            status: isCheckedAddress,
+            district: districtAddress,
+            city: cityAddress
         };
         // Gửi AJAX request
         $.ajax({

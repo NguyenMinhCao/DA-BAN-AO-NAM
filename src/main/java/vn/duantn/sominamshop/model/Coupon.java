@@ -37,13 +37,14 @@ public class Coupon {
     private DiscountType discountType;// kiểu giảm
 
     @Column(name = "discount_value_fixed")
-    private double discountValueFixed; //số tiền giảm
+    private Double discountValueFixed; //số tiền giảm
 
     @Column(name = "discount_value_percent")
-    private int discountValuePercent;//sô phần trăm giảm
+    private Integer discountValuePercent;//sô phần trăm giảm
     
     @Column(name = "maximum_reduction")
-    private double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
+    private Double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
+
 
 
 
