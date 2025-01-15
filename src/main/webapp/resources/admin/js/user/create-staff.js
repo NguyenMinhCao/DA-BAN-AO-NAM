@@ -2,7 +2,6 @@ $(document).ready(function () {
     const uploadContainer = document.getElementById('uploadContainer');
     const imageInput = document.getElementById('imageInput');
     const removeBtn = document.getElementById('removeBtn');
-
     // Hàm đặt ảnh nền
     function setImageBackground(imageUrl) {
         if (imageUrl) {
@@ -92,7 +91,7 @@ $(document).ready(function () {
             contentType: false,
             success: function () {
                 notificationAddCusstomer('Thêm thành công', 'success')
-                fileGlobal = []
+                fileGlobal = null
             },
             error: function (xhr, status, error) {
                 let errorMap = JSON.parse(xhr.responseText);
@@ -108,15 +107,6 @@ $(document).ready(function () {
         });
     }
 
-    function validate() {
-        let name
-        let full
-
-        if (!data.name || (!data.phoneNumber && !data.email)) {
-            notificationAddCusstomer("Họ tên, số điện thoại hoặc email không được để trống", 'warning')
-        }
-        // if(data)
-    }
 
     function notificationAddCusstomer(message, icon) {
         const Toast = Swal.mixin({

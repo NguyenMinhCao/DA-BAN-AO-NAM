@@ -27,6 +27,7 @@ import vn.duantn.sominamshop.model.dto.RegisterDTO;
 import vn.duantn.sominamshop.model.dto.UserDTO;
 import vn.duantn.sominamshop.model.dto.request.DataUpdateUserOrderDTO;
 import vn.duantn.sominamshop.model.dto.request.EmailRequest;
+import vn.duantn.sominamshop.model.dto.response.UserProjection;
 import vn.duantn.sominamshop.repository.OrderRepository;
 import vn.duantn.sominamshop.repository.RoleRepository;
 import vn.duantn.sominamshop.repository.UserRepository;
@@ -99,11 +100,11 @@ public class UserService {
     public Map<String, String> validateCustomerData(User user) {
         System.out.println(user.getPhoneNumber() + " số điện thoại");
         Map<String, String> errors = new HashMap<>();
-        if (user.getPhoneNumber() != null && userRepository.existsByPhoneNumberAndRole(user.getPhoneNumber(), Role.builder().id(2).build())) {
+        if (user.getPhoneNumber() != null && userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
             errors.put("phoneNumber", "Số điện thoại đã tồn tại");
             return errors;
         }
-        if (user.getEmail() != null && userRepository.existsByEmailAndRole(user.getEmail(), Role.builder().id(2).build())) {
+        if (user.getEmail() != null && userRepository.existsByEmail(user.getEmail())) {
             errors.put("email", "Email đã tồn tại");
             return errors;
         }
@@ -130,10 +131,12 @@ public class UserService {
         }
     }
 
-    public Page<UserDTO> findByFullNameAndRole(Pageable pageable, String name, Boolean status, Integer idRole) {
-        Page<User> pageCustomer = userRepository.findByFullNameContainingAndRole(name, pageable, status, idRole);
-        Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
-        return pageCustomerDto;
+    public Page<UserProjection> findByFullNameAndRole(Pageable pageable, String name, Boolean status, Integer idRole) {
+        Page<UserProjection> pageCustomer = userRepository.findByFullNameContainingAndRole(name, status, idRole, pageable);
+//        System.out.println(pageCustomer.getTotalPages() + " TotalPages");
+//        Page<UserDTO> pageCustomerDto = pageCustomer.map(user -> UserDTO.toDTO(user));
+//        System.out.println(pageCustomerDto.getTotalPages() + " pageCustomerDto");
+        return pageCustomer;
     }
 
     public List<User> findUserByPhone(String phone) {

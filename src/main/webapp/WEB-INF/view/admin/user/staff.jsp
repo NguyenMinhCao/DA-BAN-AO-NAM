@@ -61,6 +61,51 @@
                             </table>
                         </div>
                         <div id="pagination-customer" class="pagination"></div>
+
+                        <div class="form-add-customer modal" id="form-add-customer">
+                            <div class="content-add-customer">
+                                <h2>Chỉnh sửa thông tin</h2>
+                                <div>
+                                    <!-- Họ và tên -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="fullnameCustomer">Họ và tên</label>
+                                            <input type="text" id="fullnameCustomer" placeholder="Nhập họ và tên khách hàng">
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="gender">Giới tính</label>
+                                            <select id="gender">
+                                                <option value="true">Nam</option>
+                                                <option value="false">Nữ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Số điện thoại và Email -->
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <label for="emailCustomer">Email</label>
+                                            <input type="email" id="emailCustomer" placeholder="Nhập email khách hàng">
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="phoneNumberAdd">Số điện thoại</label>
+                                            <input type="tel" id="phoneNumberAdd" placeholder="Nhập sdt khách hàng">
+                                        </div>
+                                    </div>
+                                    <label style="font-weight: bold">Ảnh</label>
+                                    <div class="upload-container" id="uploadContainer" style="margin: 5px 0px 10px 0px">
+                                        <input type="file" id="imageInput" accept="image/*">
+                                        <button class="remove-btn" id="removeBtn">&times;</button>
+                                    </div>
+
+                                    <!-- Buttons -->
+                                    <div class="form-actions">
+                                        <button type="reset" id="cancel-btn-add-customer" class="cancel-btn">Hủy (ESC)</button>
+                                        <button class="add-btn" id="update-customer">Chỉnh sửa</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </ol>
             </div>

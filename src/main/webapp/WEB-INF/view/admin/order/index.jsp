@@ -193,7 +193,7 @@
                                         </div>
                                         <div class="form-invoice-item">
                                             <strong>Giảm giá:</strong>
-                                            <span>0 VND</span>
+                                            <span id="moneyDecrease">0 VND</span>
                                         </div>
                                         <div class="form-invoice-item">
                                             <strong>Khách thanh toán:</strong>

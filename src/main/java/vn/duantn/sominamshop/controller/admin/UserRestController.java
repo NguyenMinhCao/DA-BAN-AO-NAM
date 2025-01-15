@@ -17,6 +17,7 @@ import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Role;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.UserDTO;
+import vn.duantn.sominamshop.model.dto.response.UserProjection;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.UploadService;
 import vn.duantn.sominamshop.service.UserService;
@@ -32,11 +33,11 @@ public class UserRestController {
     private final AddressService addressService;
     @GetMapping("/get/order/customers")
     public ResponseEntity<?> getCustomersForOrder(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "2") int limit,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "limit", defaultValue = "2") Integer limit,
             @RequestParam(value = "keyword", defaultValue = "") String search) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search, true, 2);
+        Page<UserProjection> pageCustomer = userService.findByFullNameAndRole(pageable, search, null, 2);
         return ResponseEntity.ok(pageCustomer);
     }
     @GetMapping("/get/customers")
@@ -48,7 +49,7 @@ public class UserRestController {
     ) {
         System.out.println(status + " trạng thái của khách hangd");
         Pageable pageable = PageRequest.of(page, limit);
-        Page<UserDTO> pageCustomer = userService.findByFullNameAndRole(pageable, search, status, 2);
+        Page<UserProjection> pageCustomer = userService.findByFullNameAndRole(pageable, search, status, 2);
         return ResponseEntity.ok(pageCustomer);
     }
     @GetMapping("/get/staffs")

@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     listOrder.push(item);
                 });
+                resetCoupon()
             },
             error: function (xhr) {
                 let errorMap = JSON.parse(xhr.responseText);
@@ -442,6 +443,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 let totalAmount = (Number(quantityInput.value) * Number(price))
                 totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
                 productToUpdate.price = totalAmount
+                resetCoupon()
+                renderCoupons(listCoupons)
                 updateTotalPrice();
                 updateOrderDetail(productToUpdate)
             }
@@ -457,8 +460,11 @@ document.addEventListener('DOMContentLoaded', function () {
             let totalAmount = (Number(quantityInput.value) * Number(price))
             totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
             productToUpdate.price = totalAmount
+            resetCoupon()
+            renderCoupons(listCoupons)
             updateTotalPrice();
             updateOrderDetail(productToUpdate)
+
         });
         quantityInput.addEventListener("change", () => {
             if(Number(quantityInput.value) > Number(totalQuantityProduct)){
@@ -471,6 +477,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let totalAmount = (Number(quantityInput.value) * Number(price))
             totalPrice.innerHTML = ((totalAmount).toLocaleString('vi-VN')).toString()
             productToUpdate.price = totalAmount
+            resetCoupon()
+            renderCoupons(listCoupons)
             updateTotalPrice();
             updateOrderDetail(productToUpdate)
         });
@@ -480,6 +488,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const updatedProducts = listProduct.filter(product => product.productDetail?.id !== productId);
             listProduct = updatedProducts
             newRow.remove();
+            resetCoupon()
+            renderCoupons(listCoupons)
             updateTotalPrice()
             if(productDelete){
                 deleteOrderDetail(productDelete.id)
@@ -514,14 +524,16 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(discountFixed + " discountPercent " + discountPercent)
         if(value && type){
             if(type == 'PERCENTAGE'){
-                if(discountPercent){
+                if(discountPercent && discountPercent >0){
                     totalPayment = totalPayment - (totalPayment * (Number(discountPercent)/100))
                     console.log(totalPayment + " discountPercent")
+                    $('#moneyDecrease').text((totalPayment * (Number(discountPercent)/100)).toLocaleString() + ' VND')
                 }
             }else{
-                if(discountFixed){
+                if(discountFixed && discountFixed >0){
                     totalPayment = totalPayment - Number(discountFixed)
                     console.log(totalPayment + " discountFixed")
+                    $('#moneyDecrease').text(discountFixed.toLocaleString() + ' VND')
                 }
             }
         }
@@ -538,6 +550,7 @@ document.addEventListener('DOMContentLoaded', function () {
         idCoupon = null
         updateTotalPriceWithCoupons()
         $('#voucher').val('')
+        $('#moneyDecrease').text('0 VND')
     }
 
     // Tính tiền trả lại và còn thiếu
@@ -724,7 +737,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchCustomers(page) {
         const inputSearch = document.getElementById('search-input-customer').value
         $.ajax({
-            url: `/api/admin/user/get/order/customers?page=${page}&limit=8`,
+            url: `/api/admin/user/get/order/customers?page=${page}&limit=20`,
             type: 'GET',
             data: {keyword: inputSearch},
             success: function (response) {
