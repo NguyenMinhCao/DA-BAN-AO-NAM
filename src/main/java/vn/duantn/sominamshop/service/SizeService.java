@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vn.duantn.sominamshop.model.Origin;
 import vn.duantn.sominamshop.model.Size;
 import vn.duantn.sominamshop.repository.SizeRepository;
 
@@ -38,22 +39,41 @@ public class SizeService {
 
     public Size addSize(Size size) {
         if (size.getSizeName() == null || size.getSizeName().isEmpty()) {
-            throw new IllegalArgumentException("Tên size không được để trống");
+            throw new IllegalArgumentException("Không  được để trống");
         }
+
+        if (sizeRepository.existsBySizeName(size.getSizeName())) {
+            throw new IllegalArgumentException("Tên màu đã tồn tại");
+        }
+        if (size.getStatus() == null) {
+            size.setStatus(0);
+        }
+
         return sizeRepository.save(size);
     }
 
+
     public Size updateSize(Long id, Size updatedSize) {
         Size existingSize = getSizeById(id);
-        if (updatedSize.getSizeName() != null && !updatedSize.getSizeName().isEmpty()) {
-            existingSize.setSizeName(updatedSize.getSizeName());
+
+        if (updatedSize.getSizeName() == null || updatedSize.getSizeName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên màu không được để trống");
         }
+
+        if (updatedSize.getSizeName() != null && !updatedSize.getSizeName().isEmpty()) {
+
+            if (sizeRepository.existsBySizeNameAndIdNot(updatedSize.getSizeName().trim(), id)) {
+                throw new IllegalArgumentException("Tên màu đã tồn tại");
+            }
+            existingSize.setSizeName(updatedSize.getSizeName().trim());
+        }
+
         if (updatedSize.getStatus() != null) {
             existingSize.setStatus(updatedSize.getStatus());
         }
+
         return sizeRepository.save(existingSize);
     }
-
 
 
     public List<Size> findDistinctByIdAndName(Integer productId) {

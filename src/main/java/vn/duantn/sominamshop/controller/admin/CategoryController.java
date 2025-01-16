@@ -43,7 +43,19 @@ public class CategoryController {
             model.addAttribute("errorMessage", "Please correct the errors in the form.");
             return "admin/category/create";
         }
-        categoryService.addCategory(newCategory);
+
+        if (newCategory.getStatus() == null) {
+            newCategory.setStatus(0);
+        }
+
+        try {
+            categoryService.addCategory(newCategory);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "admin/category/create";
+        }
+
+
         return "redirect:/admin/category";
     }
     @GetMapping("/edit/{id}")
@@ -54,11 +66,16 @@ public class CategoryController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateCategory(@PathVariable Long id, @ModelAttribute("category") Category  category, RedirectAttributes redirectAttributes) {
-        categoryService.updateCategory(id, category);
-        redirectAttributes.addFlashAttribute("success", "Danh mục đã được cập nhật thành công!");
-        return "redirect:/admin/category";
-    }
+    public String updateCategory(@PathVariable Long id, @ModelAttribute("category") Category  category, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            categoryService.updateCategory(id, category);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
+            return "redirect:/admin/category";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("category", category);
+            return "admin/category/edit";
+        }
 
 
-}
+    }}

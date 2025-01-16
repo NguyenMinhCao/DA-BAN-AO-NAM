@@ -14,6 +14,12 @@ import java.util.List;
 public interface ColorRepository extends JpaRepository<Color, Long> {
     Page<Color> findByColorNameContainingIgnoreCase(String colorName, Pageable pageable);
 
+    boolean existsByColorName(String colorName);
+
+    boolean existsByColorNameAndIdNot(String colorName, Long id);
+
+
+
 
     @Query(value = "SELECT [id]\n" +
             "      ,[color_name]\n" +

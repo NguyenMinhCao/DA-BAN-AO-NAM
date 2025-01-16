@@ -110,19 +110,22 @@
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
                             <c:if test="${not empty materialPage}">
+
                                 <c:if test="${materialPage.hasPrevious()}">
                                     <li class="page-item">
-                                        <a class="page-link" href="/admin/material?materialName=${metarialName}&page=${metarialPage.number - 1}">&laquo;</a>
+                                        <a class="page-link" href="/admin/material?materialName=${materialName}&page=${materialPage.number - 1}">&laquo;</a>
                                     </li>
                                 </c:if>
 
-                                <c:forEach var="i" begin="0" end="${materialPage.totalPages - 1}">
-                                    <li class="page-item ${materialPage.number == i ? 'active' : ''}">
-                                        <a class="page-link" href="/admin/material?materialName=${materialName}&page=${i}">
-                                                ${i + 1}
-                                        </a>
-                                    </li>
-                                </c:forEach>
+                                <c:if test="${materialPage.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${materialPage.totalPages - 1}">
+                                        <li class="page-item ${materialPage.number == i ? 'active' : ''}">
+                                            <a class="page-link" href="/admin/material?materialName=${materialName}&page=${i}">
+                                                    ${i + 1}
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
 
                                 <c:if test="${materialPage.hasNext()}">
                                     <li class="page-item">

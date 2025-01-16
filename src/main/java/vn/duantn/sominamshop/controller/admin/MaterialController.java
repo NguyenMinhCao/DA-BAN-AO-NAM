@@ -44,7 +44,12 @@ public class MaterialController {
             model.addAttribute("errorMessage", "Please correct the errors in the form.");
             return "admin/material/create";
         }
-        materialService.addMaterial(newMaterial);
+        try {
+            materialService.addMaterial(newMaterial);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "admin/material/create";
+        }
         return "redirect:/admin/material";
     }
     @GetMapping("/edit/{id}")
@@ -55,11 +60,16 @@ public class MaterialController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateMaterial(@PathVariable Long id, @ModelAttribute("material") Material material, RedirectAttributes redirectAttributes) {
-        materialService.updateMaterial(id, material);
-        redirectAttributes.addFlashAttribute("success", " cập nhật thành công!");
-        return "redirect:/admin/material";
+    public String updateMaterial(@PathVariable Long id, @ModelAttribute("material") Material material, RedirectAttributes redirectAttributes , Model model) {
+        try {
+            materialService.updateMaterial(id, material);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
+            return "redirect:/admin/material";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("material", material);
+            return "admin/material/edit";
+        }
     }
-
 
 }

@@ -24,6 +24,11 @@ public class OriginService {
     }
 
 
+    public Origin getOriginById(Long originId) {
+        return originRepository.findById(originId)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy  với ID: " + originId));
+    }
+
     public Page<Origin> getOrigin(String originName, int page) {
         Pageable pageable = PageRequest.of(page, 5);
         if (originName.isEmpty()) {
@@ -33,23 +38,35 @@ public class OriginService {
         }
     }
 
-    public Origin getOriginById(Long id) {
-        return originRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy màu với ID: " + id));
-    }
-
     public Origin addOrigin(Origin origin) {
         if (origin.getOriginName() == null || origin.getOriginName().isEmpty()) {
-            throw new IllegalArgumentException("Tên màu không được để trống");
+            throw new IllegalArgumentException("Không  được để trống");
         }
+
+        if (originRepository.existsByOriginName(origin.getOriginName())) {
+            throw new IllegalArgumentException("Tên đã tồn tại");
+        }
+        if (origin.getStatus() == null) {
+            origin.setStatus(0);
+        }
+
         return originRepository.save(origin);
     }
 
-    public Origin updateOrigin(Long id, Origin updatedOrigin) {
-        Origin existingOrigin = getOriginById(id);
+
+    public Origin updateOrigin(Long originId, Origin updatedOrigin) {
+        Origin existingOrigin = getOriginById(originId);
+
+        if (updatedOrigin.getOriginName() == null || updatedOrigin.getOriginName().trim().isEmpty()) {
+            throw new IllegalArgumentException(" Không được để trống");
+        }
 
         if (updatedOrigin.getOriginName() != null && !updatedOrigin.getOriginName().isEmpty()) {
-            existingOrigin.setOriginName(updatedOrigin.getOriginName());
+
+//            if (originRepository.existsByOriginNameAndIdNot(updatedOrigin.getOriginName().trim(), originId)) {
+//                throw new IllegalArgumentException("Tên  đã tồn tại");
+//            }
+//            existingOrigin.setOriginName(updatedOrigin.getOriginName().trim());
         }
 
         if (updatedOrigin.getStatus() != null) {

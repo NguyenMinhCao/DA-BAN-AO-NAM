@@ -40,22 +40,41 @@ public class MaterialService {
 
     public Material addMaterial(Material material) {
         if (material.getMaterialName() == null || material.getMaterialName().isEmpty()) {
-            throw new IllegalArgumentException("Tên được để trống");
+            throw new IllegalArgumentException("Không được để trống");
         }
+
+        if (materialRepository.existsByMaterialName(material.getMaterialName())) {
+            throw new IllegalArgumentException("Tên màu đã tồn tại");
+        }
+        if (material.getStatus() == null) {
+            material.setStatus(0);
+        }
+
         return materialRepository.save(material);
     }
 
-    public Material updateMaterial(Long id, Material updatedMaterial) {
-        Material existing = getMaterialById(id);
-        if (updatedMaterial.getMaterialName() != null && !updatedMaterial.getMaterialName().isEmpty()) {
-            existing.setMaterialName(updatedMaterial.getMaterialName());
-        }
-        if (updatedMaterial.getStatus() != null) {
-            existing.setStatus(updatedMaterial.getStatus());
-        }
-        return materialRepository.save(existing);
-    }
 
+    public Material updateMaterial(Long id, Material updatedMaterial) {
+        Material existingMaterial = getMaterialById(id);
+
+        if (updatedMaterial.getMaterialName() == null || updatedMaterial.getMaterialName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên màu không được để trống");
+        }
+
+        if (updatedMaterial.getMaterialName() != null && !updatedMaterial.getMaterialName().isEmpty()) {
+
+            if (materialRepository.existsByMaterialNameAndIdNot(updatedMaterial.getMaterialName().trim(), id)) {
+                throw new IllegalArgumentException("Tên màu đã tồn tại");
+            }
+            existingMaterial.setMaterialName(updatedMaterial.getMaterialName().trim());
+        }
+
+        if (updatedMaterial.getStatus() != null) {
+            existingMaterial.setStatus(updatedMaterial.getStatus());
+        }
+
+        return materialRepository.save(existingMaterial);
+    }
 
     public List<Material> getAll() {
         return materialRepository.findAll();

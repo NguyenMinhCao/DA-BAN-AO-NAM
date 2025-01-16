@@ -13,6 +13,7 @@ import vn.duantn.sominamshop.repository.OrderDetailRepository;
 import vn.duantn.sominamshop.repository.OrderRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -57,6 +58,7 @@ public class OrderStatisticService {
     public Page<LowStockProductDTO> getLowStockProducts(Pageable pageable) {
         return orderRepository.findLowStockProductsWithName(pageable);
     }
+
     public BigDecimal getTotalRevenue() {
         return orderRepository.getTotalRevenue();
     }
@@ -81,5 +83,13 @@ public class OrderStatisticService {
         return orderRepository.getLowStockProductCount();
     }
 
-    public long getTodayOrderCount() { return orderRepository.getTodayOrderCount(); }
+    public long getTodayOrderCount() {
+        return orderRepository.getTodayOrderCount();
+    }
+
+    public long getPendingOrderCount() {
+        return orderRepository.getPendingOrderCount();
+    }
+
+
 }

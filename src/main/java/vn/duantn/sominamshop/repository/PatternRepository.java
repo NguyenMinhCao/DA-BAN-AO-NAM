@@ -12,6 +12,10 @@ import java.util.List;
 
 @Repository
 public interface PatternRepository extends JpaRepository<Pattern, Long> {
+    boolean existsByPatternName(String patternName);
+
+    boolean existsByPatternNameAndIdNot(String patternName, Long id);
+
     @Query(value = "SELECT [id]\n" +
             "      ,[pattern_name]\n" +
             "      ,[status]\n" +

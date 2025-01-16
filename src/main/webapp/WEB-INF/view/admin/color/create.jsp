@@ -12,26 +12,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/common/toast.css">
-
-
-
-    <script>
-        $(document).ready(() => {
-            const avatarFiles = $("#avatarFiles");
-            avatarFiles.change(function (e) {
-                $("#avatarPreviews").empty();
-                for (let i = 0; i < e.target.files.length; i++) {
-                    const imgURL = URL.createObjectURL(e.target.files[i]);
-                    const previewElement = $('<img />', {
-                        src: imgURL,
-                        class: 'preview-img',
-                        style: 'max-height: 250px; margin: 5px; display: inline-block;'
-                    });
-                    $("#avatarPreviews").append(previewElement);
-                }
-            });
-        });
-    </script>
 </head>
 <body class="sb-nav-fixed">
 <jsp:include page="../layout/header.jsp"/>
@@ -40,7 +20,7 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4 text-dark">Create Color</h1>
+                <h1 class="mt-4 text-dark">Tạo màu sắc</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="/admin" class="text-decoration-none">Dashboard</a></li>
                     <li class="breadcrumb-item active">Create Color</li>
@@ -50,19 +30,20 @@
                         <div class="col-md-8">
                             <div class="card shadow-sm">
                                 <div class="card-header">
-                                    <h3 class="mb-0">Create New Color</h3>
+                                    <h3 class="mb-0">Thêm màu:</h3>
                                 </div>
                                 <div class="card-body">
                                     <c:if test="${not empty errorMessage}">
                                         <div class="alert alert-danger">
-                                            <span>${errorMessage}</span>
+                                            <strong>Error: </strong> ${errorMessage}
                                         </div>
                                     </c:if>
+
 
                                     <form:form method="post" action="/admin/color/create"
                                                modelAttribute="newColor" enctype="multipart/form-data">
                                         <div class="mb-3">
-                                            <label class="form-label">Color Name:</label>
+                                            <label class="form-label">Tên màu:</label>
                                             <form:input type="text" class="form-control ${newBindingResult.hasFieldErrors('colorName') ? 'is-invalid' : ''}"
                                                         path="colorName" placeholder="Enter color name"/>
                                             <form:errors path="colorName" cssClass="invalid-feedback"/>
@@ -70,7 +51,7 @@
 
                                         <div class="d-flex justify-content-between">
                                             <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-save" ></i> Save
+                                                <i class="fas fa-save"  ></i> Save
                                             </button>
                                             <a href="/admin/color" class="btn btn-warning">
                                                 <i class="fas fa-arrow-left"></i> Back

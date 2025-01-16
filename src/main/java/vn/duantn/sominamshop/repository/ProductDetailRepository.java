@@ -52,23 +52,19 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
             "    RankedSizes.sizeRank;", nativeQuery = true)
     List<ProductDetailResponse> getAllByProductId(@Param("productId") Long productId);
 
-    @Query(value = """
-    SELECT sizes.id, 
-           sizes.size_name, 
-           sizes.status
-    FROM sizes
-    WHERE NOT EXISTS (
-              SELECT 1
-              FROM product_details
-              WHERE product_details.color_id = :colorId
-                    AND product_details.size_id = sizes.id
-                    AND product_details.product_id = :productId
-          )
-""", nativeQuery = true)
-    List<SizeResponse> getListSizeAddProductDetail(
-            @Param("productId") Integer productId,
-            @Param("colorId") Integer colorId
-    );
+    @Query(value = "SELECT sizes.id, \n" +
+            "\t   sizes.size_name, \n" +
+            "\t   sizes.status\n" +
+            "FROM sizes\n" +
+            "\t   CROSS JOIN colors\n" +
+            "WHERE colors.id = :colorId\n" +
+            "      AND NOT EXISTS (\n" +
+            "          SELECT *\n" +
+            "          FROM product_details\n" +
+            "          WHERE color_id = :colorId\n" +
+            "              AND size_id = sizes.id\n" +
+            "              AND product_id = :productId)",nativeQuery = true)
+    List<SizeResponse> getListSizeAddProductDetail(@Param("productId") Long productId,@Param("colorId") Long colorId);
 
 
     @Query("Select Count(p.id) From ProductDetail p Where p.quantity < :number")
@@ -174,6 +170,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
                     AND (p.category_id = :category OR :category IS NULL)
                  )
              AND pd.quantity > 0
+             AND p.status = 0
             GROUP BY pd.id, p.name, pd.quantity, sz.size_name, cl.color_name, pd.price, imagesOrder.url_image
             """,
             countQuery = """
@@ -192,6 +189,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
                  )
              )
              AND pd.quantity > 0
+             AND p.status = 0
             """,nativeQuery = true)
     Page<CounterProductProjection> findAllProductByName(Pageable pageable, @Param(value = "name") String name, @Param("size") Long size, @Param("color") Long color, @Param("category") Long category);
 

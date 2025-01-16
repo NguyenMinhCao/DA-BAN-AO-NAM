@@ -14,6 +14,10 @@ import java.util.List;
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Long> {
     Page<Material> findByMaterialNameContainingIgnoreCase(String materialName, Pageable pageable);
+
+    boolean existsByMaterialName(String materialName);
+
+    boolean existsByMaterialNameAndIdNot(String materialName, Long id);
     @Query(value = "SELECT [id]\n" +
             "      ,[material_name]\n" +
             "      ,[status]\n" +

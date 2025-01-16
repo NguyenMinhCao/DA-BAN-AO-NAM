@@ -1,6 +1,5 @@
 package vn.duantn.sominamshop.controller.admin;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,23 +8,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import vn.duantn.sominamshop.model.Product;
-import vn.duantn.sominamshop.model.ProductDetail;
-import vn.duantn.sominamshop.model.dto.OrderStaticDTO;
 import vn.duantn.sominamshop.model.dto.request.LowStockProductDTO;
 import vn.duantn.sominamshop.service.OrderStatisticService;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 
 @Controller
 @RequestMapping("/admin")
@@ -36,6 +30,7 @@ public class OrderStatisticController {
 
     @GetMapping("/order/order-statistics")
     public String getOrderStatisticsPage(Model model, @RequestParam(defaultValue = "0") int page) {
+        // Các dữ liệu thống kê đã có
         BigDecimal totalRevenue = orderService.getTotalRevenue();
         BigDecimal monthlyRevenue = orderService.getMonthlyRevenue();
         BigDecimal todayRevenue = orderService.getTodayRevenue();
@@ -43,6 +38,8 @@ public class OrderStatisticController {
         Long totalProduct = orderService.getTotalProducts();
         Long totalLowProduct = orderService.getLowStockProductCount();
         Long totalTodayOrderCount = orderService.getTodayOrderCount();
+
+        Long pendingOrderCount = orderService.getPendingOrderCount();
 
         totalRevenue = (totalRevenue != null) ? totalRevenue : BigDecimal.ZERO;
         monthlyRevenue = (monthlyRevenue != null) ? monthlyRevenue : BigDecimal.ZERO;
@@ -61,6 +58,7 @@ public class OrderStatisticController {
         model.addAttribute("totalProduct", totalProduct);
         model.addAttribute("totalLowProduct", totalLowProduct);
 
+        // Phân trang cho sản phẩm còn ít hàng
         Pageable pageable = PageRequest.of(page, 5);
         Page<LowStockProductDTO> lowStockProductsPage = orderService.getLowStockProducts(pageable);
         model.addAttribute("lowStockProductsPage", lowStockProductsPage);
@@ -68,8 +66,11 @@ public class OrderStatisticController {
 
         model.addAttribute("totalTodayOrderCount", totalTodayOrderCount);
 
+        // Thêm tổng số đơn hàng đang chờ giải quyết vào model
+        model.addAttribute("pendingOrderCount", pendingOrderCount);
+
         return "admin/order/order-statistics";
     }
+
+
 }
-
-
