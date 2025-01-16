@@ -130,78 +130,95 @@
                     </div>
 
                     <!-- Modal Update Biến Thể -->
-                    <div class="modal fade" id="UpdateProductDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="UpdateProductDetailModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Chỉnh sửa thông tin Biến Thể</h5>
                                 </div>
-                                <div class="row modal-body">
+                                <div class="row modal-body ">
+                                    <!--Màu Sắc - Kích Thước-->
                                     <div class="form-group col-md-12 product-detail-infor">
                                         <label class="control-label" id="product-detail-color">Màu Sắc: </label>
                                         <br>
                                         <label class="control-label" id="product-detail-size">Kích Thước: </label>
                                     </div>
+
+                                    <!--Số Lượng-->
                                     <div class="form-group col-md-6">
                                         <label class="control-label">Số Lượng</label>
                                         <input class="form-control" type="number" id="product-detail-quantity" min="0">
                                     </div>
+
+                                    <!--Giá-->
                                     <div class="form-group col-md-6">
                                         <label class="control-label">Giá (VNĐ)</label>
                                         <input class="form-control" type="number" id="product-detail-price" min="0">
                                     </div>
+
                                 </div>
                                 <div class="form-group modal-footer">
-                                    <button type="button" class="btn btn-success" onclick="saveUpdate()">Lưu</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeFormProductDetailUpdate">Đóng</button>
+                                    <button type="button" class="btn btn-success" onclick="saveUpdate()">Lưu
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="closeFormProductDetailUpdate">Đóng
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+
                     <!-- Modal Add Biến Thể -->
-                    <div class="modal fade" id="AddProductDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="AddProductDetailModal" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Thêm Biến Thể</h5>
                                 </div>
-                                <div class="row modal-body">
+                                <div class="row modal-body ">
+                                    <!--Màu Sắc-->
                                     <div class="form-group col-md-6">
                                         <label for="select-color" class="control-label">Màu Sắc</label>
                                         <div class="d-flex">
-                                            <select class="form-control" id="select-color" onchange="getColor(this)">
+                                            <select class="form-control" id="select-color" onchange="getSize(this)">
                                                 <option value="" disabled selected hidden>-- Chọn màu sắc --</option>
+                                                <!-- Lặp qua danh sách màu sắc -->
                                                 <c:forEach var="color" items="${listColor}">
                                                     <option value="${color.id}">${color.colorName}</option>
                                                 </c:forEach>
                                             </select>
-                                            <button id="showFormColor" class="btn add-button" type="button"><i class="fa-solid fa-plus fa-2xl add-icon"></i></button>
+                                            <button id="showFormColor" class="btn add-button" type="button"><i
+                                                    class="fa-solid fa-plus fa-2xl add-icon"></i></button>
                                         </div>
                                     </div>
 
+                                    <!-- Kích Thước -->
                                     <div class="form-group col-md-6">
-                                        <label for="select-size" class="control-label">Kích thước</label>
+                                        <label class="control-label">Kích Thước</label>
                                         <div class="d-flex">
-                                            <select class="form-control" id="select-size" onchange="getSize(this)">
-                                                <option value="" disabled selected hidden>-- Chọn kích thước --</option>
-                                                <c:forEach var="size" items="${listSize}">
-                                                    <option value="${size.id}">${size.sizeName}</option>
-                                                </c:forEach>
+                                            <select class="form-control" id="select-size" placeholder="Chọn kích thước...">
+                                                <option value="" disabled selected hidden>-- Chọn Kích Thước --</option>
                                             </select>
-                                            <button id="showFormSize" class="btn add-button" type="button"><i class="fa-solid fa-plus fa-2xl add-icon"></i></button>
+                                            <button id="showFormSize" class="btn add-button" type="button"><i
+                                                    class="fa-solid fa-plus fa-2xl add-icon"></i></button>
                                         </div>
                                     </div>
 
+                                    <!-- Số Lượng -->
                                     <div class="form-group col-md-6">
                                         <label class="control-label">Số Lượng</label>
                                         <input class="form-control" type="number" id="add-product-detail-quantity">
                                     </div>
 
+                                    <!-- Giá -->
                                     <div class="form-group col-md-6">
                                         <label class="control-label">Giá (VNĐ)</label>
                                         <input class="form-control" type="number" id="add-product-detail-price">
                                     </div>
+
                                 </div>
                                 <div class="form-group modal-footer">
                                     <button type="button" class="btn btn-success" onclick="saveAdd()">Lưu</button>
@@ -211,7 +228,7 @@
                         </div>
                     </div>
 
-                    <!-- Table -->
+                                <!-- Table -->
                     <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0" id="sampleTable">
                         <thead>
                         <tr>
@@ -220,7 +237,7 @@
                             <th class="kich_thuoc">Kích Thước</th>
                             <th class="so_luong" width="130">Số Lượng</th>
                             <th class="gia_ban" width="220">Giá Bán</th>
-                            <!-- Thêm các cột khác nếu cần -->
+                            <th class="tinh_nang" width="110">Tính Năng</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -231,6 +248,17 @@
                                 <td>${productDetail.sizeName}</td>
                                 <td>${productDetail.quantity}</td>
                                 <td>${productDetail.price}</td>
+                                <td class="table-td-center tinh_nang">
+                                    <button class="btn btn-primary btn-sm edit" type="button"
+                                            data-product-detail-id="${productDetail.id}"
+                                            data-product-detail-color="${productDetail.colorName}"
+                                            data-product-detail-size="${productDetail.sizeName}"
+                                            id="${productDetail.id}"
+                                            onclick="updateProductDetailForm(this)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+
                             </tr>
                         </c:forEach>
                         </tbody>

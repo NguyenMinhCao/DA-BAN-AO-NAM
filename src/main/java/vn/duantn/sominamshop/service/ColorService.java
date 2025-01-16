@@ -41,19 +41,40 @@ public class ColorService {
         if (color.getColorName() == null || color.getColorName().isEmpty()) {
             throw new IllegalArgumentException("Tên màu không được để trống");
         }
+
+        if (colorRepository.existsByColorName(color.getColorName())) {
+            throw new IllegalArgumentException("Tên màu đã tồn tại");
+        }
+        if (color.getStatus() == null) {
+            color.setStatus(0);
+        }
+
         return colorRepository.save(color);
     }
 
+
     public Color updateColor(Long id, Color updatedColor) {
         Color existingColor = getColorById(id);
-        if (updatedColor.getColorName() != null && !updatedColor.getColorName().isEmpty()) {
-            existingColor.setColorName(updatedColor.getColorName());
+
+        if (updatedColor.getColorName() == null || updatedColor.getColorName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên màu không được để trống");
         }
+
+        if (updatedColor.getColorName() != null && !updatedColor.getColorName().isEmpty()) {
+
+            if (colorRepository.existsByColorNameAndIdNot(updatedColor.getColorName().trim(), id)) {
+                throw new IllegalArgumentException("Tên màu đã tồn tại");
+            }
+            existingColor.setColorName(updatedColor.getColorName().trim());
+        }
+
         if (updatedColor.getStatus() != null) {
             existingColor.setStatus(updatedColor.getStatus());
         }
+
         return colorRepository.save(existingColor);
     }
+
 
     public Color findByIdColor(Long id) {
         return colorRepository.findById(id).orElse(null);

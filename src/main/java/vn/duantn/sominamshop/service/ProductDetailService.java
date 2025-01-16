@@ -59,7 +59,7 @@ public class ProductDetailService {
         return productDetailRepository.getAllByProductId(productId);
     }
 
-    public List<SizeResponse> getListSizeAddProductDetail(Integer productId, Integer colorId) {
+    public List<SizeResponse> getListSizeAddProductDetail(Long productId, Long colorId) {
         return productDetailRepository.getListSizeAddProductDetail(productId, colorId);
     }
 

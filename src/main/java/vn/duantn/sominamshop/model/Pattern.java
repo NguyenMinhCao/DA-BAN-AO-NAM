@@ -23,12 +23,17 @@ import java.io.Serializable;
 public class Pattern extends BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @Column(name = "pattern_name", columnDefinition = "NVARCHAR(255)")
   private String patternName;
 
-  @Column(name = "status")
+
+  @Column(name = "status", nullable = false, columnDefinition = "INT DEFAULT 0")
   private Integer status;
+
+  public void setStatus(Integer status) {
+    this.status = (status == null) ? 0 : status;
+  }
 
 }

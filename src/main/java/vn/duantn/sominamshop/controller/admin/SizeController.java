@@ -44,6 +44,9 @@ public class SizeController {
             model.addAttribute("errorMessage", "Please correct the errors in the form.");
             return "admin/size/create";
         }
+        if (newSize.getStatus() == null) {
+            newSize.setStatus(0);
+        }
         sizeService.addSize(newSize);
         return "redirect:/admin/size";
     }

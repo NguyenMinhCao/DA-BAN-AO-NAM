@@ -30,15 +30,15 @@ public class ProductDetail {
     private BigDecimal cost; // TODO giá nhập
 
     @Column(name = "price")
-    private double price; // TODO giá bán
+    private double price; //
 
     @Column(name = "weight")
-    private Float weight; // TODO khối lượng của áo
+    private Float weight; //
 
     @Column(name = "status")
     private Integer status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 

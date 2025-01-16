@@ -358,7 +358,7 @@ function renderListProductDetail(selectedColorItems, selectedSizeItems, quantity
                 '    <td class="gia_ban"><input class="product-detail-input gia_ban" type="number" value="' + productDetail.price + '" min="0"></td>\n' +
                 '    <td class="table-td-center tinh_nang">\n' +
                 '        <button class="btn btn-primary btn-sm trash" type="button" title="Xóa">' +
-                '            <i class="fas fa-trash-alt"></i>\n' +
+                '            <i class="fas fa-trash-alt"></i> Xóa\n' +
                 '        </button>\n' +
                 '    </td>' +
                 '</tr>'

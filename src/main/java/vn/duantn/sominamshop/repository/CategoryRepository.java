@@ -14,6 +14,10 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Page<Category> findByCategoryNameContainingIgnoreCase(String categoryName, Pageable pageable);
+
+    boolean existsByCategoryName(String categoryName);
+
+    boolean existsByCategoryNameAndIdNot(String categoryName, Long id);
     @Query(value = "SELECT [id]\n" +
             "      ,[category_name]\n" +
             "      ,[status]\n" +

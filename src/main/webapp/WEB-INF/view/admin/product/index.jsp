@@ -105,11 +105,7 @@
                                         <div id="thumbbox" class="d-flex">
 
                                         </div>
-                                        <div id="boxchoice">
-                                            <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn
-                                                ảnh</a>
-                                            <p style="clear:both"></p>
-                                        </div>
+
                                     </div>
 
 

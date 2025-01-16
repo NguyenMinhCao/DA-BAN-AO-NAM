@@ -14,6 +14,9 @@ import java.util.List;
 @Repository
 public interface SizeRepository extends JpaRepository<Size, Long> {
     Page<Size> findBySizeNameContainingIgnoreCase(String sizeName, Pageable pageable);
+    boolean existsBySizeName(String sizeName);
+
+    boolean existsBySizeNameAndIdNot(String sizeName, Long id);
 
     @Query(value = """
                 SELECT DISTINCT s.id, s.size_name, s.status, s.created_date, s.updated_date

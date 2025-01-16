@@ -32,8 +32,8 @@
                     </ol>
                 </div>
 
-
                 <div class="row mb-4">
+                    <!-- Tổng Doanh Thu -->
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
@@ -47,6 +47,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Doanh Thu Tháng Này -->
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
@@ -60,10 +62,12 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Doanh Thu Hôm Nay -->
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
-                                <i class="fas fa-calendar-alt fa-2x text-warning me-3"></i>
+                                <i class="fas fa-calendar-day fa-2x text-danger me-3"></i>
                                 <div>
                                     <h4>Doanh Thu Hôm Nay</h4>
                                     <p id="todayRevenue">
@@ -73,10 +77,12 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Doanh Thu Năm Nay -->
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
-                                <i class="fas fa-calendar-year fa-2x text-info me-3"></i>
+                                <i class="fas fa-dollar-sign fa-2x text-primary me-3"></i>
                                 <div>
                                     <h4>Doanh Thu Năm Nay</h4>
                                     <p id="yearlyRevenue">
@@ -89,10 +95,11 @@
                 </div>
 
                 <div class="row mb-4">
+                    <!-- Số sản phẩm quản lí -->
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
-                                <i class="fas fa-cogs fa-2x text-danger me-3"></i>
+                                <i class="fas fa-cogs fa-2x text-primary me-3"></i>
                                 <div>
                                     <h4>Số sản phẩm quản lí</h4>
                                     <p id="totalProduct">
@@ -102,6 +109,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Số sản phẩm sắp hết hàng -->
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
@@ -115,10 +124,12 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Đơn hàng hôm nay -->
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
-                                <i class="fas fa-calendar-alt fa-2x text-warning me-3"></i>
+                                <i class="fas fa-box-open fa-2x text-success me-3"></i>
                                 <div>
                                     <h4>Đơn hàng hôm nay</h4>
                                     <p id="totalTodayOrderCount">
@@ -128,21 +139,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Đơn hàng chưa giải quyết -->
                     <div class="col-md-3">
                         <div class="stat-box">
                             <div class="d-flex align-items-center">
-                                <i class="fas fa-calendar-alt fa-2x text-warning me-3"></i>
+                                <i class="fas fa-hourglass-half fa-2x text-warning me-3"></i>
                                 <div>
-                                    <h4>Doanh Thu Hôm Nay</h4>
-                                    <p id="">
-                                        <span>0</span>
+                                    <h4>Đơn hàng chưa giải quyết</h4>
+                                    <p id="pendingOrderCount">
+                                        <span>${pendingOrderCount}</span>
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
             <h2>Thống Kê Đơn Hàng và Sản Phẩm Bán Được</h2>
             <canvas id="orderChart" width="400" height="200"></canvas>
@@ -275,6 +287,7 @@
                         </c:if>
                     </ul>
                 </nav>
+            </div>
             </div>
 
 

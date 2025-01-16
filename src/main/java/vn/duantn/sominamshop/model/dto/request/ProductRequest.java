@@ -9,10 +9,10 @@ import vn.duantn.sominamshop.model.*;
 public class ProductRequest {
     private String name;
     private String description;
-    private Integer categoryId;
-    private Integer materialId;
-    private Integer patternId;
-    private Integer originId;
+    private Long categoryId;
+    private Long materialId;
+    private Long patternId;
+    private Long originId;
     private Integer status;
 
     public Product map(Product product) {

@@ -22,43 +22,49 @@ $(document).ready(function () {
 
 });
 
-//Lấy danh sách size add
 function getSize(selectElement) {
-    $("#select-size").html(''); // Xóa tất cả các option cũ
+    $("#select-size").empty();
+
     var colorId = selectElement.value;
 
-    if (!productId || !colorId) {
-        alert("Thiếu dữ liệu sản phẩm hoặc màu sắc!");
-        return;
+    var dataToSend = {
+        productId: productId,
+        colorId: colorId
     }
 
     $.ajax({
         type: "GET",
         url: "/admin/rest/product-detail/getListSizeAddProductDetail",
-        data: { productId: productId, colorId: colorId },
+        contentType: "application/json",
+        data: dataToSend,
         success: function (response) {
             console.log("Lấy danh sách Size thành công!");
             renderListSize(response);
         },
         error: function (error) {
             console.error("Lỗi khi lấy danh sách Size:", error);
-            alert("Không thể lấy danh sách Size. Vui lòng thử lại!");
+            return false;
         }
     });
 }
 
+//Render danh sách size add
 function renderListSize(listSize) {
-    $("#select-size").append('<option value="">Chọn kích thước</option>');
+    console.log("Dữ liệu Size nhận được:", listSize);
+    for (var i = 0; i < listSize.length; i++) {
 
-    listSize.forEach(function (size) {
-        var value = size.id;
-        var name = size.name || size.sizeName;
+        var value = listSize[i].id;
 
-        var sizeOption = $('<option>', { value: value, text: name });
-        $("#select-size").append(sizeOption);
-    });
+        var name = listSize[i].sizeName;
+
+        var sizeSelect = $(
+            '<option value="' + value + '">' + name + '</option>'
+        )
+
+        $(sizeSelect).appendTo("#select-size");
+
+    }
 }
-
 //Lấy số lượng thông qua màu
 function getQuantityByColor(selectElement) {
 
@@ -201,7 +207,6 @@ function updateProductDetailForm(element) {
         }
     });
 }
-
 function saveUpdate() {
     var productDetailId = $('#UpdateProductDetailModal').attr("product-detail-id-update");
     // var productDetailWeight = $('#product-detail-weight').val();
@@ -259,7 +264,6 @@ function saveUpdate() {
 function saveAdd() {
     var productDetailColor = $('#select-color').val();
     var productDetailSize = $('#select-size').val();
-    // var productDetailWeight = $('#add-product-detail-weight').val();
     var productDetailQuantity = $("#add-product-detail-quantity").val();
     var productDetailPrice = $("#add-product-detail-price").val();
     var productDetailStatus = 0;
@@ -277,7 +281,6 @@ function saveAdd() {
         productId: productId,
         colorId: productDetailColor,
         sizeId: productDetailSize,
-        // weight: productDetailWeight,
         quantity: productDetailQuantity,
         price: productDetailPrice,
         status: productDetailStatus

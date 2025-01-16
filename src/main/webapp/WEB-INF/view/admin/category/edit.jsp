@@ -16,12 +16,22 @@
         Swal.fire({
             icon: 'success',
             title: 'Thành công!',
-            text: ' Cập nhật thành công.',
+            text: 'Màu sắc đã được cập nhật thành công.',
             showConfirmButton: true
         });
     </script>
 </c:if>
 
+<c:if test="${not empty errorMessage}">
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: '${errorMessage}',
+            showConfirmButton: true
+        });
+    </script>
+</c:if>
 <jsp:include page="../layout/header.jsp" />
 <div id="layoutSidenav">
     <jsp:include page="../layout/sidebar.jsp" />

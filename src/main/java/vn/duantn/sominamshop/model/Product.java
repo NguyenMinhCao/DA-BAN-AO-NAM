@@ -21,7 +21,7 @@ public class Product extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Tên sản phẩm không được để trống!")
+
     @Column(name = "name", columnDefinition = "NVARCHAR(1500)")
     private String name;
 

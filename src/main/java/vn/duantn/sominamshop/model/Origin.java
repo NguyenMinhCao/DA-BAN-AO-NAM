@@ -17,7 +17,7 @@ public class Origin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "origin_id") // Đảm bảo sử dụng tên đúng
-    private Integer originId;
+    private Long originId;
 
     @Column(name = "origin_name", nullable = false, columnDefinition = "NVARCHAR(255)", unique = true)
     private String originName;
@@ -28,21 +28,11 @@ public class Origin {
     @Column(name = "updated_at", columnDefinition = "DATETIME DEFAULT GETDATE()")
     private LocalDateTime updatedAt;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer status;
 
-    public Integer getStatus() {
-        if (status == null) {
-            return 0; // Gán mặc định khi là null
-        }
-        return status;
-    }
 
     public void setStatus(Integer status) {
-        if (status == null) {
-            this.status = 0; // Gán giá trị 0 nếu status là null
-        } else {
-            this.status = status;
-        }
+        this.status = (status == null) ? 0 : status;
     }
 }

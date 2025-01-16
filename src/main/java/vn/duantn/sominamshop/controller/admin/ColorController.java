@@ -28,8 +28,10 @@ public class ColorController {
             Model model) {
 
         Page<Color> colorPage = colorService.getColors(colorName, page);
+        boolean isEmpty = colorPage.isEmpty();
         model.addAttribute("colorPage", colorPage);
         model.addAttribute("colorName", colorName);
+        model.addAttribute("isEmpty", isEmpty);
         return "admin/color/show";
     }
 
@@ -45,9 +47,18 @@ public class ColorController {
             model.addAttribute("errorMessage", "Please correct the errors in the form.");
             return "admin/color/create";
         }
-        colorService.addColor(newColor);
+
+        try {
+            colorService.addColor(newColor);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "admin/color/create";
+        }
+
         return "redirect:/admin/color";
     }
+
+
     @GetMapping("/edit/{id}")
     public String editColorForm(@PathVariable Long id, Model model) {
         Color color = colorService.getColorById(id);
@@ -56,11 +67,18 @@ public class ColorController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateColor(@PathVariable Long id, @ModelAttribute("color") Color color, RedirectAttributes redirectAttributes) {
-        colorService.updateColor(id, color);
-        redirectAttributes.addFlashAttribute("success", "Màu sắc đã được cập nhật thành công!");
-        return "redirect:/admin/color";
+    public String updateColor(@PathVariable Long id, @ModelAttribute("color") Color color, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            colorService.updateColor(id, color);
+            redirectAttributes.addFlashAttribute("success", "Màu sắc đã được cập nhật thành công!");
+            return "redirect:/admin/color";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("color", color);
+            return "admin/color/edit";
+        }
     }
+
 
 
 }

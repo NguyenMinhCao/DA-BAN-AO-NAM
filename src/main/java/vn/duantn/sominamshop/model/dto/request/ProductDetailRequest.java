@@ -10,19 +10,17 @@ public class ProductDetailRequest {
     private Long productId;
     private Long idProductDetail;
     private Integer quantity;
-    private Double price;
-    private Integer colorId;
-    private Integer sizeId;
+    private Float price;
+    private Long colorId;
+    private Long sizeId;
     private Integer status;
 
-
     public ProductDetail map(ProductDetail productDetail){
-
         productDetail.setProduct(Product.builder().id(this.productId).build());
         productDetail.setQuantity(this.quantity);
         productDetail.setPrice(this.price);
         productDetail.setColor(Color.builder().id(this.colorId).build());
-        productDetail.setSize(Size.builder().id(this.sizeId).build());
+        productDetail.setSize(Size.builder().id(sizeId).build());
         productDetail.setStatus(this.status);
         return productDetail;
     }

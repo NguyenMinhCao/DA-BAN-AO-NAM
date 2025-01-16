@@ -110,21 +110,33 @@
 
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
-                            <c:if test="${originPage.totalPages > 0}">
-                                <c:forEach var="i" begin="0" end="${originPage.totalPages - 1}">
-                                    <li class="page-item ${originPage.number == i ? 'active' : ''}">
-                                        <a class="page-link" href="/admin/origin?originName=${originName}&page=${i}">
-                                                ${i + 1}
-                                        </a>
-                                    </li>
-                                </c:forEach>
-                            </c:if>
-                            <c:if test="${originPage.totalPages == 0}">
-                                <li class="page-item disabled"><span class="page-link">Không có kết quả</span></li>
-                            </c:if>
+                            <c:if test="${not empty patternPage}">
 
+                                <c:if test="${patternPage.hasPrevious()}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="/admin/pattern?patternName=${patternName}&page=${patternPage.number - 1}">&laquo;</a>
+                                    </li>
+                                </c:if>
+
+                                <c:if test="${patternPage.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${patternPage.totalPages - 1}">
+                                        <li class="page-item ${patternPage.number == i ? 'active' : ''}">
+                                            <a class="page-link" href="/admin/pattern?patternName=${patternName}&page=${i}">
+                                                    ${i + 1}
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
+
+                                <c:if test="${patternPage.hasNext()}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="/admin/pattern?patternName=${patternName}&page=${patternPage.number + 1}">&raquo;</a>
+                                    </li>
+                                </c:if>
+                            </c:if>
                         </ul>
                     </nav>
+
                 </div>
             </div>
         </main>

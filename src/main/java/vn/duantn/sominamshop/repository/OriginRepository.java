@@ -14,6 +14,11 @@ import java.util.List;
 @Repository
 public interface OriginRepository extends JpaRepository<Origin, Long> {
     Page<Origin> findByOriginNameContainingIgnoreCase(String originName, Pageable pageable);
+
+    boolean existsByOriginName(String originName);
+
+//    boolean existsByOriginNameAndIdNot(String originName, Long originId);
+
     @Query(value = "SELECT [origin_id]\n" +
             "      ,[origin_name]\n" +
             "      ,[status]\n" +
