@@ -15,13 +15,14 @@ $(document).ready(function () {
     function fetchStaff(page, status) {
         let search = $('#search').val()
         $.ajax({
-            url: `/api/admin/user/get/staffs?page=${page}&limit=10`,
+            url: `/api/admin/user/get/staffs?page=${page}&limit=5`,
             type: 'GET',
             data: {keyword: search, status: status},
             success: function (response) {
                 listStaff = []
                 response.content.forEach(item => listStaff.push(item))
                 renderStaff(response.content);
+                renderPagination(response.totalPages, response.number + 1, 'pagination-customer')
             },
             error: function (error) {
                 console.log("Error:", error);
@@ -150,7 +151,7 @@ $(document).ready(function () {
     function updateCustomer(){
         let idUser = $('#fullnameCustomer').attr('data-UserId')
         let customerUpdate = listStaff.find(user => user.id == idUser)
-        let emailCustomer = null
+        let emailCustomer = null;
         let fullnameCustomer = $('#fullnameCustomer').val()
         let phoneNumberAdd = null
         if(!($('#emailCustomer').val() == customerUpdate.email)){
@@ -315,5 +316,53 @@ $(document).ready(function () {
                 console.error('Error:', error); // Mô tả lỗi
             }
         });
+    }
+    function renderPagination(totalPages, currentPage, idTable) {
+        const paginationContainer = document.getElementById(idTable);
+        paginationContainer.innerHTML = '';
+
+        const createPageItem = (text, isActive = false, isDisabled = false, page) => {
+            const pageItem = document.createElement('div');
+            pageItem.className = `page-item${isActive ? ' active' : ''}${isDisabled ? ' disabled' : ''}`;
+            pageItem.textContent = text;
+            if (!isDisabled) {
+                pageItem.onclick = () => {
+                    const selectedRadio = $('input[name="statusCustomer"]:checked').val();
+                    // fetchCustomer(page - 1, selectedRadio)
+                    fetchStaff(page - 1)
+                    renderPagination(totalPages, page, idTable);
+                };
+            }
+
+            return pageItem;
+        };
+        if (currentPage > 1) {
+            paginationContainer.appendChild(createPageItem('Prev', false, false, currentPage - 1));
+        } else {
+            paginationContainer.appendChild(createPageItem('Prev', false, true));
+        }
+        const startPage = Math.max(1, currentPage - 1);
+        const endPage = Math.min(totalPages, currentPage + 1);
+
+        if (startPage > 1) {
+            paginationContainer.appendChild(createPageItem(1, false, false, 1));
+            if (startPage > 2) {
+                paginationContainer.appendChild(createPageItem('...', false, true));
+            }
+        }
+        for (let i = startPage; i <= endPage; i++) {
+            paginationContainer.appendChild(createPageItem(i, i === currentPage, false, i));
+        }
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                paginationContainer.appendChild(createPageItem('...', false, true));
+            }
+            paginationContainer.appendChild(createPageItem(totalPages, false, false, totalPages));
+        }
+        if (currentPage < totalPages) {
+            paginationContainer.appendChild(createPageItem('Next', false, false, currentPage + 1));
+        } else {
+            paginationContainer.appendChild(createPageItem('Next', false, true));
+        }
     }
 })

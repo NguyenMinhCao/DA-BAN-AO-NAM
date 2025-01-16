@@ -932,8 +932,8 @@ document.addEventListener('DOMContentLoaded', function () {
       <h3>Hóa Đơn Thanh Toán</h3>
       <p><strong>TN2K STORE</strong></p>
       <p>Mã hóa đơn: #${idOrderSelect}</p>
-      <p>Địa chỉ: 123 Đường ABC, Nam Từ Liêm, Hà Nội</p>
-      <p>Điện thoại: 0999999999</p>
+      <p>Địa chỉ: Tòa nhà FPT Polytechnic, 13 phố Trịnh Văn Bô, phường Phương Canh, quận Nam Từ Liêm, TP Hà Nội</p>
+      <p>Điện thoại: (024) 8582 0808</p>
       <hr>
       <p><strong>Khách Hàng:</strong> ${nameCustomer}</p>
       <p><strong>Ngày:</strong> ${formattedDate}</p>

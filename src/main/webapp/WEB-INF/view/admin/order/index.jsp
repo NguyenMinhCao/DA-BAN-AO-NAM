@@ -488,7 +488,7 @@
                             </div>
                             <div class="footer-voucher">
                                 <button class="close-btn-add-voucher"
-                                        id="closeModalBtnBackVouCher">TRỞ LẠI
+                                        id="closeModalBtnBackVouCher">HỦY CHỌN
                                 </button>
                                 <button class="OK-btn-add-voucher"
                                         id="closeModalBtnAddVouCher">OK

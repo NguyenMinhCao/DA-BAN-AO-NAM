@@ -124,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="form-group-wrapper">
-                                <label for="customerDob" class="form-label">Ảnh</label>
+                                <label for="customerDob" style="font-weight: bold" class="form-label">Ảnh</label>
                                 <div class="upload-container" id="uploadContainer">
                                     <input type="file" id="imageInput" accept="image/*">
                                     <button class="remove-btn" id="removeBtn">&times;</button>
@@ -150,5 +150,6 @@
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script src="/admin/js/user/create-staff.js"></script>
+<script src="/admin/js/scripts.js"></script>
 </body>
 </html>
