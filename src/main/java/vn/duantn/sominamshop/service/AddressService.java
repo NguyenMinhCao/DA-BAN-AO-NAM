@@ -106,6 +106,7 @@ public class AddressService {
         if (address != null) {
             if (address.getUser() != null) {
                 System.out.println("UserIdaddress " + address.getUser().getId());
+                address.setStatus(true);
                 addressRepository.save(address);
             }
         }

@@ -306,7 +306,7 @@ $(document).ready(function () {
         let emailCustomer = null
         let fullnameCustomer = $('#fullnameCustomer').val()
         let phoneNumberAdd = null
-        if(!$('#emailCustomer').val() == customerUpdate.email){
+        if(!($('#emailCustomer').val() == customerUpdate.email)){
             emailCustomer = $('#emailCustomer').val()
             console.log(emailCustomer + " mail")
         }
@@ -542,7 +542,8 @@ $(document).ready(function () {
             streetDetails : locationDetail,
             user: {
                 id : idUser
-            }
+            },
+            status : true
         }
         Swal.fire({
             title: "Cảnh báo?",

@@ -33,7 +33,6 @@ public class UserDTO {
         if (user == null) {
             return null;
         }
-        return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(),
-                user.getDateOfBirth(), user.getAvatar(), user.getGender(), user.getStatus());
+        return new UserDTO(user.getId(), user.getEmail(), user.getFullName(), user.getPhoneNumber(), user.getDateOfBirth(), user.getAvatar(), user.getGender(), user.getStatus());
     }
 }

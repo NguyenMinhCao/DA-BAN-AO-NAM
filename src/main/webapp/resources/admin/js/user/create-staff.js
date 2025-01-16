@@ -51,9 +51,7 @@ $(document).ready(function () {
         let email = $('#customerEmail').val()
         let dob = $('#customerDob').val()
         let gender = $('input[name="customerGender"]:checked').val();
-        let fileInput = $('#customerImage')[0];
         const passwordValue = document.getElementById('customerPassword').value;
-        let file = fileInput?.files[0];
         let data = {
             email: email,
             fullName: name,
@@ -66,8 +64,8 @@ $(document).ready(function () {
             },
             password: passwordValue,
         }
-        if (!phone || !email || !name) {
-            notificationAddCusstomer("Không để số điện thoại, tên, email trống", 'waring')
+        if (!phone || !email || !name || !passwordValue) {
+            notificationAddCusstomer("Không để số điện thoại, tên, email. password trống", 'warning')
             return;
         }
         if (!phoneRegex.test(phone)) {

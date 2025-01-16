@@ -138,6 +138,7 @@
                                             <input type="date" id="dob">
                                         </div>
                                     </div>
+                                    <label style="font-weight: bold">Ảnh</label>
                                     <div class="upload-container" id="uploadContainer">
                                         <input type="file" id="imageInput" accept="image/*">
                                         <button class="remove-btn" id="removeBtn">&times;</button>
@@ -221,5 +222,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script src="/admin/js/user/customer.js"></script>
+<script src="/admin/js/scripts.js"></script>
 </body>
 </html>

@@ -84,7 +84,7 @@ public class OrderManagementService {
         } else {
             order.setPaymentStatus(PaymentStatus.COMPLETED);
             this.orderService.saveOrder(order);
-            // this.orderHistoryService.updateDeliveryStatus(orderById.get());
+            this.orderHistoryService.updateDeliveryStatus(order, dataStatus.getStatus());
         }
         return true;
     }   

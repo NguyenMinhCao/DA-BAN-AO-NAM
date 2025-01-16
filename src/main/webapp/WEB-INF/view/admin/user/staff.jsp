@@ -70,7 +70,7 @@
                                     <div class="row">
                                         <div class="input-group">
                                             <label for="fullnameCustomer">Họ và tên</label>
-                                            <input type="text" id="fullnameCustomer" placeholder="Nhập họ và tên khách hàng">
+                                            <input type="text" id="fullnameCustomer" placeholder="Nhập họ và tên">
                                         </div>
                                         <div class="input-group">
                                             <label for="gender">Giới tính</label>
@@ -84,11 +84,11 @@
                                     <div class="row">
                                         <div class="input-group">
                                             <label for="emailCustomer">Email</label>
-                                            <input type="email" id="emailCustomer" placeholder="Nhập email khách hàng">
+                                            <input type="email" id="emailCustomer" placeholder="Nhập email">
                                         </div>
                                         <div class="input-group">
                                             <label for="phoneNumberAdd">Số điện thoại</label>
-                                            <input type="tel" id="phoneNumberAdd" placeholder="Nhập sdt khách hàng">
+                                            <input type="tel" id="phoneNumberAdd" placeholder="Nhập số điện thoại">
                                         </div>
                                     </div>
                                     <label style="font-weight: bold">Ảnh</label>
@@ -120,5 +120,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script src="/admin/js/user/staff.js"></script>
+<script src="/admin/js/scripts.js"></script>
 </body>
 </html>

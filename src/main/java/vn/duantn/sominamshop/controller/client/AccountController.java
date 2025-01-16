@@ -1,6 +1,7 @@
 package vn.duantn.sominamshop.controller.client;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import vn.duantn.sominamshop.model.Address;
 import vn.duantn.sominamshop.model.Order;
+import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.service.AddressService;
@@ -85,8 +87,9 @@ public class AccountController {
 
         User userByEmail = this.userService.findUserByEmail(emailUser);
         List<Order> orderByUsers = this.orderService.findOrderByUser(userByEmail);
-
+        
         model.addAttribute("orderUsers", orderByUsers);
+        // model.addAttribute("orderUsers", orderByUsers);
         model.addAttribute("userByEmail", userByEmail);
 
         return "client/account/order-show";

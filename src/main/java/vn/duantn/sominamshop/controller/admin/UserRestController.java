@@ -74,7 +74,7 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);
         }
         if(user.getPhoneNumber() != null)
-            user.getAddress().forEach(address -> address.setUser(user));
+            user.getAddress().forEach(address -> {address.setUser(user); address.setStatus(true);});
         user.setRole(Role.builder().id(2).build());
         user.setStatus(true);
         User userSave = userService.handleSaveUser(user);
@@ -93,7 +93,7 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);
         }
         if(user.getPhoneNumber() != null)
-            user.getAddress().forEach(address -> address.setUser(user));
+            user.getAddress().forEach(address -> {address.setUser(user); address.setStatus(true);});
             user.setRole(Role.builder().id(2).build());
         if(file != null){
             String avatar = uploadService.handleSaveAvatar(file, "/resources/images/avatar");

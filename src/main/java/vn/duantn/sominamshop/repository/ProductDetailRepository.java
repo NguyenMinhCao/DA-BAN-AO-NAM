@@ -170,6 +170,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
                     AND (p.category_id = :category OR :category IS NULL)
                  )
              AND pd.quantity > 0
+             AND p.status = 0
             GROUP BY pd.id, p.name, pd.quantity, sz.size_name, cl.color_name, pd.price, imagesOrder.url_image
             """,
             countQuery = """
@@ -188,6 +189,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
                  )
              )
              AND pd.quantity > 0
+             AND p.status = 0
             """,nativeQuery = true)
     Page<CounterProductProjection> findAllProductByName(Pageable pageable, @Param(value = "name") String name, @Param("size") Long size, @Param("color") Long color, @Param("category") Long category);
 

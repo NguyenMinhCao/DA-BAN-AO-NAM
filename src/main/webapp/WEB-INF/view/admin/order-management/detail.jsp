@@ -718,9 +718,12 @@
                                     <div class="box-content-modal d-flex justify-content-between">
 
                                         <div class="box-amount-received" style="">
-                                            <span style="margin-bottom: 5px;">Bạn có xác nhận số tiền : </span>
-                                            <span style="margin-left: 10px;"><span>${order.totalAmount} thông qua hình
-                                                    thức ${order.paymentMethod} ?</span></span>
+                                            <span style="margin-bottom: 5px;">Bạn có xác nhận số tiền :</span>
+                                            <span style="margin-left: 10px;"><span>
+                                                    <fmt:formatNumber type="number" value="${order.totalAmount}" />
+                                                    đ thông qua hình
+                                                    thức ${order.paymentMethod} ?
+                                                </span></span>
                                         </div>
                                     </div>
                                 </div>

@@ -495,8 +495,14 @@ public class OrderService {
         if (orderDTO.getPaymentStatus() == PaymentStatus.COMPLETED) {
             order.setPaymentStatus(PaymentStatus.COMPLETED);
         }
-        if (orderDTO.getPromotion() != null) {
-            if (orderDTO.getPromotion().getId() != 0) {
+        if(orderDTO.getOrderStatus() == OrderStatus.COMPLETED){
+            order.setOrderStatus(OrderStatus.COMPLETED);
+        }
+        if(orderDTO.getShippingMethod() == ShippingMethod.SAVE){
+            order.setShippingMethod(ShippingMethod.SAVE);
+        }
+        if(orderDTO.getPromotion() != null ){
+            if(orderDTO.getPromotion().getId() != 0){
                 order.setCoupon(Coupon.builder().id(orderDTO.getPromotion().getId()).build());
             }
         }
