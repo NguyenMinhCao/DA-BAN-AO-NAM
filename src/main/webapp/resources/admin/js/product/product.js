@@ -198,6 +198,7 @@ function save() {
 
     var productMaterial = $("#product-material").val();
     var productDescription = CKEDITOR.instances['product-description'].getData();
+    productDescription = removeHtmlTags(productDescription);
     var productStatus = 0;
 
     var dataToSend = {
@@ -241,6 +242,10 @@ function save() {
             });
         }
     });
+}
+
+function removeHtmlTags(str) {
+    return str.replace(/<[^>]*>/g, '');
 }
 
 function saveImage(productId) {
