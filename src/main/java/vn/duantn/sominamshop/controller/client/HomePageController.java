@@ -3,10 +3,6 @@ package vn.duantn.sominamshop.controller.client;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,10 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import vn.duantn.sominamshop.model.Color;
 import vn.duantn.sominamshop.model.Product;
+import vn.duantn.sominamshop.model.Size;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.RegisterDTO;
+import vn.duantn.sominamshop.service.ColorService;
 import vn.duantn.sominamshop.service.ProductService;
+import vn.duantn.sominamshop.service.SizeService;
 import vn.duantn.sominamshop.service.UserService;
 
 @Controller
@@ -27,29 +28,35 @@ public class HomePageController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final ColorService colorService;
+    private final SizeService sizeService;
 
-    public HomePageController(ProductService productService, UserService userService) {
+    public HomePageController(ProductService productService, UserService userService, ColorService colorService,
+            SizeService sizeService) {
         this.productService = productService;
         this.userService = userService;
+        this.colorService = colorService;
+        this.sizeService = sizeService;
     }
 
     @GetMapping("/")
     public String getHomePage(@RequestParam(defaultValue = "0") int page, Model model) {
-        // Phân trang với 6 sản phẩm mỗi trang
+
         List<Product> productPage = this.productService.getAllProduct();
-        // BigDecimal ddf = productPage.get(0).getProductDetails().get(0).getPrice();
-        model.addAttribute("listProducts", productPage); // Truyền Page<Product> cho JSP
-        return "client/homepage/show"; // Chuyển đến trang hiển thị
+        List<Color> colorList = this.colorService.getAllColors();
+        List<Size> sizeList = this.sizeService.getAllSizes();
+        model.addAttribute("listProducts", productPage);
+        model.addAttribute("colorList", colorList);
+        model.addAttribute("sizeList", sizeList);
+        return "client/homepage/show";
     }
 
     @GetMapping("/products")
-    public String getProducts(@RequestParam(defaultValue = "0") int page, Model model) {
-        // Pageable pageable = PageRequest.of(page, 6, Sort.by("id").ascending()); //
-        // Phân trang với 6 sản phẩm mỗi trang
+    public String getProducts(Model model) {
         List<Product> productPage = this.productService.getAllProduct();
 
-        model.addAttribute("listProducts", productPage); // Truyền Page<Product> cho JSP
-        return "client/product/show"; // Chuyển đến trang hiển thị
+        model.addAttribute("listProducts", productPage);
+        return "client/product/show";
     }
 
     @GetMapping("/register")
@@ -75,4 +82,5 @@ public class HomePageController {
     public String getLogin() {
         return "client/auth/login";
     }
+
 }

@@ -1,9 +1,13 @@
 package vn.duantn.sominamshop.controller.client;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.hibernate.validator.cfg.defs.EANDef;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +27,7 @@ import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.dto.CartDetailUpdateRequestDTO;
 import vn.duantn.sominamshop.model.dto.request.DataGetProductDetail;
+import vn.duantn.sominamshop.model.dto.response.ResCouponDTO;
 import vn.duantn.sominamshop.service.AddressService;
 import vn.duantn.sominamshop.service.CartService;
 import vn.duantn.sominamshop.service.OrderService;
@@ -69,8 +74,36 @@ public class CartController {
             totalPrice += cartDetail.getPrice();
         }
 
-        // Lấy ra toàn bộ promotions để hiển thị
-        List<Coupon> listPromotions = this.promotionService.findAllCoupon();
+        // Giả sử đây là trong một phương thức của controller hoặc service
+        List<Coupon> listCouponDis = this.promotionService.findAllCoupon();
+        List<ResCouponDTO> listCouponDTOs = new ArrayList<>();
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Định nghĩa formatter một lần duy nhất
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        for (Coupon coupon : listCouponDis) {
+            // Kiểm tra trạng thái và ngày kết thúc
+            if (Boolean.TRUE.equals(coupon.getStatus()) && coupon.getEndDate() != null
+                    && (coupon.getEndDate().isAfter(currentDateTime) || coupon.getEndDate().isEqual(currentDateTime))) {
+
+                ResCouponDTO res = new ResCouponDTO();
+                res.setId(coupon.getId());
+                res.setDiscountType(coupon.getDiscountType());
+                res.setDiscountValueFixed(coupon.getDiscountValueFixed());
+                res.setCouponCode(coupon.getCouponCode());
+                res.setDiscountValuePercent(coupon.getDiscountValuePercent());
+                res.setMaximumReduction(coupon.getMaximumReduction());
+                res.setMinimumValue(coupon.getMinimumValue());
+                res.setStatus(coupon.getStatus());
+
+                // Định dạng ngày và thiết lập vào DTO
+                String formattedEndDate = coupon.getEndDate().format(formatter);
+                res.setEndDate(formattedEndDate);
+
+                listCouponDTOs.add(res);
+            }
+        }
 
         // thiết lập lại trường promotion trong order có delivery-status null khi người
         // dùng rời
@@ -117,12 +150,12 @@ public class CartController {
         session.setAttribute("shippingPrice", shippingPrice);
         session.setAttribute("totalPrice", totalPrice);
         session.setAttribute("lstCartDetail", lstCartDetail);
-        session.setAttribute("listPromotions", listPromotions);
+        session.setAttribute("listCouponDTOs", listCouponDTOs);
         return "client/cart/show";
     }
 
     @PostMapping("/add-product-to-cart")
-    public ResponseEntity<Void> addProductToCart(HttpServletRequest request,
+    public ResponseEntity<Boolean> addProductToCart(HttpServletRequest request,
             @RequestBody DataGetProductDetail data) {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");

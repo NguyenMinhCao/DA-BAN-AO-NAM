@@ -12,6 +12,7 @@ import com.turkraft.springfilter.boot.Filter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -65,7 +66,7 @@ public class OrderManagementController {
     @GetMapping("/orders")
     public String getOrders(Model model,
             @Filter Specification<Order> spec,
-            @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         ResultPaginationDTO lstOrder = this.orderService.fetchAllOrders(spec, pageable);
         model.addAttribute("lstOrder", lstOrder);
         return "admin/order-management/show";

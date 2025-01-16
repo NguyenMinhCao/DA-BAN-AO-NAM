@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (coupon.discountType === 'FIXED') {
                 discountValueSpan.textContent = `Giảm ${formatCurrency(coupon.discountValueFixed)} cho toàn bộ đơn hàng`;
             } else if (coupon.discountType === 'PERCENTAGE') {
-                discountValueSpan.textContent = `Giảm ${coupon.discountValuePercent}% tối đa ${formatCurrency(coupon.maximumReduction)} đ`;
+                discountValueSpan.textContent = `Giảm ${coupon.discountValuePercent}% tối đa ${formatCurrency(coupon.maximumReduction)}`;
             }
             discountValueDiv.appendChild(discountValueSpan);
             promoCell.appendChild(discountValueDiv);
@@ -125,9 +125,9 @@ document.addEventListener('DOMContentLoaded', function () {
             row.appendChild(statusCell);
 
             // Cột Đã dùng
-            const usedCell = document.createElement('td');
-            usedCell.innerHTML = `<span>${coupon.usageLimit}</span>`;
-            row.appendChild(usedCell);
+            // const usedCell = document.createElement('td');
+            // usedCell.innerHTML = `<span>${coupon.usageLimit}</span>`;
+            // row.appendChild(usedCell);
 
             // Cột Ngày bắt đầu
             const startDateCell = document.createElement('td');

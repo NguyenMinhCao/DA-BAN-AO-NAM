@@ -84,7 +84,6 @@
                                         <thead>
                                             <th>Khuyến mại</th>
                                             <th>Trạng thái</th>
-                                            <th>Đã dùng</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                         </thead>
@@ -105,7 +104,7 @@
                                                             <div class="coupon-discount-value">
                                                                 <span>Giảm ${coupon.discountValuePercent}% tối đa
                                                                     ${coupon.maximumReduction}
-                                                                    đ</span>
+                                                                </span>
                                                             </div>
                                                         </c:if>
                                                     </td>
@@ -117,7 +116,6 @@
                                                             <span class="css-3u37zr">Ngừng áp dụng</span>
                                                         </c:if>
                                                     </td>
-                                                    <td><span>${coupon.usageLimit}</span></td>
                                                     <td><span>${coupon.startDate}</span></td>
                                                     <td><span>${coupon.endDate}</span></td>
                                                 </tr>

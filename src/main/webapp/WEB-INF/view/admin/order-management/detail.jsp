@@ -82,17 +82,6 @@
                                     <div class="operation sub-font">
                                         <div class="operation__container">
                                             <c:if
-                                                test="${order.paymentStatus == 'COMPLETED' && order.deliveryStatus == 'COMPLETED'}">
-                                                <div class="return">
-                                                    <a href="">
-                                                        <span>
-                                                            <span class="icon"><i class="fa-solid fa-box"></i></span>
-                                                            <span class="text-black">Trả hàng</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </c:if>
-                                            <c:if
                                                 test="${order.paymentStatus == 'PENDING' && order.deliveryStatus == 'PENDING' && order.orderStatus != 'CANCELED'}">
                                                 <div class="return">
                                                     <a href="/admin/orders/${order.id}/edit">
@@ -103,14 +92,6 @@
                                                     </a>
                                                 </div>
                                             </c:if>
-                                            <div class="print-invoice">
-                                                <a href="#">
-                                                    <span>
-                                                        <span class="icon"><i class="fa-solid fa-print"></i></span>
-                                                        <span class="text-black">In hóa đơn</span>
-                                                    </span>
-                                                </a>
-                                            </div>
                                             <div class="cancel-order">
                                                 <a href="#">
                                                     <span>

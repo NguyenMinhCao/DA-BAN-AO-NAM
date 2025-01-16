@@ -127,8 +127,7 @@
                             <div class="container">
                                 <div class="banner_content d-md-flex justify-content-between align-items-center">
                                     <div class="mb-3 mb-md-0">
-                                        <h2>Cart</h2>
-                                        <p>Very us move be blessed multiply night</p>
+                                        <h2>Giỏ hàng</h2>
                                     </div>
                                     <div class="page_link">
                                         <a href="/">Home</a>
@@ -236,188 +235,72 @@
                                                     <c:set var="sumInCart" value="${cartDetail.cart.totalProducts}" />
                                                 </c:forEach>
 
-                                                <tr class="shipping_area">
-                                                    <td colspan="4" style="vertical-align:top;">
-                                                        <h5>Chọn đơn vị vận chuyển</h5>
-                                                    </td>
-                                                    <td colspan="2">
-                                                        <div class="shipping_box">
-                                                            <ul class="list"
-                                                                style="display: inline-block; margin-right: 19px;">
-                                                                <li>
-                                                                    <p style="display: inline;margin-right: 14px;"> Giao
-                                                                        hàng hỏa tốc: đ50.000 </p>
-                                                                    <input type="radio" name="shipping_method"
-                                                                        id="expressDelivery" value="EXPRESS" <c:if
-                                                                        test="${sessionScope.shippingMethodInOrder == 'EXPRESS'}">checked
-                    </c:if>>
-                    </li>
-                    <li>
-                        <p style="display: inline;margin-right: 14px;">Giao
-                            hàng
-                            nhanh: đ30.000 </p>
-                        <input type="radio" name="shipping_method" id="fastDelivery" value="FAST" <c:if
-                            test="${sessionScope.shippingMethodInOrder == 'FAST'}">checked
-                        </c:if>>
-                    </li>
-                    <li>
-                        <p style="display: inline;margin-right: 14px;">Giao
-                            hàng
-                            tiết kiệm: đ20.000</p>
-                        <input type="radio" name="shipping_method" id="economyDelivery" value="SAVE" <c:if
-                            test="${sessionScope.shippingMethodInOrder == 'SAVE'}">checked
-                        </c:if>>
-                    </li>
-                    </ul>
-                    </div>
-                    </td>
-                    </tr>
-
-                    <tr>
-                        <td class="td-voucher-add" colspan="4">
-                            <p><i style="color: orange; font-size: 11px;" class="ti-layout-width-default"></i></p>
-                            <p style="margin-left: 5px;">Voucher</p>
-                            <p style="font-weight: bold;">
-                                <button class="open-btn-add-voucher" id="openModalBtnAddVoucher"
-                                    style="font-weight: 400;">Chọn hoặc nhập mã
-                                </button>
-                            </p>
-                        </td>
-                        <!-- <td colspan="1"></td> -->
-                        <td colspan="2">
-                            <div class="" style="margin-left: -19px;">
-                                <h5 style="display: inline-block;">Tổng thanh toán (
-                                    <%=pageContext.getAttribute("sumInCart")%> sản
-                                        phẩm):
-                                </h5>
-                                <h5 style="color: #71cd14;display: inline-block;" data-cart-total-price="${totalPrice}">
-                                    <fmt:formatNumber type="number" value="${totalPrice}" />
-                                    đ
-                                </h5>
-                            </div>
-
-                            <div class="modal-overlay-add-voucher" id="modalOverlayAddVoucher">
-                                <!-- Nội dung modal -->
-                                <div class="modal-content-add-voucher">
-                                    <div class="header-voucher">
-                                        <h3>Chọn voucher</h3>
-                                        <hr>
-                                    </div>
-
-                                    <div class="body-voucher">
-                                        <div class="search-voucher"
-                                            style="display: flex;align-items: center; background: #f8f8f8; padding: 8px;justify-content: space-between;">
-                                            <label style="margin-bottom: 0px; margin-left: 9px;">Mã
-                                                voucher</label>
-                                            <div class="input-with-validator">
-                                                <input style="border:none; width: 200px; padding: 0px; outline: none;"
-                                                    type="text" value="" placeholder="Mã Shopee Voucher"
-                                                    maxlength="255">
-                                            </div>
-                                            <button class="button-add-voucher">ÁP
-                                                DỤNG</button>
-                                        </div>
-                                        <div class="voucher-list">
-                                            <div style="margin: 10px 0;">
-                                                <p style="margin-bottom: 0px; font-weight: bold;">
-                                                    Danh Sách Mã
-                                                </p>
-                                                <small>Có thể chọn một voucher</small>
-                                            </div>
-                                            <c:forEach items="${listPromotions}" var="pro">
-                                                <div class="voucher-item">
-                                                    <div class="hhiiii"
-                                                        style="display: flex; justify-content: center; align-items: center; position: relative; background-color: #71cd14;">
-                                                        <div class="vm3TF0"
-                                                            style="display: flex; justify-content: center; align-items: center; width: 90px; height: 90px;">
-                                                            <img class="e52C78 nh7RxM"
-                                                                style="width: 45px; height: 45px; border-radius: 50%;"
-                                                                src="/img/voucher.png" alt="Logo">
+                                                <tr class="out_button_area">
+                                                    <td colspan="1"></td>
+                                                    <td colspan="5">
+                                                        <div
+                                                            style="margin-left: 465px; display: inline-block; width: 300px;">
+                                                            <div
+                                                                style="display: flex; justify-content: space-between; height: 27px;">
+                                                                <span>Tổng tiền hàng :</span>
+                                                                <p data-cart-total-price="${totalPrice}">
+                                                                    <fmt:formatNumber type="number"
+                                                                        value="${totalPrice}" />
+                                                                    đ
+                                                                </p>
+                                                            </div>
+                                                            <div
+                                                                style="display: flex; justify-content: space-between; height: 27px;">
+                                                                <span>Tổng giảm giá :</span>
+                                                                <p id="total-discount">
+                                                                    <c:if
+                                                                        test="${promotionInOrder.discountValue == null}">
+                                                                        0
+                                                                    </c:if>
+                                                                    <c:if
+                                                                        test="${promotionInOrder.discountValue != null}">
+                                                                        ${promotionInOrder.discountValue}
+                                                                    </c:if> đ
+                                                                </p>
+                                                            </div>
+                                                            <!-- <div
+                                                                style="display: flex; justify-content: space-between; height: 27px;">
+                                                                <span>Tổng tiền phí vận chuyển :</span>
+                                                                <p id="total-shipping-cost">
+                                                                    <fmt:formatNumber type="number"
+                                                                        value="${shippingPrice}" />
+                                                                    đ
+                                                                </p>
+                                                            </div> -->
+                                                            <div
+                                                                style="display: flex; justify-content: space-between; height: 27px;">
+                                                                <span>Tổng thanh toán :</span>
+                                                                <p id="total-payment">
+                                                                    <fmt:formatNumber type="number"
+                                                                        value="${sessionScope.totalPayment}" />
+                                                                    đ
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </td>
+                                                </tr>
 
-                                                    <div class="voucher-details">
-                                                        <div class="voucher-exp">Giảm tối đa
-                                                            ${pro.discountValueFixed}k | Đơn tối
-                                                            thiểu 0₫<br>HSD:
-                                                            27.11.2024</div>
-                                                    </div>
-                                                    <div class="voucher-checkbox" style="padding-right: 15px;">
-                                                        <input type="radio" id="voucherSelect" name="voucher-select"
-                                                            value="${pro.id}" />
-                                                    </div>
-                                                </div>
-                                                <!-- <c:set var="discountValueFixed"
-                                                                                value="${listPromotions[0].discountValueFixed}" /> -->
-                                            </c:forEach>
-                                        </div>
+                                                <tr class="out_button_area">
+                                                    <td colspan="2"></td>
+                                                    <td colspan="4">
+                                                        <div class="checkout_btn_inner">
+                                                            <a class="gray_btn" href="/products">Tiếp tục mua sắm</a>
+                                                            <a class="main_btn" href="/order">Đi đến thanh toán</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
-                                    </div>
-                                    <div class="footer-voucher">
-                                        <button class="close-btn-add-voucher" id="closeModalBtnAddVouCher">TRỞ
-                                            LẠI</button>
-                                        <button class="OK-btn-add-voucher" id="closeModalBtnAddVouCher">OK</button>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr class="out_button_area">
-                        <td colspan="1"></td>
-                        <td colspan="5">
-                            <div style="margin-left: 465px; display: inline-block; width: 300px;">
-                                <div style="display: flex; justify-content: space-between; height: 27px;">
-                                    <span>Tổng tiền hàng :</span>
-                                    <p data-cart-total-price="${totalPrice}">
-                                        <fmt:formatNumber type="number" value="${totalPrice}" />
-                                        đ
-                                    </p>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; height: 27px;">
-                                    <span>Tổng giảm giá :</span>
-                                    <p id="total-discount">
-                                        <c:if test="${promotionInOrder.discountValue == null}">
-                                            0
-                                        </c:if>
-                                        <c:if test="${promotionInOrder.discountValue != null}">
-                                            ${promotionInOrder.discountValue}
-                                        </c:if> đ
-                                    </p>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; height: 27px;">
-                                    <span>Tổng tiền phí vận chuyển :</span>
-                                    <p id="total-shipping-cost">
-                                        <fmt:formatNumber type="number" value="${shippingPrice}" />
-                                        đ
-                                    </p>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; height: 27px;">
-                                    <span>Tổng thanh toán :</span>
-                                    <p id="total-payment">
-                                        <fmt:formatNumber type="number" value="${sessionScope.totalPayment}" />
-                                        đ
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr class="out_button_area">
-                        <td colspan="2"></td>
-                        <td colspan="4">
-                            <div class="checkout_btn_inner">
-                                <a class="gray_btn" href="/products">Tiếp tục mua sắm</a>
-                                <a class="main_btn" href="/order">Đi đến thanh toán</a>
-                            </div>
-                        </td>
-                    </tr>
-
-                    </tbody>
-                    </table>
-                    </div>
-                    </div>
-                    </div>
-                    </section>
+                        </section>
                     </c:if>
 
                     <!--================End Cart Area =================-->

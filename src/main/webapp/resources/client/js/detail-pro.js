@@ -8,6 +8,7 @@ var idSizeSelectCurrent = ''
 var idColorSelectCurrent = ''
 var productSelectCurrent = ''
 var proDDetailColor = ''
+var quantityPro = document.getElementById('quantityProductSelect').value
 
 
 //chọn color
@@ -148,7 +149,8 @@ if (btnAddProductToCart) {
         const dataSent = {
             idSize: idSizeSelectCurrent,
             idProduct: productSelectCurrent,
-            idColor: idColorSelectCurrent
+            idColor: idColorSelectCurrent,
+            quantity : quantityPro
         }
         try {
             const response = await fetch('/add-product-to-cart', {

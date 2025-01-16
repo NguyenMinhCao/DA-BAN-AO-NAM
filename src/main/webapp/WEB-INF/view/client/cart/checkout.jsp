@@ -18,6 +18,7 @@
                     <!-- main css -->
                     <link rel="stylesheet" href="css/style.css" />
                     <link rel="stylesheet" href="css/responsive.css" />
+                    <link rel="stylesheet" href="/common/toast.css">
                     <style>
                         .out_button_area .checkout_btn_inner .main_btn a {
                             color: #fff;
@@ -451,7 +452,8 @@
                                                                 <div class="K5cdoq">Tỉnh/Thành phố</div>
                                                                 <input class="uU_7Kb" type="text"
                                                                     placeholder="Tỉnh/Thành phố" maxlength="64"
-                                                                    name="user_address_city" value="" id="userCityAddress">
+                                                                    name="user_address_city" value=""
+                                                                    id="userCityAddress">
                                                             </div>
                                                         </div>
                                                         <div class="P49sO4"></div>
@@ -460,7 +462,8 @@
                                                                 <div class="K5cdoq">Quận/Huyện</div>
                                                                 <input class="uU_7Kb" type="text"
                                                                     placeholder="Quận/Huyện"
-                                                                    name="user_address_district" value="" id="districtAddress">
+                                                                    name="user_address_district" value=""
+                                                                    id="districtAddress">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -479,7 +482,8 @@
                                                                 <div class="K5cdoq">Địa chỉ chi tiết</div>
                                                                 <input class="uU_7Kb" type="text"
                                                                     placeholder="Địa chỉ chi tiết"
-                                                                    name="user_street_address" value="" id="streetDetailAdd">
+                                                                    name="user_street_address" value=""
+                                                                    id="streetDetailAdd">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -673,7 +677,7 @@
                                                                         </p>
                                                                         <small>Có thể chọn một voucher</small>
                                                                     </div>
-                                                                    <c:forEach items="${listPromotions}" var="pro">
+                                                                    <c:forEach items="${listCouponDTOs}" var="pro">
                                                                         <div class="voucher-item">
                                                                             <div class="hhiiii"
                                                                                 style="display: flex; justify-content: center; align-items: center; position: relative; background-color: #71cd14;">
@@ -686,12 +690,41 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                            <div class="voucher-details">
-                                                                                <div class="voucher-exp">Giảm tối đa
-                                                                                    ${pro.discountValueFixed}k | Đơn tối
-                                                                                    thiểu 0₫<br>HSD:
-                                                                                    27.11.2024</div>
-                                                                            </div>
+                                                                            <c:if test="${pro.discountType == 'FIXED'}">
+                                                                                <div class="voucher-details">
+                                                                                    <div class="voucher-exp">Giảm
+                                                                                        <fmt:formatNumber type="number"
+                                                                                            value="${pro.discountValueFixed}" />
+                                                                                        đ
+                                                                                        | Đơn
+                                                                                        tối
+                                                                                        thiểu
+                                                                                        <fmt:formatNumber type="number"
+                                                                                            value="${pro.minimumValue}" />
+                                                                                        ₫<br>HSD:
+                                                                                        ${pro.endDate}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <c:if
+                                                                                test="${pro.discountType == 'PERCENTAGE'}">
+                                                                                <div class="voucher-details">
+                                                                                    <div class="voucher-exp">Giảm
+                                                                                        ${pro.discountValuePercent}% tối
+                                                                                        đa
+                                                                                        <fmt:formatNumber type="number"
+                                                                                            value="${pro.maximumReduction}" />
+                                                                                        đ
+                                                                                        | Đơn
+                                                                                        tối
+                                                                                        thiểu
+                                                                                        <fmt:formatNumber type="number"
+                                                                                            value="${pro.minimumValue}" />
+                                                                                        ₫<br>HSD:
+                                                                                        ${pro.endDate}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
                                                                             <div class="voucher-checkbox"
                                                                                 style="padding-right: 15px;">
                                                                                 <input type="radio"
@@ -816,7 +849,7 @@
                                                     <div class="" style="margin-left: 10px; ">
                                                         Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo
                                                         Điều
-                                                        khoản Shopee
+                                                        khoản của cửa hàng.
                                                     </div>
                                                 </td>
                                                 <td>
@@ -839,6 +872,7 @@
                             </div>
                         </div>
                     </section>
+                    <div id="toast"></div>
                     <!--================End Cart Area =================-->
 
                     <!--================ start footer Area  =================-->
@@ -849,6 +883,7 @@
                     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                     <script src="/js/myjs.js"></script>
+                    <script src="/common/toast.js"></script>
                     <script src="/js/ajaxjs.js"></script>
 
                 </body>

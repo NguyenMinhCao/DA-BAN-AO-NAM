@@ -77,12 +77,15 @@ public class ItemController {
             }
         }
 
+        Integer quantityProduct = this.productService.quantityProduct(id);
+
         model.addAttribute("product", product);
         model.addAttribute("productIdSize", productIdSize);
         model.addAttribute("productIdColor", productIdColor);
         model.addAttribute("lstProductDetail", lstProductDetail);
         model.addAttribute("lstColorInProDetail", lstColorInProDetail);
         model.addAttribute("lstSizeInProDetail", lstSizeInProDetail);
+        model.addAttribute("quantityProduct", quantityProduct);
         return "client/product/detail";
     }
 

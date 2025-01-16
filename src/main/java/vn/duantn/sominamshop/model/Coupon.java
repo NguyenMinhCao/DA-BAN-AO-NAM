@@ -45,9 +45,6 @@ public class Coupon {
     @Column(name = "maximum_reduction")
     private Double maximumReduction;// giá trị giảm tối đa cho kiểu giảm phần trăm
 
-
-
-
     @Column(name = "minimum_value")
     private Double minimumValue;// giá trị đơn hàng tối thiểu được sử dụng mã giảm gía
 

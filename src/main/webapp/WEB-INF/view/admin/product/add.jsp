@@ -72,8 +72,6 @@
                                                 </div>
                                             </div>
 
-
-
                                             <div class="form-group col-md-3">
                                                 <label for="select-material" class="control-label">Chất liệu</label>
                                                 <div class="d-flex">

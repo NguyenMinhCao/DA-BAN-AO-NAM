@@ -53,12 +53,23 @@ $(document).ready(function () {
             success: function (response) {
 
                 console.log('Dữ liệu đã được gửi thành công!', response);
+                if (response.message == 'false') {
+                    toast({
+                        title: "Thất bại!",
+                        message: "Đơn hàng của bạn không đủ điều kiện.",
+                        type: "error",
+                        duration: 1700
+                    });
+
+                } else {
+                    var formattedTotalDiscount = new Intl.NumberFormat('vi-VN').format(response.discountValue);
+                    $('#total-discount').text(formattedTotalDiscount + ' đ');  // Cập nhật phí vận chuyển
+                }
 
 
-                var formattedTotalDiscount = new Intl.NumberFormat('vi-VN').format(response.discountValue);
                 var formattedTotalPayment = new Intl.NumberFormat('vi-VN').format(response.totalPayment);
 
-                $('#total-discount').text(formattedTotalDiscount + ' đ');  // Cập nhật phí vận chuyển
+
                 $('#total-payment').text(formattedTotalPayment + ' đ');  // Cập nhật tổng tiền thanh toán
 
 

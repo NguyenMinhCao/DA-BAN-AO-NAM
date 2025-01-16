@@ -38,13 +38,11 @@
                             <div class="container">
                                 <div class="banner_content d-md-flex justify-content-between align-items-center">
                                     <div class="mb-3 mb-md-0">
-                                        <h2>Shop Category</h2>
-                                        <p>Very us move be blessed multiply night</p>
+                                        <h2>Danh mục cửa hàng</h2>
                                     </div>
                                     <div class="page_link">
                                         <a href="index.html">Home</a>
                                         <a href="category.html">Shop</a>
-                                        <a href="category.html">Women Fashion</a>
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +77,7 @@
                                                     <div class="single-product">
                                                         <div class="product-img">
                                                             <img class="card-img"
-                                                                src="images/product/${product.images[0].imageUrl}"
+                                                                src="images/product/${product.productDetails[0].images[0].urlImage}"
                                                                 alt="" />
                                                             <div class="p_icon">
                                                                 <a href="/product/${product.id}">
@@ -176,21 +174,11 @@
                                             </div>
                                             <div class="widgets_inner">
                                                 <ul class="list">
-                                                    <li>
-                                                        <a href="#">Black</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">Black Leather</a>
-                                                    </li>
-                                                    <li class="active">
-                                                        <a href="#">Black with red</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">Gold</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">Spacegrey</a>
-                                                    </li>
+                                                    <c:forEach items="colorList" var="color">
+                                                        <li>
+                                                            <input type="radio"> <span>${color.name}</span>
+                                                        </li>
+                                                    </c:forEach>
                                                 </ul>
                                             </div>
                                         </aside>

@@ -47,7 +47,7 @@
                                         <p class="sub text-uppercase">men Collection</p>
                                         <h3><span>Show</span> Your <br />Personal <span>Style</span></h3>
                                         <h4>Fowl saw dry which a above together place.</h4>
-                                        <a class="main_btn mt-40" href="#">View Collection</a>
+                                        <a class="main_btn mt-40" href="#">Xem bộ sưu tập</a>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +146,6 @@
                                                                 value="${product.productDetails[0].price}" />
                                                             đ
                                                         </span>
-                                                        <del>$35.00</del>
                                                     </div>
                                                 </div>
                                             </div>
@@ -374,7 +373,6 @@
                                                             value="${product.productDetails[0].price}" />
                                                         đ
                                                     </span>
-                                                    <del>$35.00</del>
                                                 </div>
                                             </div>
                                         </div>

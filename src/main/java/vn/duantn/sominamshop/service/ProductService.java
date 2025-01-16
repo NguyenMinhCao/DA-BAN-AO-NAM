@@ -53,6 +53,17 @@ public class ProductService {
         return this.productRepository.save(product);
     }
 
+    public Integer quantityProduct(Long id) {
+        Optional<Product> productById = this.productRepository.findById(id);
+        Integer quantityProduct = 0;
+        for (ProductDetail productDetail : productById.get().getProductDetails()) {
+            if (productDetail.getStatus() == 0) {
+                quantityProduct += productDetail.getQuantity();
+            }
+        }
+        return quantityProduct;
+    }
+
     // @Transactional
     // public Product saveProduct(Product product) {
     // Product savedProduct = productRepository.save(product);
@@ -81,8 +92,10 @@ public class ProductService {
     // }
     //
 
-    public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name, Long size, Long color, Long category) {
-        Page<CounterProductProjection> pageCounterRespone = productDetailRepository.findAllProductByName(pageable, name, size, color, category);
+    public Page<CounterProductProjection> GetAllProductByName(Pageable pageable, String name, Long size, Long color,
+            Long category) {
+        Page<CounterProductProjection> pageCounterRespone = productDetailRepository.findAllProductByName(pageable, name,
+                size, color, category);
         return pageCounterRespone;
     }
     //

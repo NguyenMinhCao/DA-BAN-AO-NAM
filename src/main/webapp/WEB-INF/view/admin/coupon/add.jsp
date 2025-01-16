@@ -132,7 +132,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="container-background">
+                                        <div class="container-background" style="display: none;">
                                             <div
                                                 class="header-input-code header-padding d-flex justify-content-between">
                                                 <span class="heading-header">Giới hạn sử dụng</span>

@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +32,7 @@ import vn.duantn.sominamshop.model.ProductDetail;
 import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.User;
 import vn.duantn.sominamshop.model.constants.DeliveryStatus;
+import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.model.constants.OrderStatus;
 import vn.duantn.sominamshop.model.constants.PaymentStatus;
 
@@ -81,6 +80,7 @@ public class OrderService {
         return this.orderRepository.findOrderByUser(user);
     }
 
+    @Transactional
     public void orderCheckout(HttpSession session) {
         String emailUser = (String) session.getAttribute("email");
         User userByEmail = this.userService.findUserByEmail(emailUser);
@@ -164,10 +164,13 @@ public class OrderService {
         }
     }
 
+    @Transactional
     public Map<String, Object> orderCheckoutUpdate(OrderUpdateRequestDTO orderReq, HttpSession session) {
 
+        // Xóa thuộc tính 'totalPayment' khỏi session nếu có
         session.removeAttribute("totalPayment");
-        //
+
+        // Lấy các tham số từ yêu cầu
         Long promotionId = orderReq.getPromotionId();
         Long addressId = orderReq.getAddressId();
         String shippingMethod = orderReq.getShippingMethod();
@@ -175,106 +178,177 @@ public class OrderService {
 
         Map<String, Object> response = new HashMap<>();
 
-        Optional<Coupon> promotionById = null;
+        // Khởi tạo Optional cho promotion
+        Optional<Coupon> promotionById = Optional.empty();
+
+        // Tìm đơn hàng cần cập nhật
         Order order = this.findOrderByStatusAndCreatedBy();
 
         if (order != null) {
+            // Cập nhật địa chỉ nếu có
             if (addressId != null) {
                 Address addressById = this.addressService.findAddressById(addressId);
-                order.setAddress(addressById);
-                AddressDTO dto = new AddressDTO();
-                // dto.setAddress(addressById.getAddress());
-                dto.setFullName(addressById.getFullName());
-                dto.setPhoneNumber(addressById.getPhoneNumber());
-                dto.setStreetDetails(addressById.getStreetDetails());
-                dto.setStatus(addressById.getStatus());
-                session.setAttribute("isChangeAddress", "true");
-                response.put("addressById", dto);
+                if (addressById != null) {
+                    order.setAddress(addressById);
+                    AddressDTO dto = new AddressDTO();
+                    dto.setFullName(addressById.getFullName());
+                    dto.setPhoneNumber(addressById.getPhoneNumber());
+                    dto.setStreetDetails(addressById.getStreetDetails());
+                    dto.setStatus(addressById.getStatus());
+                    session.setAttribute("isChangeAddress", "true");
+                    response.put("addressById", dto);
+                }
             }
 
+            // Cập nhật phương thức thanh toán nếu có
             if (paymentMethod != null) {
                 order.setPaymentMethod(paymentMethod);
             }
 
+            // Cập nhật mã giảm giá nếu có
             if (promotionId != null) {
                 promotionById = this.promotionService.findCouponById(promotionId);
                 if (promotionById.isPresent()) {
-                    order.setCoupon(promotionById.get());
-                    session.setAttribute("promotionInOrder", order.getCoupon());
+                    Coupon coupon = promotionById.get();
+                    // Kiểm tra ngày hết hạn và trạng thái của coupon
+                    if (coupon.getEndDate() != null &&
+                            (coupon.getEndDate().isAfter(LocalDateTime.now())
+                                    || coupon.getEndDate().isEqual(LocalDateTime.now()))
+                            &&
+                            Boolean.TRUE.equals(coupon.getStatus())) {
+                        order.setCoupon(coupon);
+                        session.setAttribute("promotionInOrder", coupon);
+                    } else {
+                        // Nếu coupon hết hạn hoặc không còn hiệu lực
+                        promotionById = Optional.empty();
+                        order.setCoupon(null);
+                        session.removeAttribute("promotionInOrder");
+                    }
                 }
             }
 
+            // Cập nhật phương thức vận chuyển nếu có
             if (shippingMethod != null) {
-                if (shippingMethod.equals("EXPRESS")) {
+                if (shippingMethod.equalsIgnoreCase("EXPRESS")) {
                     order.setShippingMethod(ShippingMethod.EXPRESS);
-                } else if (shippingMethod.equals("FAST")) {
+                } else if (shippingMethod.equalsIgnoreCase("FAST")) {
                     order.setShippingMethod(ShippingMethod.FAST);
                 } else {
                     order.setShippingMethod(ShippingMethod.SAVE);
                 }
             }
 
+            // Lưu các thay đổi vào cơ sở dữ liệu
             this.orderRepository.save(order);
 
+            // Nếu có thay đổi về phương thức vận chuyển hoặc mã giảm giá, tính toán lại
+            // tổng thanh toán
             if (shippingMethod != null || promotionId != null) {
                 String emailUser = (String) session.getAttribute("email");
 
-                // Lấy ra tổng tiền hàng
+                // Lấy ra tổng tiền hàng từ giỏ hàng
                 List<CartDetail> lstCartDetail = this.cartService.getAllCartDetailByCart(emailUser);
-                double totalPrice = 0;
+                BigDecimal totalPrice = BigDecimal.ZERO;
                 for (CartDetail cartDetail : lstCartDetail) {
-                    totalPrice += cartDetail.getPrice();
+                    // Giả sử cartDetail.getPrice() trả về double, chuyển đổi sang BigDecimal
+                    totalPrice = totalPrice.add(BigDecimal.valueOf(cartDetail.getPrice()));
                 }
 
-                double shippingPrice = 0;
-                double discountValue = 0;
-
-                String shippingMethodString = order.getShippingMethod().toString();
-
-                if (shippingMethodString.equals("EXPRESS")) {
-                    shippingPrice = 50000;
-                } else if (shippingMethodString.equals("FAST")) {
-                    shippingPrice = 30000;
-                } else {
-                    shippingPrice = 20000;
+                // Tính phí vận chuyển
+                BigDecimal shippingPrice;
+                ShippingMethod shippingMethodEnum = order.getShippingMethod();
+                switch (shippingMethodEnum) {
+                    case EXPRESS:
+                        shippingPrice = BigDecimal.valueOf(50000);
+                        break;
+                    case FAST:
+                        shippingPrice = BigDecimal.valueOf(30000);
+                        break;
+                    default:
+                        shippingPrice = BigDecimal.valueOf(20000);
+                        break;
                 }
 
-                double totalPayment = 0;
-                totalPayment = totalPrice + shippingPrice;
+                // Tính tổng thanh toán trước giảm giá
+                BigDecimal totalPayment = totalPrice.add(shippingPrice);
 
-                // người dùng truyền lên promotion
-                if (promotionId != null) {
-                    discountValue = promotionById.get().getDiscountValueFixed();
-                }
-                // người dùng không truyền lên nhưng trong DB có
-                else if (promotionId == null && order.getCoupon() != null) {
-                    discountValue = order.getCoupon().getDiscountValueFixed();
-                }
-                // người dùng không truyền lên trong DB cũng ko có
-                else {
-                    discountValue = 0;
+                // Tính giảm giá
+                BigDecimal discountValue = BigDecimal.ZERO;
+                if (promotionById.isPresent()) {
+                    Coupon coupon = promotionById.get();
+                    // Kiểm tra nếu tổng thanh toán đạt tối thiểu để áp dụng mã giảm giá
+                    if (totalPayment.compareTo(BigDecimal.valueOf(coupon.getMinimumValue())) >= 0) {
+                        if (coupon.getDiscountType() == DiscountType.FIXED) {
+                            if (coupon.getDiscountValueFixed() != null) {
+                                discountValue = BigDecimal.valueOf(coupon.getDiscountValueFixed());
+                            }
+                        } else if (coupon.getDiscountType() == DiscountType.PERCENTAGE) {
+                            if (coupon.getDiscountValuePercent() != null) {
+                                BigDecimal percent = BigDecimal.valueOf(coupon.getDiscountValuePercent())
+                                        .divide(BigDecimal.valueOf(100));
+                                BigDecimal calculatedDiscount = totalPayment.multiply(percent);
+                                if (coupon.getMaximumReduction() != null) {
+                                    discountValue = calculatedDiscount
+                                            .min(BigDecimal.valueOf(coupon.getMaximumReduction()));
+                                } else {
+                                    discountValue = calculatedDiscount;
+                                }
+                            }
+                        }
+                    } else {
+                        // Nếu không đạt tối thiểu, không áp dụng giảm giá
+                        discountValue = BigDecimal.ZERO;
+                        // Có thể thêm thông báo lỗi hoặc cảnh báo ở đây nếu cần
+                        response.put("message", "false");
+                    }
+                } else if (promotionId == null && order.getCoupon() != null) {
+                    Coupon coupon = order.getCoupon();
+                    if (totalPayment.compareTo(BigDecimal.valueOf(coupon.getMinimumValue())) >= 0) {
+                        if (coupon.getDiscountType() == DiscountType.FIXED) {
+                            if (coupon.getDiscountValueFixed() != null) {
+                                discountValue = BigDecimal.valueOf(coupon.getDiscountValueFixed());
+                            }
+                        } else if (coupon.getDiscountType() == DiscountType.PERCENTAGE) {
+                            if (coupon.getDiscountValuePercent() != null) {
+                                BigDecimal percent = BigDecimal.valueOf(coupon.getDiscountValuePercent())
+                                        .divide(BigDecimal.valueOf(100));
+                                BigDecimal calculatedDiscount = totalPayment.multiply(percent);
+                                if (coupon.getMaximumReduction() != null) {
+                                    discountValue = calculatedDiscount
+                                            .min(BigDecimal.valueOf(coupon.getMaximumReduction()));
+                                } else {
+                                    discountValue = calculatedDiscount;
+                                }
+                            }
+                        }
+                    } else {
+                        // Nếu không đạt tối thiểu, không áp dụng giảm giá
+                        discountValue = BigDecimal.ZERO;
+                        // Có thể thêm thông báo lỗi hoặc cảnh báo ở đây nếu cần
+                        response.put("message", "Đơn hàng không đủ giá trị tối thiểu để áp dụng mã giảm giá.");
+                    }
                 }
 
-                totalPayment = totalPayment - discountValue;
+                // Trừ giảm giá từ tổng thanh toán
+                totalPayment = totalPayment.subtract(discountValue);
 
-                order.setTotalAmount(BigDecimal.valueOf(totalPayment));
+                // Cập nhật tổng thanh toán vào đơn hàng
+                order.setTotalAmount(totalPayment);
                 this.orderRepository.save(order);
 
+                // Cập nhật các thuộc tính vào session
                 session.setAttribute("shippingMethodInOrder", order.getShippingMethod());
                 session.setAttribute("totalPayment", totalPayment);
-                // session.setAttribute("paymentMethodInOrder", order.getPaymentMethod());
 
-                // Trả về dữ liệu cần thiết cho client
-                // response.put("shippingMethod", order.getShippingMethod());
-
+                // Đưa thông tin vào response
                 response.put("totalPayment", totalPayment);
                 response.put("shippingPrice", shippingPrice);
-                if (discountValue != 0) {
-                    response.put("discountValue", order.getCoupon().getDiscountValueFixed());
+                if (discountValue.compareTo(BigDecimal.ZERO) > 0) {
+                    response.put("discountValue", discountValue);
                 }
             }
-
         }
+
         return response;
     }
 
@@ -415,14 +489,14 @@ public class OrderService {
     @Transactional
     public OrderDTO updateInvoice(OrderDTO orderDTO) {
         Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
-        if(order == null){
+        if (order == null) {
             return null;
         }
-        if(orderDTO.getPaymentStatus() == PaymentStatus.COMPLETED){
+        if (orderDTO.getPaymentStatus() == PaymentStatus.COMPLETED) {
             order.setPaymentStatus(PaymentStatus.COMPLETED);
         }
-        if(orderDTO.getPromotion() != null ){
-            if(orderDTO.getPromotion().getId() != 0){
+        if (orderDTO.getPromotion() != null) {
+            if (orderDTO.getPromotion().getId() != 0) {
                 order.setCoupon(Coupon.builder().id(orderDTO.getPromotion().getId()).build());
             }
         }
@@ -430,10 +504,10 @@ public class OrderService {
         order.setTotalAmount(orderDTO.getTotalAmount());
         order.setTotalProducts(orderDTO.getTotalProducts());
         order.setPaymentMethod(orderDTO.getPaymentMethod());
-        if(orderDTO.getUser() != null){
-            if(orderDTO.getUser().getId() == 0){
+        if (orderDTO.getUser() != null) {
+            if (orderDTO.getUser().getId() == 0) {
                 order.setUser(null);
-            }else{
+            } else {
                 order.setUser(User.builder().id(orderDTO.getUser().getId()).build());
             }
         }
@@ -477,8 +551,10 @@ public class OrderService {
     public List<OrderDetailDTO> getOrderDetailByOrderId(Long id) {
         List<OrderDetail> orderDetails = orderDetailRepository.getOrderDetailByOrderId(id);
 
-        orderDetails.forEach(item -> System.out.println(item.getProductDetail().getPrice() + ": giá sản phẩm trong này"));
-        List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO :: toOrderDetailDTO).collect(Collectors.toList());
+        orderDetails
+                .forEach(item -> System.out.println(item.getProductDetail().getPrice() + ": giá sản phẩm trong này"));
+        List<OrderDetailDTO> orderDetailDTOS = orderDetails.stream().map(OrderDetailDTO::toOrderDetailDTO)
+                .collect(Collectors.toList());
         return orderDetailDTOS;
     }
 

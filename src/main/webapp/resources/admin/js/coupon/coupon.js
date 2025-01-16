@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    const inputMaxValueReduce = document.getElementById('inputMaxValue')
+
     const btnUpdateCreateCoupon = document.getElementById('btn-update-create-coupon');
     // Chọn các nút
     const btnFixed = document.querySelector('.btn-fixed');
@@ -755,7 +757,7 @@ document.addEventListener('DOMContentLoaded', function () {
             couponCode: code,
             discountValuePercent: percentageDiscount,
             discountValueFixed: maxDiscount,
-            maximumReduction: usageLimit,
+            maximumReduction: inputMaxValueReduce.value,
             discountValueFixed: fixedDiscount,
             startDate: startDate,
             endDate: endDate,
