@@ -810,6 +810,7 @@ document.addEventListener('DOMContentLoaded', function () {
             paymentMethod: paymentMethod,
             paymentStatus : 'COMPLETED',
             orderStatus : 'COMPLETED',
+            shippingMethod: 'SAVE',
             totalProducts: totalProducts,
             promotion: {
                 id : idCoupon
