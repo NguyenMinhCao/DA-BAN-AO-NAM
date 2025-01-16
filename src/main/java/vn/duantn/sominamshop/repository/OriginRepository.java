@@ -12,7 +12,7 @@ import vn.duantn.sominamshop.model.Origin;
 import java.util.List;
 
 @Repository
-public interface OriginRepository extends JpaRepository<Origin, Long> {
+public interface OriginRepository extends JpaRepository<Origin, Integer> {
     Page<Origin> findByOriginNameContainingIgnoreCase(String originName, Pageable pageable);
 
     boolean existsByOriginName(String originName);
@@ -25,6 +25,6 @@ public interface OriginRepository extends JpaRepository<Origin, Long> {
             "      ,[created_at]\n" +
             "      ,[updated_at]\n" +
             "  FROM [dbo].[origins]\n" +
-            "WHERE [status] = 0",nativeQuery = true)
+            "WHERE [status] = 0", nativeQuery = true)
     List<Origin> getAllActive();
 }

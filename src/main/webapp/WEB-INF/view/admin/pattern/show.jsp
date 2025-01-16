@@ -96,9 +96,6 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <a href="/admin/pattern/detail/${pattern.id}" class="btn btn-success" title="Xem chi tiết">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
                                     <a href="/admin/pattern/edit/${pattern.id}" class="btn btn-warning" title="Cập nhật">
                                         <i class="fas fa-edit"></i>
                                     </a>

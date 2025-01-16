@@ -15,8 +15,6 @@ import vn.duantn.sominamshop.service.OriginService;
 @Controller
 @RequestMapping("/admin/origin")
 public class OriginController {
-
-
     @Autowired
     private OriginService originService;
 
@@ -57,23 +55,18 @@ public class OriginController {
         return "redirect:/admin/origin";
     }
     @GetMapping("/edit/{originId}")
-    public String editOriginForm(@PathVariable Long originId, Model model) {
+    public String editOriginForm(@PathVariable Integer originId, Model model) {
         Origin origin = originService.getOriginById(originId);
         model.addAttribute("origin", origin);
         return "admin/origin/edit";
     }
 
     @PostMapping("/edit/{originId}")
-    public String updateOrigin(@PathVariable Long originId, @ModelAttribute("origin") Origin origin, RedirectAttributes redirectAttributes, Model model) {
-        try {
-            originService.updateOrigin(originId, origin);
-            redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
-            return "redirect:/admin/origin";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            model.addAttribute("origin", origin);
-            return "admin/origin/edit";
-        }
+    public String updateOrigin(@PathVariable Integer originId, @ModelAttribute("origin") Origin origin, RedirectAttributes redirectAttributes) {
+        originService.updateOrigin(originId, origin);
+        redirectAttributes.addFlashAttribute("success", "Nguồn gốc đã được cập nhật thành công!");
+        return "redirect:/admin/origin";
     }
+
 
 }

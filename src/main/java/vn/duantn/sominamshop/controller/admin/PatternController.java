@@ -63,7 +63,7 @@ public class PatternController {
     public String updateOrigin(@PathVariable Long id, @ModelAttribute("pattern") Pattern pattern, RedirectAttributes redirectAttributes, Model model) {
         try {
             patternService.updatePattern(id, pattern);
-            redirectAttributes.addFlashAttribute("success", "Màu sắc đã được cập nhật thành công!");
+            redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
             return "redirect:/admin/pattern";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());

@@ -17,7 +17,7 @@ public class OriginRestController {
 
 
     @PostMapping("/setStatus/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id) {
+    public ResponseEntity<?> update(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(originService.setStatus(id));
     }
 

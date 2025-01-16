@@ -255,7 +255,8 @@
                                             data-product-detail-size="${productDetail.sizeName}"
                                             id="${productDetail.id}"
                                             onclick="updateProductDetailForm(this)">
-                                        <i class="fas fa-edit"></i>
+
+                                        <i class="fas fa-edit"> Cập nhật</i>
                                     </button>
                                 </td>
 

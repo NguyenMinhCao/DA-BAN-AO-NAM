@@ -116,7 +116,6 @@
                                         <option value="${pattern.id}">${pattern.patternName}</option>
                                     </c:forEach>
                                 </select>
-                                <%--                                <button id="showFormCategory" class="btn add-button" type="button"><i class="fa-solid fa-plus fa-2xl add-icon"></i></button>--%>
                             </div>
                         </div>
                         <div class="form-group col-md-12">

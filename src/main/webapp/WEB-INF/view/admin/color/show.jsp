@@ -61,7 +61,7 @@
                             </button>
                         </form>
 
-                       
+
 
                         <a href="/admin/color/create" class="btn btn-primary btn-md d-flex align-items-center px-3 py-2" style="font-size: 1rem;">
                             <i class="bi bi-plus-circle me-2"></i> Tạo màu sắc
@@ -99,9 +99,6 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <a href="/admin/color/detail/${color.id}" class="btn btn-success" title="Xem chi tiết">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
                                     <a href="/admin/color/edit/${color.id}" class="btn btn-warning" title="Cập nhật">
                                         <i class="fas fa-edit"></i>
                                     </a>

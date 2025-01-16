@@ -94,10 +94,9 @@
                                                id="${category.id}" ${category.status == 0 ? 'checked' : ''}>
                                         <span class="slider"></span>
                                     </label>
-                                </td>                                <td>
-                                    <a href="/admin/category/detail/${category.id}" class="btn btn-success" title="Xem chi tiết">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                                </td>
+                                <td>
+
                                     <a href="/admin/category/edit/${category.id}" class="btn btn-warning" title="Cập nhật">
                                         <i class="fas fa-edit"></i>
                                     </a>

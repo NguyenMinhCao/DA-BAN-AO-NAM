@@ -12,7 +12,7 @@ public class ProductRequest {
     private Long categoryId;
     private Long materialId;
     private Long patternId;
-    private Long originId;
+    private Integer originId;
     private Integer status;
 
     public Product map(Product product) {

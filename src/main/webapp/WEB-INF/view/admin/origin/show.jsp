@@ -97,9 +97,6 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <a href="/admin/origin/detail/${origin.originId}" class="btn btn-success" title="Xem chi tiết">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
                                     <a href="/admin/origin/edit/${origin.originId}" class="btn btn-warning" title="Cập nhật">
                                         <i class="fas fa-edit"></i>
                                     </a>

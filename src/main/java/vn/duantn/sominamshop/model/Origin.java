@@ -17,7 +17,7 @@ public class Origin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "origin_id") // Đảm bảo sử dụng tên đúng
-    private Long originId;
+    private Integer originId;
 
     @Column(name = "origin_name", nullable = false, columnDefinition = "NVARCHAR(255)", unique = true)
     private String originName;

@@ -15,6 +15,7 @@ import java.util.List;
 public class OriginService {
     private final OriginRepository originRepository;
 
+
     public OriginService(OriginRepository originRepository) {
         this.originRepository = originRepository;
     }
@@ -24,7 +25,7 @@ public class OriginService {
     }
 
 
-    public Origin getOriginById(Long originId) {
+    public Origin getOriginById(Integer originId) {
         return originRepository.findById(originId)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy  với ID: " + originId));
     }
@@ -54,19 +55,11 @@ public class OriginService {
     }
 
 
-    public Origin updateOrigin(Long originId, Origin updatedOrigin) {
-        Origin existingOrigin = getOriginById(originId);
-
-        if (updatedOrigin.getOriginName() == null || updatedOrigin.getOriginName().trim().isEmpty()) {
-            throw new IllegalArgumentException(" Không được để trống");
-        }
+    public Origin updateOrigin(Integer id, Origin updatedOrigin) {
+        Origin existingOrigin = getOriginById(id);
 
         if (updatedOrigin.getOriginName() != null && !updatedOrigin.getOriginName().isEmpty()) {
-
-//            if (originRepository.existsByOriginNameAndIdNot(updatedOrigin.getOriginName().trim(), originId)) {
-//                throw new IllegalArgumentException("Tên  đã tồn tại");
-//            }
-//            existingOrigin.setOriginName(updatedOrigin.getOriginName().trim());
+            existingOrigin.setOriginName(updatedOrigin.getOriginName());
         }
 
         if (updatedOrigin.getStatus() != null) {
@@ -75,7 +68,7 @@ public class OriginService {
 
         return originRepository.save(existingOrigin);
     }
-    public Origin setStatus(Long id) {
+    public Origin setStatus(Integer id) {
         Origin searchOrigin = originRepository.findById(id).get();
         if (searchOrigin != null) {
             if (searchOrigin.getStatus() == 1) {
