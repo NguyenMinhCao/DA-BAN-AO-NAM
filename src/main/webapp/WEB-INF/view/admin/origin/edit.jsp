@@ -22,6 +22,17 @@
     </script>
 </c:if>
 
+<c:if test="${not empty errorMessage}">
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: '${errorMessage}',
+            showConfirmButton: true
+        });
+    </script>
+</c:if>
+
 <jsp:include page="../layout/header.jsp" />
 <div id="layoutSidenav">
     <jsp:include page="../layout/sidebar.jsp" />
@@ -46,14 +57,14 @@
 
                             <div class="mb-3">
                                 <label for="originName" class="form-label">Tên màu</label>
-                                <input type="text" id="colorName" name="originName" class="form-control" value="${color.colorName}" required />
+                                <input type="text" id="colorName" name="originName" class="form-control" value="${origin.originName}" required />
                             </div>
 
                             <div class="mb-3">
                                 <label for="status" class="form-label">Trạng thái</label>
                                 <select id="status" name="status" class="form-select">
-                                    <option value="Hoạt động" ${origin.status == 'Hoạt động' ? 'selected' : ''}>Hoạt động</option>
-                                    <option value="Không hoạt động" ${origin.status == 'Không hoạt động' ? 'selected' : ''}>Không hoạt động</option>
+                                    <option value="0" ${origin.status == '0' ? 'selected' : ''}>Hoạt động</option>
+                                    <option value="1" ${origin.status == '1' ? 'selected' : ''}>Không hoạt động</option>
                                 </select>
                             </div>
 

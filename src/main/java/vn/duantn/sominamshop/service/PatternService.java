@@ -41,20 +41,37 @@ public class PatternService {
 
     public Pattern addPattern(Pattern pattern) {
         if (pattern.getPatternName() == null || pattern.getPatternName().isEmpty()) {
-            throw new IllegalArgumentException("Tên màu không được để trống");
+            throw new IllegalArgumentException("Không  được để trống");
         }
+
+        if (patternRepository.existsByPatternName(pattern.getPatternName())) {
+            throw new IllegalArgumentException("Tên màu đã tồn tại");
+        }
+        if (pattern.getStatus() == null) {
+            pattern.setStatus(0);
+        }
+
         return patternRepository.save(pattern);
     }
 
-    public Pattern updatePattern(Long id, Pattern updatePattern) {
+
+    public Pattern updatePattern(Long id, Pattern updatedPattern) {
         Pattern existingPattern = getPatternById(id);
 
-        if (updatePattern.getPatternName() != null && !updatePattern.getPatternName().isEmpty()) {
-            existingPattern.setPatternName(updatePattern.getPatternName());
+        if (updatedPattern.getPatternName() == null || updatedPattern.getPatternName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên màu không được để trống");
         }
 
-        if (updatePattern.getStatus() != null) {
-            existingPattern.setStatus(updatePattern.getStatus());
+        if (updatedPattern.getPatternName() != null && !updatedPattern.getPatternName().isEmpty()) {
+
+            if (patternRepository.existsByPatternNameAndIdNot(updatedPattern.getPatternName().trim(), id)) {
+                throw new IllegalArgumentException("Tên màu đã tồn tại");
+            }
+            existingPattern.setPatternName(updatedPattern.getPatternName().trim());
+        }
+
+        if (updatedPattern.getStatus() != null) {
+            existingPattern.setStatus(updatedPattern.getStatus());
         }
 
         return patternRepository.save(existingPattern);

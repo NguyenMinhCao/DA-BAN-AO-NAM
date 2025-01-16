@@ -53,7 +53,20 @@ public class OrderManagementService {
         return false;
     }
 
-    public void updateStatusOrder(Order order, DataStatusOrderDTO dataStatus) {
+    public Boolean updateStatusOrder(Order order, DataStatusOrderDTO dataStatus) {
+        List<OrderDetail> lstOrderDetails = order.getOrderDetails();
+        for (OrderDetail orderDetail : lstOrderDetails) {
+            ProductDetail productDetail = orderDetail.getProductDetail();
+            long quantityOrderDetail = orderDetail.getQuantity();
+            if (quantityOrderDetail <= productDetail.getQuantity()) {
+                Integer newQuantityProduct = productDetail.getQuantity() - (int) quantityOrderDetail;
+                productDetail.setQuantity(newQuantityProduct);
+                this.productDetailService.saveProductDetail(productDetail);
+            } else {
+                return false;
+            }
+        }
+
         if (dataStatus.getFieldUpdate().equals("DELIVERY")) {
             if (dataStatus.getStatus().equals("COMPLETED")) {
                 order.setDeliveryStatus(DeliveryStatus.COMPLETED);
@@ -73,7 +86,8 @@ public class OrderManagementService {
             this.orderService.saveOrder(order);
             // this.orderHistoryService.updateDeliveryStatus(orderById.get());
         }
-    }
+        return true;
+    }   
 
     // xủ lý trả hàng
     public Boolean returnProduct(CheckQuantityProductDeDTO dto) {
@@ -205,7 +219,7 @@ public class OrderManagementService {
         return true;
     }
 
-    public Order updateAddressOrder(AddressUpdateRequest addressUpdateRequest , Order order) {
+    public Order updateAddressOrder(AddressUpdateRequest addressUpdateRequest, Order order) {
         order.setRecipientName(addressUpdateRequest.getFullName());
         order.setPhoneNumber(addressUpdateRequest.getPhoneNumber());
         order.setWard(addressUpdateRequest.getWard());

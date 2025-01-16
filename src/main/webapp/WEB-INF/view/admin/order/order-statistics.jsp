@@ -34,8 +34,8 @@
                         </ol>
                     </div>
 
-
                     <div class="row mb-4">
+                        <!-- Tổng Doanh Thu -->
                         <div class="col-md-3">
                             <div class="stat-box">
                                 <div class="d-flex align-items-center">
@@ -49,6 +49,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Doanh Thu Tháng Này -->
                         <div class="col-md-3">
                             <div class="stat-box">
                                 <div class="d-flex align-items-center">
@@ -62,10 +64,12 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Doanh Thu Hôm Nay -->
                         <div class="col-md-3">
                             <div class="stat-box">
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-calendar-alt fa-2x text-warning me-3"></i>
+                                    <i class="fas fa-calendar-day fa-2x text-danger me-3"></i>
                                     <div>
                                         <h4>Doanh Thu Hôm Nay</h4>
                                         <p id="todayRevenue">
@@ -75,10 +79,12 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Doanh Thu Năm Nay -->
                         <div class="col-md-3">
                             <div class="stat-box">
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-calendar-year fa-2x text-info me-3"></i>
+                                    <i class="fas fa-dollar-sign fa-2x text-primary me-3"></i>
                                     <div>
                                         <h4>Doanh Thu Năm Nay</h4>
                                         <p id="yearlyRevenue">
@@ -91,10 +97,11 @@
                     </div>
 
                     <div class="row mb-4">
+                        <!-- Số sản phẩm quản lí -->
                         <div class="col-md-3">
                             <div class="stat-box">
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-cogs fa-2x text-danger me-3"></i>
+                                    <i class="fas fa-cogs fa-2x text-primary me-3"></i>
                                     <div>
                                         <h4>Số sản phẩm quản lí</h4>
                                         <p id="totalProduct">
@@ -104,6 +111,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Số sản phẩm sắp hết hàng -->
                         <div class="col-md-3">
                             <div class="stat-box">
                                 <div class="d-flex align-items-center">
@@ -117,10 +126,12 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Đơn hàng hôm nay -->
                         <div class="col-md-3">
                             <div class="stat-box">
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-calendar-alt fa-2x text-warning me-3"></i>
+                                    <i class="fas fa-box-open fa-2x text-success me-3"></i>
                                     <div>
                                         <h4>Đơn hàng hôm nay</h4>
                                         <p id="totalTodayOrderCount">
@@ -130,164 +141,163 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Đơn hàng chưa giải quyết -->
                         <div class="col-md-3">
                             <div class="stat-box">
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-calendar-alt fa-2x text-warning me-3"></i>
+                                    <i class="fas fa-hourglass-half fa-2x text-warning me-3"></i>
                                     <div>
-                                        <h4>Doanh Thu Hôm Nay</h4>
-                                        <p id="">
-                                            <span>0</span>
+                                        <h4>Đơn hàng chưa giải quyết</h4>
+                                        <p id="pendingOrderCount">
+                                            <span>${pendingOrderCount}</span>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <h2>Thống Kê Đơn Hàng và Sản Phẩm Bán Được</h2>
-                <canvas id="orderChart" width="400" height="200"></canvas>
-                <script>
-                    async function fetchOrderStatistics() {
-                        try {
-                            const response = await fetch('/api/admin/order/order-statistics');
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
+                    <h2>Thống Kê Đơn Hàng và Sản Phẩm Bán Được</h2>
+                    <canvas id="orderChart" width="400" height="200"></canvas>
+                    <script>
+                        async function fetchOrderStatistics() {
+                            try {
+                                const response = await fetch('/api/admin/order/order-statistics');
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                const data = await response.json();
+                                updateChart(data);
+                            } catch (error) {
+                                console.error('Error fetching order statistics:', error);
                             }
-                            const data = await response.json();
-                            updateChart(data);
-                        } catch (error) {
-                            console.error('Error fetching order statistics:', error);
                         }
-                    }
 
-                    function updateChart(data) {
-                        const months = [];
-                        const orderCounts = [];
-                        const totalQuantity = [];
+                        function updateChart(data) {
+                            const months = [];
+                            const orderCounts = [];
+                            const totalQuantity = [];
 
-                        data.forEach(item => {
-                            months.push(item.month);
-                            orderCounts.push(item.orderCount);
-                            totalQuantity.push(item.totalQuantity || 0);
-                        });
+                            data.forEach(item => {
+                                months.push(item.month);
+                                orderCounts.push(item.orderCount);
+                                totalQuantity.push(item.totalQuantity || 0);
+                            });
 
-                        if (orderChart) {
-                            orderChart.data.labels = months;
-                            orderChart.data.datasets[0].data = orderCounts;
-                            orderChart.data.datasets[1].data = totalQuantity;
-                            orderChart.update();
+                            if (orderChart) {
+                                orderChart.data.labels = months;
+                                orderChart.data.datasets[0].data = orderCounts;
+                                orderChart.data.datasets[1].data = totalQuantity;
+                                orderChart.update();
+                            }
                         }
-                    }
 
-                    // Khởi tạo biểu đồ
-                    let orderChart = null;
-                    window.addEventListener('DOMContentLoaded', () => {
-                        const ctx = document.getElementById('orderChart').getContext('2d');
-                        orderChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: [],
-                                datasets: [
-                                    {
-                                        label: 'Số Đơn Hàng',
-                                        data: [],
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        borderWidth: 1
-                                    },
-                                    {
-                                        label: 'Số Sản Phẩm Bán Được',
-                                        data: [],
-                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                        borderColor: 'rgba(255, 99, 132, 1)',
-                                        borderWidth: 1
-                                    }
-                                ]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
+                        // Khởi tạo biểu đồ
+                        let orderChart = null;
+                        window.addEventListener('DOMContentLoaded', () => {
+                            const ctx = document.getElementById('orderChart').getContext('2d');
+                            orderChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: [],
+                                    datasets: [
+                                        {
+                                            label: 'Số Đơn Hàng',
+                                            data: [],
+                                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        },
+                                        {
+                                            label: 'Số Sản Phẩm Bán Được',
+                                            data: [],
+                                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                            borderColor: 'rgba(255, 99, 132, 1)',
+                                            borderWidth: 1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
                                     }
                                 }
-                            }
+                            });
+
+                            fetchOrderStatistics();
                         });
+                    </script>
 
-                        fetchOrderStatistics();
-                    });
-                </script>
+                    <h2 class="mt-4">Sản phẩm sắp hết hàng</h2>
 
-                <h2 class="mt-4">Sản phẩm sắp hết hàng</h2>
-
-                <table class="table table-bordered mt-3">
-                    <thead>
-                        <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Size</th>
-                            <th>Màu</th>
-                            <th>Giá</th>
-                            <th>Số lượng còn lại</th>
-                            <th>Tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="product" items="${lowStockProducts}">
+                    <table class="table table-bordered mt-3">
+                        <thead>
                             <tr>
-                                <td>${product.productName}</td>
-                                <td>${product.productDetail.size.sizeName}</td>
-                                <td>${product.productDetail.color.colorName}</td>
-                                <td>
-                                    <fmt:formatNumber value="${product.productDetail.price}" type="currency"
-                                        currencySymbol="₫" />
-                                </td>
-                                <td>${product.productDetail.quantity}</td>
-                                <td>
-                                    <fmt:formatNumber
-                                        value="${product.productDetail.price * product.productDetail.quantity}"
-                                        type="currency" currencySymbol="₫" />
-                                </td>
+                                <th>Tên sản phẩm</th>
+                                <th>Size</th>
+                                <th>Màu</th>
+                                <th>Giá</th>
+                                <th>Số lượng còn lại</th>
+                                <th>Tiền</th>
                             </tr>
-                        </c:forEach>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="product" items="${lowStockProducts}">
+                                <tr>
+                                    <td>${product.productName}</td>
+                                    <td>${product.productDetail.size.sizeName}</td>
+                                    <td>${product.productDetail.color.colorName}</td>
+                                    <td>
+                                        <fmt:formatNumber value="${product.productDetail.price}" type="currency"
+                                            currencySymbol="₫" />
+                                    </td>
+                                    <td>${product.productDetail.quantity}</td>
+                                    <td>
+                                        <fmt:formatNumber
+                                            value="${product.productDetail.price * product.productDetail.quantity}"
+                                            type="currency" currencySymbol="₫" />
+                                    </td>
+                                </tr>
+                            </c:forEach>
 
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-center mt-3">
-                    <nav aria-label="Pagination">
-                        <ul class="pagination">
-                            <c:if test="${lowStockProductsPage.hasPrevious()}">
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=${lowStockProductsPage.number - 1}"
-                                        aria-label="Trang trước">
-                                        < </a>
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-center mt-3">
+                        <nav aria-label="Pagination">
+                            <ul class="pagination">
+                                <c:if test="${lowStockProductsPage.hasPrevious()}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${lowStockProductsPage.number - 1}"
+                                            aria-label="Trang trước">
+                                            < </a>
+                                    </li>
+                                </c:if>
+                                <li class="page-item disabled">
+                                    <span class="page-link">
+                                        Trang ${lowStockProductsPage.number + 1} / ${lowStockProductsPage.totalPages}
+                                    </span>
                                 </li>
-                            </c:if>
-                            <li class="page-item disabled">
-                                <span class="page-link">
-                                    Trang ${lowStockProductsPage.number + 1} / ${lowStockProductsPage.totalPages}
-                                </span>
-                            </li>
 
-                            <c:if test="${lowStockProductsPage.hasNext()}">
-                                <li class="page-item">
-                                    <a class="page-link" href="?page=${lowStockProductsPage.number + 1}"
-                                        aria-label="Trang sau">
-                                        >
-                                    </a>
-                                </li>
-                            </c:if>
-                        </ul>
-                    </nav>
+                                <c:if test="${lowStockProductsPage.hasNext()}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=${lowStockProductsPage.number + 1}"
+                                            aria-label="Trang sau">
+                                            >
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
 
 
             </main>
             <jsp:include page="../layout/footer.jsp" />
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            crossorigin="anonymous"></script>
-        <script src="/admin/js/scripts.js"></script>
 </body>
 
 </html>

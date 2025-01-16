@@ -60,6 +60,9 @@
                                 <i class="bi bi-search me-2"></i> Tìm kiếm
                             </button>
                         </form>
+
+
+
                         <a href="/admin/color/create" class="btn btn-primary btn-md d-flex align-items-center px-3 py-2" style="font-size: 1rem;">
                             <i class="bi bi-plus-circle me-2"></i> Tạo màu sắc
                         </a>
@@ -96,9 +99,6 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <a href="/admin/color/detail/${color.id}" class="btn btn-success" title="Xem chi tiết">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
                                     <a href="/admin/color/edit/${color.id}" class="btn btn-warning" title="Cập nhật">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -111,20 +111,26 @@
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
                             <c:if test="${not empty colorPage}">
+
+                                <!-- Kiểm tra nếu có trang trước -->
                                 <c:if test="${colorPage.hasPrevious()}">
                                     <li class="page-item">
                                         <a class="page-link" href="/admin/color?colorName=${colorName}&page=${colorPage.number - 1}">&laquo;</a>
                                     </li>
                                 </c:if>
 
-                                <c:forEach var="i" begin="0" end="${colorPage.totalPages - 1}">
-                                    <li class="page-item ${colorPage.number == i ? 'active' : ''}">
-                                        <a class="page-link" href="/admin/color?colorName=${colorName}&page=${i}">
-                                                ${i + 1}
-                                        </a>
-                                    </li>
-                                </c:forEach>
+                                <!-- Kiểm tra nếu có trang để hiển thị -->
+                                <c:if test="${colorPage.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${colorPage.totalPages - 1}">
+                                        <li class="page-item ${colorPage.number == i ? 'active' : ''}">
+                                            <a class="page-link" href="/admin/color?colorName=${colorName}&page=${i}">
+                                                    ${i + 1}
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
 
+                                <!-- Kiểm tra nếu có trang tiếp theo -->
                                 <c:if test="${colorPage.hasNext()}">
                                     <li class="page-item">
                                         <a class="page-link" href="/admin/color?colorName=${colorName}&page=${colorPage.number + 1}">&raquo;</a>
@@ -133,6 +139,7 @@
                             </c:if>
                         </ul>
                     </nav>
+
                 </div>
             </div>
         </main>

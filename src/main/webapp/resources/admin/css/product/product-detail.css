@@ -31,12 +31,7 @@
     border-bottom: 1px solid #ccc;
 }
 
-#thumbbox {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
-    overflow: auto;
-}
+
 
 .image-item {
     float: left;
@@ -45,12 +40,7 @@
     position: relative;
 }
 
-.thumbimage {
-    max-width: 150px;
-    max-height: 150px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+
 
 .image-product-container {
     position: relative;
@@ -140,3 +130,16 @@
         margin-left: 100px; /* Tương ứng với sidebar */
     }
 }
+
+#thumbbox {
+    display: flex;
+    flex-wrap: wrap; /* Đảm bảo các ảnh được bọc gọn gàng */
+}
+
+#thumbbox img {
+    width: 100px; /* Chiều rộng của ảnh */
+    height: 100px; /* Chiều cao của ảnh */
+    object-fit: cover; /* Đảm bảo ảnh không bị méo và phù hợp với kích thước */
+    margin: 5px; /* Khoảng cách giữa các ảnh */
+}
+

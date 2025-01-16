@@ -12,23 +12,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script>
-        $(document).ready(() => {
-            const avatarFiles = $("#avatarFiles");
-            avatarFiles.change(function (e) {
-                $("#avatarPreviews").empty();
-                for (let i = 0; i < e.target.files.length; i++) {
-                    const imgURL = URL.createObjectURL(e.target.files[i]);
-                    const previewElement = $('<img />', {
-                        src: imgURL,
-                        class: 'preview-img',
-                        style: 'max-height: 250px; margin: 5px; display: inline-block;'
-                    });
-                    $("#avatarPreviews").append(previewElement);
-                }
-            });
-        });
-    </script>
 </head>
 <body class="sb-nav-fixed">
 <jsp:include page="../layout/header.jsp"/>
@@ -52,7 +35,7 @@
                                 <div class="card-body">
                                     <c:if test="${not empty errorMessage}">
                                         <div class="alert alert-danger">
-                                            <span>${errorMessage}</span>
+                                            <strong>Error: </strong> ${errorMessage}
                                         </div>
                                     </c:if>
 

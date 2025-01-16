@@ -1,4 +1,5 @@
 package vn.duantn.sominamshop.repository;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -114,4 +115,12 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
                         "LEFT JOIN Coupon cp on cp.id = o.coupon.id " +
                         "WHERE o.id = :id ")
         Optional<Order> getAllOrderById(@Param("id") Long id);
+
+        @Query("SELECT COUNT(o) FROM Order o WHERE o.orderStatus = 'PENDING'")
+        long getPendingOrderCount();
+
+
+
+
+
 }

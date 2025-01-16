@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Hàm mở URL chi tiết đơn hàng
-    
+
 
     // Hàm lấy giá trị size từ selectPageSize
     function getCurrentSize() {
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let filterQuery = filters.join(' and ');
 
         // Xây dựng URL truy vấn
-        let queryUrl = `http://localhost:8080/admin/orders/search?page=${page}&size=${size}`;
+        let queryUrl = `http://localhost:8080/admin/orders/search?page=${page}&size=${size}&sort=createdAt,asc`;
 
         if (filterQuery) {
             const encodedFilter = encodeURIComponent(filterQuery);

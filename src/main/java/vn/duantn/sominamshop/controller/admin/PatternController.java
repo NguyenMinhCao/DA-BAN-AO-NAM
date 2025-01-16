@@ -41,8 +41,16 @@ public class PatternController {
             model.addAttribute("errorMessage", "Please correct the errors in the form.");
             return "admin/pattern/create";
         }
-        patternService.addPattern(newPattern);
-        return "redirect:/admin/origin";
+        if (newPattern.getStatus() == null) {
+            newPattern.setStatus(0);
+        }
+        try {
+            patternService.addPattern(newPattern);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "admin/pattern/create";
+        }
+        return "redirect:/admin/pattern";
     }
     @GetMapping("/edit/{id}")
     public String editPatternForm(@PathVariable Long id, Model model) {
@@ -52,11 +60,16 @@ public class PatternController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateOrigin(@PathVariable Long id, @ModelAttribute("pattern") Pattern pattern, RedirectAttributes redirectAttributes) {
-        patternService.updatePattern(id, pattern);
-        redirectAttributes.addFlashAttribute("success", "Mẫu sản phẩm đã được cập nhật thành công!");
-        return "redirect:/admin/pattern";
+    public String updateOrigin(@PathVariable Long id, @ModelAttribute("pattern") Pattern pattern, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            patternService.updatePattern(id, pattern);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
+            return "redirect:/admin/pattern";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("pattern", pattern);
+            return "admin/pattern/edit";
+        }
     }
-
 
 }

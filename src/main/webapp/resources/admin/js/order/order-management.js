@@ -112,8 +112,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const data = await response.json();
-                console.log("Response Data:", data);
-                window.location.reload(true);
+                if (data == false) {
+                    toast({
+                        title: "Thất bại!",
+                        message: "Số lượng trong kho không đủ.",
+                        type: "error",
+                        duration: 1700
+                    });
+                } else {
+                    toast({
+                        title: "Thành công!",
+                        message: "Chuyển trạng thái thành công",
+                        type: "success",
+                        duration: 1700
+                    });
+                }
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 1200);
+
             } catch (error) {
                 console.error('Error:', error);
             }

@@ -5,10 +5,6 @@
         <html>
 
         <head>
-            <link href="/admin/css/styles.css" rel="stylesheet" />
-            <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-            <link rel="stylesheet" href="/admin/css/product/product.css">
             <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 
             <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css"
@@ -71,6 +67,8 @@
                                                             class="fa-solid fa-plus fa-2xl add-icon"></i></button>
                                                 </div>
                                             </div>
+
+
 
                                             <div class="form-group col-md-3">
                                                 <label for="select-material" class="control-label">Chất liệu</label>
@@ -137,9 +135,6 @@
                                                             </option>
                                                         </c:forEach>
                                                     </select>
-                                                    <%-- <button id="showFormCategory" class="btn add-button"
-                                                        type="button"><i
-                                                            class="fa-solid fa-plus fa-2xl add-icon"></i></button>--%>
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-12">
@@ -157,7 +152,7 @@
                             </div>
                         </div>
 
-                        <div class="app-content" style="margin-left: 0px;">
+                        <div class="app-content">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="tile">
@@ -352,9 +347,10 @@
                             </div>
                         </div>
                         <jsp:include page="../layout/footer.jsp" />
-                    </main>
                 </div>
             </div>
+            </main>
+
             <script src="${pageContext.request.contextPath}/admin/js/product/product-add.js"></script>
             <script src="${pageContext.request.contextPath}/admin/js/category/category.js"></script>
             <script src="${pageContext.request.contextPath}/admin/js/color/color.js"></script>

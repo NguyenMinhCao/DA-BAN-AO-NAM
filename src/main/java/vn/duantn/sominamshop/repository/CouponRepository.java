@@ -35,4 +35,7 @@ public interface CouponRepository extends JpaRepository<Coupon, Long>, JpaSpecif
     @Modifying
     @Query("Update Coupon c set c.usageLimit = c.usageLimit - :quantity where c.id = :id")
     Integer updateQuantity(@Param("quantity") Integer quantity, @Param("id") Long id);
+
+    @Query("SELECT c FROM Coupon c ORDER BY c.discountValueFixed ASC, c.discountValuePercent ASC")
+    List<Coupon> findAllCouponsOrderByDiscountsDesc();
 }

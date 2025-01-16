@@ -139,6 +139,10 @@ public class CouponService {
         return this.couponRepository.save(coupon);
     }
 
+    public List<Coupon> findAllCouponsOrderByDiscountsDesc() {
+        return this.couponRepository.findAllCouponsOrderByDiscountsDesc();
+    }
+
     // public List<PromotionDTO> getPromotion(Double orderValue) {
     // LocalDate today = LocalDate.now();
     // List<PromotionDTO> listPromotionDTO =
@@ -156,14 +160,15 @@ public class CouponService {
     // return listPromotionDTO;
     // }
 
-    public List<CouponDTO> findValidCoupons(String code){
-        LocalDateTime localDateTime =  LocalDateTime.now(ZoneOffset.of("+07:00"));
+    public List<CouponDTO> findValidCoupons(String code) {
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneOffset.of("+07:00"));
         List<Coupon> couponList = couponRepository.findValidCoupons(localDateTime, code);
-        List<CouponDTO> couponDTOList = couponList.stream().map(CouponDTO :: toDTO).collect(Collectors.toList());
+        List<CouponDTO> couponDTOList = couponList.stream().map(CouponDTO::toDTO).collect(Collectors.toList());
         return couponDTOList;
     }
+
     @Transactional
-    public void updateUsageLimitCoupon(Integer quantity, Long id){
+    public void updateUsageLimitCoupon(Integer quantity, Long id) {
         couponRepository.updateQuantity(quantity, id);
     }
 }

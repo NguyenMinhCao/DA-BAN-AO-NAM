@@ -132,18 +132,15 @@ function readURL(input, variantIndex) {
                     var imageUrl = response.imageUrl; // URL ảnh từ server
                     console.log("Image URL:", imageUrl);
 
-                    // Kiểm tra nếu ảnh chưa có trong danh sách ảnh của biến thể
                     var variant = variants[variantIndex];
                     var isDuplicate = variant.images.some(function (img) {
                         return img === imageUrl;
                     });
 
                     if (!isDuplicate) {
-                        // Thêm URL vào danh sách ảnh của biến thể
                         variant.images.push(imageUrl);
                         console.log("Updated Variant Images:", variant.images);
 
-                        // Tạo một phần tử hiển thị ảnh
                         var imageContainer = $(
                             '<div class="image-product-container">' +
                             '   <img src="' + '/images/product/' + imageUrl + '" alt="Thumb image" class="thumbimage"/>' +
@@ -151,10 +148,8 @@ function readURL(input, variantIndex) {
                             '</div>'
                         );
 
-                        // Thêm vào thẻ hiển thị ảnh của biến thể (dựa trên variantIndex)
                         $("#thumbbox-" + variantIndex).append(imageContainer);
 
-                        // Sự kiện click để xóa ảnh
                         imageContainer.find(".removeimg").on("click", function () {
                             var removedImage = $(this).closest(".image-product-container").find("img").attr("src");
                             variant.images = variant.images.filter(function (img) {
@@ -358,7 +353,7 @@ function renderListProductDetail(selectedColorItems, selectedSizeItems, quantity
                 '    <td class="gia_ban"><input class="product-detail-input gia_ban" type="number" value="' + productDetail.price + '" min="0"></td>\n' +
                 '    <td class="table-td-center tinh_nang">\n' +
                 '        <button class="btn btn-primary btn-sm trash" type="button" title="Xóa">' +
-                '            <i class="fas fa-trash-alt"></i>\n' +
+                '            <i class="fas fa-trash-alt"></i> Xóa\n' +
                 '        </button>\n' +
                 '    </td>' +
                 '</tr>'
@@ -457,16 +452,22 @@ function save() {
     }
 
     var productName = $("#input-product-name").val();
-
     var productCategory = $("#select-category").val();
-
     var productMaterial = $("#select-material").val();
-
     var productOrigin = $("#select-origin").val();
-
     var productPattern = $("#select-pattern").val();
 
     var productDescription = CKEDITOR.instances['input-product-description'].getData();
+    productDescription = removeHtmlTags(productDescription);  // Nếu muốn loại bỏ thẻ HTML
+
+    if (!productName || !productCategory || !productMaterial || !productOrigin || !productPattern) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Vui lòng điền đầy đủ thông tin!'
+        });
+        return;
+    }
 
     var productStatus = 0;
 
@@ -489,7 +490,7 @@ function save() {
         success: function (response) {
             var productId = response.id;
 
-
+            // Xử lý lưu chi tiết sản phẩm
             if (!saveProductDetail(productId)) {
                 Swal.fire({
                     icon: 'error',
@@ -518,6 +519,10 @@ function save() {
             });
         }
     });
+}
+
+function removeHtmlTags(str) {
+    return str.replace(/<[^>]*>/g, ''); // Loại bỏ tất cả các thẻ HTML
 }
 
 // Check trùng Tên danh mục

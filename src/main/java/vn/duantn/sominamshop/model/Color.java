@@ -18,28 +18,22 @@ import java.util.List;
 public class Color extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "color_name", columnDefinition = "NVARCHAR(255)")
     private String colorName;
 
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer status;
-    public Integer getStatus() {
-        if (status == null) {
-            return 0; // Gán mặc định khi là null
-        }
-        return status;
-    }
 
     public void setStatus(Integer status) {
-        if (status == null) {
-            this.status = 0; // Gán giá trị 0 nếu status là null
-        } else {
-            this.status = status;
-        }
+        this.status = (status == null) ? 0 : status;
     }
+
+
+
+
     @JsonIgnore
     @OneToMany(mappedBy = "color")
     private List<ProductDetail> productDetails;

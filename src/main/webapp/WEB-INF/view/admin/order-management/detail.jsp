@@ -362,8 +362,7 @@
                                                             phẩm</span></div>
                                                     <div class="total-price-cost">
                                                         <span class="text-end">
-                                                            <fmt:formatNumber type="number"
-                                                                value="${order.totalAmount}" />
+                                                            <fmt:formatNumber type="number" value="${totalPrice}" />
                                                             đ
                                                         </span>
                                                     </div>
@@ -374,15 +373,40 @@
                                                         giao
                                                         hàng</span></div>
                                                 <div class="d-flex justify-content-between" style="flex-grow: 2;">
-                                                    <div class="method-delivery"><span>Giao hàng tận nơi</span></div>
+                                                    <div class="method-delivery">
+                                                        <span>${shippingMethodString}</span>
+                                                    </div>
                                                     <div class="money-delivery">
                                                         <span class="text-end">
-                                                            <fmt:formatNumber type="number" value="${}" />
-                                                            30.000đ
+                                                            <fmt:formatNumber type="number" value="${shippingPrice}" />
+                                                            đ
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <c:if test="${order.coupon != null}">
+                                                <div class="delivery-fee d-flex justify-content-between"
+                                                    style="padding-bottom: 5px; padding-top: 0px;">
+                                                    <div class="text-delivery flex-grow-1" style="flex: 0 0 25%">
+                                                        <span>Giảm
+                                                            giá</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between" style="flex-grow: 2;">
+                                                        <div class="method-delivery">
+                                                            <span>${couponCode}</span>
+                                                        </div>
+                                                        <div class="money-delivery">
+                                                            <span class="text-end">
+                                                                -
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${totalCouponReduce}" />
+                                                                đ
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:if>
+
                                             <div class="into-money d-flex justify-content-between">
                                                 <div class="money-text"><span>Thành tiền</span></div>
                                                 <div class="money-delivery">
@@ -402,9 +426,13 @@
                                                             trả</span>
                                                     </div>
                                                     <div class="d-flex justify-content-between" style="flex-grow: 2;">
-                                                        <div class="payment-cod"><span>Thu hộ(COD)</span></div>
+                                                        <div class="payment-cod"><span>${paymentMethod}</span></div>
                                                         <div class="payment-amount">
-                                                            <span class="text-end">905,000₫</span>
+                                                            <span class="text-end">
+                                                                <fmt:formatNumber type="number"
+                                                                    value="${order.totalAmount}" />
+                                                                đ
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>

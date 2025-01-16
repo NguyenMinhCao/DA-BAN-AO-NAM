@@ -40,20 +40,40 @@ public class CategoryService {
 
     public Category addCategory(Category category) {
         if (category.getCategoryName() == null || category.getCategoryName().isEmpty()) {
-            throw new IllegalArgumentException("Tên  danh mục không được để trống");
+            throw new IllegalArgumentException("Không được để trống");
         }
+
+        if (categoryRepository.existsByCategoryName(category.getCategoryName())) {
+            throw new IllegalArgumentException("Tên màu đã tồn tại");
+        }
+        if (category.getStatus() == null) {
+            category.setStatus(0);
+        }
+
         return categoryRepository.save(category);
     }
 
+
     public Category updateCategory(Long id, Category updatedCategory) {
-        Category existing = getCategoryById(id);
+        Category existingCategory = getCategoryById(id);
+
+        if (updatedCategory.getCategoryName() == null || updatedCategory.getCategoryName().trim().isEmpty()) {
+            throw new IllegalArgumentException(" Không được để trống");
+        }
+
         if (updatedCategory.getCategoryName() != null && !updatedCategory.getCategoryName().isEmpty()) {
-            existing.setCategoryName(updatedCategory.getCategoryName());
+
+            if (categoryRepository.existsByCategoryNameAndIdNot(updatedCategory.getCategoryName().trim(), id)) {
+                throw new IllegalArgumentException("Tên màu đã tồn tại");
+            }
+            existingCategory.setCategoryName(updatedCategory.getCategoryName().trim());
         }
+
         if (updatedCategory.getStatus() != null) {
-            existing.setStatus(updatedCategory.getStatus());
+            existingCategory.setStatus(updatedCategory.getStatus());
         }
-        return categoryRepository.save(existing);
+
+        return categoryRepository.save(existingCategory);
     }
 
 

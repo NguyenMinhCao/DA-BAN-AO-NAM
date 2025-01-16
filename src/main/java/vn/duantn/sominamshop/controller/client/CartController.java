@@ -75,7 +75,7 @@ public class CartController {
         }
 
         // Giả sử đây là trong một phương thức của controller hoặc service
-        List<Coupon> listCouponDis = this.promotionService.findAllCoupon();
+        List<Coupon> listCouponDis = this.promotionService.findAllCouponsOrderByDiscountsDesc();
         List<ResCouponDTO> listCouponDTOs = new ArrayList<>();
         LocalDateTime currentDateTime = LocalDateTime.now();
 

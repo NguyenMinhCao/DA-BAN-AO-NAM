@@ -94,10 +94,9 @@
                                                id="${category.id}" ${category.status == 0 ? 'checked' : ''}>
                                         <span class="slider"></span>
                                     </label>
-                                </td>                                <td>
-                                    <a href="/admin/category/detail/${category.id}" class="btn btn-success" title="Xem chi tiết">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                                </td>
+                                <td>
+
                                     <a href="/admin/category/edit/${category.id}" class="btn btn-warning" title="Cập nhật">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -110,19 +109,22 @@
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
                             <c:if test="${not empty categoryPage}">
+
                                 <c:if test="${categoryPage.hasPrevious()}">
                                     <li class="page-item">
                                         <a class="page-link" href="/admin/category?categoryName=${categoryName}&page=${categoryPage.number - 1}">&laquo;</a>
                                     </li>
                                 </c:if>
 
-                                <c:forEach var="i" begin="0" end="${categoryPage.totalPages - 1}">
-                                    <li class="page-item ${categoryPage.number == i ? 'active' : ''}">
-                                        <a class="page-link" href="/admin/category?categoryName=${categoryName}&page=${i}">
-                                                ${i + 1}
-                                        </a>
-                                    </li>
-                                </c:forEach>
+                                <c:if test="${categoryPage.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${categoryPage.totalPages - 1}">
+                                        <li class="page-item ${categoryPage.number == i ? 'active' : ''}">
+                                            <a class="page-link" href="/admin/category?categoryName=${categoryName}&page=${i}">
+                                                    ${i + 1}
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
 
                                 <c:if test="${categoryPage.hasNext()}">
                                     <li class="page-item">
@@ -133,7 +135,7 @@
                         </ul>
                     </nav>
                 </div>
-            </div>
+                </div>
         </main>
 
         <jsp:include page="../layout/footer.jsp" />

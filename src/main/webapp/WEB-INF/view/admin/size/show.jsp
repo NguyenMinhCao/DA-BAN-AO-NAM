@@ -95,9 +95,6 @@
                                         <span class="slider"></span>
                                     </label>
                                 </td>                                <td>
-                                    <a href="/admin/size/detail/${size.id}" class="btn btn-success" title="Xem chi tiết">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
                                     <a href="/admin/size/edit/${size.id}" class="btn btn-warning" title="Cập nhật">
                                         <i class="fas fa-edit"></i>
                                     </a>
@@ -109,24 +106,27 @@
 
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
-                            <c:if test="${not empty colorPage}">
-                                <c:if test="${colorPage.hasPrevious()}">
+                            <c:if test="${not empty sizePage}">
+
+                                <c:if test="${sizePage.hasPrevious()}">
                                     <li class="page-item">
-                                        <a class="page-link" href="/admin/colors?colorName=${colorName}&page=${colorPage.number - 1}">&laquo;</a>
+                                        <a class="page-link" href="/admin/size?sizeName=${sizeName}&page=${sizePage.number - 1}">&laquo;</a>
                                     </li>
                                 </c:if>
 
-                                <c:forEach var="i" begin="0" end="${colorPage.totalPages - 1}">
-                                    <li class="page-item ${colorPage.number == i ? 'active' : ''}">
-                                        <a class="page-link" href="/admin/colors?colorName=${colorName}&page=${i}">
-                                                ${i + 1}
-                                        </a>
-                                    </li>
-                                </c:forEach>
+                                <c:if test="${sizePage.totalPages > 0}">
+                                    <c:forEach var="i" begin="0" end="${sizePage.totalPages - 1}">
+                                        <li class="page-item ${sizePage.number == i ? 'active' : ''}">
+                                            <a class="page-link" href="/admin/size?sizeName=${sizeName}&page=${i}">
+                                                    ${i + 1}
+                                            </a>
+                                        </li>
+                                    </c:forEach>
+                                </c:if>
 
-                                <c:if test="${colorPage.hasNext()}">
+                                <c:if test="${sizePage.hasNext()}">
                                     <li class="page-item">
-                                        <a class="page-link" href="/admin/colors?colorName=${colorName}&page=${colorPage.number + 1}">&raquo;</a>
+                                        <a class="page-link" href="/admin/size?sizeName=${sizeName}&page=${sizePage.number + 1}">&raquo;</a>
                                     </li>
                                 </c:if>
                             </c:if>

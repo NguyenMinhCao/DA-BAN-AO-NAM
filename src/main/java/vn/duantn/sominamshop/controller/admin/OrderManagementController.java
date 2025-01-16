@@ -1,5 +1,7 @@
 package vn.duantn.sominamshop.controller.admin;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +25,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import vn.duantn.sominamshop.model.CartDetail;
+import vn.duantn.sominamshop.model.Coupon;
 import vn.duantn.sominamshop.model.Order;
 import vn.duantn.sominamshop.model.OrderDetail;
 import vn.duantn.sominamshop.model.ProductDetail;
+import vn.duantn.sominamshop.model.constants.DiscountType;
 import vn.duantn.sominamshop.model.dto.request.AddressUpdateRequest;
 import vn.duantn.sominamshop.model.dto.request.CheckQuantityProductDeDTO;
 import vn.duantn.sominamshop.model.dto.request.DataAddProductDTO;
@@ -66,7 +71,7 @@ public class OrderManagementController {
     @GetMapping("/orders")
     public String getOrders(Model model,
             @Filter Specification<Order> spec,
-            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 10) Pageable pageable) {
         ResultPaginationDTO lstOrder = this.orderService.fetchAllOrders(spec, pageable);
         model.addAttribute("lstOrder", lstOrder);
         return "admin/order-management/show";
@@ -83,23 +88,77 @@ public class OrderManagementController {
 
             String formattedDateCreate = orderById.get().getCreatedAt().format(formatter);
 
+            double shippingPrice = 0;
+            String paymentMethod = "";
+            String shippingMethodString = "";
+            if (orderById.get() != null) {
+                shippingMethodString = orderById.get().getShippingMethod().toString();
+            }
+
+            if (orderById.get() != null) {
+                paymentMethod = orderById.get().getPaymentMethod().toString();
+            }
+
+            if (orderById.get() != null && shippingMethodString.equals("EXPRESS")) {
+                shippingMethodString = "Giao hàng hỏa tốc";
+                shippingPrice = 50000;
+            } else if (orderById.get() != null && shippingMethodString.equals("FAST")) {
+                shippingMethodString = "Giao hàng nhanh";
+                shippingPrice = 30000;
+            } else {
+                shippingPrice = 20000;
+                shippingMethodString = "Giao hàng tiết kiệm";
+            }
+
+            List<OrderDetail> lstOrderDetail = orderById.get().getOrderDetails();
+            double totalPrice = 0;
+            for (OrderDetail orderDetail : lstOrderDetail) {
+                totalPrice += orderDetail.getPrice();
+            }
+
+            if (orderById.get().getCoupon() != null) {
+                model.addAttribute("couponCode", orderById.get().getCoupon().getCouponCode());
+
+            }
+
+            // Giả sử totalPrice và shippingPrice là kiểu double
+            BigDecimal bdTotalPrice = BigDecimal.valueOf(totalPrice);
+            BigDecimal bdShippingPrice = BigDecimal.valueOf(shippingPrice);
+            BigDecimal totalAmount = orderById.get().getTotalAmount();
+
+            BigDecimal totalCouponReduce = bdTotalPrice
+                    .add(bdShippingPrice)
+                    .subtract(totalAmount);
+
             model.addAttribute("formattedDateCreate", formattedDateCreate);
             model.addAttribute("order", orderById.get());
             model.addAttribute("lstOrderHis", lstOrderHis);
+            model.addAttribute("shippingMethodString", shippingMethodString);
+            model.addAttribute("shippingPrice", shippingPrice);
+            model.addAttribute("paymentMethod", paymentMethod);
+            model.addAttribute("totalPrice", totalPrice);
+            model.addAttribute("totalCouponReduce", totalCouponReduce);
+
         }
         // model
         return "admin/order-management/detail";
     }
 
     @PutMapping("/orders/{id}")
-    public ResponseEntity<Order> updateStatusOrder(@PathVariable String id,
+    public ResponseEntity<Boolean> updateStatusOrder(@PathVariable String id,
             @RequestBody DataStatusOrderDTO dataStatus) {
         Optional<Order> orderById = this.orderService.findOrderById(Long.valueOf(id));
         if (orderById.isPresent()) {
             Order orderGet = orderById.get();
-            this.orderManagementService.updateStatusOrder(orderGet, dataStatus);
+            if (this.orderManagementService.updateStatusOrder(orderGet, dataStatus)) {
+
+                return ResponseEntity.ok().body(true);
+            } else {
+                return ResponseEntity.ok().body(false);
+            }
+
         }
-        return ResponseEntity.ok().body(orderById.get());
+        return ResponseEntity.ok().body(false);
     }
 
     @GetMapping("/orders/product-detail/{id}")

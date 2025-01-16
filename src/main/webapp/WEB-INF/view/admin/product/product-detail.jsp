@@ -7,10 +7,6 @@
         <head>
             <meta charset="UTF-8">
             <title>Danh Sách Biến Thể Sản Phẩm</title>
-            <link href="/admin/css/styles.css" rel="stylesheet" />
-            <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-            <link rel="stylesheet" href="/admin/css/product/product.css">
-
             <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css"
                 rel="stylesheet">
             <script src="/admin/ckeditor/ckeditor.js"></script>
@@ -22,22 +18,10 @@
                 src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
                 rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
             <link href="/admin/css/styles.css" rel="stylesheet" />
             <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/product/product-detail.css">
-            <style>
-                main.content {
-                    margin-left: 10px;
-                }
-
-                form.row {
-                    display: inline-block;
-                }
-
-                .row-quantity .color-quantity {
-                    width: 150px;
-                }
-            </style>
         </head>
 
         <body onload="time()" class="app sidebar-mini rtl">
@@ -164,7 +148,8 @@
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Chỉnh sửa thông tin Biến Thể</h5>
                                                     </div>
-                                                    <div class="row modal-body">
+                                                    <div class="row modal-body ">
+                                                        <!--Màu Sắc - Kích Thước-->
                                                         <div class="form-group col-md-12 product-detail-infor">
                                                             <label class="control-label" id="product-detail-color">Màu
                                                                 Sắc: </label>
@@ -172,27 +157,34 @@
                                                             <label class="control-label" id="product-detail-size">Kích
                                                                 Thước: </label>
                                                         </div>
+
+                                                        <!--Số Lượng-->
                                                         <div class="form-group col-md-6">
                                                             <label class="control-label">Số Lượng</label>
                                                             <input class="form-control" type="number"
                                                                 id="product-detail-quantity" min="0">
                                                         </div>
+
+                                                        <!--Giá-->
                                                         <div class="form-group col-md-6">
                                                             <label class="control-label">Giá (VNĐ)</label>
                                                             <input class="form-control" type="number"
                                                                 id="product-detail-price" min="0">
                                                         </div>
+
                                                     </div>
                                                     <div class="form-group modal-footer">
                                                         <button type="button" class="btn btn-success"
-                                                            onclick="saveUpdate()">Lưu</button>
+                                                            onclick="saveUpdate()">Lưu
+                                                        </button>
                                                         <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal"
-                                                            id="closeFormProductDetailUpdate">Đóng</button>
+                                                            data-dismiss="modal" id="closeFormProductDetailUpdate">Đóng
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
 
                                         <!-- Modal Add Biến Thể -->
                                         <div class="modal fade" id="AddProductDetailModal" tabindex="-1" role="dialog"
@@ -202,15 +194,17 @@
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Thêm Biến Thể</h5>
                                                     </div>
-                                                    <div class="row modal-body">
+                                                    <div class="row modal-body ">
+                                                        <!--Màu Sắc-->
                                                         <div class="form-group col-md-6">
                                                             <label for="select-color" class="control-label">Màu
                                                                 Sắc</label>
                                                             <div class="d-flex">
                                                                 <select class="form-control" id="select-color"
-                                                                    onchange="getColor(this)">
+                                                                    onchange="getSize(this)">
                                                                     <option value="" disabled selected hidden>-- Chọn
                                                                         màu sắc --</option>
+                                                                    <!-- Lặp qua danh sách màu sắc -->
                                                                     <c:forEach var="color" items="${listColor}">
                                                                         <option value="${color.id}">${color.colorName}
                                                                         </option>
@@ -222,18 +216,14 @@
                                                             </div>
                                                         </div>
 
+                                                        <!-- Kích Thước -->
                                                         <div class="form-group col-md-6">
-                                                            <label for="select-size" class="control-label">Kích
-                                                                thước</label>
+                                                            <label class="control-label">Kích Thước</label>
                                                             <div class="d-flex">
                                                                 <select class="form-control" id="select-size"
-                                                                    onchange="getSize(this)">
+                                                                    placeholder="Chọn kích thước...">
                                                                     <option value="" disabled selected hidden>-- Chọn
-                                                                        kích thước --</option>
-                                                                    <c:forEach var="size" items="${listSize}">
-                                                                        <option value="${size.id}">${size.sizeName}
-                                                                        </option>
-                                                                    </c:forEach>
+                                                                        Kích Thước --</option>
                                                                 </select>
                                                                 <button id="showFormSize" class="btn add-button"
                                                                     type="button"><i
@@ -241,17 +231,20 @@
                                                             </div>
                                                         </div>
 
+                                                        <!-- Số Lượng -->
                                                         <div class="form-group col-md-6">
                                                             <label class="control-label">Số Lượng</label>
                                                             <input class="form-control" type="number"
                                                                 id="add-product-detail-quantity">
                                                         </div>
 
+                                                        <!-- Giá -->
                                                         <div class="form-group col-md-6">
                                                             <label class="control-label">Giá (VNĐ)</label>
                                                             <input class="form-control" type="number"
                                                                 id="add-product-detail-price">
                                                         </div>
+
                                                     </div>
                                                     <div class="form-group modal-footer">
                                                         <button type="button" class="btn btn-success"
@@ -274,7 +267,7 @@
                                                     <th class="kich_thuoc">Kích Thước</th>
                                                     <th class="so_luong" width="130">Số Lượng</th>
                                                     <th class="gia_ban" width="220">Giá Bán</th>
-                                                    <!-- Thêm các cột khác nếu cần -->
+                                                    <th class="tinh_nang" width="110">Tính Năng</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -285,6 +278,18 @@
                                                         <td>${productDetail.sizeName}</td>
                                                         <td>${productDetail.quantity}</td>
                                                         <td>${productDetail.price}</td>
+                                                        <td class="table-td-center tinh_nang">
+                                                            <button class="btn btn-primary btn-sm edit" type="button"
+                                                                data-product-detail-id="${productDetail.id}"
+                                                                data-product-detail-color="${productDetail.colorName}"
+                                                                data-product-detail-size="${productDetail.sizeName}"
+                                                                id="${productDetail.id}"
+                                                                onclick="updateProductDetailForm(this)">
+
+                                                                <i class="fas fa-edit"> Cập nhật</i>
+                                                            </button>
+                                                        </td>
+
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
@@ -312,11 +317,6 @@
                     getListURL(productId);
                 });
             </script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                crossorigin="anonymous"></script>
-            <script src="/admin/js/scripts.js"></script>
-            <script src="/common/toast.js"></script>
-            <script src="/admin/js/order/order-management.js"></script>
             <script src="${pageContext.request.contextPath}/admin/js/product/product-detail.js"></script>
             <script src="${pageContext.request.contextPath}/admin/js/category/category.js"></script>
             <script src="${pageContext.request.contextPath}/admin/js/color/color.js"></script>

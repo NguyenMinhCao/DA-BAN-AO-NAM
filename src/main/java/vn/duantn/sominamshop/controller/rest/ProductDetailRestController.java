@@ -15,7 +15,7 @@ public class ProductDetailRestController {
     ProductDetailService productDetailService;
 
     @GetMapping("/getListSizeAddProductDetail")
-    public ResponseEntity<?> getListSizeAddProductDetail(@RequestParam Integer productId, @RequestParam Integer colorId){
+    public ResponseEntity<?> getListSizeAddProductDetail(@RequestParam Long productId, @RequestParam Long colorId){
         return ResponseEntity.ok(productDetailService.getListSizeAddProductDetail(productId, colorId));
     }
 

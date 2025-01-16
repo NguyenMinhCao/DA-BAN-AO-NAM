@@ -44,7 +44,15 @@ public class SizeController {
             model.addAttribute("errorMessage", "Please correct the errors in the form.");
             return "admin/size/create";
         }
-        sizeService.addSize(newSize);
+        if (newSize.getStatus() == null) {
+            newSize.setStatus(0);
+        }
+        try {
+            sizeService.addSize(newSize);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "admin/size/create";
+        }
         return "redirect:/admin/size";
     }
     @GetMapping("/edit/{id}")
@@ -55,10 +63,16 @@ public class SizeController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateSize(@PathVariable Long id, @ModelAttribute("size") Size size, RedirectAttributes redirectAttributes) {
-        sizeService.updateSize(id, size);
-        redirectAttributes.addFlashAttribute("success", "Kích cỡ đã được cập nhật thành công!");
-        return "redirect:/admin/size";
+    public String updateSize(@PathVariable Long id, @ModelAttribute("size") Size size, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            sizeService.updateSize(id, size);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
+            return "redirect:/admin/size";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("size", size);
+            return "admin/size/edit";
+        }
     }
 
 

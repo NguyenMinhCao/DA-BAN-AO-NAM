@@ -15,6 +15,7 @@ import java.util.List;
 public class OriginService {
     private final OriginRepository originRepository;
 
+
     public OriginService(OriginRepository originRepository) {
         this.originRepository = originRepository;
     }
@@ -23,6 +24,11 @@ public class OriginService {
         return this.originRepository.findAll();
     }
 
+
+    public Origin getOriginById(Integer originId) {
+        return originRepository.findById(originId)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy  với ID: " + originId));
+    }
 
     public Page<Origin> getOrigin(String originName, int page) {
         Pageable pageable = PageRequest.of(page, 5);
@@ -33,19 +39,23 @@ public class OriginService {
         }
     }
 
-    public Origin getOriginById(Long id) {
-        return originRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy màu với ID: " + id));
-    }
-
     public Origin addOrigin(Origin origin) {
         if (origin.getOriginName() == null || origin.getOriginName().isEmpty()) {
-            throw new IllegalArgumentException("Tên màu không được để trống");
+            throw new IllegalArgumentException("Không  được để trống");
         }
+
+        if (originRepository.existsByOriginName(origin.getOriginName())) {
+            throw new IllegalArgumentException("Tên đã tồn tại");
+        }
+        if (origin.getStatus() == null) {
+            origin.setStatus(0);
+        }
+
         return originRepository.save(origin);
     }
 
-    public Origin updateOrigin(Long id, Origin updatedOrigin) {
+
+    public Origin updateOrigin(Integer id, Origin updatedOrigin) {
         Origin existingOrigin = getOriginById(id);
 
         if (updatedOrigin.getOriginName() != null && !updatedOrigin.getOriginName().isEmpty()) {
@@ -58,7 +68,7 @@ public class OriginService {
 
         return originRepository.save(existingOrigin);
     }
-    public Origin setStatus(Long id) {
+    public Origin setStatus(Integer id) {
         Origin searchOrigin = originRepository.findById(id).get();
         if (searchOrigin != null) {
             if (searchOrigin.getStatus() == 1) {
