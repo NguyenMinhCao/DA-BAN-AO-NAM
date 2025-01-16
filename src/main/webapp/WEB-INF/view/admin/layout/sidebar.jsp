@@ -54,6 +54,7 @@
                                     <a class="nav-link" href="/admin/material">Quản lý chất liệu</a>
                                     <a class="nav-link" href="/admin/origin">Quản lý nguồn gốc</a>
                                     <a class="nav-link" href="/admin/category">Quản lý danh mục</a>
+                                    <a class="nav-link" href="/admin/pattern">Quản lý thương hiệu</a>
 
                                 </nav>
                             </div>

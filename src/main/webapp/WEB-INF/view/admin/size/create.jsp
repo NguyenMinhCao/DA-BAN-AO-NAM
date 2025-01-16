@@ -14,23 +14,7 @@
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <link rel="stylesheet" href="/common/toast.css">
 
-                <script>
-                    $(document).ready(() => {
-                        const avatarFiles = $("#avatarFiles");
-                        avatarFiles.change(function (e) {
-                            $("#avatarPreviews").empty();
-                            for (let i = 0; i < e.target.files.length; i++) {
-                                const imgURL = URL.createObjectURL(e.target.files[i]);
-                                const previewElement = $('<img />', {
-                                    src: imgURL,
-                                    class: 'preview-img',
-                                    style: 'max-height: 250px; margin: 5px; display: inline-block;'
-                                });
-                                $("#avatarPreviews").append(previewElement);
-                            }
-                        });
-                    });
-                </script>
+
             </head>
 
             <body class="sb-nav-fixed">

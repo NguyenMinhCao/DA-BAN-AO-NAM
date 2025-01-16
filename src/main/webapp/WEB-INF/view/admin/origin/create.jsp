@@ -7,7 +7,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Create Color</title>
+    <title>Thêm nguồn gốc</title>
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -40,7 +40,7 @@
                 <h1 class="mt-4 text-dark">Create Color</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="/admin" class="text-decoration-none">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Create Color</li>
+                    <li class="breadcrumb-item active">Thêm nguồn gốc</li>
                 </ol>
                 <div class="container mt-5">
                     <div class="row justify-content-center">

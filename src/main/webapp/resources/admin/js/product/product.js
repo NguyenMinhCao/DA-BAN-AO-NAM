@@ -1,6 +1,5 @@
 var listUrlImage = [];
 
-//Show form
 $(document).ready(function () {
     $('#showFormProduct').click(function () {
         $('#ProductModal').modal('show');
@@ -11,7 +10,6 @@ $(document).ready(function () {
 });
 
 function writeURL() {
-    // Lặp qua mảng listUrlImage và hiển thị từng ảnh
     listUrlImage.forEach(function (url) {
         var imageContainer = $(
             '<div class="image-product-container">' +
@@ -50,25 +48,21 @@ function readURL(input) {
             var formData = new FormData();
             formData.append("file", input.files[i]);
 
-            // Gửi ảnh lên server
             $.ajax({
-                url: '/upload/image', // Địa chỉ endpoint xử lý tải ảnh
+                url: '/upload/image',
                 type: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    // Nhận URL ảnh trả về từ server
-                    var imageUrl = response.imageUrl; // URL ảnh từ server
+                    var imageUrl = response.imageUrl;
                     console.log("Image URL:", imageUrl);
 
-                    // Kiểm tra nếu ảnh chưa có trong danh sách
                     var isDuplicate = listUrlImage.some(function (img) {
                         return img === imageUrl;
                     });
 
                     if (!isDuplicate) {
-                        // Thêm URL vào danh sách
                         listUrlImage.push(imageUrl);
                         console.log("Updated Image List:", listUrlImage);
 
@@ -80,20 +74,16 @@ function readURL(input) {
                             '</div>'
                         );
 
-                        // Thêm container vào thumbbox
                         $("#thumbbox").append(imageContainer);
 
-                        // Sự kiện click cho nút xóa
                         imageContainer.find(".removeimg").on("click", function () {
                             var removedImage = $(this).closest(".image-product-container").find("img").attr("src");
 
-                            // Xóa ảnh khỏi danh sách
                             listUrlImage = listUrlImage.filter(function (img) {
                                 return img !== removedImage;
                             });
                             console.log("Updated Image List After Remove:", listUrlImage);
 
-                            // Loại bỏ container ảnh
                             $(this).closest(".image-product-container").remove();
                         });
                     }
@@ -118,16 +108,12 @@ $(document).ready(function () {
 //Set Status
 function toggleStatus(checkbox) {
     var productId = checkbox.getAttribute("data-product-id");
-    // Gửi yêu cầu AJAX để cập nhật trạng thái của danh mục
-    //Sử dụng jQuery
     $.ajax({
         type: "POST",
         url: "/admin/rest/product/setStatus/" + productId,
         success: function (response) {
-            // Xử lý thành công, nếu cần
             console.log("Cập nhật trạng thái thành công");
 
-            // Hiển thị thông báo thành công sử dụng SweetAlert2
             Swal.fire({
                 icon: 'success',
                 title: 'Thành công!',
@@ -212,6 +198,7 @@ function save() {
 
     var productMaterial = $("#product-material").val();
     var productDescription = CKEDITOR.instances['product-description'].getData();
+    productDescription = removeHtmlTags(productDescription);
     var productStatus = 0;
 
     var dataToSend = {
@@ -257,6 +244,10 @@ function save() {
     });
 }
 
+function removeHtmlTags(str) {
+    return str.replace(/<[^>]*>/g, '');
+}
+
 function saveImage(productId) {
     // Xóa ảnh cũ trước khi thêm ảnh mới
     $.ajax({
@@ -265,11 +256,8 @@ function saveImage(productId) {
         success: function (response) {
             console.log("Xóa toàn bộ ảnh cũ thành công!");
 
-            // Dùng Promise để thêm ảnh mới sau khi xóa thành công
             var promises = listUrlImage.map(function (url, index) {
-                // Xác định isMain dựa trên chỉ số
-                var isMain = (index === 0) ? 1 : 0; // Ảnh đầu tiên là ảnh chính, các ảnh sau là ảnh phụ
-
+                var isMain = (index === 0) ? 1 : 0;
                 var dataToSend = {
                     productId: productId,
                     urlImage: url,
