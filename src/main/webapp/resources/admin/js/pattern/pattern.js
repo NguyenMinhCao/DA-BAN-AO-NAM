@@ -1,10 +1,10 @@
 function toggleStatus(checkbox) {
-    var originId = checkbox.getAttribute("data-origin-id");
+    var patternId = checkbox.getAttribute("data-pattern-id");
     // Gửi yêu cầu AJAX để cập nhật trạng thái của màu sắc
     //Sử dụng jQuery
     $.ajax({
         type: "POST",
-        url: "/admin/rest/origin/setStatus/" + originId,
+        url: "/admin/rest/pattern/setStatus/" + patternId,
         success: function (response) {
             // Xử lý thành công, nếu cần
             console.log("Cập nhật trạng thái thành công");
@@ -32,9 +32,9 @@ function toggleStatus(checkbox) {
 }
 $.ajax({
     type: "POST",
-    url: "/admin/rest/pattern/setStatus/" + originId,
+    url: "/admin/rest/pattern/setStatus/" + pattern,
     beforeSend: function () {
-        console.log("Gửi yêu cầu cập nhật trạng thái cho originId:", originId);
+        console.log("Gửi yêu cầu cập nhật trạng thái cho originId:", pattern);
     },
     success: function (response) {
         console.log("Cập nhật trạng thái thành công:", response);

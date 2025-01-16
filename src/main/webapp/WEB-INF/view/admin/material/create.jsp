@@ -7,28 +7,12 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Create Color</title>
+    <title>Thêm chất liệu</title>
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script>
-        $(document).ready(() => {
-            const avatarFiles = $("#avatarFiles");
-            avatarFiles.change(function (e) {
-                $("#avatarPreviews").empty();
-                for (let i = 0; i < e.target.files.length; i++) {
-                    const imgURL = URL.createObjectURL(e.target.files[i]);
-                    const previewElement = $('<img />', {
-                        src: imgURL,
-                        class: 'preview-img',
-                        style: 'max-height: 250px; margin: 5px; display: inline-block;'
-                    });
-                    $("#avatarPreviews").append(previewElement);
-                }
-            });
-        });
-    </script>
+
 </head>
 <body class="sb-nav-fixed">
 <jsp:include page="../layout/header.jsp"/>

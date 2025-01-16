@@ -1,5 +1,4 @@
 
-
 var selectColor, selectSize;
 var listUrlImage = [];
 var listProductDetail = [];
@@ -208,6 +207,15 @@ function checkInputShowList(productName, productCategory, productMaterial, produ
         return false;
     }
 
+    if (!checkDuplicateProduct(productName)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Tên Sản phẩm đã tồn tại!'
+        });
+        return false;
+    }
+
     // Kiểm tra danh mục
     if (!productCategory || productCategory.trim() === "") {
         Swal.fire({
@@ -325,7 +333,6 @@ function renderListProductDetail(selectedColorItems, selectedSizeItems, quantity
 
     var listProductDetailShow = $("#listProductDetail");
 
-    // Xóa tất cả các phần tử trong tbody
     listProductDetailShow.empty();
 
     for (var i = 0; i < selectedColorItems.length; i++) {
@@ -337,7 +344,7 @@ function renderListProductDetail(selectedColorItems, selectedSizeItems, quantity
                 price: price,
                 colorId: selectedColorItems[i].id,
                 sizeId: selectedSizeItems[j].id,
-                image: "" // Thêm trường để lưu ảnh
+                image: ""
             };
 
             listProductDetail.push(productDetail);
@@ -388,10 +395,8 @@ function renderListProductDetail(selectedColorItems, selectedSizeItems, quantity
                             productDetail.image = imageUrl;
                             row.data('productDetail', productDetail);
 
-                            // Thêm URL ảnh vào listUrlImage
                             listUrlImage.push(imageUrl);
 
-                            // Hiển thị ảnh trong hàng
                             $(fileInput).closest('td').html('<img src="' + imageUrl + '" class="product-image-preview" style="width: 50px; height: 50px;">');
 
                             console.log("Danh sách URL hình ảnh: ", listUrlImage);

@@ -34,6 +34,7 @@ public class Pattern extends BaseEntity implements Serializable {
 
   public void setStatus(Integer status) {
     this.status = (status == null) ? 0 : status;
-  }
 
-}
+  }}
+
+

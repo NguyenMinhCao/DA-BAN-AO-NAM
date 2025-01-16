@@ -23,8 +23,8 @@ public class PatternController {
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             Model model) {
 
-        Page<Pattern> pattrenPage = patternService.getPatterns(patternName, page);
-        model.addAttribute("pattrenPage", pattrenPage);
+        Page<Pattern> patternPage = patternService.getPatterns(patternName, page);
+        model.addAttribute("patternPage", patternPage);
         model.addAttribute("patternName", patternName);
         return "admin/pattern/show";
     }

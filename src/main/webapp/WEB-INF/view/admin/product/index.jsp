@@ -8,6 +8,7 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/admin/ckeditor/ckeditor.js"></script>
+    <title> Sản phẩm</title>
     <link href="/admin/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="/admin/css/product/product.css">

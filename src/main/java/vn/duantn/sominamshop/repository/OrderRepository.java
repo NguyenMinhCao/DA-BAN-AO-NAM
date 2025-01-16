@@ -116,8 +116,11 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
                         "WHERE o.id = :id ")
         Optional<Order> getAllOrderById(@Param("id") Long id);
 
-        @Query("SELECT COUNT(o) FROM Order o WHERE o.orderStatus = 'PENDING'")
+        @Query("SELECT COUNT(DISTINCT o.id) FROM Order o " +
+                "WHERE (o.paymentStatus = 'PENDING' OR o.deliveryStatus = 'PENDING')")
         long getPendingOrderCount();
+
+
 
 
 

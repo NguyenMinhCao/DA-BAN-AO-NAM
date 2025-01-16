@@ -6,7 +6,7 @@
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-
+<title> Thêm sản phẩm</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css" rel="stylesheet">
     <script src="/admin/ckeditor/ckeditor.js"></script>
     <script src="/admin/ckeditor/lang/vi.js"></script>
@@ -118,6 +118,8 @@
                                 </select>
                             </div>
                         </div>
+
+
                         <div class="form-group col-md-12">
                             <label class="control-label">Mô tả sản phẩm</label>
                             <textarea class="form-control ckeditor" id="input-product-description"></textarea>

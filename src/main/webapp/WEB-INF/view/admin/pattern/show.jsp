@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Dashboard - Quản lý mẫu sản phẩm</title>
+    <title>Dashboard - Quản lý thương hiệu</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="/admin/ckeditor/ckeditor.js"></script>
     z
@@ -37,10 +37,10 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Quản lý mẫu sản phẩm </h1>
+                <h1 class="mt-4">Quản lý mẫu thương hiệu </h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active">
-                        <a href="/admin" style="text-decoration: none;">Dashboard</a> / Mẫu sản phẩm
+                        <a href="/admin" style="text-decoration: none;">Dashboard</a> / Thương hiệu
                     </li>
                 </ol>
 
@@ -90,7 +90,7 @@
                                 <td class="trang_thai">
                                     <label class="toggle">
                                         <input type="checkbox" onclick="toggleStatus(this)"
-                                               data-origin-id="${pattern.id}"
+                                               data-pattern-id="${pattern.id}"
                                                id="${pattern.id}" ${pattern.status == 0 ? 'checked' : ''}>
                                         <span class="slider"></span>
                                     </label>
@@ -144,7 +144,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="/admin/js/scripts.js"></script>
-<script src="${pageContext.request.contextPath}/admin/js/pattern/pattren.js"></script>
+<script src="${pageContext.request.contextPath}/admin/js/pattern/pattern.js"></script>
 
 </body>
 </html>
