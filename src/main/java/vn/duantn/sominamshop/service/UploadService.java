@@ -79,6 +79,27 @@ public class UploadService {
         return null;
     }
 
+    public String handleSaveAvatarCustomer(MultipartFile file, String uploadDir) {
+        System.out.println(file + "ảnh ");
+        if (file != null && !file.isEmpty()) {
+            try {
+                String originalFilename = file.getOriginalFilename();
+                String rootPath = this.servletContext.getRealPath(uploadDir);
+                String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+                String uniqueFileName = UUID.randomUUID().toString() + "_" +
+                        System.currentTimeMillis() + "." + extension;
+                Path filePath = Paths.get(rootPath, uniqueFileName);
+                // Files.createDirectories(filePath.getParent());
+                file.transferTo(filePath.toFile());
+                System.out.println(uniqueFileName + ": ảnh ");
+                return uniqueFileName;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     // public String handleSaveAvatar(MultipartFile file, String uploadDir) {
     // System.out.println(file + "ảnh ");
     // if (file != null && !file.isEmpty()) {

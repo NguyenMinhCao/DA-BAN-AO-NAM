@@ -168,7 +168,7 @@ public class UserService {
         userUpdate.setGender(user.getGender());
         if(file != null){
             uploadService.deleteFile(userUpdate.getAvatar(),"/resources/images/avatar");
-            String avatar = uploadService.handleSaveAvatar(file, "/resources/images/avatar");
+            String avatar = uploadService.handleSaveAvatarCustomer(file, "/resources/images/avatar");
             userUpdate.setAvatar(avatar);
         }
         if(user.getPassword() != null){

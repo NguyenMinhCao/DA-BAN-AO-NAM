@@ -542,7 +542,8 @@ $(document).ready(function () {
             streetDetails : locationDetail,
             user: {
                 id : idUser
-            }
+            },
+            status : true
         }
         Swal.fire({
             title: "Cảnh báo?",
