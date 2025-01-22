@@ -601,8 +601,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const dataSent = {
             couponCode: code,
             discountValuePercent: percentageDiscount,
-            discountValueFixed: maxDiscount,
-            maximumReduction: usageLimit,
+            maximumReduction: maxDiscount,
             discountValueFixed: fixedDiscount,
             startDate: startDate,
             endDate: endDate,
@@ -623,7 +622,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                const createResponse = await fetch('/admin/coupon/add', {
+                await fetch('/admin/coupon/add', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dataSent)
@@ -633,9 +632,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // console.log(createResult)
                 // Giả sử tạo thành công
                 showSuccess('Tạo khuyến mại thành công với mã: ' + code);
-                setTimeout(() => {
-                    window.location.assign('http://localhost:8080/admin/coupon');
-                }, 1200);
+                // setTimeout(() => {
+                //     window.location.assign('http://localhost:8080/admin/coupon');
+                // }, 1200);
                 // Bỏ trống các ô nhập liệu sau khi tạo thành công
                 // valueCodeInput.value = '';
                 // if (fixedDiscountInput) fixedDiscountInput.value = '';
@@ -756,8 +755,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const dataSent = {
             couponCode: code,
             discountValuePercent: percentageDiscount,
-            discountValueFixed: maxDiscount,
-            maximumReduction: inputMaxValueReduce.value,
+            maximumReduction: maxDiscount,
             discountValueFixed: fixedDiscount,
             startDate: startDate,
             endDate: endDate,
