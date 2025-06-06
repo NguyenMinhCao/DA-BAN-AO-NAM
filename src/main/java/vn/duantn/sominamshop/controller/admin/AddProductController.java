@@ -12,10 +12,10 @@ import vn.duantn.sominamshop.model.Pattern;
 import vn.duantn.sominamshop.service.*;
 
 import java.util.List;
+
 @Controller
 @RequestMapping("/admin/product/add")
 public class AddProductController {
-
 
     @Autowired
     CategoryService categoryService;
@@ -41,8 +41,8 @@ public class AddProductController {
         List<Category> listCategory = categoryService.getAllActive();
         model.addAttribute("listCategory", listCategory);
 
-//        List<Color> listColor = colorService.getAllActive();
-//        model.addAttribute("listColor", listColor);
+        // List<Color> listColor = colorService.getAllActive();
+        // model.addAttribute("listColor", listColor);
 
         List<Material> listMaterial = materialService.getAllActive();
         model.addAttribute("listMaterial", listMaterial);
@@ -50,12 +50,11 @@ public class AddProductController {
         List<Origin> listOrigin = originService.getAllActive();
         model.addAttribute("listOrigin", listOrigin);
 
-
         List<Pattern> listPattern = patternService.getAllActive();
         model.addAttribute("listPattern", listPattern);
 
-//        List<Size> listSize = sizeService.getAllActive();
-//        model.addAttribute("listSize", listSize);
+        // List<Size> listSize = sizeService.getAllActive();
+        // model.addAttribute("listSize", listSize);
         return "admin/product/add";
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.duantn.sominamshop.model.Category;
-import vn.duantn.sominamshop.model.Color;
 import vn.duantn.sominamshop.repository.CategoryRepository;
 
 import java.util.List;

@@ -3,7 +3,6 @@ package vn.duantn.sominamshop.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import vn.duantn.sominamshop.util.SecurityUtil;
 
 import java.io.Serializable;
 import java.util.List;
